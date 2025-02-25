@@ -2,7 +2,7 @@
 
 - [バージョニング規約](#versioning-scheme)
 - [サポートポリシー](#support-policy)
-- [Laravel 12](#laravel-12)
+- [Laravel12](#laravel-12)
 
 <a name="versioning-scheme"></a>
 ## バージョニング規約
@@ -48,23 +48,22 @@ Laravelのすべてのリリースは、バグフィックスは１８ヶ月、�
 <a name="laravel-12"></a>
 ## Laravel 12
 
-Laravel 12 continues the improvements made in Laravel 11.x by updating upstream dependencies and introducing new starter kits for React, Vue, and Livewire, including the option of using [WorkOS AuthKit](https://authkit.com) for user authentication. The WorkOS variant of our starter kits offers social authentication, passkeys, and SSO support.
+Laravel12では、Laravel11.xでの改善を引き継ぎ、上流の依存関係を更新し、React、Vue、Livewire用の新しいスターターキットを導入しました。これにはユーザー認証に[WorkOSのAuthKit](https://authkit.com)を使用するオプションも含まれます。スターターキットのWorkOS選択肢はソーシャル認証、パスキー、SSOをサポートしています。
 
 <a name="minimal-breaking-changes"></a>
-### Minimal Breaking Changes
+### 最低限のブレイキングチェンジ
 
-Much of our focus during this release cycle has been minimizing breaking changes. Instead, we have dedicated ourselves to shipping continual quality of life improvements throughout the year that do not break existing applications.
+このリリースサイクルでは、ブレイキングチェンジを最小限に抑えることに重点を置いてきました。その代わりに、既存のアプリケーションを壊さないようなクオリティ・オブ・ライフの改善を年間を通して継続的に行うことに専念してきました。
 
-Therefore, the Laravel 12 release is a relatively minor "maintenance release" in order to upgrade existing dependencies. In light of this, most Laravel applications may upgrade to Laravel 12 without changing any application code.
+そのため、Laravel12のリリースは、既存の依存関係をアップグレードするための、比較的マイナーな「メンテナンスリリース」となっています。このことから、ほとんどのLaravelアプリケーションは、アプリケーションコードを変更することなく、Laravel12にアップグレードできます。
 
 <a name="new-application-starter-kits"></a>
-### New Application Starter Kits
+### 新しいアプリケーションスターターキット
 
-Laravel 12 introduces new [application starter kits](/docs/{{version}}/starter-kits) for React, Vue, and Livewire. The React and Vue starter kits utilize Inertia 2, TypeScript, [shadcn/ui](https://ui.shadcn.com), and Tailwind, while the Livewire starter kits utilizes the Tailwind based [Flux UI](https://fluxui.dev) component library and Laravel Volt.
+Laravel12では、React、Vue、Livewire用の新しい[アプリケーションスターターキット](/docs/{{version}}/starter-kits)を導入しました。ReactとVueのスターターキットは、Inertia2、TypeScript、[shadcn/ui](https://ui.shadcn.com)、Tailwindを利用し、Livewireのスターターキットは、Tailwindベースの[Flux UI](https://fluxui.dev)コンポーネントライブラリとLaravel Voltを利用します。
 
-The React, Vue, and Livewire starter kits all utilize Laravel's built-in authentication system to offer login, registration, password reset, email verification, and more. In addition, we are introducing a [WorkOS AuthKit](https://authkit.com) powered variant of each starter kit, offering social authentication, passkeys, and SSO support. WorkOS offers free authentication for applications up to 1 million monthly active users.
+React、Vue、Livewireのスターターキットはすべて、Laravelの組み込み認証システムを利用し、ログイン、登録、パスワードリセット、メール認証などを提供します。さらに、各スターターキットへ[WorkOS AuthKit](https://authkit.com)搭載バージョンを導入し、ソーシャル認証、パスキー、SSOサポートを提供します。WorkOSは、月間アクティブユーザー数100万人までのアプリケーションに無料で認証を提供しています。
 
-With the introduction of our new application starter kits, Laravel Breeze and Laravel Jetstream will no longer receive additional updates.
+新しいアプリケーションスターターキットの導入に伴い、Laravel BreezeとLaravel Jetstreamは追加アップデートを受けられなくなりました。
 
-To get started with our new starter kits, check out the [starter kit documentation](/docs/{{version}}/starter-kits).
-
+新しいスターターキットを使い始めるには、[スターターキットのドキュメント](/docs/{{version}}/starter-kits)を確認してください。
