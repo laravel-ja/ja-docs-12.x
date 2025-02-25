@@ -56,7 +56,7 @@
 <a name="updating-the-laravel-installer"></a>
 ### Laravelインストーラのアップデート
 
-新しいLaravelアプリケーションを作成するためにLaravelインストーラーCLIツールを使用している場合は、Laravel12.xと[新しいLaravelスターターキット](https://laravel.com/starter-kits)に対応するため、インストーラを更新する必要があります。`composer global require`でLaravelインストーラーをインストールした場合は、`composer global update`でインストーラーを更新してください。
+新しいLaravelアプリケーションを作成するためにLaravelインストーラCLIツールを使用している場合は、Laravel12.xと[新しいLaravelスターターキット](https://laravel.com/starter-kits)に対応するため、インストーラを更新する必要があります。`composer global require`でLaravelインストーラをインストールした場合は、`composer global update`でインストーラを更新してください。
 
 ```shell
 composer global update laravel/installer

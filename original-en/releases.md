@@ -67,4 +67,3 @@ The React, Vue, and Livewire starter kits all utilize Laravel's built-in authent
 With the introduction of our new application starter kits, Laravel Breeze and Laravel Jetstream will no longer receive additional updates.
 
 To get started with our new starter kits, check out the [starter kit documentation](/docs/{{version}}/starter-kits).
-

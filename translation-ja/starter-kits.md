@@ -16,9 +16,9 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-To give you a head start building your new Laravel application, we are happy to offer [application starter kits](https://laravel.com/starter-kits). These starter kits give you a head start on building your next Laravel application, and include the routes, controllers, and views you need to register and authenticate your application's users.
+新しいLaravelアプリケーションの構築を開始できるように、[アプリケーションスターターキット](https://laravel.com/starter-kits)を提供いたします。このスターターキットは、次にLaravelアプリケーションを構築する口火を切るためのもので、アプリケーションのユーザー登録と認証に必要なルート、コントローラ、ビューを含んでいます。
 
-皆さんがこうしたスターターキットを使用してくれるのは大歓迎ですが、これらは必須でありません。Laravelの真新しいコピーをインストールするだけで、自分自身のアプリケーションを自由にゼロから構築できます。いずれにせよ、みなさんが素晴らしいものを作り上げるのはわかっています！
+皆さんがこのスターターキットを使用してくれるのは大歓迎ですが、これは必須でありません。Laravelの真新しいコピーをインストールするだけで、自分自身のアプリケーションを自由にゼロから構築できます。いずれにせよ、みなさんが素晴らしいものを作り上げるのはわかっています！
 
 <a name="creating-an-application"></a>
 ## Creating an Application Using a Starter Kit
@@ -349,4 +349,3 @@ php artisan vendor:publish --tag=laravel-mail
 ```
 
 This will generate several files in `resources/views/vendor/mail`. You can modify any of these files as well as the `resources/views/vendor/mail/themes/default.css` file to change the look and appearance of the default email template.
-
