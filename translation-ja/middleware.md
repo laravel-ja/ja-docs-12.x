@@ -41,7 +41,7 @@ use Symfony\Component\HttpFoundation\Response;
 class EnsureTokenIsValid
 {
     /**
-     * Handle an incoming request.
+     * 受信リクエストの処理
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
@@ -415,7 +415,7 @@ use Symfony\Component\HttpFoundation\Response;
 class EnsureUserHasRole
 {
     /**
-     * Handle an incoming request.
+     * 受信リクエストの処理
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
@@ -466,7 +466,7 @@ use Symfony\Component\HttpFoundation\Response;
 class TerminatingMiddleware
 {
     /**
-     * Handle an incoming request.
+     * 受信リクエストの処理
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
@@ -493,7 +493,7 @@ class TerminatingMiddleware
 use App\Http\Middleware\TerminatingMiddleware;
 
 /**
- * Register any application services.
+ * 全アプリケーションサービスの登録
  */
 public function register(): void
 {

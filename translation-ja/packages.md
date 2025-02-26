@@ -123,7 +123,7 @@ $value = config('courier.option');
 
 ```php
 /**
- * Register any application services.
+ * 全アプリケーションサービスの登録
  */
 public function register(): void
 {
@@ -339,7 +339,7 @@ Laravelの組み込み`about` Artisanコマンドは、アプリケーション�
 use Illuminate\Foundation\Console\AboutCommand;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {

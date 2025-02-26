@@ -118,7 +118,7 @@ php artisan passport:keys
 
 ```php
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -175,7 +175,7 @@ Passportはデフォルトで、１年後に失効する長寿命のアクセス
 
 ```php
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -212,7 +212,7 @@ use App\Models\Passport\RefreshToken;
 use App\Models\Passport\Token;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -233,7 +233,7 @@ Passportが定義するルートをカスタマイズしたい場合もあるで
 use Laravel\Passport\Passport;
 
 /**
- * Register any application services.
+ * 全アプリケーションサービスの登録
  */
 public function register(): void
 {
@@ -664,7 +664,7 @@ OAuth2パスワードグラントにより、モバイルアプリケーショ�
 
 ```php
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -794,7 +794,7 @@ class User extends Authenticatable
 
 ```php
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -1057,7 +1057,7 @@ APIのスコープは、アプリケーションの`App\Providers\AppServiceProv
 
 ```php
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -1239,7 +1239,7 @@ axios.get('/api/user')
 
 ```php
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {

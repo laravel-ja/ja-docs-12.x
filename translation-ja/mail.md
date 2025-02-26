@@ -1394,7 +1394,7 @@ Mail::assertNotOutgoing(function (OrderShipped $mail) use ($order) {
 use Illuminate\Support\Facades\Mail;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -1482,7 +1482,7 @@ use App\Mail\MailchimpTransport;
 use Illuminate\Support\Facades\Mail;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -1526,7 +1526,7 @@ use Symfony\Component\Mailer\Bridge\Brevo\Transport\BrevoTransportFactory;
 use Symfony\Component\Mailer\Transport\Dsn;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {

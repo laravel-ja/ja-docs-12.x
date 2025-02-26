@@ -51,7 +51,7 @@ use Illuminate\Support\ServiceProvider;
 class RiakServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * 全アプリケーションサービスの登録
      */
     public function register(): void
     {
@@ -140,7 +140,7 @@ class ComposerServiceProvider extends ServiceProvider
 use Illuminate\Contracts\Routing\ResponseFactory;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(ResponseFactory $response): void
 {
@@ -196,7 +196,7 @@ use Illuminate\Support\ServiceProvider;
 class RiakServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
-     * Register any application services.
+     * 全アプリケーションサービスの登録
      */
     public function register(): void
     {

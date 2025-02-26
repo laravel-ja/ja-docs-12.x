@@ -431,7 +431,7 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
+     * 全アプリケーションサービスの初期起動処理
      */
     public function boot(): void
     {

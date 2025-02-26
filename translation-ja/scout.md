@@ -932,7 +932,7 @@ use App\ScoutExtensions\MySqlSearchEngine;
 use Laravel\Scout\EngineManager;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {

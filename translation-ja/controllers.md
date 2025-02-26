@@ -422,7 +422,7 @@ Route::resource('photos.comments', PhotoCommentController::class)->scoped([
 
 ```php
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {

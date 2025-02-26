@@ -265,7 +265,7 @@ use Symfony\Component\HttpFoundation\Response;
 class SetDefaultLocaleForUrls
 {
     /**
-     * Handle an incoming request.
+     * 受信リクエストの処理
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */

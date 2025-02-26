@@ -2286,7 +2286,7 @@ use Illuminate\Queue\Events\JobFailed;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * 全アプリケーションサービスの登録
      */
     public function register(): void
     {
@@ -2658,7 +2658,7 @@ use Illuminate\Queue\Events\JobProcessing;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * 全アプリケーションサービスの登録
      */
     public function register(): void
     {

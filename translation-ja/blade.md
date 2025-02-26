@@ -1503,7 +1503,7 @@ Bladeは、コンポーネント名のパスカルケースを使い、コンポ
 
 ```php
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -1883,7 +1883,7 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * 全アプリケーションサービスの登録
      */
     public function register(): void
     {
@@ -1923,7 +1923,7 @@ use Illuminate\Support\Facades\Blade;
 use Money\Money;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -1948,7 +1948,7 @@ Cost: {{ $money }}
 use Illuminate\Support\Facades\Blade;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {

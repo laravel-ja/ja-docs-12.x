@@ -142,7 +142,7 @@ use App\Models\Cashier\User;
 use Laravel\Cashier\Cashier;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -194,7 +194,7 @@ CASHIER_CURRENCY_LOCALE=nl_BE
 use Laravel\Cashier\Cashier;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -238,7 +238,7 @@ use App\Models\Cashier\Subscription;
 use App\Models\Cashier\SubscriptionItem;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -409,12 +409,12 @@ use Symfony\Component\HttpFoundation\Response;
 class Subscribed
 {
     /**
-     * Handle an incoming request.
+     * 受信リクエストの処理
      */
     public function handle(Request $request, Closure $next): Response
     {
         if (! $request->user()?->subscribed()) {
-            // Redirect user to billing page and ask them to subscribe...
+            // ユーザーを課金ページへリダイレクトし、サブスクリプションを支払うか尋ねる…
             return redirect('/billing');
         }
 
@@ -533,14 +533,14 @@ $user->debitBalance(300, 'Bad usage penalty.');
 `applyBalance`メソッドは、その顧客に対する新しい顧客残高トランザクションを作成します。これらのトランザクションレコードは`balanceTransactions`メソッドを使って取得でき、顧客に確認してもらうため入金と引き落としのログを提供するのに便利です。
 
 ```php
-// Retrieve all transactions...
+// 全トランザクションの取得
 $transactions = $user->balanceTransactions();
 
 foreach ($transactions as $transaction) {
-    // Transaction amount...
+    // トランザクション量
     $amount = $transaction->amount(); // $2.31
 
-    // Retrieve the related invoice when available...
+    // 可能であれば、関係するインボイスの取得
     $invoice = $transaction->invoice();
 }
 ```
@@ -586,7 +586,7 @@ use App\Models\User;
 use function Illuminate\Events\queueable;
 
 /**
- * The "booted" method of the model.
+ * モデルの"booted"メソッド
  */
 protected static function booted(): void
 {
@@ -604,7 +604,7 @@ Cashierが提供する様々なメソッドをオーバーライドすること�
 
 ```php
 /**
- * Get the customer name that should be synced to Stripe.
+ * Stripeと動機させるべき顧客名の取得
  */
 public function stripeName(): string|null
 {
@@ -980,10 +980,10 @@ $user->newSubscription('default', 'price_monthly')
 指定するプロモーションコードIDは、プロモーションコードに割り当てたStripe APIのIDであり、顧客向けのプロモーションコードにすべきでありません。もし、指定する顧客向けプロモーションコードに基づいた、プロモーションコードIDを見つける必要がある場合は、`findPromotionCode`メソッドを使用してください。
 
 ```php
-// Find a promotion code ID by its customer facing code...
+// 顧客向けコードからプロモーションコードIDを検索
 $promotionCode = $user->findPromotionCode('SUMMERSALE');
 
-// Find an active promotion code ID by its customer facing code...
+// 顧客向けコードからアクティブなプロモーションコードIDを検索
 $promotionCode = $user->findActivePromotionCode('SUMMERSALE');
 ```
 
@@ -1078,14 +1078,14 @@ use Symfony\Component\HttpFoundation\Response;
 class EnsureUserIsSubscribed
 {
     /**
-     * Handle an incoming request.
+     * 受信リクエストの処理
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
     public function handle(Request $request, Closure $next): Response
     {
         if ($request->user() && ! $request->user()->subscribed('default')) {
-            // This user is not a paying customer...
+            // このユーザーは、課金していない顧客
             return redirect('/billing');
         }
 
@@ -1195,7 +1195,7 @@ if ($user->subscription('default')->hasIncompletePayment()) {
 use Laravel\Cashier\Cashier;
 
 /**
- * Register any application services.
+ * 全アプリケーションサービスの登録
  */
 public function register(): void
 {
@@ -1213,10 +1213,10 @@ public function register(): void
 ほとんどのサブスクリプション状態はクエリスコープとしても利用できるため、特定の状態にあるサブスクリプションはデータベースから簡単にクエリできます。
 
 ```php
-// Get all active subscriptions...
+// アクティブなサブスクリプションをすべて取得
 $subscriptions = Subscription::query()->active()->get();
 
-// Get all of the canceled subscriptions for a user...
+// ユーザーがキャンセルしたサブスクリプションをすべて取得
 $subscriptions = $user->subscriptions()->canceled()->get();
 ```
 
@@ -1293,12 +1293,12 @@ $user = User::find(1);
 
 $user->subscription('default')->incrementQuantity();
 
-// Add five to the subscription's current quantity...
+// サブスクリプションの現在の数量に５を加算
 $user->subscription('default')->incrementQuantity(5);
 
 $user->subscription('default')->decrementQuantity();
 
-// Subtract five from the subscription's current quantity...
+// サブスクリプションの現在の数量から５を減算
 $user->subscription('default')->decrementQuantity(5);
 ```
 
@@ -1461,7 +1461,7 @@ $user = User::find(1);
 
 $subscriptionItem = $user->subscription('default')->items->first();
 
-// Retrieve the Stripe price and quantity for a specific item...
+// 指定したアイテムのStripe価格と数量を取得
 $stripePrice = $subscriptionItem->stripe_price;
 $quantity = $subscriptionItem->quantity;
 ```
@@ -1586,7 +1586,7 @@ $user->meters();
 
 ```php
 /**
- * The tax rates that should apply to the customer's subscriptions.
+ * 顧客のサブスクリプションへ適用する課税レート
  *
  * @return array<int, string>
  */
@@ -1602,7 +1602,7 @@ public function taxRates(): array
 
 ```php
 /**
- * The tax rates that should apply to the customer's subscriptions.
+ * 顧客のサブスクリプションへ適用する課税レート
  *
  * @return array<string, array<int, string>>
  */
@@ -1818,7 +1818,7 @@ Cashierはこのタイプの無料トライアル期間を「一般的な無料�
 
 ```php
 if ($user->onTrial()) {
-    // User is within their trial period...
+    // ユーザーはトライアル期間内
 }
 ```
 
@@ -1842,7 +1842,7 @@ if ($user->onTrial()) {
 
 ```php
 if ($user->onGenericTrial()) {
-    // User is within their "generic" trial period...
+    // ユーザーは一般的な無料トライアル期間内
 }
 ```
 
@@ -1856,12 +1856,12 @@ use App\Models\User;
 
 $subscription = User::find(1)->subscription('default');
 
-// End the trial 7 days from now...
+// 今から７日後にトライアル終了
 $subscription->extendTrial(
     now()->addDays(7)
 );
 
-// Add an additional 5 days to the trial...
+// トライアルに５日間追加
 $subscription->extendTrial(
     $subscription->trial_ends_at->addDays(5)
 );
@@ -1948,12 +1948,12 @@ use Laravel\Cashier\Events\WebhookReceived;
 class StripeEventListener
 {
     /**
-     * Handle received Stripe webhooks.
+     * 受け取ったStripe Webフックの処理
      */
     public function handle(WebhookReceived $event): void
     {
         if ($event->payload['type'] === 'invoice.payment_succeeded') {
-            // Handle the incoming event...
+            // 受信イベントの処理…
         }
     }
 }
@@ -2213,7 +2213,7 @@ return $request->user()->downloadInvoice($invoiceId, [
 return $request->user()->downloadInvoice($invoiceId, [], 'my-invoice');
 
 <a name="custom-invoice-render"></a>
-#### カスタム・インボイス・レンダラ
+#### カスタムインボイスレンダラ
 
 また、Cashierはカスタムインボイスレンダラを使用可能です。デフォルトでCashierは、[dompdf](https://github.com/dompdf/dompdf) PHPライブラリを利用し請求書を生成する、`DompdfInvoiceRenderer`の実装を使用します。しかし、`Laravel\Cashier\Contracts\InvoiceRenderer`インターフェイスを実装することにより、任意のレンダラを使用できます。例えば、サードパーティのPDFレンダリングサービスへのAPIコールを使用し、請求書PDFをレンダリングするとしましょう。
 

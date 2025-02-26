@@ -400,7 +400,7 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap any application services.
+     * 全アプリケーションサービスの初期起動処理
      */
     public function boot(): void
     {
@@ -882,7 +882,7 @@ use Spatie\FlysystemDropbox\DropboxAdapter;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * 全アプリケーションサービスの登録
      */
     public function register(): void
     {
@@ -890,7 +890,7 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * 全アプリケーションサービスの初期起動処理
      */
     public function boot(): void
     {

@@ -187,7 +187,7 @@ use App\Models\User;
 use Illuminate\Auth\Notifications\ResetPassword;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {

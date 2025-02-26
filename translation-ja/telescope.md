@@ -75,7 +75,7 @@ php artisan migrate
 
 ```php
 /**
- * Register any application services.
+ * 全アプリケーションサービスの登録
  */
 public function register(): void
 {
@@ -190,7 +190,7 @@ use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 
 /**
- * Register any application services.
+ * 全アプリケーションサービスの登録
  */
 public function register(): void
 {
@@ -221,7 +221,7 @@ use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 
 /**
- * Register any application services.
+ * 全アプリケーションサービスの登録
  */
 public function register(): void
 {
@@ -253,7 +253,7 @@ use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 
 /**
- * Register any application services.
+ * 全アプリケーションサービスの登録
  */
 public function register(): void
 {
@@ -468,7 +468,7 @@ use App\Models\User;
 use Laravel\Telescope\Telescope;
 
 /**
- * Register any application services.
+ * 全アプリケーションサービスの登録
  */
 public function register(): void
 {

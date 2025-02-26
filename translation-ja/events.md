@@ -120,7 +120,7 @@ use App\Domain\Orders\Listeners\SendPodcastNotification;
 use Illuminate\Support\Facades\Event;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -147,7 +147,7 @@ use App\Events\PodcastProcessed;
 use Illuminate\Support\Facades\Event;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -168,7 +168,7 @@ use function Illuminate\Events\queueable;
 use Illuminate\Support\Facades\Event;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {

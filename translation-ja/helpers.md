@@ -1593,7 +1593,7 @@ $number = Number::trim(12.30);
 use Illuminate\Support\Number;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -1623,7 +1623,7 @@ $number = Number::withLocale('de', function () {
 use Illuminate\Support\Number;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {

@@ -366,7 +366,7 @@ use Illuminate\Support\ServiceProvider;
 class SessionServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * 全アプリケーションサービスの登録
      */
     public function register(): void
     {
@@ -374,7 +374,7 @@ class SessionServiceProvider extends ServiceProvider
     }
 
     /**
-     * Bootstrap any application services.
+     * 全アプリケーションサービスの初期起動処理
      */
     public function boot(): void
     {

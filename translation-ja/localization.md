@@ -96,7 +96,7 @@ Laravelの「複数形化機能（Pluralizer）」は、Eloquentやフレーム�
 use Illuminate\Support\Pluralizer;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -216,7 +216,7 @@ use Illuminate\Support\Facades\Lang;
 use Money\Money;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
