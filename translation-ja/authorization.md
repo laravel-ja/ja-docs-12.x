@@ -52,7 +52,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Gate;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -69,7 +69,7 @@ use App\Policies\PostPolicy;
 use Illuminate\Support\Facades\Gate;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -96,7 +96,7 @@ use Illuminate\Support\Facades\Gate;
 class PostController extends Controller
 {
     /**
-     * Update the given post.
+     * 指定ポストの更新
      */
     public function update(Request $request, Post $post): RedirectResponse
     {
@@ -104,7 +104,7 @@ class PostController extends Controller
             abort(403);
         }
 
-        // Update the post...
+        // ポストの更新処理…
 
         return redirect('/posts');
     }
@@ -115,11 +115,11 @@ class PostController extends Controller
 
 ```php
 if (Gate::forUser($user)->allows('update-post', $post)) {
-    // The user can update the post...
+    // ユーザーはポストを更新できる
 }
 
 if (Gate::forUser($user)->denies('update-post', $post)) {
-    // The user can't update the post...
+    // ユーザーはポストを更新できない
 }
 ```
 
@@ -127,11 +127,11 @@ if (Gate::forUser($user)->denies('update-post', $post)) {
 
 ```php
 if (Gate::any(['update-post', 'delete-post'], $post)) {
-    // The user can update or delete the post...
+    // ユーザーはポストを更新及び削除できる
 }
 
 if (Gate::none(['update-post', 'delete-post'], $post)) {
-    // The user can't update or delete the post...
+    // ユーザーはポストを更新及び削除できない
 }
 ```
 
@@ -143,7 +143,7 @@ if (Gate::none(['update-post', 'delete-post'], $post)) {
 ```php
 Gate::authorize('update-post', $post);
 
-// The action is authorized...
+// アクションは認可された
 ```
 
 <a name="gates-supplying-additional-context"></a>
@@ -167,7 +167,7 @@ Gate::define('create-post', function (User $user, Category $category, bool $pinn
 });
 
 if (Gate::check('create-post', [$category, $pinned])) {
-    // The user can create the post...
+    // ユーザーはポストを作成できる
 }
 ```
 
@@ -205,7 +205,7 @@ if ($response->allowed()) {
 ```php
 Gate::authorize('edit-settings');
 
-// The action is authorized...
+// アクションは認可されている
 ```
 
 <a name="customizing-gate-response-status"></a>
@@ -321,7 +321,7 @@ php artisan make:policy PostPolicy --model=Post
 use Illuminate\Support\Facades\Gate;
 
 Gate::guessPolicyNamesUsing(function (string $modelClass) {
-    // Return the name of the policy class for the given model...
+    // 指定モデルのポリシークラス名を返す…
 });
 ```
 
@@ -336,7 +336,7 @@ use App\Policies\OrderPolicy;
 use Illuminate\Support\Facades\Gate;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -392,7 +392,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 /**
- * Determine if the given post can be updated by the user.
+ * 指定ポストがユーザーにより更新可能か判断
  */
 public function update(User $user, Post $post): Response
 {
@@ -421,7 +421,7 @@ if ($response->allowed()) {
 ```php
 Gate::authorize('update', $post);
 
-// The action is authorized...
+// アクションは認可されている
 ```
 
 <a name="customizing-policy-response-status"></a>
@@ -435,7 +435,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 /**
- * Determine if the given post can be updated by the user.
+ * 指定ポストがユーザーにより更新可能か判断
  */
 public function update(User $user, Post $post): Response
 {
@@ -453,7 +453,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\Response;
 
 /**
- * Determine if the given post can be updated by the user.
+ * 指定ポストがユーザーにより更新可能か判断
  */
 public function update(User $user, Post $post): Response
 {
@@ -470,7 +470,7 @@ public function update(User $user, Post $post): Response
 
 ```php
 /**
- * Determine if the given user can create posts.
+ * 指定ユーザーがポストを作成可能か判断
  */
 public function create(User $user): bool
 {
@@ -512,7 +512,7 @@ class PostPolicy
 use App\Models\User;
 
 /**
- * Perform pre-authorization checks.
+ * 事前認可チェックの実行
  */
 public function before(User $user, string $ability): bool|null
 {
@@ -550,7 +550,7 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     /**
-     * Update the given post.
+     * 指定ポストの更新
      */
     public function update(Request $request, Post $post): RedirectResponse
     {
@@ -558,7 +558,7 @@ class PostController extends Controller
             abort(403);
         }
 
-        // Update the post...
+        // ポストの更新処理…
 
         return redirect('/posts');
     }
@@ -585,7 +585,7 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     /**
-     * Create a post.
+     * ポスト作成
      */
     public function store(Request $request): RedirectResponse
     {
@@ -593,7 +593,7 @@ class PostController extends Controller
             abort(403);
         }
 
-        // Create the post...
+        // ポストの作成処理…
 
         return redirect('/posts');
     }
@@ -648,7 +648,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 /**
- * Create a new blog post.
+ * 新規ブログポストの作成
  *
  * @throws \Illuminate\Auth\Access\AuthorizationException
  */
@@ -656,7 +656,7 @@ public function create(Request $request): RedirectResponse
 {
     Gate::authorize('create', Post::class);
 
-    // The current user can create blog posts...
+    // 現在のユーザーはブログポストを作成できる
 
     return redirect('/posts');
 }
@@ -671,7 +671,7 @@ Laravelは、リクエストがルートやコントローラに到達する前�
 use App\Models\Post;
 
 Route::put('/post/{post}', function (Post $post) {
-    // The current user may update the post...
+    // 現在のユーザーはポストの更新処理が可能
 })->middleware('can:update,post');
 ```
 
@@ -683,7 +683,7 @@ Route::put('/post/{post}', function (Post $post) {
 use App\Models\Post;
 
 Route::put('/post/{post}', function (Post $post) {
-    // The current user may update the post...
+    // 現在のユーザーはポストの更新処理が可能
 })->can('update', 'post');
 ```
 
@@ -694,7 +694,7 @@ Route::put('/post/{post}', function (Post $post) {
 
 ```php
 Route::post('/post', function () {
-    // The current user may create posts...
+    // 現在のユーザーはポストを作成可能
 })->middleware('can:create,App\Models\Post');
 ```
 
@@ -704,7 +704,7 @@ Route::post('/post', function () {
 use App\Models\Post;
 
 Route::post('/post', function () {
-    // The current user may create posts...
+    // 現在のユーザーはポストを作成可能
 })->can('create', Post::class);
 ```
 
@@ -773,7 +773,7 @@ Bladeテンプレートを作成するとき、ユーザーが特定のアクシ
 
 ```php
 /**
- * Determine if the given post can be updated by the user.
+ * 指定ポストがユーザーにより更新可能か判断
  */
 public function update(User $user, Post $post, int $category): bool
 {
@@ -786,7 +786,7 @@ public function update(User $user, Post $post, int $category): bool
 
 ```php
 /**
- * Update the given blog post.
+ * 指定ブログポストの更新
  *
  * @throws \Illuminate\Auth\Access\AuthorizationException
  */
@@ -794,7 +794,7 @@ public function update(Request $request, Post $post): RedirectResponse
 {
     Gate::authorize('update', [$post, $request->category]);
 
-    // The current user can update the blog post...
+    // 現在のユーザーはブログポストを更新可能
 
     return redirect('/posts');
 }

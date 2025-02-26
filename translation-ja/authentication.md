@@ -48,7 +48,7 @@ Laravelの認証機能は、基本的に「ガード」と「プロバイダ」�
 
 さっそく始めたいですか？新しいLaravelアプリケーションに[Laravelアプリケーションスターターキット](/docs/{{version}}/starter-kits)をインストールしてください。データベースをマイグレーションした後に、ブラウザで`/register`やアプリケーションに割り当てた他のURLへアクセスしてください。スターターキットは、認証システム全体のスカフォールドの面倒を見ます。
 
-**Even if you choose not to use a starter kit in your final Laravel application, installing a [starter kit](/docs/{{version}}/starter-kits) can be a wonderful opportunity to learn how to implement all of Laravel's authentication functionality in an actual Laravel project.** Since the Laravel starter kits contain authentication controllers, routes, and views for you, you can examine the code within these files to learn how Laravel's authentication features may be implemented.
+**最終的なLaravelアプリケーションでスターターキットを使用しないことを選択する場合でも、[スターターキット](/docs/{{version}}/starter-kits)をインストールすることは、実際のLaravelプロジェクトでLaravelのすべての認証機能を実装する方法を学ぶ素晴らしい機会になります。**Laravelスターターキットには認証コントローラ、ルート、およびビューが含まれているため、これらのファイル内のコードを調べて、Laravelの認証機能をどのように実装するかを学べます。
 
 <a name="introduction-database-considerations"></a>
 ### データベースの検討
@@ -77,7 +77,7 @@ Laravelは、通常`Auth`もしくは`Session`ファサードを介してアク�
 
 **アプリケーションスターターキット**
 
-As discussed in this documentation, you can interact with these authentication services manually to build your application's own authentication layer. However, to help you get started more quickly, we have released [free starter kits](/docs/{{version}}/starter-kits) that provide robust, modern scaffolding of the entire authentication layer.
+このドキュメントで説明するように、こうした認証サービスを手作業で操作し、アプリケーション独自の認証レイヤーを構築することもできます。しかし、より手早く始められるように、私たちは [無料のスターターキット](/docs/{{version}}/starter-kits)を公開しています。
 
 <a name="laravels-api-authentication-services"></a>
 #### Laravel API認証サービス
@@ -105,7 +105,7 @@ Laravelをバックエンドで利用するシングルページアプリケー�
 
 パスポートは、アプリケーションがOAuth2仕様によって提供されるすべての機能を絶対に必要とする場合に選択できます。
 
-And, if you would like to get started quickly, we are pleased to recommend [our application starter kits](/docs/{{version}}/starter-kits) as a quick way to start a new Laravel application that already uses our preferred authentication stack of Laravel's built-in authentication services.
+また、すぐに始めたい場合は、[アプリケーションスターターキット](/docs/{{version}}/starter-kits)をお勧めします。これは、Laravelの私達が使用しているお好みの組み込み認証サービススタックを新しいLaravelアプリケーションですばやく開始する方法です。
 
 <a name="authentication-quickstart"></a>
 ## 認証クイックスタート
@@ -116,20 +116,20 @@ And, if you would like to get started quickly, we are pleased to recommend [our 
 <a name="install-a-starter-kit"></a>
 ### スターターキットのインストール
 
-First, you should [install a Laravel application starter kit](/docs/{{version}}/starter-kits). Our starter kits offer beautifully designed starting points for incorporating authentication into your fresh Laravel application.
+まず、[Laravelアプリケーションスターターキットをインストール](/docs/{{version}}/starter-kits)する必要があります。私たちのスターターキットは、新しいLaravelアプリケーションに認証を組み込むための美しいデザインの出発点を提供します。
 
 <a name="retrieving-the-authenticated-user"></a>
 ### 認証済みユーザー取得
 
-After creating an application from a starter kit and allowing users to register and authenticate with your application, you will often need to interact with the currently authenticated user. While handling an incoming request, you may access the authenticated user via the `Auth` facade's `user` method:
+スターターキットからアプリケーションを作成し、ユーザーがアプリケーションに登録して認証できるようにした後、多くの場合、現在認証済みのユーザーを操作する必要があります。受信リクエストを処理している間、`Auth`ファサードの`user`メソッドを介して認証されたユーザーにアクセスできます。
 
 ```php
 use Illuminate\Support\Facades\Auth;
 
-// Retrieve the currently authenticated user...
+// 現在認証済みのユーザーを取得
 $user = Auth::user();
 
-// Retrieve the currently authenticated user's ID...
+// 現在認証済みのユーザーのidを取得
 $id = Auth::id();
 ```
 
@@ -146,7 +146,7 @@ use Illuminate\Http\Request;
 class FlightController extends Controller
 {
     /**
-     * Update the flight information for an existing flight.
+     * 存在しているフライトの情報を更新
      */
     public function update(Request $request): RedirectResponse
     {
@@ -182,7 +182,7 @@ if (Auth::check()) {
 
 ```php
 Route::get('/flights', function () {
-    // Only authenticated users may access this route...
+    // このルートは、認証済みユーザーのみアクセス可能
 })->middleware('auth');
 ```
 
@@ -197,7 +197,7 @@ use Illuminate\Http\Request;
 ->withMiddleware(function (Middleware $middleware) {
     $middleware->redirectGuestsTo('/login');
 
-    // Using a closure...
+    // クロージャを使用
     $middleware->redirectGuestsTo(fn (Request $request) => route('login'));
 })
 ```
@@ -209,14 +209,14 @@ use Illuminate\Http\Request;
 
 ```php
 Route::get('/flights', function () {
-    // Only authenticated users may access this route...
+    // 認証済みユーザーのみこのルートにアクセス可能
 })->middleware('auth:admin');
 ```
 
 <a name="login-throttling"></a>
 ### ログイン回数制限
 
-If you are using one of our [application starter kits](/docs/{{version}}/starter-kits), rate limiting will automatically be applied to login attempts. By default, the user will not be able to login for one minute if they fail to provide the correct credentials after several attempts. The throttling is unique to the user's username / email address and their IP address.
+[アプリケーションスターターキット](/docs/{{version}}/starter-kits)のうちのどれかを使用している場合は、ログイン試行に対して自動的にレート制限が適用されます。デフォルトでは、ユーザーが数回試行した後に正しい資格情報を提供できなかった場合、１分間ログインできません。回数制限は、ユーザーのユーザー名/電子メールアドレス、IPアドレスで一意とします。
 
 > [!NOTE]
 > アプリケーション内の他のルートのレート制限を希望する場合は、[レート制限のドキュメント](/docs/{{version}}/routing#rate-limiting)を確認してください。
@@ -240,7 +240,7 @@ use Illuminate\Support\Facades\Auth;
 class LoginController extends Controller
 {
     /**
-     * Handle an authentication attempt.
+     * 認証の試みを処理
      */
     public function authenticate(Request $request): RedirectResponse
     {
@@ -277,7 +277,7 @@ Laravelのリダイレクタが提供する`intended`メソッドは、認証ミ
 
 ```php
 if (Auth::attempt(['email' => $email, 'password' => $password, 'active' => 1])) {
-    // Authentication was successful...
+    // 認証成功
 }
 ```
 
@@ -291,7 +291,7 @@ if (Auth::attempt([
     'password' => $password,
     fn (Builder $query) => $query->has('activeSubscription'),
 ])) {
-    // Authentication was successful...
+    // 認証成功
 }
 ```
 
@@ -307,7 +307,7 @@ if (Auth::attemptWhen([
 ], function (User $user) {
     return $user->isNotBanned();
 })) {
-    // Authentication was successful...
+    // 認証成功
 }
 ```
 
@@ -335,7 +335,7 @@ if (Auth::guard('admin')->attempt($credentials)) {
 use Illuminate\Support\Facades\Auth;
 
 if (Auth::attempt(['email' => $email, 'password' => $password], $remember)) {
-    // The user is being remembered...
+    // このユーザーは覚えられた
 }
 ```
 
@@ -408,7 +408,7 @@ if (Auth::once($credentials)) {
 
 ```php
 Route::get('/profile', function () {
-    // Only authenticated users may access this route...
+    // 認証済みユーザーのみこのルートにアクセス可能
 })->middleware('auth.basic');
 ```
 
@@ -442,7 +442,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AuthenticateOnceWithBasicAuth
 {
     /**
-     * Handle an incoming request.
+     * 受信リクエストの処理
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
@@ -454,11 +454,11 @@ class AuthenticateOnceWithBasicAuth
 }
 ```
 
-Next, attach the middleware to a route:
+次に、ルートへミドルウエアを指定します。
 
 ```php
 Route::get('/api/user', function () {
-    // Only authenticated users may access this route...
+    // 認証済みユーザーのみこのルートにアクセス可能
 })->middleware(AuthenticateOnceWithBasicAuth::class);
 ```
 
@@ -475,7 +475,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Log the user out of the application.
+ * アプリケーションからユーザーをログアウト
  */
 public function logout(Request $request): RedirectResponse
 {
@@ -640,7 +640,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Bootstrap any application services.
+ * 全アプリケーションサービスの初期起動処理
  */
 public function boot(): void
 {
@@ -693,7 +693,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Auth::provider('mongo', function (Application $app, array $config) {
-            // Return an instance of Illuminate\Contracts\Auth\UserProvider...
+            // Illuminate\Contracts\Auth\UserProviderインスタンスを返す
 
             return new MongoUserProvider($app->make('mongo.connection'));
         });

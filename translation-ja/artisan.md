@@ -145,14 +145,14 @@ class SendEmails extends Command
     protected $signature = 'mail:send {user}';
 
     /**
-     * The console command description.
+     * コンソールコマンドの説明
      *
      * @var string
      */
     protected $description = 'Send a marketing email to a user';
 
     /**
-     * consoleコマンドの実行
+     * コンソールコマンドの実行
      */
     public function handle(DripEmailer $drip): void
     {
@@ -300,7 +300,7 @@ public function isolationLockExpiresAt(): DateTimeInterface|DateInterval
 
 ```php
 /**
- * The name and signature of the console command.
+ * コンソールコマンドの名前と使用法
  *
  * @var string
  */
@@ -310,10 +310,10 @@ protected $signature = 'mail:send {user}';
 引数をオプションにしたり、引数のデフォルト値を定義したりもできます。
 
 ```php
-// Optional argument...
+// オブションの引数
 'mail:send {user?}'
 
-// Optional argument with default value...
+// デフォル値のあるオプションの引数
 'mail:send {user=foo}'
 ```
 
@@ -324,7 +324,7 @@ protected $signature = 'mail:send {user}';
 
 ```php
 /**
- * The name and signature of the console command.
+ * コンソールコマンドの名前と使用法
  *
  * @var string
  */
@@ -344,7 +344,7 @@ php artisan mail:send 1 --queue
 
 ```php
 /**
- * The name and signature of the console command.
+ * コンソールコマンドの名前と使用法
  *
  * @var string
  */
@@ -421,7 +421,7 @@ php artisan mail:send --id=1 --id=2
 
 ```php
 /**
- * The name and signature of the console command.
+ * コンソールコマンドの名前と使用法
  *
  * @var string
  */
@@ -460,7 +460,7 @@ Laravelが必要な引数をユーザーから収集する必要がある場合�
 
 ```php
 /**
- * Prompt for missing input arguments using the returned questions.
+ * 引数が不足していたときの質問を返す
  *
  * @return array<string, string>
  */
@@ -512,7 +512,7 @@ use function Laravel\Prompts\confirm;
 // ...
 
 /**
- * Perform actions after the user was prompted for missing arguments.
+ * 不足していた引数をユーザーへ促した後に実行するアクション
  */
 protected function afterPromptingForMissingArguments(InputInterface $input, OutputInterface $output): void
 {
@@ -533,7 +533,7 @@ protected function afterPromptingForMissingArguments(InputInterface $input, Outp
 
 ```php
 /**
- * Execute the console command.
+ * コンソールコマンドの実行
  */
 public function handle(): void
 {
@@ -550,10 +550,10 @@ $arguments = $this->arguments();
 オプションは、`option`メソッドを使用して引数と同じように簡単に取得できます。すべてのオプションを配列として取得するには、`options`メソッドを呼び出します。
 
 ```php
-// Retrieve a specific option...
+// 特定のオプションを取得
 $queueName = $this->option('queue');
 
-// Retrieve all options as an array...
+// 全オプションを配列で取得
 $options = $this->options();
 ```
 
@@ -567,7 +567,7 @@ $options = $this->options();
 
 ```php
 /**
- * Execute the console command.
+ * コンソールコマンドの実行
  */
 public function handle(): void
 {
@@ -621,7 +621,7 @@ $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
 
 ```php
 $name = $this->anticipate('What is your address?', function (string $input) {
-    // Return auto-completion options...
+    // 自動補完オプションを返す
 });
 ```
 
@@ -657,7 +657,7 @@ $name = $this->choice(
 
 ```php
 /**
- * Execute the console command.
+ * コンソールコマンドの実行
  */
 public function handle(): void
 {
@@ -682,10 +682,10 @@ $this->line('Display this on the screen');
 `newLine`メソッドを使用して空白行を表示できます。
 
 ```php
-// Write a single blank line...
+// １行空白行を書き出す
 $this->newLine();
 
-// Write three blank lines...
+// ３行空白行を書き出す
 $this->newLine(3);
 ```
 
@@ -842,7 +842,7 @@ Artisanコマンドから他のコマンドを呼び出したい場合があり�
 
 ```php
 /**
- * Execute the console command.
+ * コンソールコマンドの実行
  */
 public function handle(): void
 {
@@ -869,7 +869,7 @@ $this->callSilently('mail:send', [
 
 ```php
 /**
- * Execute the console command.
+ * コンソールコマンドの実行
  */
 public function handle(): void
 {
