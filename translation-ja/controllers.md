@@ -46,7 +46,7 @@ use Illuminate\View\View;
 class UserController extends Controller
 {
     /**
-     * Show the profile for a given user.
+     * 指定ユーザーのプロファイル表示
      */
     public function show(string $id): View
     {
@@ -83,7 +83,7 @@ namespace App\Http\Controllers;
 class ProvisionServer extends Controller
 {
     /**
-     * Provision a new web server.
+     * 新しいWebサーバのプロビジョン
      */
     public function __invoke()
     {
@@ -154,7 +154,7 @@ use Closure;
 use Illuminate\Http\Request;
 
 /**
- * Get the middleware that should be assigned to the controller.
+ * コントローラへ指定すべきミドルウエア取得
  */
 public static function middleware(): array
 {
@@ -561,7 +561,7 @@ use App\Repositories\UserRepository;
 class UserController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * 新しいコントローラインスタンスの生成
      */
     public function __construct(
         protected UserRepository $users,
@@ -585,13 +585,13 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /**
-     * Store a new user.
+     * 新規ユーザー保存
      */
     public function store(Request $request): RedirectResponse
     {
         $name = $request->name;
 
-        // Store the user...
+        // ユーザーの保存…　
 
         return redirect('/users');
     }
@@ -619,11 +619,11 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /**
-     * Update the given user.
+     * 指定ユーザーの更新
      */
     public function update(Request $request, string $id): RedirectResponse
     {
-        // Update the user...
+        // ユーザーの更新…
 
         return redirect('/users');
     }

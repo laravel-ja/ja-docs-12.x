@@ -1732,7 +1732,7 @@ $multiplied->all();
 class Currency
 {
     /**
-     * Create a new currency instance.
+     * 新しい通貨インスタンスを生成
      */
     function __construct(
         public string $code,
@@ -2120,7 +2120,7 @@ $piped = $collection->pipe(function (Collection $collection) {
 class ResourceCollection
 {
     /**
-     * Create a new ResourceCollection instance.
+     * 新しいResourceCollectionインスタンスの生成
      */
     public function __construct(
         public Collection $collection,
@@ -3997,7 +3997,7 @@ LazyCollection::make(function () {
 })->chunk(4)->map(function (array $lines) {
     return LogEntry::fromLines($lines);
 })->each(function (LogEntry $logEntry) {
-    // Process the log entry...
+    // ログエントリを処理する…
 });
 ```
 
@@ -4225,12 +4225,12 @@ Invoice::pending()->cursor()
 `each`メソッドはコレクション中の各アイテムに対し、指定したコールバックを即時に呼び出しますが、`tapEach`メソッドはリストから一つずつアイテムを抜き出し、指定したコールバックを呼び出します。
 
 ```php
-// Nothing has been dumped so far...
+// ここまで何もダンプされていない
 $lazyCollection = LazyCollection::times(INF)->tapEach(function (int $value) {
     dump($value);
 });
 
-// Three items are dumped...
+// ３アイテムダンブ
 $array = $lazyCollection->take(3)->all();
 
 // 1
@@ -4250,7 +4250,7 @@ User::where('vip', true)
     ->cursor()
     ->throttle(seconds: 1)
     ->each(function (User $user) {
-        // Call external API...
+        // 外部APIの呼び出し…
     });
 ```
 
@@ -4260,14 +4260,14 @@ User::where('vip', true)
 `remember`メソッドは、すでに列挙されている値を記憶し、後続のコレクション列挙でそれらを再度取得しない新しいレイジーコレクションを返します。
 
 ```php
-// No query has been executed yet...
+// クエリはまだ実行されていない
 $users = User::cursor()->remember();
 
-// The query is executed...
-// The first 5 users are hydrated from the database...
+// クエリが実行された
+// 最初の５ユーザーがデータベースからハイドレイトされる
 $users->take(5)->all();
 
-// First 5 users come from the collection's cache...
-// The rest are hydrated from the database...
+// 最初の５ユーザーはコレクションのキャッシュから取得
+// 残りはデータベースからハイドレイトされる
 $users->take(20)->all();
 ```

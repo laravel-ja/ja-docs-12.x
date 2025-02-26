@@ -118,11 +118,11 @@ $environment = App::environment();
 
 ```php
 if (App::environment('local')) {
-    // The environment is local
+    // 環境はlocal
 }
 
 if (App::environment(['local', 'staging'])) {
-    // The environment is either local OR staging...
+    // 環境はlocalかstagingのどちらか
 }
 ```
 
@@ -205,7 +205,7 @@ $value = Config::get('app.timezone');
 
 $value = config('app.timezone');
 
-// Retrieve a default value if the configuration value does not exist...
+// 設定値が存在しない場合はデフォルト値が取得される
 $value = config('app.timezone', 'Asia/Seoul');
 ```
 
@@ -322,7 +322,7 @@ php artisan down --with-secret
 
 Laravelはデフォルトで、ファイルベースのシステムを使ってアプリケーションがメンテナンスモードかを判断します。つまり、メンテナンスモードを有効にするには、アプリケーションをホストしている各サーバ上で`php artisan down`コマンドを実行する必要があります。
 
-Alternatively, Laravel offers a cache-based method for handling maintenance mode. This method requires running the `php artisan down` command on just one server. To use this approach, modify the "driver" setting in the `config/app.php` file of your application to `cache`. Then, select a cache `store` that is accessible by all your servers. This ensures the maintenance mode status is consistently maintained across every server:
+もしくは、Laravelはメンテナンスモードをキャッシュベースで処理する方法を提供しています。この方法では、ただ１つのサーバ上で`php artisan down`コマンドを実行するだけです。この方法を使用するには、アプリケーションの`config/app.php`ファイルの"driver"設定を`cache`へ変更してください。それから、すべてのサーバからアクセス可能なキャッシュ`store`を選択する。これにより、メンテナンスモードの状態がすべてのサーバで一貫して維持されるようになります。
 
 ```php
 'maintenance' => [
@@ -371,4 +371,4 @@ php artisan up
 <a name="alternatives-to-maintenance-mode"></a>
 #### メンテナンスモードの代替
 
-Since maintenance mode requires your application to have several seconds of downtime, consider running your applications on a fully-managed platform like [Laravel Cloud](https://cloud.laravel.com) to accomplish zero-downtime deployment with Laravel.
+メンテナンスモードには、アプリケーションに数秒のダウンタイムが必要なため、Laravelでゼロダウンタイムのデプロイを達成するためには、[Laravel Cloud](https://cloud.laravel.com)のようなフルマネージドプラットフォーム上でアプリケーションを実行することを検討してください。

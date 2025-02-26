@@ -50,14 +50,14 @@ use Illuminate\Contracts\Redis\Factory;
 class CacheOrderInformation
 {
     /**
-     * Create a new event handler instance.
+     * 新しいイベントハンドラインスタンス生成
      */
     public function __construct(
         protected Factory $redis,
     ) {}
 
     /**
-     * Handle the event.
+     * イベントの処理
      */
     public function handle(OrderWasPlaced $event): void
     {

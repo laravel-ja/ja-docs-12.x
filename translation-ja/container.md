@@ -38,14 +38,14 @@ use Illuminate\View\View;
 class PodcastController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * 新しいコントローラインスタンスの生成
      */
     public function __construct(
         protected AppleMusic $apple,
     ) {}
 
     /**
-     * Show information about the given podcast.
+     * 指定ポッドキャストの情報を表示
      */
     public function show(string $id): View
     {
@@ -144,7 +144,7 @@ $this->app->bindIf(Transistor::class, function (Application $app) {
 });
 ```
 
-For convenience, you may omit providing the class or interface name that you wish to register as a separate argument and instead allow Laravel to infer the type from the return type of the closure you provide to the `bind` method:
+使いやすいように、登録したいクラス名やインターフェイス名を別の引数として与えるのを省略し、代わりに`bind`メソッドの引数のクロージャの戻り値の型から、Laravelに型を推測させることもできます。
 
 ```php
 App::bind(function (Application $app): Transistor {
@@ -233,7 +233,7 @@ $this->app->bind(EventPusher::class, RedisEventPusher::class);
 use App\Contracts\EventPusher;
 
 /**
- * Create a new class instance.
+ * 新しいクラスインスタンスの生成
  */
 public function __construct(
     protected EventPusher $pusher,
@@ -418,7 +418,7 @@ use App\Services\Logger;
 class Firewall
 {
     /**
-     * The filter instances.
+     * フィルターインスタンス
      *
      * @var array
      */
@@ -450,7 +450,7 @@ $this->app->when(Firewall::class)
     });
 ```
 
-利便性のため、いつでも`Firewall`が`Filter`インスタンスを必要とするときは、コンテナが解決するクラス名の配列も渡せます。
+使いやすくするため、いつでも`Firewall`が`Filter`インスタンスを必要とするときは、コンテナが解決するクラス名の配列も渡せます。
 
 ```php
 $this->app->when(Firewall::class)
@@ -556,7 +556,7 @@ Laravelコンテナインスタンス自体をコンテナにより解決中の�
 use Illuminate\Container\Container;
 
 /**
- * Create a new class instance.
+ * 新しいクラスインスタンスの生成
  */
 public function __construct(
     protected Container $container,
@@ -580,14 +580,14 @@ use App\Services\AppleMusic;
 class PodcastController extends Controller
 {
     /**
-     * Create a new controller instance.
+     * 新しいコントローラインスタンスの生成
      */
     public function __construct(
         protected AppleMusic $apple,
     ) {}
 
     /**
-     * Show information about the given podcast.
+     * 指定ポッドキャストの情報を表示
      */
     public function show(string $id): Podcast
     {
@@ -611,7 +611,7 @@ use App\Services\AppleMusic;
 class PodcastStats
 {
     /**
-     * Generate a new podcast stats report.
+     * 新しいポッドキャスト状態レポートの生成
      */
     public function generate(AppleMusic $apple): array
     {
@@ -652,11 +652,11 @@ use App\Services\Transistor;
 use Illuminate\Contracts\Foundation\Application;
 
 $this->app->resolving(Transistor::class, function (Transistor $transistor, Application $app) {
-    // Called when container resolves objects of type "Transistor"...
+    // コンテナが"Transistor"型のオブジェクトを解決するときに呼び出される
 });
 
 $this->app->resolving(function (mixed $object, Application $app) {
-    // Called when container resolves object of any type...
+    // どんな型のオブジェクトを解決するときにも呼び出される
 });
 ```
 
@@ -682,7 +682,7 @@ $this->app->rebinding(
     },
 );
 
-// New binding will trigger rebinding closure...
+// 新しい結合が再インデックスクロージャを起動する
 $this->app->bind(PodcastPublisher::class, TransistorPublisher::class);
 ```
 
