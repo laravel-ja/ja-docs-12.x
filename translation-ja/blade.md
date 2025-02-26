@@ -658,7 +658,7 @@ Bladeの`@include`ディレクティブを使用すると、別のビュー内�
 また、Bladeでは、ビューにコメントを定義することができます。ただし、HTMLのコメントとは異なり、Bladeのコメントは、アプリケーションが返すHTMLには含まれません。
 
 ```blade
-{{-- このコメントはHTMLのなかに存在しない --}}
+{{-- このコメントはHTMLの中に存在しない --}}
 ```
 
 <a name="components"></a>
@@ -701,7 +701,7 @@ php artisan make:component forms.input --view
 use Illuminate\Support\Facades\Blade;
 
 /**
- * Bootstrap your package's services.
+ * 自パッケージの初期起動処理
  */
 public function boot(): void
 {
@@ -721,7 +721,7 @@ public function boot(): void
 use Illuminate\Support\Facades\Blade;
 
 /**
- * Bootstrap your package's services.
+ * 自パッケージの初期起動処理
  */
 public function boot(): void
 {
@@ -761,7 +761,7 @@ Bladeは、コンポーネント名のパスカルケースを使い、コンポ
 use Illuminate\Support\Str;
 
 /**
- * Whether the component should be rendered
+ * コンポーネントをレンダするか
  */
 public function shouldRender(): bool
 {
@@ -819,7 +819,7 @@ class Alert extends Component
     ) {}
 
     /**
-     * コンポーネントを表すビュー／コンテンツを取得
+     * コンポーネントを表すビュー／コンテンツ取得
      */
     public function render(): View
     {
@@ -843,7 +843,7 @@ class Alert extends Component
 
 ```php
 /**
- * Create the component instance.
+ * コンポーネントインスタンスの生成
  */
 public function __construct(
     public string $alertType,
@@ -895,7 +895,7 @@ Bladeにより、以下のHTMLとしてレンダされます。
 
 ```php
 /**
- * Determine if the given option is the currently selected option.
+ * 指定オプションが現在選択されているか判定
  */
 public function isSelected(string $option): bool
 {
@@ -920,7 +920,7 @@ Bladeコンポーネントを使用すると、クラスのrenderメソッド内
 use Closure;
 
 /**
- * Get the view / contents that represent the component.
+ * コンポーネントを表すビュー／コンテンツ取得
  */
 public function render(): Closure
 {
@@ -958,7 +958,7 @@ return function (array $data) {
 use App\Services\AlertCreator;
 
 /**
- * Create the component instance.
+ * コンポーネントインスタンスの生成
  */
 public function __construct(
     public AlertCreator $creator,
@@ -982,7 +982,7 @@ use Illuminate\View\Component;
 class Alert extends Component
 {
     /**
-     * The properties / methods that should not be exposed to the component template.
+     * コンポーネントテンプレートへ公開すべきでないプロパティ／メソッド
      *
      * @var array
      */
@@ -1010,7 +1010,7 @@ class Alert extends Component
 
 ```blade
 <div {{ $attributes }}>
-    <!-- Component content -->
+    <!-- コンポーネントコメント -->
 </div>
 ```
 
@@ -1302,7 +1302,7 @@ VueのようなJavaScriptフレームワークを使用している方は「ス�
 
 ```php
 /**
- * Get the view / contents that represent the component.
+ * コンポーネントを表すビュー／コンテンツ取得
  */
 public function render(): string
 {
@@ -1349,7 +1349,7 @@ use Illuminate\Support\Facades\Blade;
 use VendorPackage\View\Components\AlertComponent;
 
 /**
- * Bootstrap your package's services.
+ * 自パッケージの初期起動処理
  */
 public function boot(): void
 {
@@ -1371,7 +1371,7 @@ public function boot(): void
 use Illuminate\Support\Facades\Blade;
 
 /**
- * Bootstrap your package's services.
+ * 自パッケージの初期起動処理
  */
 public function boot(): void
 {

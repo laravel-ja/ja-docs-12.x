@@ -232,7 +232,7 @@ class OrderShipped
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * Create a new event instance.
+     * 新しいイベントインスタンスの生成
      */
     public function __construct(
         public Order $order,
@@ -643,7 +643,7 @@ class OrderShipped implements ShouldDispatchAfterCommit
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     /**
-     * Create a new event instance.
+     * 新しいイベントインスタンスの生成
      */
     public function __construct(
         public Order $order,

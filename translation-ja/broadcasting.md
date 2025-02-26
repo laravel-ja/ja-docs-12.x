@@ -362,7 +362,7 @@ use Illuminate\Queue\SerializesModels;
 class OrderShipmentStatusUpdated implements ShouldBroadcast
 {
     /**
-     * The order instance.
+     * 注文インスタンス
      *
      * @var \App\Models\Order
      */
@@ -377,7 +377,7 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PrivateChannel;
 
 /**
- * Get the channel the event should broadcast on.
+ * イベントをブロードキャストするべきチャンネルを取得
  */
 public function broadcastOn(): Channel
 {
@@ -391,7 +391,7 @@ public function broadcastOn(): Channel
 use Illuminate\Broadcasting\PrivateChannel;
 
 /**
- * Get the channels the event should broadcast on.
+ * イベントをブロードキャストするべきチャンネルを複数取得
  *
  * @return array<int, \Illuminate\Broadcasting\Channel>
  */
@@ -459,7 +459,7 @@ class ServerCreated implements ShouldBroadcast
     use SerializesModels;
 
     /**
-     * Create a new event instance.
+     * 新しいイベントインスタンスの生成
      */
     public function __construct(
         public User $user,
@@ -488,7 +488,7 @@ class ServerCreated implements ShouldBroadcast
 
 ```php
 /**
- * The event's broadcast name.
+ * イベントのブロードキャスト名
  */
 public function broadcastAs(): string
 {
@@ -523,7 +523,7 @@ public function broadcastAs(): string
 
 ```php
 /**
- * Get the data to broadcast.
+ * ブロードキャストするデータの取得
  *
  * @return array<string, mixed>
  */
@@ -540,14 +540,14 @@ public function broadcastWith(): array
 
 ```php
 /**
- * The name of the queue connection to use when broadcasting the event.
+ * イベントをブロードキャストするときに使用するキュー接続名
  *
  * @var string
  */
 public $connection = 'redis';
 
 /**
- * The name of the queue on which to place the broadcasting job.
+ * ブロードキャストジョブを配置するキュー名
  *
  * @var string
  */
@@ -558,7 +558,7 @@ public $queue = 'default';
 
 ```php
 /**
- * The name of the queue on which to place the broadcasting job.
+ * ブロードキャストジョブを配置するキュー名
  */
 public function broadcastQueue(): string
 {
@@ -586,7 +586,7 @@ class OrderShipmentStatusUpdated implements ShouldBroadcastNow
 
 ```php
 /**
- * Determine if this event should broadcast.
+ * このイベントをブロードキャストするか決定
  */
 public function broadcastWhen(): bool
 {
@@ -707,12 +707,12 @@ use App\Models\User;
 class OrderChannel
 {
     /**
-     * Create a new channel instance.
+     * 新しいチャンネルインスタンスの生成
      */
     public function __construct() {}
 
     /**
-     * Authenticate the user's access to the channel.
+     * チャネルへのユーザーアクセスを認可
      */
     public function join(User $user, Order $order): array|bool
     {
@@ -802,7 +802,7 @@ class OrderShipmentStatusUpdated implements ShouldBroadcast
     use InteractsWithBroadcasting;
 
     /**
-     * Create a new event instance.
+     * 新しいイベントインスタンスの生成
      */
     public function __construct()
     {
@@ -992,7 +992,7 @@ Echo.join(`chat.${roomId}`)
 
 ```php
 /**
- * Get the channels the event should broadcast on.
+ * イベントをブロードキャストするチャンネルを取得
  *
  * @return array<int, \Illuminate\Broadcasting\Channel>
  */

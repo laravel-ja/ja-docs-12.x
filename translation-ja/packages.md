@@ -281,7 +281,7 @@ use Illuminate\Support\Facades\Blade;
 use VendorPackage\View\Components\AlertComponent;
 
 /**
- * Bootstrap your package's services.
+ * 自パッケージの初期起動処理
  */
 public function boot(): void
 {
@@ -304,7 +304,7 @@ public function boot(): void
 use Illuminate\Support\Facades\Blade;
 
 /**
- * Bootstrap your package's services.
+ * 自パッケージの初期起動処理
  */
 public function boot(): void
 {

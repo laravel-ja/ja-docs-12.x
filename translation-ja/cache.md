@@ -83,7 +83,7 @@ Memcachedドライバを使用するには、[Memcached PECLパッケージ](htt
 <a name="redis"></a>
 #### Redis
 
-Before using a Redis cache with Laravel, you will need to either install the PhpRedis PHP extension via PECL or install the `predis/predis` package (~2.0) via Composer. [Laravel Sail](/docs/{{version}}/sail) already includes this extension. In addition, official Laravel application platforms such as [Laravel Cloud](https://cloud.laravel.com) and [Laravel Forge](https://forge.laravel.com) have the PhpRedis extension installed by default.
+LaravelでRedisキャッシュを使用する前に、PECL経由でPhpRedis PHP拡張をインストールするか、Composer経由で`predis/predis`パッケージ（~2.0）をインストールする必要があります。[Laravel Sail](/docs/{{version}}/sail)は、あらかじめこの拡張機能を用意してあります。また、[Laravel Cloud](https://cloud.laravel.com)や[Laravel Forge](https://forge.laravel.com)などの公式Laravelアプリケーションプラットフォームでは、デフォルトでPhpRedis拡張をインストールしています。
 
 Redisの設定の詳細については、[Laravelドキュメントページ](/docs/{{version}}/redis#configuration)を参照してください。
 
@@ -140,7 +140,7 @@ use Illuminate\Support\Facades\Cache;
 class UserController extends Controller
 {
     /**
-     * Show a list of all users of the application.
+     * アプリケーションの全ユーザーのリストを表示
      */
     public function index(): array
     {
@@ -362,7 +362,7 @@ cache()->remember('users', $seconds, function () {
 <a name="managing-locks"></a>
 ### ロック管理
 
-Atomic locks allow for the manipulation of distributed locks without worrying about race conditions. For example, [Laravel Cloud](https://cloud.laravel.com) uses atomic locks to ensure that only one remote task is being executed on a server at a time. You may create and manage locks using the `Cache::lock` method:
+アトミックロックを使用すると、競合状態を心配することなく分散ロックを操作できます。例えば、[Laravel Cloud](https://cloud.laravel.com)はアトミックロックを使用して、サーバ上で一度に１つのリモートタスクしか実行しないようにしています。ロックの作成と管理には`Cache::lock`メソッドを使用します。
 
 ```php
 use Illuminate\Support\Facades\Cache;
@@ -370,7 +370,7 @@ use Illuminate\Support\Facades\Cache;
 $lock = Cache::lock('foo', 10);
 
 if ($lock->get()) {
-    // Lock acquired for 10 seconds...
+    // １０秒間ロックを獲得
 
     $lock->release();
 }
@@ -380,7 +380,7 @@ if ($lock->get()) {
 
 ```php
 Cache::lock('foo', 10)->get(function () {
-    // Lock acquired for 10 seconds and automatically released...
+    // １０秒間ロックを獲得し、自動的にリリースする
 });
 ```
 
@@ -394,9 +394,9 @@ $lock = Cache::lock('foo', 10);
 try {
     $lock->block(5);
 
-    // Lock acquired after waiting a maximum of 5 seconds...
+    // 最大5秒待った後、ロック獲得
 } catch (LockTimeoutException $e) {
-    // Unable to acquire lock...
+    // ロックを獲得できなかった
 } finally {
     $lock->release();
 }
@@ -406,7 +406,7 @@ try {
 
 ```php
 Cache::lock('foo', 10)->block(5, function () {
-    // Lock acquired after waiting a maximum of 5 seconds...
+    // 最大5秒待った後、ロック獲得
 });
 ```
 
