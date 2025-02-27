@@ -86,7 +86,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 class User extends Model
 {
     /**
-     * Get the phone associated with the user.
+     * ユーザーに関連づいている電話を取得
      */
     public function phone(): HasOne
     {
@@ -144,7 +144,7 @@ Eloquentは、リレーションメソッドの名前を調べ、メソッド名
 
 ```php
 /**
- * Get the user that owns the phone.
+ * この電話を所有しているユーザーを取得
  */
 public function user(): BelongsTo
 {
@@ -156,7 +156,7 @@ public function user(): BelongsTo
 
 ```php
 /**
- * Get the user that owns the phone.
+ * この電話を所有しているユーザーを取得
  */
 public function user(): BelongsTo
 {
@@ -180,7 +180,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Post extends Model
 {
     /**
-     * Get the comments for the blog post.
+     * このブログポストのコメントを取得
      */
     public function comments(): HasMany
     {
@@ -222,7 +222,7 @@ return $this->hasMany(Comment::class, 'foreign_key', 'local_key');
 <a name="automatically-hydrating-parent-models-on-children"></a>
 #### 子モデル上の親モデルの自動ハイドレート
 
-Even when utilizing Eloquent eager loading, "N + 1" query problems can arise if you try to access the parent model from a child model while looping through the child models:
+EloquentのEagerロードを利用している場合でも、子モデルをループしている間に子モデルから親モデルにアクセスしようとすると、「N+1」クエリ問題が発生する可能性があります。
 
 ```php
 $posts = Post::with('comments')->get();
@@ -234,7 +234,7 @@ foreach ($posts as $post) {
 }
 ```
 
-In the example above, an "N + 1" query problem has been introduced because, even though comments were eager loaded for every `Post` model, Eloquent does not automatically hydrate the parent `Post` on each child `Comment` model.
+上の例は、「N+1」クエリ問題が発生しています。なぜなら、すべての`Post`モデルに対してコメントがEagerロード済みにもかかわらず、Eloquentは各子`Comment`モデルに対して親`Post`を自動的にハイドレートしないからです。
 
 Eloquentへ親モデルを自動的に子モデルにハイドレートさせたい場合は、`hasMany`リレーションを定義するときに`chaperone`メソッドを呼び出します。
 
@@ -249,7 +249,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Post extends Model
 {
     /**
-     * Get the comments for the blog post.
+     * このブログポストのコメントを取得
      */
     public function comments(): HasMany
     {
@@ -311,7 +311,7 @@ Eloquentはリレーションメソッドの名前を調べ、メソッド名の
 
 ```php
 /**
- * Get the post that owns the comment.
+ * このコメントを所有しているポストを取得
  */
 public function post(): BelongsTo
 {
@@ -323,7 +323,7 @@ public function post(): BelongsTo
 
 ```php
 /**
- * Get the post that owns the comment.
+ * このコメントを所有しているポストを取得
  */
 public function post(): BelongsTo
 {
@@ -338,7 +338,7 @@ public function post(): BelongsTo
 
 ```php
 /**
- * Get the author of the post.
+ * このポストの著者を取得
  */
 public function user(): BelongsTo
 {
@@ -350,7 +350,7 @@ public function user(): BelongsTo
 
 ```php
 /**
- * Get the author of the post.
+ * このポストの著者を取得
  */
 public function user(): BelongsTo
 {
@@ -360,7 +360,7 @@ public function user(): BelongsTo
 }
 
 /**
- * Get the author of the post.
+ * このポストの著者を取得
  */
 public function user(): BelongsTo
 {
@@ -526,7 +526,7 @@ use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 class Mechanic extends Model
 {
     /**
-     * Get the car's owner.
+     * 車の所収者を取得
      */
     public function carOwner(): HasOneThrough
     {
@@ -556,17 +556,17 @@ return $this->throughCars()->hasOwner();
 class Mechanic extends Model
 {
     /**
-     * Get the car's owner.
+     * 車の所収者を取得
      */
     public function carOwner(): HasOneThrough
     {
         return $this->hasOneThrough(
             Owner::class,
             Car::class,
-            'mechanic_id', // Foreign key on the cars table...
-            'car_id', // Foreign key on the owners table...
-            'id', // Local key on the mechanics table...
-            'id' // Local key on the cars table...
+            'mechanic_id', // carsテーブルの外部キー
+            'car_id', // ownersテーブルの外部キー
+            'id', // mechanicsテーブルのローカルキー
+            'id' // carsテーブルのローカルキー
         );
     }
 }
@@ -585,7 +585,7 @@ return $this->throughCars()->hasOwner();
 <a name="has-many-through"></a>
 ### Has Many Through
 
-The "has-many-through" relationship provides a convenient way to access distant relations via an intermediate relation. For example, let's assume we are building a deployment platform like [Laravel Cloud](https://cloud.laravel.com). An `Application` model might access many `Deployment` models through an intermediate `Environment` model. Using this example, you could easily gather all deployments for a given application. Let's look at the tables required to define this relationship:
+"has-many-through"リレーションは、中間リレーションを介して別のリレーションへアクセスする便利な方法を提供します。例えば、[Laravel Cloud](https://cloud.laravel.com)のようなデプロイメントプラットフォームを構築しているとします。`Application`モデルは中間の`Environment`モデルを介して多くの`Deployment`モデルへアクセスするかもしれません。この例を使い、あるアプリケーションのすべてのデプロイメントを簡単に集めることができます。このリレーションを定義するために必要なテーブルを見てみましょう：
 
 ```text
 applications
@@ -603,7 +603,7 @@ deployments
     commit_hash - string
 ```
 
-Now that we have examined the table structure for the relationship, let's define the relationship on the `Application` model:
+リレーションのテーブル構造を調べたので、`Application`モデルにリレーションを定義してみましょう：
 
 ```php
 <?php
@@ -616,7 +616,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 class Application extends Model
 {
     /**
-     * Get all of the deployments for the application.
+     * アプリケーションの全デプロイメントの取得
      */
     public function deployments(): HasManyThrough
     {
@@ -627,7 +627,7 @@ class Application extends Model
 
 `hasManyThrough`メソッドへ渡す、最初の引数はアクセスする最終モデルの名前であり、２番目の引数は中間モデルの名前です。
 
-Or, if the relevant relationships have already been defined on all of the models involved in the relationship, you may fluently define a "has-many-through" relationship by invoking the `through` method and supplying the names of those relationships. For example, if the `Application` model has a `environments` relationship and the `Environment` model has a `deployments` relationship, you may define a "has-many-through" relationship connecting the application and the deployments like so:
+あるいは、そのリレーションに関係するすべてのモデルで、リレーションの関係が既に定義されている場合は、`through`メソッドを呼び出しリレーションの名前を指定することで、「has-many-through」リレーションを簡単に定義できます。例えば、`Application`モデルに`environments`リレーションがあり、`Environment`モデルに`deployments`リレーションがある場合、アプリケーションとデプロイメントを接続する「has-many-through」リレーションは、次のように定義します。
 
 ```php
 // 文字列ベース記法
@@ -637,7 +637,7 @@ return $this->through('environments')->has('deployments');
 return $this->throughEnvironments()->hasDeployments();
 ```
 
-Though the `Deployment` model's table does not contain a `application_id` column, the `hasManyThrough` relation provides access to a application's deployments via `$application->deployments`. To retrieve these models, Eloquent inspects the `application_id` column on the intermediate `Environment` model's table. After finding the relevant environment IDs, they are used to query the `Deployment` model's table.
+`Deployment`モデルのテーブルには、`application_id`カラムが存在しませんが、`hasManyThrough`リレーションにより`$application->deployments`を介してアプリケーションのデプロイメントへアクセスできます。これらのモデルを取得するために、Eloquentは中間にある`Environment`モデルのテーブルの`application_id`カラムを調べます。関連する環境IDを見つけたら、それを使って`Deployment`モデルのテーブルに問い合わせます。
 
 <a name="has-many-through-key-conventions"></a>
 #### キーの規約
@@ -652,10 +652,10 @@ class Application extends Model
         return $this->hasManyThrough(
             Deployment::class,
             Environment::class,
-            'application_id', // Foreign key on the environments table...
-            'environment_id', // Foreign key on the deployments table...
-            'id', // Local key on the applications table...
-            'id' // Local key on the environments table...
+            'application_id', // environmentsテーブルの外部キー
+            'environment_id', // deploymentsテーブルの＾外部キー
+            'id', // applicationsテーブルのローカルキー
+            'id' // environmentsテーブルのローカルキー
         );
     }
 }
@@ -687,7 +687,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class User extends Model
 {
     /**
-     * Get the user's posts.
+     * ユーザーのポストを取得
      */
     public function posts(): HasMany
     {
@@ -708,7 +708,7 @@ class User extends Model
 
 ```php
 /**
- * Get the user's featured posts.
+ * ユーザーのフューチャーしたポストを取得
  */
 public function featuredPosts(): HasMany
 {
@@ -766,7 +766,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class User extends Model
 {
     /**
-     * The roles that belong to the user.
+     * ユーザーに属するロール
      */
     public function roles(): BelongsToMany
     {
@@ -821,7 +821,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Role extends Model
 {
     /**
-     * The users that belong to the role.
+     * ロールに属するユーザー
      */
     public function users(): BelongsToMany
     {
@@ -955,7 +955,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Role extends Model
 {
     /**
-     * The users that belong to the role.
+     * ロールに属するユーザー
      */
     public function users(): BelongsToMany
     {
@@ -989,7 +989,7 @@ class RoleUser extends Pivot
 
 ```php
 /**
- * Indicates if the IDs are auto-incrementing.
+ * IDが自動増分することを指示
  *
  * @var bool
  */
@@ -1043,7 +1043,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Image extends Model
 {
     /**
-     * Get the parent imageable model (user or post).
+     * 画像化可能な親モデル(userまたはpost)を取得
      */
     public function imageable(): MorphTo
     {
@@ -1057,7 +1057,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 class Post extends Model
 {
     /**
-     * Get the post's image.
+     * ポストのイメージ取得
      */
     public function image(): MorphOne
     {
@@ -1071,7 +1071,7 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 class User extends Model
 {
     /**
-     * Get the user's image.
+     * ユーザーのイメージ取得
      */
     public function image(): MorphOne
     {
@@ -1112,7 +1112,7 @@ $imageable = $image->imageable;
 
 ```php
 /**
- * Get the model that the image belongs to.
+ * 画像が属するモデルを取得
  */
 public function imageable(): MorphTo
 {
@@ -1162,7 +1162,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class Comment extends Model
 {
     /**
-     * Get the parent commentable model (post or video).
+     * コメント可能な親モデル（投稿または動画）を取得
      */
     public function commentable(): MorphTo
     {
@@ -1176,7 +1176,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 class Post extends Model
 {
     /**
-     * Get all of the post's comments.
+     * ポストの全コメントを取得
      */
     public function comments(): MorphMany
     {
@@ -1190,7 +1190,7 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 class Video extends Model
 {
     /**
-     * Get all of the video's comments.
+     * 動画の全コメントを取得
      */
     public function comments(): MorphMany
     {
@@ -1229,7 +1229,7 @@ $commentable = $comment->commentable;
 <a name="polymorphic-automatically-hydrating-parent-models-on-children"></a>
 #### 子モデル上の親モデルの自動ハイドレート
 
-Even when utilizing Eloquent eager loading, "N + 1" query problems can arise if you try to access the parent model from a child model while looping through the child models:
+EloquentのEagerロードを利用している場合でも、子モデルをループしている間に、子モデルから親モデルへアクセスしようとすると、「N+1」クエリ問題が発生する可能性があります：
 
 ```php
 $posts = Post::with('comments')->get();
@@ -1241,7 +1241,7 @@ foreach ($posts as $post) {
 }
 ```
 
-In the example above, an "N + 1" query problem has been introduced because, even though comments were eager loaded for every `Post` model, Eloquent does not automatically hydrate the parent `Post` on each child `Comment` model.
+上の例では、「N+1」クエリの問題が発生しています。なぜなら、すべての`Post`モデルに対してコメントがEagerロードされたにもかかわらず、Eloquentは各子`Comment`モデルに対して親`Post`を自動的にハイドレートしないからです。
 
 Eloquentへ親モデルを自動的に子モデルにハイドレートさせたい場合は、`morphMany`リレーションを定義するときに`chaperone`メソッドを呼び出します。
 
@@ -1249,7 +1249,7 @@ Eloquentへ親モデルを自動的に子モデルにハイドレートさせた
 class Post extends Model
 {
     /**
-     * Get all of the post's comments.
+     * ポストの全コメントを取得
      */
     public function comments(): MorphMany
     {
@@ -1360,7 +1360,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 class Post extends Model
 {
     /**
-     * Get all of the tags for the post.
+     * このポストの全タグを取得
      */
     public function tags(): MorphToMany
     {
@@ -1387,7 +1387,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 class Tag extends Model
 {
     /**
-     * Get all of the posts that are assigned this tag.
+     * このタグを付けている全ポストを取得
      */
     public function posts(): MorphToMany
     {
@@ -1395,7 +1395,7 @@ class Tag extends Model
     }
 
     /**
-     * Get all of the videos that are assigned this tag.
+     * このタグを付けている全動画を取得
      */
     public function videos(): MorphToMany
     {
@@ -1503,7 +1503,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class User extends Model
 {
     /**
-     * Get all of the posts for the user.
+     * このユーザーの全ポストを取得
      */
     public function posts(): HasMany
     {
@@ -1590,21 +1590,21 @@ foreach ($user->posts as $post) {
 ```php
 use App\Models\Post;
 
-// Retrieve all posts that have at least one comment...
+// 少なくとも１つのコメントを持つ全投稿を取得
 $posts = Post::has('comments')->get();
 ```
 
 演算子とカウント数を指定して、クエリをさらにカスタマイズすることもできます。
 
 ```php
-// Retrieve all posts that have three or more comments...
+// コメントが３つ以上ある投稿をすべて取得
 $posts = Post::has('comments', '>=', 3)->get();
 ```
 
 ネストした`has`ステートメントは、「ドット」表記を使用して作成できます。たとえば、少なくとも1つの画像を持つコメントが、少なくとも1つあるすべての投稿を取得できます。
 
 ```php
-// Retrieve posts that have at least one comment with images...
+// 画像付きのコメントが１つ以上ある投稿を取得
 $posts = Post::has('comments.images')->get();
 ```
 
@@ -1613,12 +1613,12 @@ $posts = Post::has('comments.images')->get();
 ```php
 use Illuminate\Database\Eloquent\Builder;
 
-// Retrieve posts with at least one comment containing words like code%...
+// code%のような単語を含むコメントが少なくとも１つある投稿を取得
 $posts = Post::whereHas('comments', function (Builder $query) {
     $query->where('content', 'like', 'code%');
 })->get();
 
-// Retrieve posts with at least ten comments containing words like code%...
+// code%のような単語を含むコメントが少なくとも１０件以上ある投稿を取得
 $posts = Post::whereHas('comments', function (Builder $query) {
     $query->where('content', 'like', 'code%');
 }, '>=', 10)->get();
@@ -1688,7 +1688,7 @@ use App\Models\Post;
 use App\Models\Video;
 use Illuminate\Database\Eloquent\Builder;
 
-// Retrieve comments associated to posts or videos with a title like code%...
+// code%のようなタイトルを持つ投稿や動画に関連するコメントを取得
 $comments = Comment::whereHasMorph(
     'commentable',
     [Post::class, Video::class],
@@ -1697,7 +1697,7 @@ $comments = Comment::whereHasMorph(
     }
 )->get();
 
-// Retrieve comments associated to posts with a title not like code%...
+// code%のようではないタイトルの投稿に関連するコメントを取得
 $comments = Comment::whereDoesntHaveMorph(
     'commentable',
     Post::class,
@@ -1900,7 +1900,7 @@ $activities->loadMorphCount('parentable', [
 <a name="eager-loading"></a>
 ## Eagerロード
 
-When accessing Eloquent relationships as properties, the related models are "lazy loaded". This means the relationship data is not actually loaded until you first access the property. However, Eloquent can "eager load" relationships at the time you query the parent model. Eager loading alleviates the "N + 1" query problem. To illustrate the N + 1 query problem, consider a `Book` model that "belongs to" to an `Author` model:
+Eloquentのリレーションシップにプロパティとしてアクセスする場合、関連モデルを「遅延ロード」します。つまり、最初にプロパティにアクセスするまで、リレーションデータを実際にロードしません。しかし、Eloquentは親モデルへのクエリ時にリレーションを「Eagerロード」できます。Eagerロードは、「N+1」クエリ問題を軽減します。N+1クエリ問題を説明するために、`Author`モデルへ「属する」`Book`モデルを考えてください。
 
 ```php
 <?php
@@ -1913,7 +1913,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Book extends Model
 {
     /**
-     * Get the author that wrote the book.
+     * この本を書いた著者を取得
      */
     public function author(): BelongsTo
     {
@@ -1997,7 +1997,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class ActivityFeed extends Model
 {
     /**
-     * Get the parent of the activity feed record.
+     * アクティビティフィードレコードの親を取得
      */
     public function parentable(): MorphTo
     {
@@ -2051,14 +2051,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Book extends Model
 {
     /**
-     * The relationships that should always be loaded.
+     * 常にロードするべきリレーション
      *
      * @var array
      */
     protected $with = ['author'];
 
     /**
-     * Get the author that wrote the book.
+     * その本を書いた著者を取得
      */
     public function author(): BelongsTo
     {
@@ -2066,7 +2066,7 @@ class Book extends Model
     }
 
     /**
-     * Get the genre of the book.
+     * その本のジャンルを取得
      */
     public function genre(): BelongsTo
     {
@@ -2189,7 +2189,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 class ActivityFeed extends Model
 {
     /**
-     * Get the parent of the activity feed record.
+     * アクティビティフィードレコードの親を取得
      */
     public function parentable(): MorphTo
     {
@@ -2282,7 +2282,7 @@ $post->comments()->save($comment);
 
 $post->refresh();
 
-// All comments, including the newly saved comment...
+// 新しく保存したコメントを含むすべてのコメント
 $post->comments;
 ```
 
@@ -2400,10 +2400,10 @@ $user->roles()->attach($roleId, ['expires' => $expires]);
 ユーザーから役割を削除する必要も起きるでしょう。多対多の関係レコードを削除するには、`detach`メソッドを使用します。`detach`メソッドは、中間テーブルから適切なレコードを削除します。ただし、両方のモデルはデータベースに残ります。
 
 ```php
-// Detach a single role from the user...
+// ユーザーから１ロールを切り離す
 $user->roles()->detach($roleId);
 
-// Detach all roles from the user...
+// ユーザーから全ロールを切り離す
 $user->roles()->detach();
 ```
 
@@ -2496,14 +2496,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Comment extends Model
 {
     /**
-     * All of the relationships to be touched.
+     * タイムスタンプを更新すべき全リレーション
      *
      * @var array
      */
     protected $touches = ['post'];
 
     /**
-     * Get the post that the comment belongs to.
+     * そのコメントが属する投稿を取得
      */
     public function post(): BelongsTo
     {

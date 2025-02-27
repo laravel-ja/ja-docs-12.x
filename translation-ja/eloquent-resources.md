@@ -123,7 +123,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class UserCollection extends ResourceCollection
 {
     /**
-     * Transform the resource collection into an array.
+     * リソースコレクションを配列に変換
      *
      * @return array<int|string, mixed>
      */
@@ -165,7 +165,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 class UserResource extends JsonResource
 {
     /**
-     * Indicates if the resource's collection keys should be preserved.
+     * リソースのコレクションキーを保持するか指示
      *
      * @var bool
      */
@@ -201,7 +201,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class UserCollection extends ResourceCollection
 {
     /**
-     * The resource that this resource collects.
+     * このリソースが収集するリソース
      *
      * @var string
      */
@@ -266,7 +266,7 @@ use App\Http\Resources\PostResource;
 use Illuminate\Http\Request;
 
 /**
- * Transform the resource into an array.
+ * リソースを配列へ変換
  *
  * @return array<string, mixed>
  */
@@ -313,7 +313,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class UserCollection extends ResourceCollection
 {
     /**
-     * Transform the resource collection into an array.
+     * リソースコレクションを配列へ変換
      *
      * @return array<string, mixed>
      */
@@ -412,7 +412,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class CommentsCollection extends ResourceCollection
 {
     /**
-     * Transform the resource collection into an array.
+     * リソースコレクションを配列へ変換
      *
      * @return array<string, mixed>
      */
@@ -511,11 +511,11 @@ Route::get('/users', function () {
 <a name="customizing-the-pagination-information"></a>
 #### ペジネーション情報のカスタマイズ
 
-レスポンスの`links`や`meta`キーが持つ情報をカスタマイズしたい場合は、リソースに`paginationInformation`メソッドを定義してください。このメソッドは`$paginated`データと、`$default`情報の配列（`links` キーと `meta` キーを含む配列）を引数に受けます。
+レスポンスの`links`や`meta`キーが持つ情報をカスタマイズしたい場合は、リソースに`paginationInformation`メソッドを定義してください。このメソッドは`$paginated`データと、`$default`情報の配列（`links`キーと`meta`キーを含む配列）を引数に受けます。
 
 ```php
 /**
- * Customize the pagination information for the resource.
+ * リソースのペジネーション情報をカスタマイズ
  *
  * @param  \Illuminate\Http\Request  $request
  * @param  array $paginated
@@ -537,7 +537,7 @@ public function paginationInformation($request, $paginated, $default)
 
 ```php
 /**
- * Transform the resource into an array.
+ * リソースを配列へ変換
  *
  * @return array<string, mixed>
  */
@@ -583,7 +583,7 @@ public function toArray(Request $request): array
 
 ```php
 /**
- * Transform the resource into an array.
+ * リソースを配列へ変換
  *
  * @return array<string, mixed>
  */
@@ -611,7 +611,7 @@ public function toArray(Request $request): array
 <a name="conditional-relationships"></a>
 ### 条件付きリレーション
 
-In addition to conditionally loading attributes, you may conditionally include relationships on your resource responses based on if the relationship has already been loaded on the model. This allows your controller to decide which relationships should be loaded on the model and your resource can easily include them only when they have actually been loaded. Ultimately, this makes it easier to avoid "N+1" query problems within your resources.
+属性を条件付きで読み込むことに加えて、リレーションが既にモデルに読み込まれているかどうかに基づいて、リソースレスポンスへリレーションを条件付きで含めることもできます。これにより、コントローラはモデルに読み込むべきリレーションを決定し、リソースは実際に読み込まれたリレーションのみを簡単に含められます。最終的には、リソース内で「N+1」クエリの問題を回避しやすくなります。
 
 `whenLoaded`メソッドを使用して、リレーションを条件付きでロードできます。リレーションを不必要にロードすることを避けるために、このメソッドはリレーション自体ではなくリレーション名を引数に取ります。
 
@@ -619,7 +619,7 @@ In addition to conditionally loading attributes, you may conditionally include r
 use App\Http\Resources\PostResource;
 
 /**
- * Transform the resource into an array.
+ * リソースを配列へ変換
  *
  * @return array<string, mixed>
  */
@@ -647,11 +647,11 @@ public function toArray(Request $request): array
 new UserResource($user->loadCount('posts'));
 ```
 
-`whenCounted`メソッドを使用すると、リレーションシップのカウントを条件付きでリソースレスポンスに含めることができます。このメソッドは、リレーションシップのカウントが存在しない場合に、不必要に属性をインクルードする事態を避けます。
+`whenCounted`メソッドを使用すると、リレーションのカウントを条件付きでリソースレスポンスに含めることができます。このメソッドは、リレーションのカウントが存在しない場合に、不必要に属性をインクルードする事態を避けます。
 
 ```php
 /**
- * Transform the resource into an array.
+ * リソースを配列へ変換
  *
  * @return array<string, mixed>
  */
@@ -686,7 +686,7 @@ public function toArray(Request $request): array
 
 ```php
 /**
- * Transform the resource into an array.
+ * リソースを配列へ変換
  *
  * @return array<string, mixed>
  */
@@ -714,7 +714,7 @@ public function toArray(Request $request): array
 
 ```php
 /**
- * Transform the resource into an array.
+ * リソースを配列へ変換
  *
  * @return array<string, mixed>
  */
@@ -737,7 +737,7 @@ public function toArray(Request $request): array
 
 ```php
 /**
- * Transform the resource into an array.
+ * リソースを配列へ変換
  *
  * @return array<string, mixed>
  */
@@ -769,7 +769,7 @@ use Illuminate\Http\Resources\Json\ResourceCollection;
 class UserCollection extends ResourceCollection
 {
     /**
-     * Transform the resource collection into an array.
+     * リソースコレクションを配列へ変換
      *
      * @return array<string, mixed>
      */
@@ -779,7 +779,7 @@ class UserCollection extends ResourceCollection
     }
 
     /**
-     * Get additional data that should be returned with the resource array.
+     * リソース配列と一緒に返すべき追加データを取得
      *
      * @return array<string, mixed>
      */
@@ -859,7 +859,7 @@ class UserResource extends JsonResource
     }
 
     /**
-     * Customize the outgoing response for the resource.
+     * リソースの送信レスポンスをカスタマイズ
      */
     public function withResponse(Request $request, JsonResponse $response): void
     {

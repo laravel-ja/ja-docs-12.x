@@ -37,7 +37,7 @@ use Illuminate\Support\Str;
 class UserFactory extends Factory
 {
     /**
-     * The current password being used by the factory.
+     * ファクトリが現在使用しているパスワード
      */
     protected static ?string $password;
 
@@ -58,7 +58,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the model's email address should be unverified.
+     * モデルのメールアドレスが未確認であると指示
      */
     public function unverified(): static
     {
@@ -101,7 +101,7 @@ php artisan make:factory PostFactory
 use Database\Factories\Administration\FlightFactory;
 
 /**
- * Create a new factory instance for the model.
+ * モデルの新しいファクトリインスタンスの生成
  */
 protected static function newFactory()
 {
@@ -118,7 +118,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class FlightFactory extends Factory
 {
     /**
-     * The name of the factory's corresponding model.
+     * モデルに対応するファクトリ名
      *
      * @var class-string<\Illuminate\Database\Eloquent\Model>
      */
@@ -137,7 +137,7 @@ class FlightFactory extends Factory
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * Indicate that the user is suspended.
+ * ユーザーが利用停止中であることを指示
  */
 public function suspended(): Factory
 {
@@ -174,7 +174,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class UserFactory extends Factory
 {
     /**
-     * Configure the model factory.
+     * モデルファクトリの設定
      */
     public function configure(): static
     {
@@ -196,7 +196,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * Indicate that the user is suspended.
+ * ユーザーが利用停止中であることを指示
  */
 public function suspended(): Factory
 {
@@ -271,10 +271,10 @@ $user = User::factory()->state([
 ```php
 use App\Models\User;
 
-// Create a single App\Models\User instance...
+// App\Models\Userインスタンスを１つ生成
 $user = User::factory()->create();
 
-// Create three App\Models\User instances...
+// App\Models\Userインスタンスを３つ生成
 $users = User::factory()->count(3)->create();
 ```
 
@@ -578,7 +578,7 @@ $videos = Video::factory()
 use App\Models\User;
 
 /**
- * Define the model's default state.
+ * モデルのデフォルト状態を定義。
  *
  * @return array<string, mixed>
  */
@@ -596,7 +596,7 @@ public function definition(): array
 
 ```php
 /**
- * Define the model's default state.
+ * モデルのデフォルト状態を定義。
  *
  * @return array<string, mixed>
  */

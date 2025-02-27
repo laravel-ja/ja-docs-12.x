@@ -770,7 +770,7 @@ $browser->select('size', 'Large');
 $browser->select('size');
 ```
 
-２番目の配列として メソッドに引数を渡すと、複数のオプションを選択するように指示できる。（原文フォーマット乱れのまま）
+２番目の配列として メソッドに引数を渡すと、複数のオプションを選択するように指示できる。
 
 ```php
 $browser->select('categories', ['Art', 'Music']);

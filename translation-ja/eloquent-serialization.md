@@ -85,7 +85,7 @@ EloquentモデルをJSONに変換すると、ロードずみのリレーショ�
 <a name="hiding-attributes-from-json"></a>
 ## JSONから属性を隠す
 
-モデルの配列またはJSON表現に含まれるパスワードなどの属性を制限したい場合があります。これには、モデルへ`$hidden`プロパティを追加します。`$hidden`プロパティの配列にリストされている属性は、モデルのシリアル化された表現には含まれません。
+モデルの配列またはJSON表現に含まれるパスワードなどの属性を制限したい場合があります。これには、モデルへ`$hidden`プロパティを追加します。`$hidden`プロパティの配列にリストされている属性は、モデルのシリアル化された表現に含みません。
 
 ```php
 <?php
@@ -97,7 +97,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     /**
-     * The attributes that should be hidden for serialization.
+     * シリアライズ時に非表示にすべき属性
      *
      * @var array<string>
      */
@@ -108,7 +108,7 @@ class User extends Model
 > [!NOTE]
 > リレーションを非表示にするには、リレーションのメソッド名をEloquentモデルの`$hidden`プロパティに追加します。
 
-もしくは、`visible`プロパティを使用して、モデルの配列とJSON表現に含める必要のある属性の「許可リスト」を定義することもできます。モデルが配列またはJSONに変換されると、`$visible`配列に存在しないすべての属性が非表示になります。
+もしくは、`visible`プロパティを使用して、モデルの配列とJSON表現へ含める必要のある属性の「許可リスト」を定義することもできます。モデルが配列またはJSONに変換されると、`$visible`配列に存在しないすべての属性が非表示になります。
 
 ```php
 <?php
@@ -120,7 +120,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     /**
-     * The attributes that should be visible in arrays.
+     * 配列の中で表示すべき属性。
      *
      * @var array
      */
@@ -167,7 +167,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     /**
-     * Determine if the user is an administrator.
+     * ユーザーが管理者かを判断
      */
     protected function isAdmin(): Attribute
     {
@@ -190,7 +190,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     /**
-     * The accessors to append to the model's array form.
+     * モデルの配列形態へ追加するアクセサ
      *
      * @var array
      */
@@ -221,7 +221,7 @@ return $user->setAppends(['is_admin'])->toArray();
 
 ```php
 /**
- * Prepare a date for array / JSON serialization.
+ * 配列／JSONシリアライズ用に日付を準備
  */
 protected function serializeDate(DateTimeInterface $date): string
 {

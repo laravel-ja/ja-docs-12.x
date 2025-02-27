@@ -140,7 +140,7 @@ use Illuminate\Database\Eloquent\Model;
 class Flight extends Model
 {
     /**
-     * The table associated with the model.
+     * このモデルと関連付けるテーブル
      *
      * @var string
      */
@@ -163,7 +163,7 @@ use Illuminate\Database\Eloquent\Model;
 class Flight extends Model
 {
     /**
-     * The primary key associated with the table.
+     * テーブルへ関連付けた主キー
      *
      * @var string
      */
@@ -179,7 +179,7 @@ class Flight extends Model
 class Flight extends Model
 {
     /**
-     * Indicates if the model's ID is auto-incrementing.
+     * モデルのIDが自動増分することを指示
      *
      * @var bool
      */
@@ -195,7 +195,7 @@ class Flight extends Model
 class Flight extends Model
 {
     /**
-     * The data type of the primary key ID.
+     * 主キーIDのデータ型
      *
      * @var string
      */
@@ -239,7 +239,7 @@ $article->id; // "8f8e8478-9035-4d23-b9a7-62f4d2612ce5"
 use Ramsey\Uuid\Uuid;
 
 /**
- * Generate a new UUID for the model.
+ * モデルの新しいUUIDを生成
  */
 public function newUniqueId(): string
 {
@@ -247,7 +247,7 @@ public function newUniqueId(): string
 }
 
 /**
- * Get the columns that should receive a unique identifier.
+ * 一意な識別子を受け取るべきカラムを取得
  *
  * @return array<int, string>
  */
@@ -290,7 +290,7 @@ use Illuminate\Database\Eloquent\Model;
 class Flight extends Model
 {
     /**
-     * Indicates if the model should be timestamped.
+     * モデルにタイムスタンプを付けるか指示
      *
      * @var bool
      */
@@ -310,7 +310,7 @@ use Illuminate\Database\Eloquent\Model;
 class Flight extends Model
 {
     /**
-     * The storage format of the model's date columns.
+     * モデルの日付カラムの保存形式
      *
      * @var string
      */
@@ -351,7 +351,7 @@ use Illuminate\Database\Eloquent\Model;
 class Flight extends Model
 {
     /**
-     * The database connection that should be used by the model.
+     * モデルが使用するデータベース接続
      *
      * @var string
      */
@@ -374,7 +374,7 @@ use Illuminate\Database\Eloquent\Model;
 class Flight extends Model
 {
     /**
-     * The model's default values for attributes.
+     * モデルの属性のデフォルト値
      *
      * @var array
      */
@@ -386,7 +386,7 @@ class Flight extends Model
 ```
 
 <a name="configuring-eloquent-strictness"></a>
-### Eloquent厳格さの設定
+### Eloquentの厳格さの設定
 
 Laravelは、さまざまな状況におけるEloquent動作や、「厳密さ」を設定するためメソッドを用意しています。
 
@@ -630,13 +630,13 @@ return Destination::orderByDesc(
 ```php
 use App\Models\Flight;
 
-// Retrieve a model by its primary key...
+// モデルを主キーで取得
 $flight = Flight::find(1);
 
-// Retrieve the first model matching the query constraints...
+// クエリ制約にマッチする最初のモデルを取得
 $flight = Flight::where('active', 1)->first();
 
-// Alternative to retrieving the first model matching the query constraints...
+// クエリ制約にマッチする最初のモデルを検索する別の記法
 $flight = Flight::firstWhere('active', 1);
 ```
 
@@ -683,23 +683,23 @@ Route::get('/api/flights/{id}', function (string $id) {
 ```php
 use App\Models\Flight;
 
-// Retrieve flight by name or create it if it doesn't exist...
+// フライトを名前で取得するか、存在しない場合は作成
 $flight = Flight::firstOrCreate([
     'name' => 'London to Paris'
 ]);
 
-// Retrieve flight by name or create it with the name, delayed, and arrival_time attributes...
+// フライトを名前で取得するか、名前、delayed、arrival_time属性でフライトを作成
 $flight = Flight::firstOrCreate(
     ['name' => 'London to Paris'],
     ['delayed' => 1, 'arrival_time' => '11:30']
 );
 
-// Retrieve flight by name or instantiate a new Flight instance...
+// フライトを名前で取得するか、新しいフライトインスタンスのインスタンス化
 $flight = Flight::firstOrNew([
     'name' => 'London to Paris'
 ]);
 
-// Retrieve flight by name or instantiate with the name, delayed, and arrival_time attributes...
+// フライトを名前で取得するか、名前、delayed、arrival_time属性でインスタンスを作成
 $flight = Flight::firstOrNew(
     ['name' => 'Tokyo to Sydney'],
     ['delayed' => 1, 'arrival_time' => '11:30']
@@ -738,11 +738,11 @@ use Illuminate\Http\Request;
 class FlightController extends Controller
 {
     /**
-     * Store a new flight in the database.
+     * 新しいフライトをデータベースへ保存
      */
     public function store(Request $request): RedirectResponse
     {
-        // Validate the request...
+        // リクエストのバリデーション…
 
         $flight = new Flight;
 
@@ -936,7 +936,7 @@ JSONカラムへ代入するときは、各カラムの複数代入可能キー�
 
 ```php
 /**
- * The attributes that are mass assignable.
+ * 複数代入可能な属性
  *
  * @var array<int, string>
  */
@@ -952,7 +952,7 @@ protected $fillable = [
 
 ```php
 /**
- * The attributes that aren't mass assignable.
+ * 複数代入不可能な属性
  *
  * @var array<string>|bool
  */
@@ -1185,7 +1185,7 @@ class Flight extends Model
     use Prunable;
 
     /**
-     * Get the prunable model query.
+     * 整理可能なモデルのクエリを取得
      */
     public function prunable(): Builder
     {
@@ -1198,7 +1198,7 @@ class Flight extends Model
 
 ```php
 /**
- * Prepare the model for pruning.
+ * 整理可能なモデルの準備
  */
 protected function pruning(): void
 {
@@ -1258,7 +1258,7 @@ class Flight extends Model
     use MassPrunable;
 
     /**
-     * Get the prunable model query.
+     * 整理可能なモデルのクエリ取得
      */
     public function prunable(): Builder
     {
@@ -1340,7 +1340,7 @@ use Illuminate\Database\Eloquent\Scope;
 class AncientScope implements Scope
 {
     /**
-     * Apply the scope to a given Eloquent query builder.
+     * 指定Eloquentクエリビルダへスコープを適用
      */
     public function apply(Builder $builder, Model $model): void
     {
@@ -1385,7 +1385,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     /**
-     * The "booted" method of the model.
+     * モデルの"booted"メソッド
      */
     protected static function booted(): void
     {
@@ -1416,7 +1416,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     /**
-     * The "booted" method of the model.
+     * モデルの"booted"メソッド
      */
     protected static function booted(): void
     {
@@ -1445,10 +1445,10 @@ User::withoutGlobalScope('ancient')->get();
 クエリのグローバルスコープのいくつか、またはすべてを削除したい場合は、`withoutGlobalScopes`メソッドを使用できます。
 
 ```php
-// Remove all of the global scopes...
+// 全グローバルスコープを削除
 User::withoutGlobalScopes()->get();
 
-// Remove some of the global scopes...
+// いくつかのグローバルスコープを削除
 User::withoutGlobalScopes([
     FirstScope::class, SecondScope::class
 ])->get();
@@ -1472,7 +1472,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     /**
-     * Scope a query to only include popular users.
+     * 人気のあるユーザーだけを含むようにクエリをスコープ
      */
     public function scopePopular(Builder $query): void
     {
@@ -1480,7 +1480,7 @@ class User extends Model
     }
 
     /**
-     * Scope a query to only include active users.
+     * アクティブユーザーのみを含むようにクエリをスコープ
      */
     public function scopeActive(Builder $query): void
     {
@@ -1530,7 +1530,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     /**
-     * Scope a query to only include users of a given type.
+     * 指定タイプのユーザーのみを含むようにクエリをスコープ
      */
     public function scopeOfType(Builder $query, string $type): void
     {
@@ -1561,7 +1561,7 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     /**
-     * Scope the query to only include drafts.
+     * ドラフトのみを含むようにクエリをスコープ
      */
     public function scopeDraft(Builder $query): void
     {
@@ -1630,7 +1630,7 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
-     * The event map for the model.
+     * モデルのイベントマップ
      *
      * @var array<string, string>
      */
@@ -1661,7 +1661,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     /**
-     * The "booted" method of the model.
+     * モデルの"booted"メソッド
      */
     protected static function booted(): void
     {
@@ -1706,7 +1706,7 @@ use App\Models\User;
 class UserObserver
 {
     /**
-     * Handle the User "created" event.
+     * ユーザーの"created"イベントを処理
      */
     public function created(User $user): void
     {
@@ -1714,7 +1714,7 @@ class UserObserver
     }
 
     /**
-     * Handle the User "updated" event.
+     * ユーザーの"updated"イベントを処理
      */
     public function updated(User $user): void
     {
@@ -1722,7 +1722,7 @@ class UserObserver
     }
 
     /**
-     * Handle the User "deleted" event.
+     * ユーザーの"deleted"イベントを処理
      */
     public function deleted(User $user): void
     {
@@ -1730,7 +1730,7 @@ class UserObserver
     }
 
     /**
-     * Handle the User "restored" event.
+     * ユーザーの"restored"イベントを処理
      */
     public function restored(User $user): void
     {
@@ -1738,7 +1738,7 @@ class UserObserver
     }
 
     /**
-     * Handle the User "forceDeleted" event.
+     * ユーザーの"forceDeleted"イベントを処理
      */
     public function forceDeleted(User $user): void
     {
@@ -1794,7 +1794,7 @@ use Illuminate\Contracts\Events\ShouldHandleEventsAfterCommit;
 class UserObserver implements ShouldHandleEventsAfterCommit
 {
     /**
-     * Handle the User "created" event.
+     * ユーザーの"created"イベントを処理
      */
     public function created(User $user): void
     {

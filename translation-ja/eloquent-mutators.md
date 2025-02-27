@@ -43,7 +43,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     /**
-     * Get the user's first name.
+     * ユーザーのファーストネームの取得
      */
     protected function firstName(): Attribute
     {
@@ -152,7 +152,7 @@ use Illuminate\Database\Eloquent\Model;
 class User extends Model
 {
     /**
-     * Interact with the user's first name.
+     * ユーザーのファーストネームの操作
      */
     protected function firstName(): Attribute
     {
@@ -381,7 +381,7 @@ $user->options['key'] = $value;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 
 /**
- * Get the attributes that should be cast.
+ * キャストする属性を取得
  *
  * @return array<string, string>
  */
@@ -399,7 +399,7 @@ protected function casts(): array
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 
 /**
- * Get the attributes that should be cast.
+ * キャストする属性を取得
  *
  * @return array<string, string>
  */
@@ -418,7 +418,7 @@ use App\Collections\OptionCollection;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 
 /**
- * Get the attributes that should be cast.
+ * キャストする属性を取得
  *
  * @return array<string, string>
  */
@@ -439,7 +439,7 @@ Eloquentはデフォルトで、`created_at`と`updated_at`カラムを[Cabon](h
 
 ```php
 /**
- * Get the attributes that should be cast.
+ * キャストする属性を取得
  *
  * @return array<string, string>
  */
@@ -457,7 +457,7 @@ protected function casts(): array
 
 ```php
 /**
- * Prepare a date for array / JSON serialization.
+ * 配列／JSONシリアライズ用に日付を準備
  */
 protected function serializeDate(DateTimeInterface $date): string
 {
@@ -469,7 +469,7 @@ protected function serializeDate(DateTimeInterface $date): string
 
 ```php
 /**
- * The storage format of the model's date columns.
+ * モデルの日付カラムの保存形式
  *
  * @var string
  */
@@ -492,7 +492,7 @@ Eloquentでは、属性の値をPHPの[Enum](https://www.php.net/manual/ja/langu
 use App\Enums\ServerStatus;
 
 /**
- * Get the attributes that should be cast.
+ * キャストする属性を取得
  *
  * @return array<string, string>
  */
@@ -524,7 +524,7 @@ use App\Enums\ServerStatus;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 
 /**
- * Get the attributes that should be cast.
+ * キャストする属性を取得
  *
  * @return array<string, string>
  */
@@ -598,7 +598,7 @@ use Illuminate\Database\Eloquent\Model;
 class Json implements CastsAttributes
 {
     /**
-     * Cast the given value.
+     * 指定値のキャスト
      *
      * @param  array<string, mixed>  $attributes
      * @return array<string, mixed>
@@ -609,7 +609,7 @@ class Json implements CastsAttributes
     }
 
     /**
-     * Prepare the given value for storage.
+     * 指定値を保存用に準備
      *
      * @param  array<string, mixed>  $attributes
      */
@@ -666,7 +666,7 @@ use InvalidArgumentException;
 class Address implements CastsAttributes
 {
     /**
-     * Cast the given value.
+     * 指定値のキャスト
      *
      * @param  array<string, mixed>  $attributes
      */
@@ -679,7 +679,7 @@ class Address implements CastsAttributes
     }
 
     /**
-     * Prepare the given value for storage.
+     * セレクタ指定値を保存用に準備
      *
      * @param  array<string, mixed>  $attributes
      * @return array<string, string>
@@ -738,7 +738,7 @@ Eloquentモデルを`toArray`および`toJson`メソッドを使用して配列�
 
 ```php
 /**
- * Get the serialized representation of the value.
+ * 値のシリアライズ表現の取得
  *
  * @param  array<string, mixed>  $attributes
  */
@@ -772,14 +772,14 @@ use Illuminate\Database\Eloquent\Model;
 class Hash implements CastsInboundAttributes
 {
     /**
-     * Create a new cast class instance.
+     * 新しいキャストクラスインスタンスの生成
      */
     public function __construct(
         protected string|null $algorithm = null,
     ) {}
 
     /**
-     * Prepare the given value for storage.
+     * セレクタ指定値を保存用に準備
      *
      * @param  array<string, mixed>  $attributes
      */
@@ -799,7 +799,7 @@ class Hash implements CastsInboundAttributes
 
 ```php
 /**
- * Get the attributes that should be cast.
+ * キャストする属性を取得
  *
  * @return array<string, string>
  */
@@ -840,7 +840,7 @@ use App\Casts\Address as AddressCast;
 class Address implements Castable
 {
     /**
-     * Get the name of the caster class to use when casting from / to this cast target.
+     * このキャストターゲットをキャストするときに使用する、キャスタークラスの名前を取得
      *
      * @param  array<string, mixed>  $arguments
      */
@@ -882,7 +882,7 @@ class Address implements Castable
     // ...
 
     /**
-     * Get the caster class to use when casting from / to this cast target.
+     * このキャストターゲットをキャストするときに使用する、キャスタークラスの名前を取得
      *
      * @param  array<string, mixed>  $arguments
      */
