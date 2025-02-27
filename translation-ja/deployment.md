@@ -13,7 +13,7 @@
     - [ビューのキャッシュ](#optimizing-view-loading)
 - [デバッグモード](#debug-mode)
 - [ヘルスルート](#the-health-route)
-- [Deploying With Laravel Cloud or Forge](#deploying-with-cloud-or-forge)
+- [Laravel CloudやForgeを使用するデプロイ](#deploying-with-cloud-or-forge)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -50,7 +50,7 @@ Laravelフレームワークにはいくつかのシステム要件がありま�
 <a name="nginx"></a>
 ### Nginx
 
-If you are deploying your application to a server that is running Nginx, you may use the following configuration file as a starting point for configuring your web server. Most likely, this file will need to be customized depending on your server's configuration. **If you would like assistance in managing your server, consider using a fully-managed Laravel platform like [Laravel Cloud](https://cloud.laravel.com).**
+Nginxが動作しているサーバへアプリケーションをデプロイする場合、ウェブサーバを設定する出発点として以下の設定ファイルを使用してください。ほとんどの場合、このファイルはサーバ構成に応じてカスタマイズする必要があります。**サーバの管理にサポートが必要な場合は、[Laravel Cloud](https://cloud.laravel.com)のようなフルマネージドLaravelプラットフォームの利用を検討してください。**
 
 以下の設定のように、Webサーバがすべてのリクエストをアプリケーションの`public/index.php`ファイルへ確実に送信してください。プロジェクトルートからアプリケーションを提供すると、多くの機密性の高い設定ファイルがパブリックインターネットに公開されるため、`index.php`ファイルをプロジェクトのルートに移動しようとしないでください。
 
@@ -195,18 +195,18 @@ Laravelは、アプリケーションのステータスを監視するために�
 HTTPリクエストがこのルートへ行われると、Laravelは `Illuminate\Foundation\Events\DiagnosingHealth`イベントもディスパッチするため、アプリケーションに関連する追加のヘルスチェックを実行できます。このイベントの[リスナ](/docs/{{version}}/events)内で、アプリケーションのデータベースやキャッシュの状態をチェックできます。アプリケーションに問題が見つかった場合は、リスナから例外を投げるだけです。
 
 <a name="deploying-with-cloud-or-forge"></a>
-## Deploying With Laravel Cloud or Forge
+## Laravel CloudやForgeを使用するデプロイ
 
 <a name="laravel-cloud"></a>
 #### Laravel Cloud
 
-If you would like a fully-managed, auto-scaling deployment platform tuned for Laravel, check out [Laravel Cloud](https://cloud.laravel.com). Laravel Cloud is a robust deployment platform for Laravel, offering managed compute, databases, caches, and object storage.
+Laravel用に調整した、完全な管理で、自動スケーリングのデプロイメントプラットフォームをご希望の場合は、[Laravel Cloud](https://cloud.laravel.com)をチェックしてください。Laravel CloudはLaravelのための堅牢なデプロイメントプラットフォームで、マネージドコンピュート、データベース、キャッシュ、オブジェクトストレージを提供します。
 
-Launch your Laravel application on Cloud and fall in love with the scalable simplicity. Laravel Cloud is fine-tuned by Laravel's creators to work seamlessly with the framework so you can keep writing your Laravel applications exactly like you're used to.
+Cloud上でLaravelアプリケーションを起動し、スケーラブルなシンプルさに惚れ込んでください。Laravel Cloudは、Laravelの作成者達により、フレームワークとシームレスに動作するように微調整済みです。
 
 <a name="laravel-forge"></a>
 #### Laravel Forge
 
-If you prefer to manage your own servers but aren't comfortable configuring all of the various services needed to run a robust Laravel application, [Laravel Forge](https://forge.laravel.com) is a VPS server management platform for Laravel applications.
+サーバは自分で管理したいが、堅牢なLaravelアプリケーションを実行するために必要な様々なサービスをすべて設定するのは面倒ならば、[Laravel Forge](https://forge.laravel.com)がLaravelアプリケーションのためのVPSサーバ管理プラットフォームがあります。
 
 Laravel ForgeはDigitalOcean、Linode、AWSなど数多くのインフラプロバイダ上に、サーバを作成できます。それに加え、ForgeはNginx、MySQL、Redis、Memcached、Beanstalkなどのような、堅牢なLaravelアプリケーションを構築するために必要なツールを全部インストールし、管理します。

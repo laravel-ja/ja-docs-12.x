@@ -101,15 +101,15 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 uses(RefreshDatabase::class);
 
 test('orders can be created', function () {
-    // Run the DatabaseSeeder...
+    // DatabaseSeederを実行
     $this->seed();
 
-    // Run a specific seeder...
+    // 指定のシーダを実行
     $this->seed(OrderStatusSeeder::class);
 
     // ...
 
-    // Run an array of specific seeders...
+    // 配列で指定のシーダを実行
     $this->seed([
         OrderStatusSeeder::class,
         TransactionStatusSeeder::class,
@@ -140,12 +140,12 @@ class ExampleTest extends TestCase
         // データベース初期値設定実行
         $this->seed();
 
-        // 特定のシーダの実行
+        // 指定のシーダの実行
         $this->seed(OrderStatusSeeder::class);
 
         // ...
 
-        // 配列で特定のシーダを実行
+        // 配列で指定のシーダを実行
         $this->seed([
             OrderStatusSeeder::class,
             TransactionStatusSeeder::class,
@@ -167,7 +167,7 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 abstract class TestCase extends BaseTestCase
 {
     /**
-     * Indicates whether the default seeder should run before each test.
+     * 各テスト前に、デフォルトシーダーを実行するかどうかを指示
      *
      * @var bool
      */
@@ -181,7 +181,7 @@ abstract class TestCase extends BaseTestCase
 use Database\Seeders\OrderStatusSeeder;
 
 /**
- * Run a specific seeder before each test.
+ * 各テスト前に、指定のシーダーを実行
  *
  * @var string
  */
@@ -287,5 +287,5 @@ $this->assertModelMissing($user);
 ```php
 $this->expectsDatabaseQueryCount(5);
 
-// Test...
+// テスト…
 ```

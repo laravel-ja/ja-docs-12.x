@@ -109,7 +109,7 @@ php artisan dusk:chrome-driver --detect
 
 ```php
 /**
- * Prepare for Dusk test execution.
+ * Duskテスト実行の準備
  *
  * @beforeClass
  */
@@ -125,7 +125,7 @@ public static function prepare(): void
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 
 /**
- * Create the RemoteWebDriver instance.
+ * RemotewebDeiverインスタンスの生成
  */
 protected function driver(): RemoteWebDriver
 {
@@ -229,7 +229,7 @@ class ExampleTest extends DuskTestCase
 
 ```php
 /**
- * Indicates which tables should be truncated.
+ * どのテーブルを切り捨てるか指示
  *
  * @var array
  */
@@ -240,7 +240,7 @@ protected $tablesToTruncate = ['users'];
 
 ```php
 /**
- * Indicates which tables should be excluded from truncation.
+ * どのテーブルを切り捨てから除外するか指示
  *
  * @var array
  */
@@ -251,7 +251,7 @@ protected $exceptTables = ['users'];
 
 ```php
 /**
- * Indicates which connections should have their tables truncated.
+ * どの接続のテーブルを切り捨てるか指示
  *
  * @var array
  */
@@ -262,7 +262,7 @@ protected $connectionsToTruncate = ['mysql'];
 
 ```php
 /**
- * Perform any work that should take place before the database has started truncating.
+ * データベースが切り捨てを開始する前に行うべき作業を実行
  */
 protected function beforeTruncatingDatabase(): void
 {
@@ -270,7 +270,7 @@ protected function beforeTruncatingDatabase(): void
 }
 
 /**
- * Perform any work that should take place after the database has finished truncating.
+ * データベースの切り捨てが終わった後に行うべき作業を実行
  */
 protected function afterTruncatingDatabase(): void
 {
@@ -309,7 +309,7 @@ php artisan dusk --group=foo
 
 ```php
 /**
- * Prepare for Dusk test execution.
+ * Duskテスト実行の準備
  *
  * @beforeClass
  */
@@ -325,7 +325,7 @@ public static function prepare(): void
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 
 /**
- * Create the RemoteWebDriver instance.
+ * RemotewebDeiverインスタンスの生成
  */
 protected function driver(): RemoteWebDriver
 {
@@ -389,7 +389,7 @@ class ExampleTest extends DuskTestCase
     use DatabaseMigrations;
 
     /**
-     * A basic browser test example.
+     * 基本的なブラウザテスト例
      */
     public function test_basic_example(): void
     {
@@ -510,7 +510,7 @@ use Laravel\Dusk\Browser;
 class DuskServiceProvider extends ServiceProvider
 {
     /**
-     * Register Dusk's browser macros.
+     * Duskのブラウザマクロ登録
      */
     public function boot(): void
     {
@@ -682,10 +682,10 @@ Dusk::selectorHtmlAttribute('data-dusk');
 Duskは、ページ上の要素の現在の値、表示テキスト、属性を操作するための方法をいくつか提供します。たとえば、特定のCSSまたはDuskセレクタに一致する要素の「値」を取得するには、`value`メソッドを使用します。
 
 ```php
-// Retrieve the value...
+// 値を取得
 $value = $browser->value('selector');
 
-// Set the value...
+// 値をセット
 $browser->value('selector', 'value');
 ```
 
@@ -770,9 +770,9 @@ $browser->select('size', 'Large');
 $browser->select('size');
 ```
 
-By providing an array as the second```php
+２番目の配列として```php
 
-``` argument to the `select` method, you can instruct the method to select multiple options:
+``` メソッドに引数を渡すと、複数のオプションを選択するように指示できる。（原文フォーマット乱れのまま）
 
 ```php
 $browser->select('categories', ['Art', 'Music']);
@@ -826,10 +826,10 @@ $browser->press('Login');
 フォームを送信する場合、多くのアプリケーションは、フォームが押された後にフォームの送信ボタンを無効にし、フォーム送信のHTTPリクエストが完了したときにボタンを再度有効にします。ボタンを押してボタンが再度有効になるのを待つには、`pressAndWaitFor`メソッドを使用します。
 
 ```php
-// Press the button and wait a maximum of 5 seconds for it to be enabled...
+// ボタンを押して、有効になるまで最長５秒待つ
 $browser->pressAndWaitFor('Save');
 
-// Press the button and wait a maximum of 1 second for it to be enabled...
+// ボタンを押して、有効になるまで最長１秒待つ
 $browser->pressAndWaitFor('Save', 1);
 ```
 
@@ -905,7 +905,7 @@ use Laravel\Dusk\OperatingSystem;
 class DuskServiceProvider extends ServiceProvider
 {
     /**
-     * Register Dusk's browser macros.
+     * Duskのブラウザマクロ登録
      */
     public function boot(): void
     {
@@ -987,7 +987,7 @@ $browser->clickAndHold()
     ->releaseMouse();
 ```
 
-The `controlClick` method may be used to simulate the `ctrl+click` event within the browser:
+`controlClick`メソッドは、ブラウザの`ctrl+click`イベントをシミュレートするために使います。
 
 ```php
 $browser->controlClick();
@@ -1134,49 +1134,49 @@ $browser->pauseUnless(App::environment('testing'), 1000);
 <a name="waiting-for-selectors"></a>
 #### セレクタの待機
 
-`waitFor`メソッドを使用して、指定するCSSまたはDuskセレクタに一致する要素がページに表示されるまでテストの実行を一時停止できます。デフォルトでは、これは例外をスローする前に最大5秒間テストを一時停止します。必要に応じて、メソッドの２番目の引数にカスタムタイムアウトしきい値を渡せます。
+`waitFor`メソッドを使用して、指定するCSSまたはDuskセレクタに一致する要素がページに表示されるまでテストの実行を一時停止できます。デフォルトでは、これは例外をスローする前に最長５秒間テストを一時停止します。必要に応じて、メソッドの２番目の引数にカスタムタイムアウトしきい値を渡せます。
 
 ```php
-// Wait a maximum of five seconds for the selector...
+// セレクタを最長５秒間待つ
 $browser->waitFor('.selector');
 
-// Wait a maximum of one second for the selector...
+// セレクタを最長１秒間待つ
 $browser->waitFor('.selector', 1);
 ```
 
 指定するセレクタに一致する要素に指定するテキストが含まれるまで待つこともできます。
 
 ```php
-// Wait a maximum of five seconds for the selector to contain the given text...
+// セレクタが指定したテキストを含むまで最長５秒待つ
 $browser->waitForTextIn('.selector', 'Hello World');
 
-// Wait a maximum of one second for the selector to contain the given text...
+// セレクタが指定したテキストを含むまで最長１秒待つ
 $browser->waitForTextIn('.selector', 'Hello World', 1);
 ```
 
 指定するセレクタに一致する要素がページから無くなるまで待つこともできます。
 
 ```php
-// Wait a maximum of five seconds until the selector is missing...
+// セレクタが無くなるまで最長５秒待つ
 $browser->waitUntilMissing('.selector');
 
-// Wait a maximum of one second until the selector is missing...
+// セレクタが無くなるまで最長１秒待つ
 $browser->waitUntilMissing('.selector', 1);
 ```
 
 あるいは、与えられたセレクタにマッチする要素が有効または無効になるまで待つこともできます。
 
 ```php
-// Wait a maximum of five seconds until the selector is enabled...
+// セレクタが有効になるまで最長５秒待つ
 $browser->waitUntilEnabled('.selector');
 
-// Wait a maximum of one second until the selector is enabled...
+// セレクタが有効になるまで最長１秒待つ
 $browser->waitUntilEnabled('.selector', 1);
 
-// Wait a maximum of five seconds until the selector is disabled...
+// セレクタが無効になるまで最長５秒待つ
 $browser->waitUntilDisabled('.selector');
 
-// Wait a maximum of one second until the selector is disabled...
+// セレクタが無効になるまで最長１秒待つ
 $browser->waitUntilDisabled('.selector', 1);
 ```
 
@@ -1198,20 +1198,20 @@ $browser->whenAvailable('.modal', function (Browser $modal) {
 指定したテキストがページに表示されるまで待ちたい場合は、`waitForText`メソッドを使います。
 
 ```php
-// Wait a maximum of five seconds for the text...
+// テキストを最長５秒待つ
 $browser->waitForText('Hello World');
 
-// Wait a maximum of one second for the text...
+// テキストを最長１秒待つ
 $browser->waitForText('Hello World', 1);
 ```
 
-ページに表示されている指定したテキストが削除されるまで待ちたい場合は、`waitUntilMissingText`メソッドを使います。
+ページに表示している指定したテキストが削除されるまで待ちたい場合は、`waitUntilMissingText`メソッドを使います。
 
 ```php
-// Wait a maximum of five seconds for the text to be removed...
+// テキストが削除されるまで最長５秒待つ
 $browser->waitUntilMissingText('Hello World');
 
-// Wait a maximum of one second for the text to be removed...
+// テキストが削除されるまで最長１秒待つ
 $browser->waitUntilMissingText('Hello World', 1);
 ```
 
@@ -1221,10 +1221,10 @@ $browser->waitUntilMissingText('Hello World', 1);
 ページに指定したリンクテキストが表示されるまで待つ場合は、`waitForLink`メソッドを使います。
 
 ```php
-// Wait a maximum of five seconds for the link...
+// リンクを最長５秒待つ
 $browser->waitForLink('Create');
 
-// Wait a maximum of one second for the link...
+// リンクを最長１秒待つ
 $browser->waitForLink('Create', 1);
 ```
 
@@ -1234,10 +1234,10 @@ $browser->waitForLink('Create', 1);
 `waitForInput`メソッドは、指定した入力フィールドがページ上に表示されるまで、待つために使用します。
 
 ```php
-// Wait a maximum of five seconds for the input...
+// 入力を最長５秒待つ
 $browser->waitForInput($field);
 
-// Wait a maximum of one second for the input...
+// 入力を最長１秒待つ
 $browser->waitForInput($field, 1);
 ```
 
@@ -1289,10 +1289,10 @@ $browser->clickAndWaitForReload('.selector')
 指定したJavaScript式の評価が`true`になるまで、テストの実行を中断したい場合もときどきあります。`waitUntil`メソッドで簡単に行えます。このメソッドに式を渡す時に、`return`キーワードや最後のセミコロンを含める必要はありません。
 
 ```php
-// Wait a maximum of five seconds for the expression to be true...
+// 式がtrueになるまで最長５秒待つ
 $browser->waitUntil('App.data.servers.length > 0');
 
-// Wait a maximum of one second for the expression to be true...
+// 式がtrueになるまで最長１秒待つ
 $browser->waitUntil('App.data.servers.length > 0', 1);
 ```
 
@@ -1302,10 +1302,10 @@ $browser->waitUntil('App.data.servers.length > 0', 1);
 `waitUntilVue`メソッドと`waitUntilVueIsNot`メソッドを使用して、[Vueコンポーネント](https://vuejs.org)属性が指定した値になるまで待機できます。
 
 ```php
-// Wait until the component attribute contains the given value...
+// コンポーネント属性に指定値が含まれるまで待つ
 $browser->waitUntilVue('user.name', 'Taylor', '@user');
 
-// Wait until the component attribute doesn't contain the given value...
+// コンポーネント属性に指定値が含まれなくなるまで待つ
 $browser->waitUntilVueIsNot('user.name', null, '@user');
 ```
 
@@ -1322,7 +1322,7 @@ $browser->waitForEvent('load');
 
 ```php
 $browser->with('iframe', function (Browser $iframe) {
-    // Wait for the iframe's load event...
+    // iframeのロードイベントを待つ
     $iframe->waitForEvent('load');
 });
 ```
@@ -1336,10 +1336,10 @@ $browser->waitForEvent('load', '.selector');
 さらに、`document`と`window`オブジェクトのイベントも待てます。
 
 ```php
-// Wait until the document is scrolled...
+// ドキュメントがスクロールされるまで待つ
 $browser->waitForEvent('scroll', 'document');
 
-// Wait a maximum of five seconds until the window is resized...
+// ウィンドウのサイズが変更されるまで最大５秒待つ
 $browser->waitForEvent('resize', 'window', 5);
 ```
 
@@ -2250,7 +2250,7 @@ php artisan dusk:page Login
 
 ```php
 /**
- * Get the URL for the page.
+ * ページのURL取得
  */
 public function url(): string
 {
@@ -2265,7 +2265,7 @@ public function url(): string
 
 ```php
 /**
- * Assert that the browser is on the page.
+ * ブラウザがページ上にあることを宣言
  */
 public function assert(Browser $browser): void
 {
@@ -2302,7 +2302,7 @@ $browser->visit('/dashboard')
 
 ```php
 /**
- * Get the element shortcuts for the page.
+ * ページの要素のショートカット取得
  *
  * @return array<string, string>
  */
@@ -2327,7 +2327,7 @@ Duskをインストールすると、ベース`Page`クラスが`tests/Browser/P
 
 ```php
 /**
- * Get the global element shortcuts for the site.
+ * サイトのグローバル要素のショートカット取得
  *
  * @return array<string, string>
  */
@@ -2354,10 +2354,10 @@ use Laravel\Dusk\Page;
 
 class Dashboard extends Page
 {
-    // Other page methods...
+    // 他のページメソッド
 
     /**
-     * Create a new playlist.
+     * 新規プレイリスト作成
      */
     public function createPlaylist(Browser $browser, string $name): void
     {
@@ -2405,7 +2405,7 @@ use Laravel\Dusk\Component as BaseComponent;
 class DatePicker extends BaseComponent
 {
     /**
-     * Get the root selector for the component.
+     * コンポーネントのルートセレクタ取得
      */
     public function selector(): string
     {
@@ -2413,7 +2413,7 @@ class DatePicker extends BaseComponent
     }
 
     /**
-     * Assert that the browser page contains the component.
+     * ブラウザのページにコンポーネントが含まれていることを宣言
      */
     public function assert(Browser $browser): void
     {
@@ -2421,7 +2421,7 @@ class DatePicker extends BaseComponent
     }
 
     /**
-     * Get the element shortcuts for the component.
+     * コンポーネント要素のショートカットを取得
      *
      * @return array<string, string>
      */
@@ -2436,7 +2436,7 @@ class DatePicker extends BaseComponent
     }
 
     /**
-     * Select the given date.
+     * 指定日付の選択
      */
     public function selectDate(Browser $browser, int $year, int $month, int $day): void
     {

@@ -19,11 +19,11 @@
 
 <div class="content-list" markdown="1">
 
-- MariaDB 10.3+ ([Version Policy](https://mariadb.org/about/#maintenance-policy))
-- MySQL 5.7+ ([Version Policy](https://en.wikipedia.org/wiki/MySQL#Release_history))
-- PostgreSQL 10.0+ ([Version Policy](https://www.postgresql.org/support/versioning/))
-- SQLite 3.26.0+
-- SQL Server 2017+ ([Version Policy](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
+- MariaDB10.3以上 ([バージョンポリシー](https://mariadb.org/about/#maintenance-policy))
+- MySQL5.7以上 ([バージョンポリシー](https://en.wikipedia.org/wiki/MySQL#Release_history))
+- PostgreSQL10.0以上 ([バージョンポリシー](https://www.postgresql.org/support/versioning/))
+- SQLite3.26.0以上
+- SQL Server2017以上 ([バージョンポリシー](https://docs.microsoft.com/en-us/lifecycle/products/?products=sql-server))
 
 </div>
 
@@ -148,7 +148,7 @@ use Illuminate\View\View;
 class UserController extends Controller
 {
     /**
-     * Show a list of all of the application's users.
+     * 全アプリケーションユーザーのリストを表示
      */
     public function index(): View
     {
