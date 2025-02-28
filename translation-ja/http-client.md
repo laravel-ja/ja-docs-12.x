@@ -224,10 +224,10 @@ $response = Http::withHeaders([
 基本認証のログイン情報とダイジェスト認証ログイン情報は、それぞれ`withBasicAuth`メソッドと`withDigestAuth`メソッドを使用して指定します。
 
 ```php
-// Basic authentication...
+// BASIC認証
 $response = Http::withBasicAuth('taylor@laravel.com', 'secret')->post(/* ... */);
 
-// Digest authentication...
+// ダイジェスト認証
 $response = Http::withDigestAuth('taylor@laravel.com', 'secret')->post(/* ... */);
 ```
 
@@ -326,19 +326,19 @@ $response = Http::retry(3, 100, throw: false)->post(/* ... */);
 Guzzleのデフォルト動作とは異なり、LaravelのHTTPクライアントラッパーは、クライアントまたはサーバのエラー(サーバからの「400」および「500」レベルの応答)で例外を投げません。`successful`、`clientError`、`serverError`メソッドを使用して、これらのエラーのいずれかが返されたかどうかを判定できます。
 
 ```php
-// Determine if the status code is >= 200 and < 300...
+// ステータスコードが200以上300未満か判定
 $response->successful();
 
-// Determine if the status code is >= 400...
+// ステータスコードが400以上か判定
 $response->failed();
 
-// Determine if the response has a 400 level status code...
+// レスポンスに400レベルのステータスコードがあるかを判定
 $response->clientError();
 
-// Determine if the response has a 500 level status code...
+// レスポンスに500レベルのステータスコードがあるかを判定
 $response->serverError();
 
-// Immediately execute the given callback if there was a client or server error...
+// クライアントまたはサーバエラーが発生した場合、指定コールバックを即座に実行
 $response->onError(callable $callback);
 ```
 
@@ -352,25 +352,25 @@ use Illuminate\Http\Client\Response;
 
 $response = Http::post(/* ... */);
 
-// Throw an exception if a client or server error occurred...
+// クライアントまたはサーバのエラーが発生した場合は、例外を投げる
 $response->throw();
 
-// Throw an exception if an error occurred and the given condition is true...
+// エラーが発生し、指定条件が真の場合は、例外を投げる
 $response->throwIf($condition);
 
-// Throw an exception if an error occurred and the given closure resolves to true...
+// エラーが発生し、指定クロージャの結果が真の場合は例外を投げる
 $response->throwIf(fn (Response $response) => true);
 
-// Throw an exception if an error occurred and the given condition is false...
+// エラーが発生し、指定条件が偽の場合は、例外を投げる
 $response->throwUnless($condition);
 
-// Throw an exception if an error occurred and the given closure resolves to false...
+// エラーが発生し、指定クロージャの結果が偽の場合は例外を投げる
 $response->throwUnless(fn (Response $response) => false);
 
-// Throw an exception if the response has a specific status code...
+// レスポンスが特定のステータスコードの場合は、例外を投げる
 $response->throwIfStatus(403);
 
-// Throw an exception unless the response has a specific status code...
+// レスポンスが特定のステータスコードでない場合は、例外を投げる
 $response->throwUnlessStatus(200);
 
 return $response['user']['id'];
@@ -399,10 +399,10 @@ return Http::post(/* ... */)->throw(function (Response $response, RequestExcepti
 
 ```php
 ->withExceptions(function (Exceptions $exceptions) {
-    // Truncate request exception messages to 240 characters...
+    // リクエストの例外メッセージを240文字に切り詰める
     $exceptions->truncateRequestExceptionsAt(240);
 
-    // Disable request exception message truncation...
+    // リクエストの例外メッセージの切り詰めを無効にする
     $exceptions->dontTruncateRequestExceptions();
 })
 ```
@@ -596,10 +596,10 @@ $response = Http::post(/* ... */);
 
 ```php
 Http::fake([
-    // Stub a JSON response for GitHub endpoints...
+    // GitHubエンドポイントのJSONレスポンスをスタブ
     'github.com/*' => Http::response(['foo' => 'bar'], 200, $headers),
 
-    // Stub a string response for Google endpoints...
+    // Googleエンドポイントの文字列レスポンスをスタブ
     'google.com/*' => Http::response('Hello World', 200, $headers),
 ]);
 ```
@@ -608,10 +608,10 @@ Http::fake([
 
 ```php
 Http::fake([
-    // Stub a JSON response for GitHub endpoints...
+    // GitHubエンドポイントのJSONレスポンスをスタブ
     'github.com/*' => Http::response(['foo' => 'bar'], 200, ['Headers']),
 
-    // Stub a string response for all other endpoints...
+    // 他のすべてのエンドポイントの文字列をスタブ
     '*' => Http::response('Hello World', 200, ['Headers']),
 ]);
 ```
@@ -644,7 +644,7 @@ Http::fake([
 
 ```php
 Http::fake([
-    // Stub a series of responses for GitHub endpoints...
+    // 他のすべてのエンドポイントの文字列をスタブ
     'github.com/*' => Http::sequence()
         ->push('Hello World', 200)
         ->push(['foo' => 'bar'], 200)
@@ -656,7 +656,7 @@ Http::fake([
 
 ```php
 Http::fake([
-    // Stub a series of responses for GitHub endpoints...
+    // 他のすべてのエンドポイントの文字列をスタブ
     'github.com/*' => Http::sequence()
         ->push('Hello World', 200)
         ->push(['foo' => 'bar'], 200)

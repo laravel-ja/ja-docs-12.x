@@ -165,9 +165,9 @@ Horizonダッシュボードは、`/horizon`ルートでアクセスできます
 
 ```php
 /**
- * Register the Horizon gate.
+ * Horizonゲートの登録
  *
- * This gate determines who can access Horizon in non-local environments.
+ * このゲートは非ローカル環境で、Horizonへアクセスできるユーザーを決定する。
  */
 protected function gate(): void
 {
@@ -277,7 +277,7 @@ sudo apt-get install supervisor
 ```
 
 > [!NOTE]
-> If configuring Supervisor yourself sounds overwhelming, consider using [Laravel Cloud](https://cloud.laravel.com), which can manage background processes for your Laravel applications.
+> もしSupervisorを自分で設定するのが大変そうに思えるなら、Laravelアプリケーションのバックグラウンドプロセスを管理できる[Laravel Cloud](https://cloud.laravel.com)の使用を検討してください。
 
 <a name="supervisor-configuration"></a>
 #### Supervisor設定
@@ -336,14 +336,14 @@ class RenderVideo implements ShouldQueue
     use Queueable;
 
     /**
-     * Create a new job instance.
+     * 新しいジョブインスタンスの生成
      */
     public function __construct(
         public Video $video,
     ) {}
 
     /**
-     * Execute the job.
+     * 仕事を実行
      */
     public function handle(): void
     {
@@ -372,7 +372,7 @@ Queueableオブジェクトの１つにタグを手作業で定義する場合�
 class RenderVideo implements ShouldQueue
 {
     /**
-     * Get the tags that should be assigned to the job.
+     * このジョブへ割り当てるべきタグを取得
      *
      * @return array<int, string>
      */
@@ -392,7 +392,7 @@ class RenderVideo implements ShouldQueue
 class SendRenderNotifications implements ShouldQueue
 {
     /**
-     * Get the tags that should be assigned to the listener.
+     * このリスナへ割り当てるべきタグを取得
      *
      * @return array<int, string>
      */

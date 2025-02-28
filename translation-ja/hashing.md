@@ -46,7 +46,7 @@ use Illuminate\Support\Facades\Hash;
 class PasswordController extends Controller
 {
     /**
-     * Update the password for the user.
+     * ユーザーのパスワードを更新
      */
     public function update(Request $request): RedirectResponse
     {

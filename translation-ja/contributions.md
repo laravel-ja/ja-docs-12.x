@@ -129,7 +129,7 @@ public function bind($abstract, $concrete = null, $shared = false)
 
 ```php
 /**
- * Execute the job.
+ * 仕事を実行
  */
 public function handle(AudioProcessor $processor): void
 {

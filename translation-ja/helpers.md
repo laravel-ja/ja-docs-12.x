@@ -2498,7 +2498,7 @@ return response()->json(['foo' => 'bar'], 200, $headers);
 
 ```php
 return retry(5, function () {
-    // Attempt 5 times while resting 100ms between attempts...
+    // 試行間に100msずつ休みながら5回トライ
 }, 100);
 ```
 
@@ -2518,7 +2518,7 @@ return retry(5, function () {
 
 ```php
 return retry([100, 200], function () {
-    // Sleep for 100ms on first retry, 200ms on second retry...
+    // 1回目の再試行で100ms、2回目の再試行で200msスリープ
 });
 ```
 
@@ -2935,16 +2935,16 @@ DB::whenQueryingForLongerThan(
 Laravelは、アプリケーションでの抽選の呼び出しを簡単にテストできるように、簡単なメソッドをいくつか提供しています。
 
 ```php
-// Lottery will always win...
+// 抽選は常に当選
 Lottery::alwaysWin();
 
-// Lottery will always lose...
+// 抽選は常に外れ
 Lottery::alwaysLose();
 
-// Lottery will win then lose, and finally return to normal behavior...
+// 抽選は当選し、次に外れる。その後は通常の振る舞いを返す
 Lottery::fix([true, false]);
 
-// Lottery will return to normal behavior...
+// 抽選は通常の振る舞いを返す
 Lottery::determineResultsNormally();
 ```
 
@@ -3010,31 +3010,31 @@ while ($waiting) {
 `Sleep`クラスは、異なる時間単位を扱う様々なメソッドを提供しています。
 
 ```php
-// Return a value after sleeping...
+// 停止後に値を返す
 $result = Sleep::for(1)->second()->then(fn () => 1 + 1);
 
-// Sleep while a given value is true...
+// 指定した値がtrueの間中、停止
 Sleep::for(1)->second()->while(fn () => shouldKeepSleeping());
 
-// Pause execution for 90 seconds...
+// 実行を９０秒停止
 Sleep::for(1.5)->minutes();
 
-// Pause execution for 2 seconds...
+// 実行を２秒停止
 Sleep::for(2)->seconds();
 
-// Pause execution for 500 milliseconds...
+// 実行を５００ミリ秒停止
 Sleep::for(500)->milliseconds();
 
-// Pause execution for 5,000 microseconds...
+// 実行を５０００マイクロ秒停止
 Sleep::for(5000)->microseconds();
 
-// Pause execution until a given time...
+// 実行を指定時間まで停止
 Sleep::until(now()->addMinute());
 
-// Alias of PHP's native "sleep" function...
+// PHPネイティブの"sleep"関数のエイリアス
 Sleep::sleep(2);
 
-// Alias of PHP's native "usleep" function...
+// PHPネイティブの"usleep"関数のエイリアス
 Sleep::usleep(5000);
 ```
 
@@ -3119,18 +3119,18 @@ public function test_it_checks_if_ready_three_times()
 use Carbon\CarbonInterval as Duration;
 use Illuminate\Support\Sleep;
 
-// Assert that sleep was called 3 times...
+// スリープが３回呼び出されることを宣言
 Sleep::assertSleptTimes(3);
 
-// Assert against the duration of sleep...
+// スリープの時間に対して宣言
 Sleep::assertSlept(function (Duration $duration): bool {
     return /* ... */;
 }, times: 1);
 
-// Assert that the Sleep class was never invoked...
+// Sleepクラスが起動されないことを宣言
 Sleep::assertNeverSlept();
 
-// Assert that, even if Sleep was called, no execution paused occurred...
+// Sleepが呼び出されても、実行を中断しないことを宣言
 Sleep::assertInsomniac();
 ```
 
@@ -3158,7 +3158,7 @@ $start = now();
 
 Sleep::for(1)->second();
 
-$start->diffForHumans(); // 1 second ago
+$start->diffForHumans(); // 1秒前
 ```
 
 Laravelは実行を一時停止するとき、にいつでも内部的に`Sleep`クラスを使用しています。例えば、[`retry`](#method-retry)ヘルパはスリープ時に`Sleep`クラスを使用し、そのヘルパを使用する際のテストの実行性を上げています。
