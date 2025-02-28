@@ -5,7 +5,7 @@
     - [PHPとBlade](#php-and-blade)
     - [Livewire](#livewire)
     - [スターターキット](#php-starter-kits)
-- [Using React or Vue](#using-react-or-vue)
+- [ReactかVueの使用](#using-react-or-vue)
     - [Inertia](#inertia)
     - [スターターキット](#inertia-starter-kits)
 - [アセットの結合](#bundling-assets)
@@ -102,21 +102,21 @@ Laravelに慣れていない方は、[ビュー](/docs/{{version}}/views)と[Bla
 <a name="php-starter-kits"></a>
 ### スターターキット
 
-If you would like to build your frontend using PHP and Livewire, you can leverage our [Livewire starter kit](/docs/{{version}}/starter-kits) to jump-start your application's development.
+PHPとLivewireを使い、フロントエンドを構築したい場合は、[Livewireスターターキット](/docs/{{version}}/starter-kits)を活用して、アプリケーションの開発をジャンプスタートできます。
 
 <a name="using-react-or-vue"></a>
-## Using React or Vue
+## ReactかVueの使用
 
-Although it's possible to build modern frontends using Laravel and Livewire, many developers still prefer to leverage the power of a JavaScript framework like React or Vue. This allows developers to take advantage of the rich ecosystem of JavaScript packages and tools available via NPM.
+LaravelやLivewireを使用してモダンなフロントエンドを構築することは可能ですが、多くの開発者はReactやVueのようなJavaScriptフレームワークのパワーを活用することを好みます。これにより、開発者はNPMを使い、JavaScriptパッケージやツールなど豊富にある利用可能なエコシステムを活用できます。
 
-However, without additional tooling, pairing Laravel with React or Vue would leave us needing to solve a variety of complicated problems such as client-side routing, data hydration, and authentication. Client-side routing is often simplified by using opinionated React / Vue frameworks such as [Next](https://nextjs.org/) and [Nuxt](https://nuxt.com/); however, data hydration and authentication remain complicated and cumbersome problems to solve when pairing a backend framework like Laravel with these frontend frameworks.
+しかし、追加のツール無しにLaravelとReactやVueを組み合わせるには、クライアントサイドのルーティング、データハイドレーション、認証など多種にわたる複雑な問題を解決する必要が起こります。クライアントサイドのルーティングは、[Next](https://nextjs.org/)や[Nuxt](https://nuxt.com/)のようなReact／Vueフレームワークのオピニオンを使用することで簡略化されることが多いです。しかし、データハイドレーションと認証は、Laravelのようなバックエンドフレームワークとこれらのフロントエンドフレームワークをペアリングする際に解決しなければならない複雑で面倒な問題のままです。
 
 さらに、開発者は２つの別々のコードリポジトリを管理することになり、しばしばメンテナンス、リリース、デプロイメントを両方のリポジトリにまたがって調整する必要が起きます。こうした問題は克服できないものではありませんが、アプリケーションを開発する上で、生産的で楽しい方法とは思えません。
 
 <a name="inertia"></a>
 ### Inertia
 
-Thankfully, Laravel offers the best of both worlds. [Inertia](https://inertiajs.com) bridges the gap between your Laravel application and your modern React or Vue frontend, allowing you to build full-fledged, modern frontends using React or Vue while leveraging Laravel routes and controllers for routing, data hydration, and authentication — all within a single code repository. With this approach, you can enjoy the full power of both Laravel and React / Vue without crippling the capabilities of either tool.
+幸運なことに、Laravelは両方の世界のベストを提供しています。[Inertia](https://inertiajs.com)は、LaravelアプリケーションとモダンなReactやVueフロントエンドの橋渡しをします。ReactやVueを使って本格的なモダンフロントエンドを構築しながら、ルーティング、データハイドレーション、認証のためにLaravelのルートとコントローラを活用することができます。このアプローチでは、LaravelとReact／Vueの両方のフルパワーを、どちらのツールの機能も損なうことなく利用できます。
 
 LaravelアプリケーションにInertiaをインストールしたあとで、通常通りにルートとコントローラを記述します。しかし、コントローラからBladeテンプレートを返すのではなく、Inertiaページを返すようにします。
 
@@ -144,7 +144,7 @@ class UserController extends Controller
 }
 ```
 
-An Inertia page corresponds to a React or Vue component, typically stored within the `resources/js/pages` directory of your application. The data given to the page via the `Inertia::render` method will be used to hydrate the "props" of the page component:
+Inertiaページは ReactまたはVueコンポーネントに対応し、通常はアプリケーションの`resources/js/pages`ディレクトリへ格納します。`Inertia::render`メソッドを通してページへ与えたデータは、ページコンポーネントの"props"をハイドレートするため使用されます：
 
 ```jsx
 import Layout from '@/layouts/authenticated';
@@ -161,16 +161,16 @@ export default function Show({ user }) {
 }
 ```
 
-As you can see, Inertia allows you to leverage the full power of React or Vue when building your frontend, while providing a light-weight bridge between your Laravel powered backend and your JavaScript powered frontend.
+ご覧のようにInertiaは、フロントエンドを構築する際にReactやVueのフルパワーを活用でき、同時にLaravelを使用したバックエンドとJavaScriptを使用したフロントエンドの間に軽量なブリッジを提供します。
 
 #### サーバサイドレンダ
 
-If you're concerned about diving into Inertia because your application requires server-side rendering, don't worry. Inertia offers [server-side rendering support](https://inertiajs.com/server-side-rendering). And, when deploying your application via [Laravel Cloud](https://cloud.laravel.com) or [Laravel Forge](https://forge.laravel.com), it's a breeze to ensure that Inertia's server-side rendering process is always running.
+アプリケーションにサーバサイドレンダが必要なため、Inertiaへ飛び込むことに不安を感じている方も安心してください。Inertiaは[サーバサイドレンダサポート](https://inertiajs.com/server-side-rendering)を提供しています。さらに、アプリケーションを[Laravel Cloud](https://cloud.laravel.com)または[Laravel Forge](https://forge.laravel.com)経由でデプロイする場合、Inertiaのサーバサイドレンダリングプロセスが常に実行されていることを確認するのは簡単です。
 
 <a name="inertia-starter-kits"></a>
 ### スターターキット
 
-If you would like to build your frontend using Inertia and Vue / React, you can leverage our [React or Vue application starter kits](/docs/{{version}}/starter-kits) to jump-start your application's development. Both of these starter kits scaffold your application's backend and frontend authentication flow using Inertia, Vue / React, [Tailwind](https://tailwindcss.com), and [Vite](https://vitejs.dev) so that you can start building your next big idea.
+InertiaとVue／Reactを使用してフロントエンドを構築したい場合は、[ReactまたはVueアプリケーション・スターターキット](/docs/{{version}}/starter-kits)を活用してアプリケーションの開発をジャンプスタートできます。どちらのスターターキットも、Inertia、Vue／React、[Tailwind](https://tailwindcss.com)、[Vite](https://vitejs.dev)を使用して、アプリケーションのバックエンドとフロントエンドの認証フローをスカフォールドしており、次の大きなアイデアを作り始めることができます。
 
 <a name="bundling-assets"></a>
 ## アセットの結合
@@ -179,7 +179,7 @@ BladeとLivewire、Vue／ReactとInertiaのどちらを使用してフロント�
 
 Laravelは、デフォルトで[Vite](https://vitejs.dev)を利用してアセットをバンドルします。Viteは、ローカル開発において、ビルドが非常に速く、ほぼ瞬時のホットモジュール交換（HMR）を提供しています。[スターターキット](/docs/{{version}}/starter-kits)を含むすべての新しいLaravelアプリケーションでは、`vite.config.js`ファイルがあり、軽量なLaravel Viteプラグインがロードされ、LaravelアプリケーションでViteを楽しく使用できるようにしています。
 
-The fastest way to get started with Laravel and Vite is by beginning your application's development using [our application starter kits](/docs/{{version}}/starter-kits), which jump-starts your application by providing frontend and backend authentication scaffolding.
+LaravelとViteの使用を開始する最も早い方法は、フロントエンドとバックエンドの認証スカフォールドを提供することにより、アプリケーションをジャンプスタートさせる[アプリケーションスターターキット](/docs/{{version}}/starter-kits)を使用してアプリケーションの開発を開始することです。
 
 > [!NOTE]
 > LaravelでViteを活用するための詳細なドキュメントは、[アセットバンドルとコンパイルに関する専用のドキュメント](/docs/{{version}}/vite)を参照してください。

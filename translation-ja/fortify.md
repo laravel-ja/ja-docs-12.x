@@ -41,9 +41,9 @@ Fortifyは独自のユーザーインターフェイスを提供しません。�
 
 **Laravelの認証機能を使用するために、Fortifyを使う必要はありません。** [認証](/docs/{{version}}/authentication)、[パスワードリセット](/docs/{{version}}/passwords)、および[メール検証](/docs/{{version}}/verification)のドキュメントにしたがい、Laravelの認証サービスをいつでも自前で操作できます。
 
-If you are new to Laravel, you may wish to explore [our application starter kits](/docs/{{version}}/starter-kits) before attempting to use Laravel Fortify. Our starter kits provide an authentication scaffolding for your application that includes a user interface built with [Tailwind CSS](https://tailwindcss.com). This allows you to study and get comfortable with Laravel's authentication features before allowing Laravel Fortify to implement these features for you.
+Laravelが初めての方は、Laravel Fortifyを使用する前に、[アプリケーションスターターキット](/docs/{{version}}/starter-kits)を調べると良いでしょう。私たちのスターターキットは、[Tailwind CSS](https://tailwindcss.com)で構築されたユーザーインターフェイスを含む、アプリケーションの認証のスカフォールドを提供します。これにより、Laravel Fortifyにこれらの機能を実装させる前に、Laravelの認証機能を勉強し、使いこなせるようになります。
 
-Laravel Fortify essentially takes the routes and controllers of our application starter kits and offers them as a package that does not include a user interface. This allows you to still quickly scaffold the backend implementation of your application's authentication layer without being tied to any particular frontend opinions.
+Laravel Fortifyは、基本的にアプリケーションスターターキットのルートとコントローラを利用し、ユーザーインターフェイスを含まないパッケージとして提供します。これにより、特定のフロントエンドの考え方に縛られることなく、アプリケーションの認証レイヤーのバックエンド実装を素早くスカフォールドできます。
 
 <a name="when-should-i-use-fortify"></a>
 ### いつFortifyを使用すべきか？
@@ -91,7 +91,7 @@ php artisan migrate
 <a name="fortify-features"></a>
 ### Fortifyの機能
 
-The `fortify` configuration file contains a `features` configuration array. This array defines which backend routes / features Fortify will expose by default. We recommend that you only enable the following features, which are the basic authentication features provided by most Laravel applications:
+`fortify`設定ファイルは、`features`設定配列を含んでいます。この配列は、Fortifyがデフォルトで公開するバックエンドルート／機能を定義します。ほとんどのLaravelアプリケーションで提供されている基本的な認証機能である、以下の機能のみを有効にすることをお勧めします。
 
 ```php
 'features' => [

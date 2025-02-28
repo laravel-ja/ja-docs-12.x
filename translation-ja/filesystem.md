@@ -127,7 +127,7 @@ LaravelのFlysystemの統合は、FTPでもうまく動作しますが、フレ�
     'username' => env('FTP_USERNAME'),
     'password' => env('FTP_PASSWORD'),
 
-    // Optional FTP Settings...
+    // FTPのオプション設定
     // 'port' => env('FTP_PORT', 21),
     // 'root' => env('FTP_ROOT'),
     // 'passive' => true,
@@ -152,19 +152,19 @@ LaravelのFlysystemの統合は、SFTPでもうまく動作しますが、フレ
     'driver' => 'sftp',
     'host' => env('SFTP_HOST'),
 
-    // Settings for basic authentication...
+    // 基本認証の設定
     'username' => env('SFTP_USERNAME'),
     'password' => env('SFTP_PASSWORD'),
 
-    // Settings for SSH key based authentication with encryption password...
+    // 暗号化パスワードを使用したSSHキーベースの認証の設定
     'privateKey' => env('SFTP_PRIVATE_KEY'),
     'passphrase' => env('SFTP_PASSPHRASE'),
 
-    // Settings for file / directory permissions...
+    // ファイル／ディレクトリのパーミッション設定
     'visibility' => 'private', // `private` = 0600, `public` = 0644
     'directory_visibility' => 'private', // `private` = 0700, `public` = 0755
 
-    // Optional SFTP Settings...
+    // SFTPのオプション設定
     // 'hostFingerprint' => env('SFTP_HOST_FINGERPRINT'),
     // 'maxTries' => 4,
     // 'passphrase' => env('SFTP_PASSPHRASE'),
@@ -489,7 +489,7 @@ Storage::put('file.jpg', $resource);
 
 ```php
 if (! Storage::put('file.jpg', $contents)) {
-    // The file could not be written to disk...
+    // このファイルはディスクへ書き込み不可
 }
 ```
 
@@ -534,10 +534,10 @@ Storage::move('old/file.jpg', 'new/file.jpg');
 use Illuminate\Http\File;
 use Illuminate\Support\Facades\Storage;
 
-// Automatically generate a unique ID for filename...
+// ファイル名に対して一意なIDを自動的に生成
 $path = Storage::putFile('photos', new File('/path/to/photo'));
 
-// Manually specify a filename...
+// ファイル名を手作業で指定
 $path = Storage::putFileAs('photos', new File('/path/to/photo'), 'photo.jpg');
 ```
 
@@ -565,7 +565,7 @@ use Illuminate\Http\Request;
 class UserAvatarController extends Controller
 {
     /**
-     * Update the avatar for the user.
+     * ユーザーのアバター更新
      */
     public function update(Request $request): string
     {

@@ -165,7 +165,7 @@ use Illuminate\View\View;
 class UserController extends Controller
 {
     /**
-     * Show the profile for the given user.
+     * 指定ユーザーのプロファイル表示
      */
     public function showProfile(string $id): View
     {
@@ -184,7 +184,7 @@ class UserController extends Controller
 class Cache extends Facade
 {
     /**
-     * Get the registered name of the component.
+     * コンポーネントの登録済み名を取得
      */
     protected static function getFacadeAccessor(): string
     {
@@ -211,7 +211,7 @@ use Illuminate\Database\Eloquent\Model;
 class Podcast extends Model
 {
     /**
-     * Publish the podcast.
+     * ポッドキャストを公開
      */
     public function publish(Publisher $publisher): void
     {
@@ -236,7 +236,7 @@ use Illuminate\Database\Eloquent\Model;
 class Podcast extends Model
 {
     /**
-     * Publish the podcast.
+     * ポッドキャストを公開
      */
     public function publish(Publisher $publisher): void // [tl! remove]
     public function publish(): void // [tl! add]
@@ -284,7 +284,7 @@ class PodcastTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * A test example.
+     * テスト例
      */
     public function test_podcast_can_be_published(): void
     {

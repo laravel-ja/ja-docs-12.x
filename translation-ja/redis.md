@@ -252,7 +252,7 @@ use Illuminate\View\View;
 class UserController extends Controller
 {
     /**
-     * Show the profile for the given user.
+     * 指定ユーザーのプロファイル表示
      */
     public function show(string $id): View
     {
