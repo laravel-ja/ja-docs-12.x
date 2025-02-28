@@ -131,7 +131,7 @@ Notification::sendNow($developers, new DeploymentCompleted($deployment));
 
 ```php
 /**
- * Get the notification's delivery channels.
+ * 通知の配信チャンネルを取得
  *
  * @return array<int, string>
  */
@@ -198,7 +198,7 @@ $user->notify((new InvoicePaid($invoice))->delay([
 
 ```php
 /**
- * Determine the notification's delivery delay.
+ * 通知の送信遅延を決める
  *
  * @return array<string, \Illuminate\Support\Carbon>
  */
@@ -230,7 +230,7 @@ class InvoicePaid extends Notification implements ShouldQueue
     use Queueable;
 
     /**
-     * Create a new notification instance.
+     * 新しい通知インスタンスの生成
      */
     public function __construct()
     {
@@ -243,7 +243,7 @@ class InvoicePaid extends Notification implements ShouldQueue
 
 ```php
 /**
- * Determine which connections should be used for each notification channel.
+ * 各通知チャンネルで使用する接続を決定
  *
  * @return array<string, string>
  */
@@ -263,7 +263,7 @@ public function viaConnections(): array
 
 ```php
 /**
- * Determine which queues should be used for each notification channel.
+ * 各通知チャンネルで使用するキューを判断
  *
  * @return array<string, string>
  */
@@ -285,7 +285,7 @@ public function viaQueues(): array
 use Illuminate\Queue\Middleware\RateLimited;
 
 /**
- * Get the middleware the notification job should pass through.
+ * 通知ジョブを通過させるミドルウェアを取得
  *
  * @return array<int, object>
  */
@@ -328,7 +328,7 @@ class InvoicePaid extends Notification implements ShouldQueue
     use Queueable;
 
     /**
-     * Create a new notification instance.
+     * 新しい通知インスタンスの生成
      */
     public function __construct()
     {
@@ -349,7 +349,7 @@ class InvoicePaid extends Notification implements ShouldQueue
 
 ```php
 /**
- * Determine if the notification should be sent.
+ * 通知を送信する必要があるかどうか確認
  */
 public function shouldSend(object $notifiable, string $channel): bool
 {
@@ -402,7 +402,7 @@ Notification::routes([
 
 ```php
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -434,7 +434,7 @@ public function toMail(object $notifiable): MailMessage
 
 ```php
 /**
- * Get the mail representation of the notification.
+ * G通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -452,7 +452,7 @@ public function toMail(object $notifiable): MailMessage
 
 ```php
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -466,7 +466,7 @@ public function toMail(object $notifiable): MailMessage
 
 ```php
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -481,7 +481,7 @@ public function toMail(object $notifiable): MailMessage
 
 ```php
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -498,7 +498,7 @@ public function toMail(object $notifiable): MailMessage
 
 ```php
 /**
- * Get the mail representation of the notification.
+ * G通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -527,16 +527,16 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
-     * Route notifications for the mail channel.
+     * メールチャンネルに対する通知をルートする
      *
      * @return  array<string, string>|string
      */
     public function routeNotificationForMail(Notification $notification): array|string
     {
-        // Return email address only...
+        // メールアドレスのみを返す場合
         return $this->email_address;
 
-        // Return email address and name...
+        // メールアドレスと名前を返す場合
         return [$this->email_address => $this->name];
     }
 }
@@ -549,7 +549,7 @@ class User extends Authenticatable
 
 ```php
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -566,7 +566,7 @@ public function toMail(object $notifiable): MailMessage
 
 ```php
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -592,7 +592,7 @@ php artisan vendor:publish --tag=laravel-notifications
 
 ```php
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -609,7 +609,7 @@ public function toMail(object $notifiable): MailMessage
 
 ```php
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -628,7 +628,7 @@ Mailableオブジェクトにファイルを添付するのとは異なり、`at
 use App\Mail\InvoicePaid as InvoicePaidMailable;
 
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): Mailable
 {
@@ -642,7 +642,7 @@ public function toMail(object $notifiable): Mailable
 
 ```php
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -665,7 +665,7 @@ public function toMail(object $notifiable): MailMessage
 
 ```php
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -684,7 +684,7 @@ MailgunやPostmarkなどのサードパーティのメールプロバイダは�
 
 ```php
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -708,7 +708,7 @@ Mailgunドライバを使用しているアプリケーションの場合は、[
 use Symfony\Component\Mime\Email;
 
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -731,7 +731,7 @@ use App\Mail\InvoicePaid as InvoicePaidMailable;
 use Illuminate\Mail\Mailable;
 
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): Mailable
 {
@@ -751,7 +751,7 @@ use Illuminate\Notifications\AnonymousNotifiable;
 use Illuminate\Mail\Mailable;
 
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): Mailable
 {
@@ -799,7 +799,7 @@ php artisan make:notification InvoicePaid --markdown=mail.invoice.paid
 
 ```php
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -889,7 +889,7 @@ LaravelのMarkdownコンポーネントの完全に新しいテーマを作成�
 
 ```php
 /**
- * Get the mail representation of the notification.
+ * 通知のメールプレゼンテーションを取得
  */
 public function toMail(object $notifiable): MailMessage
 {
@@ -926,7 +926,7 @@ php artisan migrate
 
 ```php
 /**
- * Get the array representation of the notification.
+ * 通知の配列表現の取得
  *
  * @return array<string, mixed>
  */
@@ -943,7 +943,7 @@ public function toArray(object $notifiable): array
 
 ```php
 /**
- * Get the notification's database type.
+ * 通知のデータベースタイプを取得
  *
  * @return string
  */
@@ -1034,7 +1034,7 @@ $user->notifications()->delete();
 use Illuminate\Notifications\Messages\BroadcastMessage;
 
 /**
- * Get the broadcastable representation of the notification.
+ * 通知のブロードキャスト表現の取得
  */
 public function toBroadcast(object $notifiable): BroadcastMessage
 {
@@ -1063,7 +1063,7 @@ return (new BroadcastMessage($data))
 
 ```php
 /**
- * Get the type of the notification being broadcast.
+ * ブロードキャストする通知のタイプ
  */
 public function broadcastType(): string
 {
@@ -1102,7 +1102,7 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
-     * The channels the user receives notification broadcasts on.
+     * ユーザーがブロードキャストされる通知を受け取るチャンネル
      */
     public function receivesBroadcastNotificationsOn(): string
     {
@@ -1140,7 +1140,7 @@ VONAGE_SMS_FROM=15556666666
 use Illuminate\Notifications\Messages\VonageMessage;
 
 /**
- * Get the Vonage / SMS representation of the notification.
+ * 通知のVonage／SMS表現を取得
  */
 public function toVonage(object $notifiable): VonageMessage
 {
@@ -1158,7 +1158,7 @@ SMSメッセージにunicodeが含まれる場合は、`VonageMessage`インス�
 use Illuminate\Notifications\Messages\VonageMessage;
 
 /**
- * Get the Vonage / SMS representation of the notification.
+ * 通知のVonage／SMS表現を取得
  */
 public function toVonage(object $notifiable): VonageMessage
 {
@@ -1177,7 +1177,7 @@ public function toVonage(object $notifiable): VonageMessage
 use Illuminate\Notifications\Messages\VonageMessage;
 
 /**
- * Get the Vonage / SMS representation of the notification.
+ * 通知のVonage／SMS表現を取得
  */
 public function toVonage(object $notifiable): VonageMessage
 {
@@ -1196,7 +1196,7 @@ public function toVonage(object $notifiable): VonageMessage
 use Illuminate\Notifications\Messages\VonageMessage;
 
 /**
- * Get the Vonage / SMS representation of the notification.
+ * 通知のVonage／SMS表現を取得
  */
 public function toVonage(object $notifiable): VonageMessage
 {
@@ -1225,7 +1225,7 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
-     * Route notifications for the Vonage channel.
+     * 通知をVonageチャンネルへ回す
      */
     public function routeNotificationForVonage(Notification $notification): string
     {
@@ -1278,7 +1278,7 @@ use Illuminate\Notifications\Slack\BlockKit\Composites\ConfirmObject;
 use Illuminate\Notifications\Slack\SlackMessage;
 
 /**
- * Get the Slack representation of the notification.
+ * 通知のSlack表現を取得
  */
 public function toSlack(object $notifiable): SlackMessage
 {
@@ -1310,7 +1310,7 @@ use Illuminate\Notifications\Slack\SlackMessage;
 use Illuminate\Support\Str;
 
 /**
- * Get the Slack representation of the notification.
+ * 通知のSlack表現を取得
  */
 public function toSlack(object $notifiable): SlackMessage
 {
@@ -1323,7 +1323,7 @@ public function toSlack(object $notifiable): SlackMessage
                 "type": "plain_text",
                 "text": "Team Announcement"
               }
-            }, 
+            },
             {
               "type": "section",
               "text": {
@@ -1354,7 +1354,7 @@ use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
 use Illuminate\Notifications\Slack\SlackMessage;
 
 /**
- * Get the Slack representation of the notification.
+ * 通知のSlack表現を取得
  */
 public function toSlack(object $notifiable): SlackMessage
 {
@@ -1368,10 +1368,10 @@ public function toSlack(object $notifiable): SlackMessage
             $block->text('An invoice has been paid.');
         })
         ->actionsBlock(function (ActionsBlock $block) {
-             // ID defaults to "button_acknowledge_invoice"...
+             // IDのデフォルトは"button_acknowledge_invoice"
             $block->button('Acknowledge Invoice')->primary();
 
-            // Manually configure the ID...
+            // 手作業でIDを設定
             $block->button('Deny')->danger()->id('deny_invoice');
         });
 }
@@ -1390,7 +1390,7 @@ use Illuminate\Notifications\Slack\BlockKit\Composites\ConfirmObject;
 use Illuminate\Notifications\Slack\SlackMessage;
 
 /**
- * Get the Slack representation of the notification.
+ * 通知のSlack表現を取得
  */
 public function toSlack(object $notifiable): SlackMessage
 {
@@ -1454,7 +1454,7 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
-     * Route notifications for the Slack channel.
+     * Slackチャンネルの通知を回す
      */
     public function routeNotificationForSlack(Notification $notification): mixed
     {
@@ -1488,7 +1488,7 @@ class User extends Authenticatable
     use Notifiable;
 
     /**
-     * Route notifications for the Slack channel.
+     * Slackチャンネルの通知を回す
      */
     public function routeNotificationForSlack(Notification $notification): mixed
     {
@@ -1527,7 +1527,7 @@ use Illuminate\Contracts\Translation\HasLocalePreference;
 class User extends Model implements HasLocalePreference
 {
     /**
-     * Get the user's preferred locale.
+     * ユーザーの優先ロケールを取得
      */
     public function preferredLocale(): string
     {
@@ -1593,7 +1593,7 @@ class ExampleTest extends TestCase
     {
         Notification::fake();
 
-        // Perform order shipping...
+        // 注文発送の実行…
 
         // 通知されないことをアサート
         Notification::assertNothingSent();
@@ -1672,7 +1672,7 @@ class CheckNotificationStatus
 
 ```php
 /**
- * Handle the given event.
+ * 指定イベントを処理
  */
 public function handle(NotificationSending $event): bool
 {
@@ -1684,7 +1684,7 @@ public function handle(NotificationSending $event): bool
 
 ```php
 /**
- * Handle the given event.
+ * 指定イベントを処理
  */
 public function handle(NotificationSending $event): void
 {
@@ -1718,7 +1718,7 @@ class LogNotification
 
 ```php
 /**
- * Handle the given event.
+ * 指定イベントを処理
  */
 public function handle(NotificationSent $event): void
 {
@@ -1746,13 +1746,13 @@ use Illuminate\Notifications\Notification;
 class VoiceChannel
 {
     /**
-     * Send the given notification.
+     * 指定通知の送信
      */
     public function send(object $notifiable, Notification $notification): void
     {
         $message = $notification->toVoice($notifiable);
 
-        // Send notification to the $notifiable instance...
+        // 通知を$notifiableインスタンスへ送信する…
     }
 }
 ```
@@ -1775,7 +1775,7 @@ class InvoicePaid extends Notification
     use Queueable;
 
     /**
-     * Get the notification channels.
+     * 通知チャンネルの取得
      */
     public function via(object $notifiable): string
     {
@@ -1783,7 +1783,7 @@ class InvoicePaid extends Notification
     }
 
     /**
-     * Get the voice representation of the notification.
+     * 通知の音声表現を取得
      */
     public function toVoice(object $notifiable): VoiceMessage
     {

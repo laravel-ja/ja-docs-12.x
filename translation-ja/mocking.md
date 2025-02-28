@@ -98,7 +98,7 @@ use Illuminate\Support\Facades\Cache;
 class UserController extends Controller
 {
     /**
-     * Retrieve a list of all users of the application.
+     * アプリケーションのすべてのユーザーのリストを取得
      */
     public function index(): array
     {
@@ -247,11 +247,11 @@ public function test_time_can_be_manipulated(): void
 
 ```php
 $this->travel(5)->days(function () {
-    // Test something five days into the future...
+    // ５日後の将来で、何かをテストする…
 });
 
 $this->travelTo(now()->subDays(10), function () {
-    // Test something during a given moment...
+    // 指定した時間で、何かをテストする…
 });
 ```
 
@@ -260,12 +260,12 @@ $this->travelTo(now()->subDays(10), function () {
 ```php
 use Illuminate\Support\Carbon;
 
-// Freeze time and resume normal time after executing closure...
+// 時刻を止め、クロージャ実行後は通常どおりに再開する
 $this->freezeTime(function (Carbon $time) {
     // …
 });
 
-// Freeze time at the current second and resume normal time after executing closure...
+// 現在秒で時刻を止め、クロージャ実行後は通常通りに再開する
 $this->freezeSecond(function (Carbon $time) {
     // …
 })

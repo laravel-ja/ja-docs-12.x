@@ -456,7 +456,7 @@ Monologにはさまざまな[利用可能なハンドラ](https://github.com/Sel
 ```
 
 <a name="monolog-processors"></a>
-#### Monolog Processors
+#### Monologプロセッサ
 
 Monologは、メッセージをログに記録する前に処理することもできます。独自のプロセッサを作成したり、[Monologが提供する既存のプロセッサ](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Processor)を使用したりできます。
 
@@ -470,10 +470,10 @@ Monologは、メッセージをログに記録する前に処理することも�
         'stream' => 'php://stderr',
     ],
     'processors' => [
-        // Simple syntax...
+        // シンプルな記法
         Monolog\Processor\MemoryUsageProcessor::class,
 
-        // With options...
+        // オプション付き
         [
             'processor' => Monolog\Processor\PsrLogMessageProcessor::class,
             'with' => ['removeUsedContextFields' => true],
@@ -508,7 +508,7 @@ use Monolog\Logger;
 class CreateCustomLogger
 {
     /**
-     * Create a custom Monolog instance.
+     * カスタムMonologインスタンスの生成
      */
     public function __invoke(array $config): Logger
     {
@@ -530,7 +530,7 @@ Laravel Pail（ペール：バケツ、手杓）は、Laravelアプリケーシ�
 ### インストール
 
 > [!WARNING]
-> Laravel Pail requires [PHP 8.2+](https://php.net/releases/) and the [PCNTL](https://www.php.net/manual/en/book.pcntl.php) extension.
+> Laravel Pailには、[PHP8.2以上](https://php.net/releases/)と[PCNTL](https://www.php.net/manual/en/book.pcntl.php)拡張が必要です。
 
 使用開始するには、Composerパッケージマネージャを使い、プロジェクトにPailをインストールしてください。
 
@@ -559,7 +559,7 @@ php artisan pail -v
 php artisan pail -vv
 ```
 
-To stop tailing logs, press `Ctrl+C` at any time.
+いつでもログの表示を停止するには、`Ctrl+C`を押してください。
 
 <a name="pail-filtering-logs"></a>
 ### ログのフィルタリング

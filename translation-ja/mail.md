@@ -4,7 +4,7 @@
     - [設定](#configuration)
     - [ドライバ事前設定](#driver-prerequisites)
     - [フェイルオーバー設定](#failover-configuration)
-    - [Round Robin Configuration](#round-robin-configuration)
+    - [ラウンドロビン設定](#round-robin-configuration)
 - [Mailableの生成](#generating-mailables)
 - [Mailableの記述](#writing-mailables)
     - [Senderの設定](#configuring-the-sender)
@@ -321,7 +321,7 @@ use Illuminate\Mail\Mailables\Address;
 use Illuminate\Mail\Mailables\Envelope;
 
 /**
- * Get the message envelope.
+ * メッセージEnvelopeを取得
  */
 public function envelope(): Envelope
 {
@@ -369,7 +369,7 @@ Mailableクラスの`content`メソッド内で`view`、つまりメールのコ
 
 ```php
 /**
- * Get the message content definition.
+ * メッセージ内容の定義を取得
  */
 public function content(): Content
 {
@@ -389,7 +389,7 @@ public function content(): Content
 
 ```php
 /**
- * Get the message content definition.
+ * メッセージ内容の定義を取得
  */
 public function content(): Content
 {
@@ -433,7 +433,7 @@ class OrderShipped extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * Create a new message instance.
+     * 新しいメッセージインスタンスの生成
      */
     public function __construct(
         public Order $order,
@@ -480,7 +480,7 @@ class OrderShipped extends Mailable
     use Queueable, SerializesModels;
 
     /**
-     * Create a new message instance.
+     * 新しいメッセージインスタンスの生成
      */
     public function __construct(
         protected Order $order,
@@ -519,7 +519,7 @@ class OrderShipped extends Mailable
 use Illuminate\Mail\Mailables\Attachment;
 
 /**
- * Get the attachments for the message.
+ * メッセージの添付を取得
  *
  * @return array<int, \Illuminate\Mail\Mailables\Attachment>
  */
@@ -535,7 +535,7 @@ public function attachments(): array
 
 ```php
 /**
- * Get the attachments for the message.
+ * メッセージの添付を取得
  *
  * @return array<int, \Illuminate\Mail\Mailables\Attachment>
  */
@@ -556,7 +556,7 @@ public function attachments(): array
 
 ```php
 /**
- * Get the attachments for the message.
+ * メッセージの添付を取得
  *
  * @return array<int, \Illuminate\Mail\Mailables\Attachment>
  */
@@ -572,7 +572,7 @@ public function attachments(): array
 
 ```php
 /**
- * Get the attachments for the message.
+ * メッセージの添付を取得
  *
  * @return array<int, \Illuminate\Mail\Mailables\Attachment>
  */
@@ -590,7 +590,7 @@ public function attachments(): array
 
 ```php
 /**
- * Get the attachments for the message.
+ * メッセージの添付を取得
  *
  * @return array<int, \Illuminate\Mail\Mailables\Attachment>
  */
@@ -611,7 +611,7 @@ public function attachments(): array
 
 ```php
 /**
- * Get the attachments for the message.
+ * メッセージの添付を取得
  *
  * @return array<int, \Illuminate\Mail\Mailables\Attachment>
  */
@@ -672,7 +672,7 @@ use Illuminate\Mail\Attachment;
 class Photo extends Model implements Attachable
 {
     /**
-     * Get the attachable representation of the model.
+     * モデルの添付可能な形式を取得
      */
     public function toMailAttachment(): Attachment
     {
@@ -685,7 +685,7 @@ class Photo extends Model implements Attachable
 
 ```php
 /**
- * Get the attachments for the message.
+ * メッセージの添付を取得
  *
  * @return array<int, \Illuminate\Mail\Mailables\Attachment>
  */
@@ -698,10 +698,10 @@ public function attachments(): array
 もちろん、添付ファイルデータは、Amazon S3などのリモートファイルストレージサービスに保存されている場合もあるでしょう。そのため、Laravelでは、アプリケーションの[ファイルシステム・ディスク](/docs/{{version}}/filesystem)のいずれかに保存しているデータから、添付ファイルのインスタンスを生成することも可能です。
 
 ```php
-// Create an attachment from a file on your default disk...
+// デフォルトデスクから、添付ファイルを作成
 return Attachment::fromStorage($this->path);
 
-// Create an attachment from a file on a specific disk...
+// 指定ディスクから、添付ファイルを作成
 return Attachment::fromStorageDisk('backblaze', $this->path);
 ```
 
@@ -753,7 +753,7 @@ MailgunやPostmarkなどのサードパーティのメールプロバイダは�
 use Illuminate\Mail\Mailables\Envelope;
 
 /**
- * Get the message envelope.
+ * メッセージエンベロープの取得
  *
  * @return \Illuminate\Mail\Mailables\Envelope
  */
@@ -783,7 +783,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Symfony\Component\Mime\Email;
 
 /**
- * Get the message envelope.
+ * メッセージエンベロープの取得
  */
 public function envelope(): Envelope
 {
@@ -818,7 +818,7 @@ php artisan make:mail OrderShipped --markdown=mail.orders.shipped
 use Illuminate\Mail\Mailables\Content;
 
 /**
- * Get the message content definition.
+ * メッセージ内容の定義を取得
  */
 public function content(): Content
 {
@@ -936,7 +936,7 @@ class OrderShipmentController extends Controller
     {
         $order = Order::findOrFail($request->order_id);
 
-        // Ship the order...
+        // 注文を発送…
 
         Mail::to($request->user())->send(new OrderShipped($order));
 
@@ -1065,7 +1065,7 @@ class OrderShipped extends Mailable implements ShouldQueue
     use Queueable, SerializesModels;
 
     /**
-     * Create a new message instance.
+     * 新しいメッセージインスタンスの生成
      */
     public function __construct()
     {
@@ -1128,7 +1128,7 @@ use Illuminate\Contracts\Translation\HasLocalePreference;
 class User extends Model implements HasLocalePreference
 {
     /**
-     * Get the user's preferred locale.
+     * ユーザーの優先ロケールを取得
      */
     public function preferredLocale(): string
     {
@@ -1416,7 +1416,7 @@ use Illuminate\Mail\Events\MessageSending;
 class LogMessage
 {
     /**
-     * Handle the given event.
+     * 指定イベントを処理
      */
     public function handle(MessageSending $event): void
     {
@@ -1440,7 +1440,7 @@ use Symfony\Component\Mime\MessageConverter;
 class MailchimpTransport extends AbstractTransport
 {
     /**
-     * Create a new Mailchimp transport instance.
+     * 新しいMailchimpトランスポートインスタンスを生成
      */
     public function __construct(
         protected ApiClient $client,
@@ -1466,7 +1466,7 @@ class MailchimpTransport extends AbstractTransport
     }
 
     /**
-     * Get the string representation of the transport.
+     * トランスポートの文字列表現を取得
      */
     public function __toString(): string
     {

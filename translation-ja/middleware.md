@@ -81,7 +81,7 @@ class BeforeMiddleware
 {
     public function handle(Request $request, Closure $next): Response
     {
-        // Perform action
+        // アクションの実行
 
         return $next($request);
     }
@@ -105,7 +105,7 @@ class AfterMiddleware
     {
         $response = $next($request);
 
-        // Perform action
+        // アクションの実行
 
         return $response;
     }
@@ -476,7 +476,7 @@ class TerminatingMiddleware
     }
 
     /**
-     * Handle tasks after the response has been sent to the browser.
+     * レスポンスをブラウザへ送信した後のタスクを処理
      */
     public function terminate(Request $request, Response $response): void
     {

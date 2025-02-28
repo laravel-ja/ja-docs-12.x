@@ -103,7 +103,7 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * 名グレーションをもとに戻す
      */
     public function down(): void
     {
@@ -119,14 +119,14 @@ return new class extends Migration
 
 ```php
 /**
- * The database connection that should be used by the migration.
+ * マイグレーションで使用するデータベース接続
  *
  * @var string
  */
 protected $connection = 'pgsql';
 
 /**
- * Run the migrations.
+ * マイグレーションの実行
  */
 public function up(): void
 {
@@ -277,15 +277,15 @@ Schema::create('users', function (Blueprint $table) {
 
 ```php
 if (Schema::hasTable('users')) {
-    // The "users" table exists...
+    // "users"テーブルは存在している
 }
 
 if (Schema::hasColumn('users', 'email')) {
-    // The "users" table exists and has an "email" column...
+    // "email"カラムを持つ"users"テーブルが存在している
 }
 
 if (Schema::hasIndex('users', ['email'], 'unique')) {
-    // The "users" table exists and has a unique index on the "email" column...
+    // "users"テーブルが存在し、"email"カラムにユニークインデックスが存在している
 }
 ```
 
@@ -1406,7 +1406,7 @@ $table->renameIndex('from', 'to')
 
 ```php
 Schema::table('geo', function (Blueprint $table) {
-    $table->dropIndex(['state']); // Drops index 'geo_state_index'
+    $table->dropIndex(['state']); // 'geo_state_index'インデックスを削除
 });
 ```
 
@@ -1504,7 +1504,7 @@ Schema::enableForeignKeyConstraints();
 Schema::disableForeignKeyConstraints();
 
 Schema::withoutForeignKeyConstraints(function () {
-    // Constraints disabled within this closure...
+    // このクロージャの中では、制約が無効になる
 });
 ```
 

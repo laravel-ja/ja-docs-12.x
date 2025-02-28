@@ -46,7 +46,7 @@ Webアプリケーションを構築するときに利用できるさまざま�
 
 Laravelは素晴らしくスケーラブルです。PHPのスケーリングに適した基本の性質と、Redisなど高速な分散キャッシュシステムに対するLaravelの組み込み済みサポートにより、Laravelを使用した水平スケーリングは簡単です。実際、Laravelアプリケーションは、月あたり数億のリクエストを処理するよう簡単に拡張できます。
 
-Need extreme scaling? Platforms like [Laravel Cloud](https://cloud.laravel.com) allow you to run your Laravel application at nearly limitless scale.
+極端なスケーリングが必要ですか？[Laravel Cloud](https://cloud.laravel.com)のようなプラットフォームでは、Laravelアプリケーションをほぼ無限のスケールで実行できます。
 
 #### コミュニティによるフレームワーク
 
@@ -358,7 +358,7 @@ Laravelアプリケーションを開発するときに、どのようなコー�
 
 さらに、コミュニティがメンテナンスしている[Laravel Idea](https://laravel-idea.com/) PhpStormプラグインは、コード生成、Eloquent構文補完、バリデーションルール補完など、IDEに役立つ様々な拡張機能を提供しています。
 
-If you develop in [Visual Studio Code (VS Code)](https://code.visualstudio.com), the official [Laravel VS Code Extension](https://marketplace.visualstudio.com/items?itemName=laravel.vscode-laravel) is now available. This extension brings Laravel-specific tools directly into your VS Code environment, enhancing productivity.
+[Visual Studio Code (VS Code)](https://code.visualstudio.com)で開発されている方に、公式の[Laravel VS Code Extension](https://marketplace.visualstudio.com/items?itemName=laravel.vscode-laravel)がリリースされました。この拡張は、Laravelに特化したツールをVS Code環境へ直接導入し、生産性を向上させます。
 
 <a name="next-steps"></a>
 ## 次のステップ
