@@ -32,7 +32,7 @@
 <a name="reporting-exceptions"></a>
 ### 例外のレポート
 
-In Laravel, exception reporting is used to log exceptions or send them to an external service [Sentry](https://github.com/getsentry/sentry-laravel) or [Flare](https://flareapp.io). By default, exceptions will be logged based on your [logging](/docs/{{version}}/logging) configuration. However, you are free to log exceptions however you wish.
+Laravelでは、例外レポートを使用して、例外のログを取ったり、外部サービス[Sentry](https://github.com/getsentry/sentry-laravel)や[Flare](https://flareapp.io)に送信したりします。例外は[ログ](/docs/{{version}}/logging)設定のデフォルトに基づいてログに記録されます。しかし、例外をどのようにログに記録するかは皆さんの自由です。
 
 異なるタイプの例外を別々の方法で報告する必要がある場合、アプリケーションの`bootstrap/app.php`で`report`例外メソッドを使用して、特定タイプの例外を報告する必要があるときに実行するクロージャを登録できます。Laravelは、クロージャのタイプヒントを調べ、クロージャが報告する例外のタイプを決定します。
 
@@ -91,7 +91,7 @@ class InvalidOrderException extends Exception
     // ...
 
     /**
-     * Get the exception's context information.
+     * 例外のコンテキスト情報を取得
      *
      * @return array<string, mixed>
      */
@@ -111,7 +111,7 @@ class InvalidOrderException extends Exception
 public function isValid(string $value): bool
 {
     try {
-        // Validate the value...
+        // 値をバリデーション…
     } catch (Throwable $e) {
         report($e);
 
@@ -327,7 +327,7 @@ LaravelやSymfonyの組み込み済み例外など、既存のレンダ可能（
  */
 public function render(Request $request): Response|bool
 {
-    if (/** Determine if the exception needs custom rendering */) {
+    if (/** この例外にカスタムレンダが必要か判断 */) {
 
         return response(/* ... */);
     }
@@ -340,11 +340,11 @@ public function render(Request $request): Response|bool
 
 ```php
 /**
- * Report the exception.
+ * 例外をレポート
  */
 public function report(): bool
 {
-    if (/** Determine if the exception needs custom reporting */) {
+    if (/** この例外にカスタムレンダが必要か判断 */) {
 
         // ...
 

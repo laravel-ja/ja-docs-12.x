@@ -257,12 +257,12 @@ use App\Events\OrderShipped;
 class SendShipmentNotification
 {
     /**
-     * Create the event listener.
+     * イベントリスナの生成
      */
     public function __construct() {}
 
     /**
-     * Handle the event.
+     * イベントの処理
      */
     public function handle(OrderShipped $event): void
     {
@@ -318,21 +318,21 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class SendShipmentNotification implements ShouldQueue
 {
     /**
-     * The name of the connection the job should be sent to.
+     * ジョブを送るべき接続名
      *
      * @var string|null
      */
     public $connection = 'sqs';
 
     /**
-     * The name of the queue the job should be sent to.
+     * ジョブを送るべきキュー名
      *
      * @var string|null
      */
     public $queue = 'listeners';
 
     /**
-     * The time (seconds) before the job should be processed.
+     * ジョブを処理するまでの時間（秒）
      *
      * @var int
      */
@@ -344,7 +344,7 @@ class SendShipmentNotification implements ShouldQueue
 
 ```php
 /**
- * Get the name of the listener's queue connection.
+ * リスナのキュー接続名を取得
  */
 public function viaConnection(): string
 {
@@ -352,7 +352,7 @@ public function viaConnection(): string
 }
 
 /**
- * Get the name of the listener's queue.
+ * リスナのキュー名を取得
  */
 public function viaQueue(): string
 {
@@ -360,7 +360,7 @@ public function viaQueue(): string
 }
 
 /**
- * Get the number of seconds before the job should be processed.
+ * ジョブを処理するまでの秒数を取得
  */
 public function withDelay(OrderShipped $event): int
 {
@@ -384,7 +384,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class RewardGiftCard implements ShouldQueue
 {
     /**
-     * Reward a gift card to the customer.
+     * 顧客へギフトカードを進呈
      */
     public function handle(OrderCreated $event): void
     {
@@ -392,7 +392,7 @@ class RewardGiftCard implements ShouldQueue
     }
 
     /**
-     * Determine whether the listener should be queued.
+     * リスナをキューへ投入するか決定
      */
     public function shouldQueue(OrderCreated $event): bool
     {
@@ -420,7 +420,7 @@ class SendShipmentNotification implements ShouldQueue
     use InteractsWithQueue;
 
     /**
-     * Handle the event.
+     * イベントを処理
      */
     public function handle(OrderShipped $event): void
     {
@@ -475,7 +475,7 @@ class SendShipmentNotification implements ShouldQueue
     use InteractsWithQueue;
 
     /**
-     * Handle the event.
+     * イベントを処理
      */
     public function handle(OrderShipped $event): void
     {
@@ -483,7 +483,7 @@ class SendShipmentNotification implements ShouldQueue
     }
 
     /**
-     * Handle a job failure.
+     * 失敗したジョブを処理
      */
     public function failed(OrderShipped $event, Throwable $exception): void
     {
@@ -513,7 +513,7 @@ class SendShipmentNotification implements ShouldQueue
     use InteractsWithQueue;
 
     /**
-     * The number of times the queued listener may be attempted.
+     * キュー投入したリスナの試行回数
      *
      * @var int
      */
@@ -527,7 +527,7 @@ class SendShipmentNotification implements ShouldQueue
 use DateTime;
 
 /**
- * Determine the time at which the listener should timeout.
+ * リスナがタイムアウトする時間を決定
  */
 public function retryUntil(): DateTime
 {
@@ -542,7 +542,7 @@ public function retryUntil(): DateTime
 
 ```php
 /**
- * The number of seconds to wait before retrying the queued listener.
+ * キュー投入したリスナを再試行するまでの待機秒数
  *
  * @var int
  */
@@ -553,7 +553,7 @@ public $backoff = 3;
 
 ```php
 /**
- * Calculate the number of seconds to wait before retrying the queued listener.
+ * キュー投入したリスナを再試行するまで待つ秒数を計算
  */
 public function backoff(): int
 {
@@ -565,7 +565,7 @@ public function backoff(): int
 
 ```php
 /**
- * Calculate the number of seconds to wait before retrying the queued listener.
+ * キュー投入したリスナを再試行するまで待つ秒数を計算
  *
  * @return array<int, int>
  */
@@ -594,13 +594,13 @@ use Illuminate\Http\Request;
 class OrderShipmentController extends Controller
 {
     /**
-     * Ship the given order.
+     * 指定注文を発送
      */
     public function store(Request $request): RedirectResponse
     {
         $order = Order::findOrFail($request->order_id);
 
-        // Order shipment logic...
+        // 注文発送ロジック…
 
         OrderShipped::dispatch($order);
 
@@ -671,17 +671,17 @@ use Illuminate\Events\Dispatcher;
 class UserEventSubscriber
 {
     /**
-     * Handle user login events.
+     * ユーザーログインイベントの処理
      */
     public function handleUserLogin(Login $event): void {}
 
     /**
-     * Handle user logout events.
+     * ユーザーログアウトイベントの処理
      */
     public function handleUserLogout(Logout $event): void {}
 
     /**
-     * Register the listeners for the subscriber.
+     * 定期購入者のリスナ登録
      */
     public function subscribe(Dispatcher $events): void
     {
@@ -712,17 +712,17 @@ use Illuminate\Events\Dispatcher;
 class UserEventSubscriber
 {
     /**
-     * Handle user login events.
+     * ユーザーログインイベントの処理
      */
     public function handleUserLogin(Login $event): void {}
 
     /**
-     * Handle user logout events.
+     * ユーザーログアウトイベントの処理
      */
     public function handleUserLogout(Logout $event): void {}
 
     /**
-     * Register the listeners for the subscriber.
+     * 定期購入者のリスナ登録
      *
      * @return array<string, string>
      */

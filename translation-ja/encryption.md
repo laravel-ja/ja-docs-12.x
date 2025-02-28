@@ -51,7 +51,7 @@ use Illuminate\Support\Facades\Crypt;
 class DigitalOceanTokenController extends Controller
 {
     /**
-     * Store a DigitalOcean API token for the user.
+     * ユーザーのDigitalOcean APIトークンを保存
      */
     public function store(Request $request): RedirectResponse
     {

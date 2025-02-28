@@ -2144,7 +2144,7 @@ class ProcessPodcast implements ShouldQueue
     }
 
     /**
-     * Handle a job failure.
+     * 失敗したジョブを処理
      */
     public function failed(?Throwable $exception): void
     {

@@ -930,7 +930,7 @@ use Illuminate\Support\Facades\Mail;
 class OrderShipmentController extends Controller
 {
     /**
-     * Ship the given order.
+     * 指定注文を発送
      */
     public function store(Request $request): RedirectResponse
     {
