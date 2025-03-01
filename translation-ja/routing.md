@@ -387,7 +387,7 @@ public function boot(): void
 
 ```php
 Route::get('/user/{id}', function (string $id) {
-    // Only executed if {id} is numeric...
+    // {id}が数値の場合にのみ実行される
 });
 ```
 
@@ -434,10 +434,10 @@ Route::get(
 特定のルートに名前を割り当てたら、Laravelの`route`および`redirect`ヘルパ関数を使い、URLやリダイレクトを生成するときにルートの名前を使用できます。
 
 ```php
-// Generating URLs...
+// RLを生成
 $url = route('profile');
 
-// Generating Redirects...
+// リダイレクトの生成
 return redirect()->route('profile');
 
 return to_route('profile');
@@ -508,11 +508,11 @@ public function handle(Request $request, Closure $next): Response
 ```php
 Route::middleware(['first', 'second'])->group(function () {
     Route::get('/', function () {
-        // Uses first & second middleware...
+        // １番目と２番目のミドルウェアを使用
     });
 
     Route::get('/user/profile', function () {
-        // Uses first & second middleware...
+        // １番目と２番目のミドルウェアを使用
     });
 });
 ```
@@ -555,7 +555,7 @@ Route::domain('{account}.example.com')->group(function () {
 ```php
 Route::prefix('admin')->group(function () {
     Route::get('/users', function () {
-        // Matches The "/admin/users" URL
+        // /admin/usersのURLに一致
     });
 });
 ```
@@ -568,7 +568,7 @@ Route::prefix('admin')->group(function () {
 ```php
 Route::name('admin.')->group(function () {
     Route::get('/users', function () {
-        // Route assigned name "admin.users"...
+        // ルートを"admin.users"と名付ける
     })->name('users');
 });
 ```
@@ -599,10 +599,10 @@ Route::get('/users/{user}', function (User $user) {
 use App\Http\Controllers\UserController;
 use App\Models\User;
 
-// Route definition...
+// ルート定義
 Route::get('/users/{user}', [UserController::class, 'show']);
 
-// Controller method definition...
+// コントローラメソッドの定義
 public function show(User $user)
 {
     return view('user.profile', ['user' => $user]);
@@ -639,7 +639,7 @@ Route::get('/posts/{post:slug}', function (Post $post) {
 
 ```php
 /**
- * Get the route key for the model.
+ * モデルのルートキーの取得
  */
 public function getRouteKeyName(): string
 {
@@ -793,7 +793,7 @@ public function boot(): void
 
 ```php
 /**
- * Retrieve the model for a bound value.
+ * 値と結合するモデルの取得
  *
  * @param  mixed  $value
  * @param  string|null  $field
@@ -809,7 +809,7 @@ public function resolveRouteBinding($value, $field = null)
 
 ```php
 /**
- * Retrieve the child model for a bound value.
+ * 結合した値の子モデルを取得
  *
  * @param  string  $childType
  * @param  mixed  $value

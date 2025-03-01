@@ -369,21 +369,21 @@ use Illuminate\Support\Facades\Redis;
 class RedisSubscribe extends Command
 {
     /**
-     * The name and signature of the console command.
+     * consoleコマンドの名前と使用方法
      *
      * @var string
      */
     protected $signature = 'redis:subscribe';
 
     /**
-     * The console command description.
+     * コンソールコマンドの説明
      *
      * @var string
      */
     protected $description = 'Subscribe to a Redis channel';
 
     /**
-     * Execute the console command.
+     * consoleコマンドの実行
      */
     public function handle(): void
     {

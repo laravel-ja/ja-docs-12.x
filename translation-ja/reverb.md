@@ -12,12 +12,12 @@
     - [リスタート](#restarting)
 - [監視](#monitoring)
 - [実機でのReverb実行](#production)
-    - [Open Files](#open-files)
+    - [ファイルオープン](#open-files)
     - [イベントループ](#event-loop)
     - [Webサーバ](#web-server)
     - [ポート](#ports)
     - [プロセス管理](#process-management)
-    - [Scaling](#scaling)
+    - [スケーリング](#scaling)
 
 <a name="イントロダクション"></a>
 ## イントロダクション

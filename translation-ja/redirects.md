@@ -20,7 +20,7 @@ Route::get('/dashboard', function () {
 
 ```php
 Route::post('/user/profile', function () {
-    // Validate the request...
+    // リクエスのバリデート処理…
 
     return back()->withInput();
 });
@@ -38,12 +38,12 @@ return redirect()->route('login');
 ルートにパラメータが必要な場合は、`route`メソッドの第２引数として渡してください。
 
 ```php
-// For a route with the following URI: profile/{id}
+// profile/{id}ルートへのリダイレクト
 
 return redirect()->route('profile', ['id' => 1]);
 ```
 
-For convenience, Laravel also offers the global `to_route` function:
+使い勝手を良くするため, Laravelは`to_route`グローバル関数も提供しています。
 
 ```php
 return to_route('profile', ['id' => 1]);
@@ -55,7 +55,7 @@ return to_route('profile', ['id' => 1]);
 あるEloquentモデルの"ID"パラメータを含むルートへリダイレクトする場合は、そのモデル自身を渡してください。IDは自動的に取り出されます。
 
 ```php
-// For a route with the following URI: profile/{id}
+// profile/{id}ルートへのリダイレクト
 
 return redirect()->route('profile', [$user]);
 ```
@@ -64,7 +64,7 @@ return redirect()->route('profile', [$user]);
 
 ```php
 /**
- * Get the value of the model's route key.
+ * モデルのルートキー値の取得
  */
 public function getRouteKey(): mixed
 {
@@ -98,7 +98,7 @@ return redirect()->action(
 
 ```php
 Route::post('/user/profile', function () {
-    // Update the user's profile...
+    // ユーザープロフィールの更新処理…
 
     return redirect('/dashboard')->with('status', 'Profile updated!');
 });

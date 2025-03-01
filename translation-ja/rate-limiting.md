@@ -75,7 +75,7 @@ if (RateLimiter::tooManyAttempts('send-message:'.$user->id, $perMinute = 5)) {
 
 RateLimiter::increment('send-message:'.$user->id);
 
-// Send message...
+// メッセージ送信処理…
 ```
 
 他にも、`remaining`メソッドを使って、指定キーの残りの試行回数を取得することも可能です。指定キーに再試行回数が残っている場合は、`increment`メソッドを呼び出して総試行回数を増やせます。
@@ -112,7 +112,7 @@ if (RateLimiter::tooManyAttempts('send-message:'.$user->id, $perMinute = 5)) {
 
 RateLimiter::increment('send-message:'.$user->id);
 
-// Send message...
+// メッセージ送信処理…
 ```
 
 <a name="clearing-attempts"></a>
@@ -125,7 +125,7 @@ use App\Models\Message;
 use Illuminate\Support\Facades\RateLimiter;
 
 /**
- * Mark the message as read.
+ * メッセージを既読にする
  */
 public function read(Message $message): Message
 {

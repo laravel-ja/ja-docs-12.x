@@ -45,13 +45,13 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /**
-     * Store a new user.
+     * 新しいユーザーを保存
      */
     public function store(Request $request): RedirectResponse
     {
         $name = $request->input('name');
 
-        // Store the user...
+        // ユーザーの保存処理…
 
         return redirect('/users');
     }
@@ -92,11 +92,11 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
     /**
-     * Update the specified user.
+     * 指定ユーザーを更新
      */
     public function update(Request $request, string $id): RedirectResponse
     {
-        // Update the user...
+        // ユーザーの更新処理…
 
         return redirect('/users');
     }
@@ -548,9 +548,9 @@ $request->whenFilled('name', function (string $input) {
 
 ```php
 $request->whenFilled('name', function (string $input) {
-    // The "name" value is filled...
+    // "name"の値が空でない
 }, function () {
-    // The "name" value is not filled...
+    // "name"の値が空
 });
 ```
 
@@ -562,9 +562,9 @@ if ($request->missing('name')) {
 }
 
 $request->whenMissing('name', function () {
-    // The "name" value is missing...
+    // "name"の値がない
 }, function () {
-    // The "name" value is present...
+    // "name"が存在している
 });
 ```
 

@@ -190,7 +190,7 @@ Route::get('/dashboard', function () {
 
 ```php
 Route::post('/user/profile', function () {
-    // Validate the request...
+    // リクエストのバリデーション処理…
 
     return back()->withInput();
 });
@@ -208,7 +208,7 @@ return redirect()->route('login');
 ルートにパラメータがある場合は、`route`メソッドの第２引数として渡してください。
 
 ```php
-// For a route with the following URI: /profile/{id}
+// profile/{id}のURIを持つルートの場合
 
 return redirect()->route('profile', ['id' => 1]);
 ```
@@ -219,7 +219,7 @@ return redirect()->route('profile', ['id' => 1]);
 Eloquentモデルの"ID"をルートパラメータとしてリダイレクトする場合は、モデルをそのまま渡してください。IDは自動的に取り出されます。
 
 ```php
-// For a route with the following URI: /profile/{id}
+// profile/{id}のURIを持つルートの場合
 
 return redirect()->route('profile', [$user]);
 ```
@@ -228,7 +228,7 @@ return redirect()->route('profile', [$user]);
 
 ```php
 /**
- * Get the value of the model's route key.
+ * モデルのルートキー値の取得
  */
 public function getRouteKey(): mixed
 {
@@ -376,7 +376,7 @@ Route::get('/stream', function () {
             echo $chunk;
             ob_flush();
             flush();
-            sleep(2); // Simulate delay between chunks...
+            sleep(2); // チャンク間の遅延をシミュレート
         }
     }, 200, ['X-Accel-Buffering' => 'no']);
 });
