@@ -58,7 +58,7 @@ use Illuminate\View\View;
 class UserController extends Controller
 {
     /**
-     * Show all application users.
+     * 全アプリケーションユーザーの表示
      */
     public function index(): View
     {

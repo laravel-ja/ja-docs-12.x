@@ -249,7 +249,7 @@ Route::group([
     'prefix' => config('passport.path', 'oauth'),
     'namespace' => '\Laravel\Passport\Http\Controllers',
 ], function () {
-    // Passport routes...
+    // Passportのルート…
 });
 ```
 
@@ -415,7 +415,7 @@ use Laravel\Passport\Client as BaseClient;
 class Client extends BaseClient
 {
     /**
-     * Determine if the client should skip the authorization prompt.
+     * クライアントが認証プロンプトをスキップするかを決定
      */
     public function skipsAuthorization(): bool
     {
@@ -518,10 +518,10 @@ use Laravel\Passport\RefreshTokenRepository;
 $tokenRepository = app(TokenRepository::class);
 $refreshTokenRepository = app(RefreshTokenRepository::class);
 
-// Revoke an access token...
+// アクセストークンの取り消し
 $tokenRepository->revokeAccessToken($tokenId);
 
-// Revoke all of the token's refresh tokens...
+// そのトークンのリフレッシュトークンを全て取り消し
 $refreshTokenRepository->revokeRefreshTokensByAccessTokenId($tokenId);
 ```
 
@@ -612,7 +612,7 @@ Route::get('/redirect', function (Request $request) {
         'state' => $state,
         'code_challenge' => $codeChallenge,
         'code_challenge_method' => 'S256',
-        // 'prompt' => '', // "none", "consent", or "login"
+        // 'prompt' => '', // "none"、"consent"、"login"
     ]);
 
     return redirect('http://passport-app.test/oauth/authorize?'.$query);
@@ -746,7 +746,7 @@ class User extends Authenticatable
     use HasApiTokens, Notifiable;
 
     /**
-     * Find the user instance for the given username.
+     * 指定ユーザー名に対応するユーザーインスタンスを検索
      */
     public function findForPassport(string $username): User
     {
@@ -775,7 +775,7 @@ class User extends Authenticatable
     use HasApiTokens, Notifiable;
 
     /**
-     * Validate the password of the user for the Passport password grant.
+     * Passportパスワードグラントに対しユーザーパスワードを検証
      */
     public function validateForPassportPasswordGrant(string $password): bool
     {
@@ -816,7 +816,7 @@ Route::get('/redirect', function (Request $request) {
         'response_type' => 'token',
         'scope' => '',
         'state' => $state,
-        // 'prompt' => '', // "none", "consent", or "login"
+        // 'prompt' => '', // "none"、"consent"、"login"
     ]);
 
     return redirect('http://passport-app.test/oauth/authorize?'.$query);
@@ -917,10 +917,10 @@ use App\Models\User;
 
 $user = User::find(1);
 
-// Creating a token without scopes...
+// スコープ無しのトークンを作成する
 $token = $user->createToken('Token Name')->accessToken;
 
-// Creating a token with scopes...
+// スコープ付きのトークンを作成する
 $token = $user->createToken('My Token', ['place-orders'])->accessToken;
 ```
 
@@ -1144,7 +1144,7 @@ use Laravel\Passport\Http\Middleware\CheckScopes;
 
 ```php
 Route::get('/orders', function () {
-    // Access token has both "check-status" and "place-orders" scopes...
+    // アクセストークンは"check-status"と"place-orders"、両スコープを持っている
 })->middleware(['auth:api', 'scopes:check-status,place-orders']);
 ```
 
@@ -1155,7 +1155,7 @@ Route::get('/orders', function () {
 
 ```php
 Route::get('/orders', function () {
-    // Access token has either "check-status" or "place-orders" scope...
+    // アクセストークンは、"check-status"か"place-orders"、どちらかのスコープを持っている
 })->middleware(['auth:api', 'scope:check-status,place-orders']);
 ```
 

@@ -84,7 +84,7 @@ use Illuminate\Support\ServiceProvider;
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * All of the container bindings that should be registered.
+     * 登録する必要のある全コンテナ結合
      *
      * @var array
      */
@@ -93,7 +93,7 @@ class AppServiceProvider extends ServiceProvider
     ];
 
     /**
-     * All of the container singletons that should be registered.
+     * 登録する必要のある全コンテナシングルトン
      *
      * @var array
      */
@@ -206,7 +206,7 @@ class RiakServiceProvider extends ServiceProvider implements DeferrableProvider
     }
 
     /**
-     * Get the services provided by the provider.
+     * このプロバイダが提供するサービスの取得
      *
      * @return array<int, string>
      */

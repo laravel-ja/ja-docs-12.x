@@ -130,7 +130,7 @@ Pintが現在サポートしているプリセットは、`laravel`、`per`、`p
 }
 ```
 
-Pint is built on top of [PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer). Therefore, you may use any of its rules to fix code style issues in your project: [PHP CS Fixer Configurator](https://mlocati.github.io/php-cs-fixer-configurator).
+Pintは[PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer)上に構築しています。そのため、PHP CS Fixerのルールのいずれかを使用して、プロジェクトのコードスタイルの問題を修正することができます。[PHP CS Fixer設定](https://mlocati.github.io/php-cs-fixer-configurator)を参照してください。
 
 <a name="excluding-files-or-folders"></a>
 ### ファイル／フォルダの除外

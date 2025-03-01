@@ -627,9 +627,9 @@ Process::fake([
     'ls *' => 'Test output...',
 ]);
 
-// Fake response is returned...
+// Fakeレスポンスを返す
 Process::run('ls -la');
 
-// An exception is thrown...
+// 例外を投げる
 Process::run('bash import.sh');
 ```

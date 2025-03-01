@@ -206,7 +206,7 @@ public function boot(): void
 use App\Notifications\ResetPasswordNotification;
 
 /**
- * Send a password reset notification to the user.
+ * パスワードリセット通知をユーザーに送信
  *
  * @param  string  $token
  */

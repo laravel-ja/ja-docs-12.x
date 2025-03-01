@@ -111,7 +111,7 @@ FrankenPHPで動くLaravelアプリケーションをコンテナ化する出発
 ```dockerfile
 FROM dunglas/frankenphp
 
-RUN install-php-extensions \
+RUN install-php-extensions l
     pcntl
     # ここに他のPHP拡張…
 
@@ -262,7 +262,7 @@ Octaneはデフォルトで、ポート8000​​のサーバを起動するの�
 ### Nginxを使用するアプリケーションの提供
 
 > [!NOTE]
-> If you aren't quite ready to manage your own server configuration or aren't comfortable configuring all of the various services needed to run a robust Laravel Octane application, check out [Laravel Cloud](https://cloud.laravel.com), which offers fully-managed Laravel Octane support.
+> もし、サーバ構成を自分で管理する準備がまだできていないか、堅牢なLaravel Octaneアプリケーションを実行するために必要な様々なサービスをすべて設定することが楽にできない場合は、フルマネージドLaravel Octaneサポートを提供する[Laravel Cloud](https://cloud.laravel.com)をチェックしてみてください。
 
 本番環境では，NginxやApacheのような伝統的なWebサーバの背後で、Octaneアプリケーションを提供するべきです。そうすることでWebサーバは，画像やスタイルシートなどの静的資産を提供でき，またSSL証明書のターミネーションを管理できます。
 

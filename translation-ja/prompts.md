@@ -19,7 +19,7 @@
 - [テーブル](#tables)
 - [スピン](#spin)
 - [プログレスバー](#progress)
-- [Clearing the Terminal](#clear)
+- [ターミナルのクリア](#clear)
 - [ターミナルの考察](#terminal-considerations)
 - [未サポートの環境とフォールバック](#fallbacks)
 
@@ -805,7 +805,7 @@ User::create([
 ]);
 ```
 
-The primary benefit of using the `form` function is the ability for the user to return to previous prompts in the form using `CTRL + U`. This allows the user to fix mistakes or alter selections without needing to cancel and restart the entire form.
+`form`関数を使用する主な利点は、ユーザーが`CTRL+U`を使用し、フォーム内の前のプロンプトに戻ることができることです。これにより、ユーザーは間違いを修正したり、フォーム全体をキャンセルしてやり直すことなく選択内容を変更することができます。
 
 フォームのプロンプトをより細かくコントロールする必要がある場合は、プロンプト関数を直接呼び出す代わりに、`add`メソッドを呼び出してください。`add`メソッドには、ユーザーが過去に入力したすべてのレスポンスを渡します。
 

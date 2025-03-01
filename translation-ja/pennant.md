@@ -7,7 +7,7 @@
     - [クラスベースの機能](#class-based-features)
 - [機能のチェック](#checking-features)
     - [条件付き実行](#conditional-execution)
-    - [ `HasFeatures`トレイト](#the-has-features-trait)
+    - [`HasFeatures`トレイト](#the-has-features-trait)
     - [Bladeディレクティブ](#blade-directive)
     - [ミドルウェア](#middleware)
     - [機能チェックの割り込み](#intercepting-feature-checks)

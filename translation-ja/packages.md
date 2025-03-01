@@ -257,7 +257,7 @@ Route::get('/dashboard', function () {
 
 ```php
 /**
- * Bootstrap the package services.
+ * パッケージのサービスの初期起動処理
  */
 public function boot(): void
 {
