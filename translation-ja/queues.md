@@ -77,14 +77,14 @@ Laravelキューを使い始める前に、「接続」と「キュー」の違�
 ```php
 use App\Jobs\ProcessPodcast;
 
-// This job is sent to the default connection's default queue...
+// このジョブは、デフォルト接続のデフォルトキューに送信される
 ProcessPodcast::dispatch();
 
-// This job is sent to the default connection's "emails" queue...
+// このジョブは、デフォルトの接続の"emails"キューに送信される
 ProcessPodcast::dispatch()->onQueue('emails');
 ```
 
-あるアプリケーションでは、ジョブを複数のキューにプッシュする必要がなく、代わりに１つの単純なキューを使用するのが好まれるでしょう。しかし、ジョブを複数のキューにプッシュすることで、ジョブの処理方法に優先順位を付けたりセグメント化したりしたいアプリケーションで特に役立ちます。Laravelキューワーカは、優先度で処理するキューを指定できるためです。たとえば、ジョブを「高`high`」キューにプッシュする場合、より高い処理優先度を与えたワーカを実行します。
+あるアプリケーションでは、ジョブを複数のキューにプッシュする必要がなく、代わりに１つの単純なキューを使用するのが好まれるでしょう。しかし、ジョブを複数のキューにプッシュすることで、ジョブの処理方法に優先順位を付けたりセグメント化したりしたいアプリケーションで特に役立ちます。Laravelキューワーカは、優先度で処理するキューを指定できるためです。たとえば、ジョブを「高（`high`）」キューにプッシュする場合、より高い処理優先度を与えたワーカを実行します。
 
 ```shell
 php artisan queue:work --queue=high,default
@@ -209,7 +209,7 @@ class ProcessPodcast implements ShouldQueue
      */
     public function handle(AudioProcessor $processor): void
     {
-        // Process uploaded podcast...
+        // アップロード済みポッドキャストを処理…
     }
 }
 ```
@@ -247,7 +247,7 @@ $this->app->bindMethod([ProcessPodcast::class, 'handle'], function (ProcessPodca
 
 ```php
 /**
- * Create a new job instance.
+ * 新しいジョブインスタンスの生成
  */
 public function __construct(
     Podcast $podcast,
@@ -262,7 +262,7 @@ PHPのコンストラクタ・プロパティ・プロモーションを使用�
 use Illuminate\Queue\Attributes\WithoutRelations;
 
 /**
- * Create a new job instance.
+ * 新しいジョブインスタンスの生成
  */
 public function __construct(
     #[WithoutRelations]
@@ -306,21 +306,21 @@ use Illuminate\Contracts\Queue\ShouldBeUnique;
 class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
 {
     /**
-     * The product instance.
+     * 製品インスタンス
      *
      * @var \App\Product
      */
     public $product;
 
     /**
-     * The number of seconds after which the job's unique lock will be released.
+     * ジョブの一意のロックが解放されるまでの秒数
      *
      * @var int
      */
     public $uniqueFor = 3600;
 
     /**
-     * Get the unique ID for the job.
+     * ジョブの一意なIDの取得
      */
     public function uniqueId(): string
     {
@@ -366,7 +366,7 @@ class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
     // ...
 
     /**
-     * Get the cache driver for the unique job lock.
+     * 一意のジョブロックのキャッシュドライバを取得
      */
     public function uniqueVia(): Repository
     {
@@ -411,9 +411,9 @@ public function handle(): void
     Redis::throttle('key')->block(0)->allow(1)->every(5)->then(function () {
         info('Lock obtained...');
 
-        // Handle job...
+        // ジョブを処理…
     }, function () {
-        // Could not obtain lock...
+        // ロックの取得失敗
 
         return $this->release(5);
     });
@@ -435,7 +435,7 @@ use Illuminate\Support\Facades\Redis;
 class RateLimited
 {
     /**
-     * Process the queued job.
+     * キュー投入したジョブの処理
      *
      * @param  \Closure(object): void  $next
      */
@@ -444,11 +444,11 @@ class RateLimited
         Redis::throttle('key')
             ->block(0)->allow(1)->every(5)
             ->then(function () use ($job, $next) {
-                // Lock obtained...
+                // ロックを獲得した
 
                 $next($job);
             }, function () use ($job) {
-                // Could not obtain lock...
+                // ロックが獲得できなかった
 
                 $job->release(5);
             });
@@ -464,7 +464,7 @@ class RateLimited
 use App\Jobs\Middleware\RateLimited;
 
 /**
- * Get the middleware the job should pass through.
+ * このジョブを通過させるミドルウェアを取得
  *
  * @return array<int, object>
  */
@@ -513,7 +513,7 @@ return Limit::perMinute(50)->by($job->user->id);
 use Illuminate\Queue\Middleware\RateLimited;
 
 /**
- * Get the middleware the job should pass through.
+ * このジョブを通過させるミドルウェアを取得
  *
  * @return array<int, object>
  */
@@ -529,7 +529,7 @@ public function middleware(): array
 
 ```php
 /**
- * Get the middleware the job should pass through.
+ * このジョブを通過させるミドルウェアを取得
  *
  * @return array<int, object>
  */
@@ -553,7 +553,7 @@ Laravelには、任意のキーに基づいてジョブの重複を防ぐこと�
 use Illuminate\Queue\Middleware\WithoutOverlapping;
 
 /**
- * Get the middleware the job should pass through.
+ * このジョブを通過させるミドルウェアを取得
  *
  * @return array<int, object>
  */
@@ -567,7 +567,7 @@ public function middleware(): array
 
 ```php
 /**
- * Get the middleware the job should pass through.
+ * このジョブを通過させるミドルウェアを取得
  *
  * @return array<int, object>
  */
@@ -581,7 +581,7 @@ public function middleware(): array
 
 ```php
 /**
- * Get the middleware the job should pass through.
+ * このジョブを通過させるミドルウェアを取得
  *
  * @return array<int, object>
  */
@@ -595,7 +595,7 @@ public function middleware(): array
 
 ```php
 /**
- * Get the middleware the job should pass through.
+ * このジョブを通過させるミドルウェアを取得
  *
  * @return array<int, object>
  */
@@ -653,7 +653,7 @@ use DateTime;
 use Illuminate\Queue\Middleware\ThrottlesExceptions;
 
 /**
- * Get the middleware the job should pass through.
+ * このジョブを通過させるミドルウェアを取得
  *
  * @return array<int, object>
  */
@@ -663,7 +663,7 @@ public function middleware(): array
 }
 
 /**
- * Determine the time at which the job should timeout.
+ * ジョブがタイムアウトする時間を決定
  */
 public function retryUntil(): DateTime
 {
@@ -679,7 +679,7 @@ public function retryUntil(): DateTime
 use Illuminate\Queue\Middleware\ThrottlesExceptions;
 
 /**
- * Get the middleware the job should pass through.
+ * このジョブを通過させるミドルウェアを取得
  *
  * @return array<int, object>
  */
@@ -695,7 +695,7 @@ public function middleware(): array
 use Illuminate\Queue\Middleware\ThrottlesExceptions;
 
 /**
- * Get the middleware the job should pass through.
+ * このジョブを通過させるミドルウェアを取得
  *
  * @return array<int, object>
  */
@@ -712,7 +712,7 @@ use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Queue\Middleware\ThrottlesExceptions;
 
 /**
- * Get the middleware the job should pass through.
+ * このジョブを通過させるミドルウェアを取得
  *
  * @return array<int, object>
  */
@@ -731,7 +731,7 @@ use Illuminate\Http\Client\HttpClientException;
 use Illuminate\Queue\Middleware\ThrottlesExceptions;
 
 /**
- * Get the middleware the job should pass through.
+ * このジョブを通過させるミドルウェアを取得
  *
  * @return array<int, object>
  */
@@ -755,7 +755,7 @@ public function middleware(): array
 use Illuminate\Queue\Middleware\Skip;
 
 /**
- * Get the middleware the job should pass through.
+ * このジョブを通過させるミドルウェアを取得
  */
 public function middleware(): array
 {
@@ -771,7 +771,7 @@ public function middleware(): array
 use Illuminate\Queue\Middleware\Skip;
 
 /**
- * Get the middleware the job should pass through.
+ * このジョブを通過させるミドルウェアを取得
  */
 public function middleware(): array
 {
@@ -802,7 +802,7 @@ use Illuminate\Http\Request;
 class PodcastController extends Controller
 {
     /**
-     * Store a new podcast.
+     * 新しいポッドキャストの保存
      */
     public function store(Request $request): RedirectResponse
     {
@@ -846,7 +846,7 @@ use Illuminate\Http\Request;
 class PodcastController extends Controller
 {
     /**
-     * Store a new podcast.
+     * 新しいポッドキャストの保存
      */
     public function store(Request $request): RedirectResponse
     {
@@ -912,7 +912,7 @@ use Illuminate\Http\Request;
 class PodcastController extends Controller
 {
     /**
-     * Store a new podcast.
+     * 新しいポッドキャストの保存
      */
     public function store(Request $request): RedirectResponse
     {
@@ -1025,10 +1025,10 @@ public function handle(): void
 {
     // ...
 
-    // Prepend to the current chain, run job immediately after current job...
+    // 現在のチェーンの前に追加し、現在のジョブの直後にジョブを実行
     $this->prependToChain(new TranscribePodcast);
 
-    // Append to the current chain, run job at end of chain...
+    // 現在のチェーンの最後へ追加し、チェーンの最後にジョブを実行
     $this->appendToChain(new TranscribePodcast);
 }
 ```
@@ -1047,7 +1047,7 @@ Bus::chain([
     new OptimizePodcast,
     new ReleasePodcast,
 ])->catch(function (Throwable $e) {
-    // A job within the chain has failed...
+    // チェーン内のジョブが失敗
 })->dispatch();
 ```
 
@@ -1076,13 +1076,13 @@ use Illuminate\Http\Request;
 class PodcastController extends Controller
 {
     /**
-     * Store a new podcast.
+     * 新しいポッドキャストの保存
      */
     public function store(Request $request): RedirectResponse
     {
         $podcast = Podcast::create(/* ... */);
 
-        // Create podcast...
+        // ポッドキャストの生成…
 
         ProcessPodcast::dispatch($podcast)->onQueue('processing');
 
@@ -1134,13 +1134,13 @@ use Illuminate\Http\Request;
 class PodcastController extends Controller
 {
     /**
-     * Store a new podcast.
+     * 新しいポッドキャストの保存
      */
     public function store(Request $request): RedirectResponse
     {
         $podcast = Podcast::create(/* ... */);
 
-        // Create podcast...
+        // ポッドキャストの生成…
 
         ProcessPodcast::dispatch($podcast)->onConnection('sqs');
 
@@ -1207,7 +1207,7 @@ namespace App\Jobs;
 class ProcessPodcast implements ShouldQueue
 {
     /**
-     * The number of times the job may be attempted.
+     * ジョブを試行する回数を決定
      *
      * @var int
      */
@@ -1219,7 +1219,7 @@ class ProcessPodcast implements ShouldQueue
 
 ```php
 /**
- * Determine number of times the job may be attempted.
+ * ジョブを試行する回数を決定
  */
 public function tries(): int
 {
@@ -1236,7 +1236,7 @@ public function tries(): int
 use DateTime;
 
 /**
- * Determine the time at which the job should timeout.
+ * ジョブがタイムアウトする時間を決定
  */
 public function retryUntil(): DateTime
 {
@@ -1261,15 +1261,15 @@ use Illuminate\Support\Facades\Redis;
 
 class ProcessPodcast implements ShouldQueue
 {
-    /**
-     * The number of times the job may be attempted.
+    /**ジョブを試行する回数を決定
+     *
      *
      * @var int
      */
     public $tries = 25;
 
     /**
-     * The maximum number of unhandled exceptions to allow before failing.
+     * 失敗する前に許可する未処理の例外の最大数
      *
      * @var int
      */
@@ -1281,9 +1281,9 @@ class ProcessPodcast implements ShouldQueue
     public function handle(): void
     {
         Redis::throttle('key')->allow(10)->every(60)->then(function () {
-            // Lock obtained, process the podcast...
+            // ロックを取得でき、ポッドキャストを処理
         }, function () {
-            // Unable to obtain lock...
+            // ロックを獲得できなかった
             return $this->release(10);
         });
     }
@@ -1315,7 +1315,7 @@ namespace App\Jobs;
 class ProcessPodcast implements ShouldQueue
 {
     /**
-     * The number of seconds the job can run before timing out.
+     * タイムアウトになる前にジョブを実行できる秒数
      *
      * @var int
      */
@@ -1463,15 +1463,15 @@ $batch = Bus::batch([
     new ImportCsv(301, 400),
     new ImportCsv(401, 500),
 ])->before(function (Batch $batch) {
-    // The batch has been created but no jobs have been added...
+    // バッチは生成されたが、ジョブは追加されていない
 })->progress(function (Batch $batch) {
-    // A single job has completed successfully...
+    // 一つのジョブが正常に終了
 })->then(function (Batch $batch) {
-    // All jobs completed successfully...
+    // すべてのジョブが正常に完了
 })->catch(function (Batch $batch, Throwable $e) {
-    // First batch job failure detected...
+    // バッチジョブの失敗をはじめて検出
 })->finally(function (Batch $batch) {
-    // The batch has finished executing...
+    // バッチの実行が終了
 })->dispatch();
 
 return $batch->id;
@@ -1491,7 +1491,7 @@ LaravelHorizo​​nやLaravelTelescopeなどの一部のツールは、バッ�
 $batch = Bus::batch([
     // ...
 ])->then(function (Batch $batch) {
-    // All jobs completed successfully...
+    // すべてのジョブが正常に完了
 })->name('Import CSV')->dispatch();
 ```
 
@@ -1504,7 +1504,7 @@ $batch = Bus::batch([
 $batch = Bus::batch([
     // ...
 ])->then(function (Batch $batch) {
-    // All jobs completed successfully...
+    // すべてのジョブが正常に完了
 })->onConnection('redis')->onQueue('imports')->dispatch();
 ```
 
@@ -1565,7 +1565,7 @@ $batch = Bus::batch([
     new LoadImportBatch,
     new LoadImportBatch,
 ])->then(function (Batch $batch) {
-    // All jobs completed successfully...
+    // すべてのジョブが正常に完了
 })->name('Import Contacts')->dispatch();
 ```
 
@@ -1599,34 +1599,34 @@ public function handle(): void
 バッチ完了コールバックに渡される`Illuminate\Bus\Batch`インスタンスは、特定のジョブのバッチを操作および検査をサポートするために、さまざまなプロパティとメソッドを用意しています。
 
 ```php
-// The UUID of the batch...
+// バッチのUUID
 $batch->id;
 
-// The name of the batch (if applicable)...
+// バッチの名前(該当する場合)
 $batch->name;
 
-// The number of jobs assigned to the batch...
+// バッチに割り当てたジョブの数
 $batch->totalJobs;
 
-// The number of jobs that have not been processed by the queue...
+// キューにより処理されていないジョブの数
 $batch->pendingJobs;
 
-// The number of jobs that have failed...
+// 失敗したジョブの数
 $batch->failedJobs;
 
-// The number of jobs that have been processed thus far...
+// これまでに処理したジョブの数
 $batch->processedJobs();
 
-// The completion percentage of the batch (0-100)...
+// バッチの完了率(0-100)
 $batch->progress();
 
-// Indicates if the batch has finished executing...
+// バッチの実行が終了したかを判定
 $batch->finished();
 
-// Cancel the execution of the batch...
+// バッチの実行をキャンセル
 $batch->cancel();
 
-// Indicates if the batch has been cancelled...
+// バッチがキャンセルされたかを判定
 $batch->cancelled();
 ```
 
@@ -1673,7 +1673,7 @@ public function handle(): void
 use Illuminate\Queue\Middleware\SkipIfBatchCancelled;
 
 /**
- * Get the middleware the job should pass through.
+ * このジョブを通過させるミドルウェアを取得
  */
 public function middleware(): array
 {
@@ -1695,7 +1695,7 @@ public function middleware(): array
 $batch = Bus::batch([
     // ...
 ])->then(function (Batch $batch) {
-    // All jobs completed successfully...
+    // すべてのジョブが正常に完了
 })->allowFailures()->dispatch();
 ```
 
@@ -1818,7 +1818,7 @@ use Throwable;
 dispatch(function () use ($podcast) {
     $podcast->publish();
 })->catch(function (Throwable $e) {
-    // This job has failed...
+    // このジョブは失敗した
 });
 ```
 
@@ -1899,12 +1899,12 @@ php artisan queue:work --stop-when-empty
 ```
 
 <a name="processing-jobs-for-a-given-number-of-seconds"></a>
-#### Processing Jobs for a Given Number of Seconds
+#### 指定秒数ジョブを処理
 
 `--max-time`オプションを使用して、指定する秒数の間ジョブを処理してから終了するようにワーカに指示できます。このオプションは、[Supervisor](#supervisor-configuration)と組み合わせると便利な場合があります。これにより、ジョブを一定時間処理した後、ワーカが自動的に再起動され、蓄積された可能性のあるメモリが解放されます。
 
 ```shell
-# Process jobs for one hour and then exit...
+# ジョブを1時間処理し、終了
 php artisan queue:work --max-time=3600
 ```
 
@@ -2004,7 +2004,7 @@ sudo apt-get install supervisor
 ```
 
 > [!NOTE]
-> If configuring and managing Supervisor yourself sounds overwhelming, consider using [Laravel Cloud](https://cloud.laravel.com), which provides a fully-managed platform for running Laravel queue workers.
+> もしSupervisorを自分で設定・管理するのが大変そうなら、[Laravel Cloud](https://cloud.laravel.com)の利用を検討してください。Laravelのキューワーカを実行するためのフルマネージドプラットフォームです。
 
 <a name="configuring-supervisor"></a>
 #### Supervisorの設定
@@ -2075,7 +2075,7 @@ php artisan queue:work redis --tries=3 --backoff=3
 
 ```php
 /**
- * The number of seconds to wait before retrying the job.
+ * ジョブを再試行する前に待機する秒数
  *
  * @var int
  */
@@ -2086,7 +2086,7 @@ public $backoff = 3;
 
 ```php
 /**
- * Calculate the number of seconds to wait before retrying the job.
+ * ジョブを再試行する前に待機する秒数を計算
  */
 public function backoff(): int
 {
@@ -2098,7 +2098,7 @@ public function backoff(): int
 
 ```php
 /**
- * Calculate the number of seconds to wait before retrying the job.
+ * ジョブを再試行する前に待機する秒数を計算
  *
  * @return array<int, int>
  */
@@ -2213,7 +2213,7 @@ Eloquentモデルをジョブに挿入すると、モデルは自動的にシリ
 
 ```php
 /**
- * Delete the job if its models no longer exist.
+ * モデルが存在しなくなった場合は、ジョブを削除
  *
  * @var bool
  */
@@ -2221,15 +2221,15 @@ public $deleteWhenMissingModels = true;
 ```
 
 <a name="pruning-failed-jobs"></a>
-### 失敗したジョブの切り詰め
+### 失敗したジョブの整理
 
-アプリケーションの`failed_jobs`テーブルのレコードを切り詰めるには、`queue:prune-failed` Artisanコマンドを実行します。
+アプリケーションの`failed_jobs`テーブルのレコードを整理するには、`queue:prune-failed` Artisanコマンドを実行します。
 
 ```shell
 php artisan queue:prune-failed
 ```
 
-デフォルトでは、２４時間以上前の失敗したジョブの記録をすべて切り捨てます。コマンドに`--hours`オプションを指定すると、直近のＮ時間以内に挿入された、失敗したジョブ記録のみを保持します。たとえば、次のコマンドは４８時間以上前に挿入された、失敗したジョブのレコードをすべて削除します。
+デフォルトでは、２４時間以上前の失敗したジョブの記録をすべて整理します。コマンドに`--hours`オプションを指定すると、直近のＮ時間以内に挿入された、失敗したジョブ記録のみを保持します。たとえば、次のコマンドは４８時間以上前に挿入された、失敗したジョブのレコードをすべて削除します。
 
 ```shell
 php artisan queue:prune-failed --hours=48

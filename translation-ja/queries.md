@@ -64,7 +64,7 @@ use Illuminate\View\View;
 class UserController extends Controller
 {
     /**
-     * Show a list of all of the application's users.
+     * アプリケーションの全ユーザーをリスト表示
      */
     public function index(): View
     {
@@ -164,7 +164,7 @@ DB::table('users')->orderBy('id')->chunk(100, function (Collection $users) {
 
 ```php
 DB::table('users')->orderBy('id')->chunk(100, function (Collection $users) {
-    // Process the records...
+    // レコードの処理…
 
     return false;
 });
@@ -678,7 +678,7 @@ WHERE published = true AND NOT (
 <a name="json-where-clauses"></a>
 ### JSON WHERE句
 
-Laravel also supports querying JSON column types on databases that provide support for JSON column types. Currently, this includes MariaDB 10.3+, MySQL 8.0+, PostgreSQL 12.0+, SQL Server 2017+, and SQLite 3.39.0+. To query a JSON column, use the `->` operator:
+Laravelは、JSONカラム型をサポートしているデータベースでは、JSONカラム型のクエリもサポートしています。現在のところ、MariaDB10.3以上、MySQL8.0以上、PostgreSQL12.0以上、SQLServer2017以上、SQLite3.39.0以上をサポートしています。JSONカラムクエリするには、`->`演算子を使用します。
 
 ```php
 $users = DB::table('users')
@@ -1368,7 +1368,7 @@ DB::table('users')->updateOrInsert(
 <a name="updating-json-columns"></a>
 ### JSONカラムの更新
 
-When updating a JSON column, you should use `->` syntax to update the appropriate key in the JSON object. This operation is supported on MariaDB 10.3+, MySQL 5.7+, and PostgreSQL 9.5+:
+JSONカラムを更新する場合は、JSONオブジェクトの適切なキーを更新するため、`->`構文を使用する必要があります。この操作は、MariaDB10.3以上、MySQL5.7以上、PostgreSQL9.5以上をサポートしています。
 
 ```php
 $affected = DB::table('users')
@@ -1453,7 +1453,7 @@ DB::transaction(function () {
     if ($sender->balance < 100) {
         throw new RuntimeException('Balance too low.');
     }
-    
+
     DB::table('users')
         ->where('id', $sender->id)
         ->update([
