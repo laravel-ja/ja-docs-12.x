@@ -79,7 +79,7 @@ use Illuminate\View\View;
 class PostController extends Controller
 {
     /**
-     * Show the form to create a new blog post.
+     * 新ブログポスト作成フォームの表示
      */
     public function create(): View
     {
@@ -91,7 +91,7 @@ class PostController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        // Validate and store the blog post...
+        // ブログポストのバリデーションと保存コード…
 
         $post = /** ... */
 
@@ -111,7 +111,7 @@ class PostController extends Controller
 
 ```php
 /**
- * Store a new blog post.
+ * 新ブログポストの保存
  */
 public function store(Request $request): RedirectResponse
 {
@@ -120,7 +120,7 @@ public function store(Request $request): RedirectResponse
         'body' => 'required',
     ]);
 
-    // The blog post is valid...
+    // ブログポストは有効
 
     return redirect('/posts');
 }
@@ -332,7 +332,7 @@ php artisan make:request StorePostRequest
 
 ```php
 /**
- * Get the validation rules that apply to the request.
+ * リクエストに適用するバリデーションルールを取得
  *
  * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
  */
@@ -352,20 +352,20 @@ public function rules(): array
 
 ```php
 /**
- * Store a new blog post.
+ * 新ブログポストの保存
  */
 public function store(StorePostRequest $request): RedirectResponse
 {
-    // The incoming request is valid...
+    // 受信リクエストは正しかった
 
-    // Retrieve the validated input data...
+    // バリデーション済みデータの取得
     $validated = $request->validated();
 
-    // Retrieve a portion of the validated input data...
+    // バリデーション済み入力データの一部を取得
     $validated = $request->safe()->only(['name', 'email']);
     $validated = $request->safe()->except(['name', 'email']);
 
-    // Store the blog post...
+    // ブログ投稿の保存処理…
 
     return redirect('/posts');
 }
@@ -433,7 +433,7 @@ public function after(): array
 
 ```php
 /**
- * Indicates if the validator should stop on the first rule failure.
+ * バリデータが最初のルールの失敗で停​​止するかを指示
  *
  * @var bool
  */
@@ -447,7 +447,7 @@ protected $stopOnFirstFailure = true;
 
 ```php
 /**
- * The URI that users should be redirected to if validation fails.
+ * バリデーション失敗時に、ユーザーをリダイレクトするURI
  *
  * @var string
  */
@@ -458,7 +458,7 @@ protected $redirect = '/dashboard';
 
 ```php
 /**
- * The route that users should be redirected to if validation fails.
+ * バリデーション失敗時に、ユーザーをリダイレクトするルート
  *
  * @var string
  */
@@ -474,7 +474,7 @@ protected $redirectRoute = 'dashboard';
 use App\Models\Comment;
 
 /**
- * Determine if the user is authorized to make this request.
+ * Determユーザーがこのリクエストの権限を持っているかを判断する
  */
 public function authorize(): bool
 {
@@ -502,7 +502,7 @@ return $this->user()->can('update', $this->comment);
 
 ```php
 /**
- * Determine if the user is authorized to make this request.
+ * ユーザーがこのリクエスト作成の権限を持っているかを判断する
  */
 public function authorize(): bool
 {
@@ -520,7 +520,7 @@ public function authorize(): bool
 
 ```php
 /**
- * Get the error messages for the defined validation rules.
+ * 定義済みバリデーションルールのエラーメッセージ取得
  *
  * @return array<string, string>
  */
@@ -540,7 +540,7 @@ Laravelの組み込みバリデーションルールエラーメッセージの�
 
 ```php
 /**
- * Get custom attributes for validator errors.
+ * バリデーションエラーのカスタム属性の取得
  *
  * @return array<string, string>
  */
@@ -561,7 +561,7 @@ public function attributes(): array
 use Illuminate\Support\Str;
 
 /**
- * Prepare the data for validation.
+ * バリーデーションのためにデータを準備
  */
 protected function prepareForValidation(): void
 {
@@ -571,11 +571,11 @@ protected function prepareForValidation(): void
 }
 ```
 
-同様に、バリデーションが完了した後にリクエストデータをノーマライズする必要がある場合は、 `passedValidation` メソッドを使用します。
+同様に、バリデーションが完了した後にリクエストデータをノーマライズする必要がある場合は、`passedValidation`メソッドを使用します。
 
 ```php
 /**
- * Handle a passed validation attempt.
+ * バリデーション済みの試行を処理
  */
 protected function passedValidation(): void
 {
@@ -615,10 +615,10 @@ class PostController extends Controller
                 ->withInput();
         }
 
-        // Retrieve the validated input...
+        // バリデーション済みデータの取得
         $validated = $validator->validated();
 
-        // Retrieve a portion of the validated input...
+        // バリデーション済みデータの一部を取得
         $validated = $validator->safe()->only(['name', 'email']);
         $validated = $validator->safe()->except(['name', 'email']);
 
@@ -785,12 +785,12 @@ $validated = $request->safe()->all();
 さらに、`Illuminate\Support\ValidatedInput`インスタンスをループで配列のようにアクセスすることもできます。
 
 ```php
-// Validated data may be iterated...
+// バリデーション済みデータをループ
 foreach ($request->safe() as $key => $value) {
     // ...
 }
 
-// Validated data may be accessed as an array...
+// バリデーション済みデータを配列としてアクセス
 $validated = $request->safe();
 
 $email = $validated['email'];
@@ -825,7 +825,7 @@ echo $errors->first('email');
 ```
 
 <a name="retrieving-all-error-messages-for-a-field"></a>
-#### Retrieving All Error Messages for a Field
+#### 失敗した全エラーメッセージの取得
 
 指定したフィールドの全エラーメッセージを配列で取得したい場合は、`get`メソッドを使います。
 
@@ -1378,10 +1378,10 @@ use Illuminate\Validation\Rule;
 フィールドが数値であり、指定された小数点以下の桁数を含んでいることをバリデートします。
 
 ```php
-// Must have exactly two decimal places (9.99)...
+// 小数点以下が2桁ピッタリの必要がある(9.99)
 'price' => 'decimal:2'
 
-// Must have between 2 and 4 decimal places...
+// 小数点以下が２から４桁である必要がある
 'price' => 'decimal:2,4'
 ```
 
@@ -1697,10 +1697,10 @@ Validator::make($data, [
 <a name="rule-image"></a>
 #### image
 
-The file under validation must be an image (jpg, jpeg, png, bmp, gif, or webp).
+ファイルは画像（jpg、jpeg、png、bmp、gif、svg、webp）であることをバリデートします。
 
 > [!WARNING]
-> By default, the image rule does not allow SVG files due to the possibility of XSS vulnerabilities. If you need to allow SVG files, you may provide the `allow_svg` directive to the `image` rule (`image:allow_svg`).
+> imageルールはXSS脆弱性の可能性があるため、デフォルトではSVGファイルを許可していません。SVGファイルを許可する必要がある場合は、`image`ルールに`allow_svg`ディレクティブを指定してください。(`image:allow_svg`)
 
 <a name="rule-in"></a>
 #### in:foo,bar...
@@ -1896,7 +1896,7 @@ Validator::make($data, [
 
 フィールドが指定した正規表現と一致しないことをバリデートします。
 
-Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'not_regex:/^.+$/i'`.
+このルールは、内部的にはPHPの`preg_match`を使用します。指定するパターンは`preg_match`と同じフォーマットにすべきです。有効なデリミタも同等です。例: `'email' => 'not_regex:/^.+$/i'`
 
 > [!WARNING]
 > `regex`／`not_regex`パターンを使用するとき、特に正規表現に`|`文字が含まれている場合は、`|`区切り文字を使用する代わりに配列を使用してバリデーションルールを指定する必要があります。
@@ -2012,7 +2012,7 @@ Validator::make($request->all(), [
 
 フィールドが指定された正規表現にマッチすることをバリデートします。
 
-Internally, this rule uses the PHP `preg_match` function. The pattern specified should obey the same formatting required by `preg_match` and thus also include valid delimiters. For example: `'email' => 'regex:/^.+@.+$/i'`.
+このルールは、内部的にはPHPの`preg_match`を使用します。指定するパターンは`preg_match`と同じフォーマットにすべきです。有効なデリミタも同等です。例: `'email' => 'regex:/^.+@.+$/i'`
 
 > [!WARNING]
 > `regex`／`not_regex`パターンを使用するとき、特に正規表現に`|`文字が含まれている場合は、`|`区切り文字を使用する代わりに、配列でルールを指定する必要があります。
@@ -2102,16 +2102,16 @@ Validator::make($request->all(), [
 フィールドは指定した*値*と同じサイズであることをバリデートします。文字列の場合、*値*は文字長です。数値項目の場合、*値*は整数値（属性に`numeric`か`integer`ルールを持っている必要があります）です。配列の場合、*値*は配列の個数(`count`)です。ファイルの場合、*値*はキロバイトのサイズです。
 
 ```php
-// Validate that a string is exactly 12 characters long...
+// 文字列長が１２文字ちょうどであることをバリデート
 'title' => 'size:12';
 
-// Validate that a provided integer equals 10...
+// 指定された整数が１０であることをバリデート
 'seats' => 'integer|size:10';
 
-// Validate that an array has exactly 5 elements...
+// 配列にちょうど５要素あることをバリデート
 'tags' => 'array|size:5';
 
-// Validate that an uploaded file is exactly 512 kilobytes...
+// アップロードしたファイルが５１２キロバイトぴったりであることをバリデート
 'image' => 'file|size:512';
 ```
 
@@ -2128,9 +2128,9 @@ Validator::make($request->all(), [
 <a name="rule-timezone"></a>
 #### timezone
 
-The field under validation must be a valid timezone identifier according to the `DateTimeZone::listIdentifiers` method.
+フィールドは、`DateTimeZone::listIdentifiers`メソッドに従った有効なタイムゾーン識別子であることをバリデートします。
 
-The arguments [accepted by the `DateTimeZone::listIdentifiers` method](https://www.php.net/manual/en/datetimezone.listidentifiers.php) may also be provided to this validation rule:
+[`DateTimeZone::listIdentifiers`メソッドが受け付ける](https://www.php.net/manual/en/datetimezone.listidentifiers.php)引数も、この検証ルールへ指定できます。
 
 ```php
 'timezone' => 'required|timezone:all';
@@ -2256,7 +2256,7 @@ Rule::unique('users')->withoutTrashed('was_deleted_at');
 
 フィールドが有効な、RFC 9562（バージョン1、3、4、5、6、7、８）universally unique identifier (UUID)であることをバリデートします。
 
-You may also validate that the given UUID matches a UUID specification by version:
+また、指定UUIDがバージョンによるUUID仕様と一致するかを検証することもできます。
 
 ```php
 'uuid' => 'uuid:4'
@@ -2522,9 +2522,9 @@ File::types(['mp3', 'wav'])
 <a name="validating-files-image-files"></a>
 #### 画像ファイルのバリデーション
 
-If your application accepts images uploaded by your users, you may use the `File` rule's `image` constructor method to ensure that the file under validation is an image (jpg, jpeg, png, bmp, gif, or webp).
+アプリケーションがユーザーによる画像のアップデートを受け取る場合に、そのファイルが画像であること（jpg、jpeg、png、bmp、gif、svg、webp）をバリデーションするには、Fileルールのimageコンストラクタメソッドを使用します。
 
-In addition, the `dimensions` rule may be used to limit the dimensions of the image:
+さらに、`dimensions`ルールを使って画像の大きさを制限することもできます。
 
 ```php
 use Illuminate\Support\Facades\Validator;
@@ -2546,7 +2546,7 @@ Validator::validate($input, [
 > 画像サイズのバリデーションに関する詳細は、[サイズルールのドキュメント](#rule-dimensions)を参照してください。
 
 > [!WARNING]
-> By default, the `image` rule does not allow SVG files due to the possibility of XSS vulnerabilities. If you need to allow SVG files, you may pass `allowSvg: true` to the `image` rule: `File::image(allowSvg: true)`.
+> imageルールはXSS脆弱性の可能性があるため、デフォルトではSVGファイルを許可していません。SVGファイルを許可する必要がある場合は、`image`ルールに`allow_svg`ディレクティブを指定してください。(`image:allow_svg`)
 
 <a name="validating-files-image-dimensions"></a>
 #### 画像サイズのバリデーション
@@ -2584,19 +2584,19 @@ $validator = Validator::make($request->all(), [
 `Password`ルールオブジェクトを使用すると、文字・数字・記号を最低１文字必須にしたり、文字種を組み合わせたりのように、パスワードの指定をアプリケーションで使用する複雑さの要件に合うよう簡単にカスタマイズできます。
 
 ```php
-// Require at least 8 characters...
+// 最低８文字必要
 Password::min(8)
 
-// Require at least one letter...
+// 最低１文字の文字が必要
 Password::min(8)->letters()
 
-// Require at least one uppercase and one lowercase letter...
+// 最低大文字小文字が１文字ずつ必要
 Password::min(8)->mixedCase()
 
-// Require at least one number...
+// 最低一文字の数字が必要
 Password::min(8)->numbers()
 
-// Require at least one symbol...
+// 最低一文字の記号が必要
 Password::min(8)->symbols()
 ```
 
@@ -2611,7 +2611,7 @@ Password::min(8)->uncompromised()
 デフォルトでは、データリークに少なくとも1回パスワードが表示されている場合は、侵害されたと見なします。`uncompromised`メソッドの最初の引数を使用してこのしきい値をカスタマイズできます。
 
 ```php
-// Ensure the password appears less than 3 times in the same data leak...
+// 同一のデータリークにおいて、パスワードの出現回数が3回以下であることを確認
 Password::min(8)->uncompromised(3);
 ```
 
@@ -2746,7 +2746,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 class Uppercase implements DataAwareRule, ValidationRule
 {
     /**
-     * All of the data under validation.
+     * バリデーション下の全データ
      *
      * @var array<string, mixed>
      */
@@ -2755,7 +2755,7 @@ class Uppercase implements DataAwareRule, ValidationRule
     // ...
 
     /**
-     * Set the data under validation.
+     * バリデーション下のデータをセット
      *
      * @param  array<string, mixed>  $data
      */
@@ -2782,7 +2782,7 @@ use Illuminate\Validation\Validator;
 class Uppercase implements ValidationRule, ValidatorAwareRule
 {
     /**
-     * The validator instance.
+     * バリデータインスタンス
      *
      * @var \Illuminate\Validation\Validator
      */
@@ -2791,7 +2791,7 @@ class Uppercase implements ValidationRule, ValidatorAwareRule
     // ...
 
     /**
-     * Set the current validator.
+     * 現用バリデータのセット
      */
     public function setValidator(Validator $validator): static
     {

@@ -20,7 +20,7 @@
 ビューは、コントローラ/アプリケーションロジックをプレゼンテーションロジックから分離し、`resources/views`ディレクトリに格納されます。Laravelを使用する場合、ビューテンプレートは通常、[Bladeテンプレート言語](/docs/{{version}}/blade)で記述します。単純なビューは以下のようになります。
 
 ```blade
-<!-- View stored in resources/views/greeting.blade.php -->
+<!-- resources/views/greeting.blade.phpに保存してあるビュー -->
 
 <html>
     <body>
@@ -45,7 +45,7 @@ Route::get('/', function () {
 
 フロントエンドのテンプレートをBladeを使ってPHPで書く代わりに、多くの開発者はReactやVueを使ってテンプレートを書くことを好むようになりました。Laravelでは、[Inertia](https://inertiajs.com/)というライブラリのおかげで、React / VueのフロントエンドをLaravelのバックエンドに簡単に結びつけることができ、典型的なSPAの構築のように複雑なことは必要ありません。
 
-Our [React and Vue application starter kits](/docs/{{version}}/starter-kits) give you a great starting point for your next Laravel application powered by Inertia.
+私たちの[ReactとVueのアプリケーションスターターキット](/docs/{{version}}/starter-kits)は、Inertiaで動作する、次のLaravelアプリケーションのための素晴らしい出発点を提供します。
 
 <a name="creating-and-rendering-views"></a>
 ## ビューの作成とレンダ
@@ -197,10 +197,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Using class based composers...
+        // クラスベースのコンポーザを使用
         Facades\View::composer('profile', ProfileComposer::class);
 
-        // Using closure based composers...
+        // クロージャベースのコンポーザを使用
         Facades\View::composer('welcome', function (View $view) {
             // ...
         });
@@ -225,14 +225,14 @@ use Illuminate\View\View;
 class ProfileComposer
 {
     /**
-     * Create a new profile composer.
+     * 新しいプロファイルコンポーザの生成
      */
     public function __construct(
         protected UserRepository $users,
     ) {}
 
     /**
-     * Bind data to the view.
+     * データをビューへ結合
      */
     public function compose(View $view): void
     {

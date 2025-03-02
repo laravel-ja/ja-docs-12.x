@@ -122,7 +122,7 @@ Route::post('/email/verification-notification', function (Request $request) {
 
 ```php
 Route::get('/profile', function () {
-    // Only verified users may access this route...
+    // 確認済みのユーザーのみがこのルートにアクセス可能
 })->middleware(['auth', 'verified']);
 ```
 

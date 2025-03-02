@@ -62,7 +62,7 @@ Vite scaffoldingを使用して新しいLaravelアプリケーションを開始
 <a name="installing-node"></a>
 ### Nodeのインストール
 
-You must ensure that Node.js (16+) and NPM are installed before running Vite and the Laravel plugin:
+ViteとLaravelプラグインを実行する前に、Node.js（16以上）とNPMを確実にインストールしてください。
 
 ```shell
 node -v
@@ -347,7 +347,7 @@ export default defineConfig({
 ```
 
 > [!NOTE]
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Vue, and Vite configuration.These starter kits offer the fastest way to get started with Laravel, Vue, and Vite.
+> Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、あらかじめ適切なLaravel、Vue、Viteの設定を用意しています。これらのスターターキットは、Laravel、Vue、Viteを始める最速の方法を提供します。
 
 <a name="react"></a>
 ### React
@@ -385,7 +385,7 @@ JSXを含むすべてのファイルの拡張子を確実に、`.jsx`または`.
 `@viteReactRefresh`ディレクティブは、`@vite`ディレクティブの前に呼び出す必要があります。
 
 > [!NOTE]
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, React, and Vite configuration.These starter kits offer the fastest way to get started with Laravel, React, and Vite.
+> Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、あらかじめ適切なLaravel、Vue、Viteの設定を用意しています。これらのスターターキットは、Laravel、Vue、Viteを始める最速の方法を提供します。
 
 <a name="inertia"></a>
 ### Inertia
@@ -410,7 +410,7 @@ createInertiaApp({
 Viteのコード分割機能をInertiaで使用する場合は、[アセットの事前フェッチ](#asset-prefetching)を設定することをお勧めします。
 
 > [!NOTE]
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia, and Vite configuration.These starter kits offer the fastest way to get started with Laravel, Inertia, and Vite.
+> Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、あらかじめ適切なLaravel、Vue、Viteの設定を用意しています。これらのスターターキットは、Laravel、Vue、Viteを始める最速の方法を提供します。
 
 <a name="url-processing"></a>
 ### URL処理
@@ -761,7 +761,7 @@ php artisan inertia:start-ssr
 ```
 
 > [!NOTE]
-> Laravel's [starter kits](/docs/{{version}}/starter-kits) already include the proper Laravel, Inertia SSR, and Vite configuration.These starter kits offer the fastest way to get started with Laravel, Inertia SSR, and Vite.
+> Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、あらかじめ適切なLaravel、Inertia SSR、Viteの設定を用意しています。これらのスターターキットは、Laravel、Inertia SSR、Viteを始める最速の方法を提供します。
 
 <a name="script-and-style-attributes"></a>
 ## Scriptとstyleタグ属性

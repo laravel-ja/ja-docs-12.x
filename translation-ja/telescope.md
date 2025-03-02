@@ -137,9 +137,9 @@ Telescopeダッシュボードは、`/telescope`ルートでアクセスでき�
 use App\Models\User;
 
 /**
- * Register the Telescope gate.
+ * Telescopeゲートの登録
  *
- * This gate determines who can access Telescope in non-local environments.
+ * このゲートはlocal以外の環境で、誰がTelescopeへアクセスできるかを決定している。
  */
 protected function gate(): void
 {

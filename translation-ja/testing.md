@@ -169,7 +169,7 @@ class AppServiceProvider extends ServiceProvider
             // ...
         });
 
-        // Executed when a test database is created...
+        // テストデータベースを作成したときに実行
         ParallelTesting::setUpTestDatabase(function (string $database, int $token) {
             Artisan::call('db:seed');
         });

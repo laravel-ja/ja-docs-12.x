@@ -292,7 +292,7 @@ cd ~/Sites/laravel
 valet share
 ```
 
-To stop sharing your site, you may press `Control + C`.
+サイトの共有を停止するには、`Control+C`を押してください。
 
 > [!WARNING]
 > カスタムDNSサーバ（`1.1.1.1`など）を使用している場合、ngrok共有が正しく動作しないかもしれません。このような場合は、Macのシステム設定を開き、ネットワーク設定へ行き、詳細設定を開き、DNSタブを開き、最初のDNSサーバとして`127.0.0.1`を追加します。
@@ -410,7 +410,7 @@ public function serves(string $sitePath, string $siteName, string $uri): bool
 
 ```php
 /**
- * Determine if the incoming request is for a static file.
+ * このドライバで受信リクエストを処理するか決める
  *
  * @return string|false
  */
@@ -434,7 +434,7 @@ public function isStaticFile(string $sitePath, string $siteName, string $uri)
 
 ```php
 /**
- * Get the fully resolved path to the application's front controller.
+ * アプリケーションのフロントコントローラへの絶対パスの取得
  */
 public function frontControllerPath(string $sitePath, string $siteName, string $uri): string
 {

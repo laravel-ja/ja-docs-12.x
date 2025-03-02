@@ -68,16 +68,16 @@ echo urldecode($url);
 `url`ヘルパにパスを指定しないと、`Illuminate\Routing\UrlGenerator`インスタンスが返され、現在のURLに関する情報へアクセスできます。
 
 ```php
-// Get the current URL without the query string...
+// クエリ文字列を除いた現在のURL
 echo url()->current();
 
-// Get the current URL including the query string...
+// クエリ文字列を含んだ現在のURL
 echo url()->full();
 
-// Get the full URL for the previous request...
+// 直前のリクエストの完全なURL
 echo url()->previous();
 
-// Get the path for the previous request...
+// 直前のリクエストのパスの取得
 echo url()->previousPath();
 ```
 
