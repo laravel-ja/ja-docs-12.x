@@ -989,6 +989,7 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 [assertMovedPermanently](#assert-moved-permanently)
 [assertContent](#assert-content)
 [assertNoContent](#assert-no-content)
+[assertStreamed](#assert-streamed)
 [assertStreamedContent](#assert-streamed-content)
 [assertNotFound](#assert-not-found)
 [assertOk](#assert-ok)
@@ -1004,7 +1005,7 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 [assertSeeText](#assert-see-text)
 [assertSeeTextInOrder](#assert-see-text-in-order)
 [assertServerError](#assert-server-error)
-[assertServiceUnavailable](#assert-server-unavailable)
+[assertServiceUnavailable](#assert-service-unavailable)
 [assertSessionHas](#assert-session-has)
 [assertSessionHasInput](#assert-session-has-input)
 [assertSessionHasAll](#assert-session-has-all)
@@ -1472,6 +1473,13 @@ $response->assertContent($value);
 $response->assertNoContent($status = 204);
 ```
 
+<a name="assert-streamed"></a>
+#### assertStreamed
+
+レスポンスがストリームレスポンスであることを宣言します。
+
+    $response->assertStreamed();
+
 <a name="assert-streamed-content"></a>
 #### assertStreamedContent
 
@@ -1607,7 +1615,7 @@ $response->assertSeeTextInOrder(array $values, $escaped = true);
 $response->assertServerError();
 ```
 
-<a name="assert-server-unavailable"></a>
+<a name="assert-service-unavailable"></a>
 #### assertServiceUnavailable
 
 レスポンスのHTTPステータスコードが、Service Unavailable（503）であることを宣言します。
@@ -1820,6 +1828,12 @@ $response->assertInvalid([
     'name' => 'The name field is required.',
     'email' => 'valid email address',
 ]);
+```
+
+指定したフィールドだけにバリデーションエラー起きていることを宣言したい場合は、`assertOnlyInvalid`メソッドを使用します。
+
+```php
+$response->assertOnlyInvalid(['name', 'email']);
 ```
 
 <a name="assert-view-has"></a>

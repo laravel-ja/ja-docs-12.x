@@ -349,6 +349,8 @@ Route::get('/user', function (#[CurrentUser] User $user) {
 
 namespace App\Attributes;
 
+use Attribute;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Container\ContextualAttribute;
 
 #[Attribute(Attribute::TARGET_PARAMETER)]

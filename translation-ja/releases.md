@@ -62,7 +62,7 @@ Laravel12では、Laravel11.xでの改善を引き継ぎ、上流の依存関係
 
 Laravel12では、React、Vue、Livewire用の新しい[アプリケーションスターターキット](/docs/{{version}}/starter-kits)を導入しました。ReactとVueのスターターキットは、Inertia2、TypeScript、[shadcn/ui](https://ui.shadcn.com)、Tailwindを利用し、Livewireのスターターキットは、Tailwindベースの[Flux UI](https://fluxui.dev)コンポーネントライブラリとLaravel Voltを利用します。
 
-React、Vue、Livewireのスターターキットはすべて、Laravelの組み込み認証システムを利用し、ログイン、登録、パスワードリセット、メール認証などを提供します。さらに、各スターターキットへ[WorkOS AuthKit](https://authkit.com)搭載バージョンを導入し、ソーシャル認証、パスキー、SSOサポートを提供します。WorkOSは、月間アクティブユーザー数100万人までのアプリケーションに無料で認証を提供しています。
+React、Vue、Livewireのスターターキットはすべて、Laravelの組み込み認証システムを利用し、ログイン、登録、パスワードリセット、メール認証などを提供します。さらに、各スターターキットへ[WorkOS AuthKitを活用した](https://authkit.com)搭載バージョンを導入し、ソーシャル認証、パスキー、SSOサポートを提供します。WorkOSは、月間アクティブユーザー数100万人までのアプリケーションに無料で認証を提供しています。
 
 新しいアプリケーションスターターキットの導入に伴い、Laravel BreezeとLaravel Jetstreamは追加アップデートを受けられなくなりました。
 

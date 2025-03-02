@@ -9,14 +9,9 @@
     - [環境ベースの設定](#environment-based-configuration)
     - [データベースとマイグレーション](#databases-and-migrations)
     - [ディレクトリ設定](#directory-configuration)
-- [Herd使用のローカルインストール](#local-installation-using-herd)
+- [Herdを使ったインストール](#installation-using-herd)
     - [macOSでのHerd](#herd-on-macos)
     - [WindowsでのHerd](#herd-on-windows)
-- [Sailで使用するDockerのインストール](#docker-installation-using-sail)
-    - [macOSでのSail](#sail-on-macos)
-    - [WindowsでのSail](#sail-on-windows)
-    - [LinuxでのSail](#sail-on-linux)
-    - [Sailサービスの選択](#choosing-your-sail-services)
 - [IDEサポート](#ide-support)
 - [次のステップ](#next-steps)
     - [Laravelフルスタックフレームワーク](#laravel-the-fullstack-framework)
@@ -84,7 +79,7 @@ composer global require laravel/installer
 ```
 
 > [!NOTE]
-> 全機能を備えたグラフィカルなPHPのインストールと管理については、[Laravel Herd](#local-installation-using-herd)をチェックしてください。
+> 全機能を備えたグラフィカルなPHPのインストールと管理については、[Laravel Herd](#installation-using-herd)をチェックしてください。
 
 <a name="creating-an-application"></a>
 ### アプリケーションの生成
@@ -150,15 +145,15 @@ php artisan migrate
 ```
 
 > [!NOTE]
-> macOSやWindowsで開発していて、MySQL、PostgreSQL、Redisをローカルにインストールする必要がある場合は、[Herd Pro](https://herd.laravel.com/#plans)の使用を検討してください。
+> macOSやWindowsで開発していて、MySQL、PostgreSQL、Redisをローカルにインストールする必要がある場合は、[Herd Pro](https://herd.laravel.com/#plans)や[DBngin](https://dbngin.com/)の使用を検討してください。
 
 <a name="directory-configuration"></a>
 ### ディレクトリ設定
 
 Laravelは常に、Webサーバで設定した「Webディレクトリ」のルートから提供されるべきです。「Webディレクトリ」のサブディレクトリからLaravelアプリケーションを提供しようとしないでください。そうすると、アプリケーション内に存在する機密ファイルが公開されてしまう可能性があります。
 
-<a name="local-installation-using-herd"></a>
-## Herd使用のローカルインストール
+<a name="installation-using-herd"></a>
+## Installation Using Herd
 
 [Laravel Herd](https://herd.laravel.com)は、macOSとWindowsのための、超高速でネイティブなLaravelとPHPの開発環境です。Herdには、PHPやNginxなど、Laravel開発を始めるために必要なものがすべて含まれています。
 
@@ -206,150 +201,6 @@ herd open
 ```
 
 Herdの詳細は、[Windows向けHerdドキュメント](https://herd.laravel.com/docs/windows)をご覧ください。
-
-<a name="docker-installation-using-sail"></a>
-## Sailで使用するDockerのインストール
-
-皆さんの好みのオペレーティングシステムが何であれ、できるだけ簡単にLaravelを始められるようにしたいと考えています。そのため、ローカルマシンでLaravelアプリケーションを開発・実行するための様々なオプションが用意されています。これらのオプションは後ほど検討していただけますが、Laravelでは[Sail](/docs/{{version}}/sail)という、[Docker](https://www.docker.com)を使用してLaravelアプリケーションを実行する組み込みソリューションを提供しています。
-
-Dockerは、ローカルマシンにインストールしているソフトウェアや構成に干渉しない、小型で軽量の「コンテナ」でアプリケーションとサービスを実行するためのツールです。これはつまり、パーソナルマシン上のWebサーバやデータベースなどの複雑な開発ツールの構成や準備について心配する必要はないことを意味します。開発を開始するには、[Docker Desktop](https://www.docker.com/products/docker-desktop)をインストールするだけです。
-
-Laravel Sailは、LaravelのデフォルトのDocker構成と、操作するための軽量のコマンドラインインターフェイスです。 Sailは、Dockerの経験がなくても、PHP、MySQL、Redisを使用してLaravelアプリケーションを構築するために良い出発点を提供しています。
-
-> [!NOTE]
-> すでにDockerのエキスパートですか？ご心配なく！Laravelが提供する`docker-compose.yml`ファイルを使用して、Sailに関するすべてをカスタマイズできます。
-
-<a name="sail-on-macos"></a>
-### macOSでのSail
-
-Macで開発していて、[Docker Desktop](https://www.docker.com/products/docker-desktop)がすでにインストールされているならば、簡単なターミナルコマンドを使用して新しいLaravelアプリケーションを作成できます。たとえば、「example-app」という名前のディレクトリに新しいLaravelアプリケーションを作成するには、ターミナルで以下のコマンドを実行します。
-
-```shell
-curl -s "https://laravel.build/example-app" | bash
-```
-
-もちろん、このURLの"example-app"は好きなように変更できます。ただし、アプリケーション名は英数字とハイフン、アンダーバーだけで構成してください。Laravelアプリケーションのディレクトリは、コマンドを実行したディレクトリ内に作成されます。
-
-Sailのインストールは、Sailのアプリケーションコンテナをローカルマシン上に構築するため、数分かかる場合があります。
-
-アプリケーションを作成したら、アプリケーションディレクトリに移動してLaravel Sailを起動してください。Laravel Sailは、LaravelのデフォルトのDocker構成を操作するためのシンプルなコマンドラインインターフェイスを提供しています。
-
-```shell
-cd example-app
-
-./vendor/bin/sail up
-```
-
-アプリケーションのDockerコンテナが起動したら、アプリケーションの[データベースマイグレーション](/docs/{{version}}/migrations)を実行します。
-
-```shell
-./vendor/bin/sail artisan migrate
-```
-
-これで、http://localhostにより、ウェブブラウザからアプリケーションへアクセスできます。
-
-> [!NOTE]
-> Laravel Sailの詳細は、[完全なドキュメント](/docs/{{version}}/sail)で確認してください。
-
-<a name="sail-on-windows"></a>
-### WindowsでのSail
-
-Windowsマシンに新しいLaravelアプリケーションを作成する前に、必ず[Docker Desktop](https://www.docker.com/products/docker-desktop)をインストールしてください。次に、Windows Subsystem for Linux 2（WSL2）がインストールされ、有効になっていることを確認する必要があります。 WSLを使用すると、Linuxバイナリ実行可能ファイルをWindows 10でネイティブに実行できます。WSL2をインストールして有効にする方法については、Microsoftの[開発者環境ドキュメント](https://docs.microsoft.com/en-us/windows/wsl/install-win10)を参照してください。
-
-> [!NOTE]
-> WSL2をインストールして有効にした後、Dockerデスクトップが[WSL2バックエンドを使用するように構成されている](https://docs.docker.com/docker-for-windows/wsl/)ことを確認する必要があります。
-
-これで、最初のLaravelアプリケーションを作成する準備が整いました。[Windowsターミナル](https://www.microsoft.com/en-us/p/windows-terminal/9n0dx20hk701?rtc=1&activetab=pivot:overviewtab)を起動し、WSL2 Linuxオペレーティングシステムの新しいターミナルセッションを開始します。次に、簡単なターミナルコマンドを使用して新しいLaravelアプリケーションを作成してみましょう。たとえば、"example-app"という名前のディレクトリに新しいLaravelアプリケーションを作成するには、ターミナルで以下のコマンドを実行します。
-
-```shell
-curl -s https://laravel.build/example-app | bash
-```
-
-もちろん、このURLの"example-app"は好きなように変更できます。ただし、アプリケーション名は英数字とハイフン、アンダーバーだけで構成してください。Laravelアプリケーションのディレクトリは、コマンドを実行したディレクトリ内に作成されます。
-
-Sailのインストールは、Sailのアプリケーションコンテナをローカルマシン上に構築するため、数分かかる場合があります。
-
-アプリケーションを作成したら、アプリケーションディレクトリに移動してLaravel Sailを起動してください。Laravel Sailは、LaravelのデフォルトのDocker構成を操作するためのシンプルなコマンドラインインターフェイスを提供しています。
-
-```shell
-cd example-app
-
-./vendor/bin/sail up
-```
-
-アプリケーションのDockerコンテナが起動したら、アプリケーションの[データベースマイグレーション](/docs/{{version}}/migrations)を実行します。
-
-```shell
-./vendor/bin/sail artisan migrate
-```
-
-これで、http://localhostにより、ウェブブラウザからアプリケーションへアクセスできます。
-
-> [!NOTE]
-> Laravel Sailの詳細は、[完全なドキュメント](/docs/{{version}}/sail)で確認してください。
-
-#### WSL2内での開発
-
-もちろん、WSL2インストール内で作成されたLaravelアプリケーションファイルを変更する必要があります。これを実現するには、Microsoftの[Visual Studio Code](https://code.visualstudio.com)エディターと[リモート開発](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)用のファーストパーティ拡張機能を使用することをお勧めします。
-
-これらのツールをインストールしたら、Windowsターミナルを使用してアプリケーションのルートディレクトリから `code .`コマンドを実行することで、任意のLaravelアプリケーションを開けます。
-
-<a name="sail-on-linux"></a>
-### LinuxでのSail
-
-Linuxで開発しており、[Docker Compose](https://docs.docker.com/compose/install/)を既にインストールしている場合は、簡単なターミナルコマンドで新しいLaravelアプリケーションを作成できます。
-
-まず、Docker Desktop for Linuxを使用している場合は、以下のコマンドを実行してください。Docker Desktop for Linuxを使用していない場合は、このステップを飛ばしてください。
-
-```shell
-docker context use default
-```
-
-次に、"example-app "ディレクトリへ新しいLaravelアプリケーションを作成するために、ターミナルで以下のコマンドを実行します。
-
-```shell
-curl -s https://laravel.build/example-app | bash
-```
-
-もちろん、このURLの"example-app"は好きなように変更できます。ただし、アプリケーション名は英数字とハイフン、アンダーバーだけで構成してください。Laravelアプリケーションのディレクトリは、コマンドを実行したディレクトリ内に作成されます。
-
-Sailのインストールは、Sailのアプリケーションコンテナをローカルマシン上に構築するため、数分かかる場合があります。
-
-アプリケーションを作成したら、アプリケーションディレクトリに移動してLaravel Sailを起動してください。Laravel Sailは、LaravelのデフォルトのDocker構成を操作するためのシンプルなコマンドラインインターフェイスを提供しています。
-
-```shell
-cd example-app
-
-./vendor/bin/sail up
-```
-
-アプリケーションのDockerコンテナが起動したら、アプリケーションの[データベースマイグレーション](/docs/{{version}}/migrations)を実行します。
-
-```shell
-./vendor/bin/sail artisan migrate
-```
-
-これで、http://localhostにより、ウェブブラウザからアプリケーションへアクセスできます。
-
-> [!NOTE]
-> Laravel Sailの詳細は、[完全なドキュメント](/docs/{{version}}/sail)で確認してください。
-
-<a name="choosing-your-sail-services"></a>
-### Sailサービスの選択
-
-Sailで新しいLaravelアプリケーションを作成する際に、`with`というクエリ文字列変数を使って、新しいアプリケーションの`docker-compose.yml`ファイルで設定するサービスを選択できます。利用可能なサービスは、`mysql`、`pgsql`、`mariadb`、`redis`、`memcached`、`valkey`、`meilisearch`、`typesence`、`minio`、`selenium`、`mailpit`です。
-
-```shell
-curl -s "https://laravel.build/example-app?with=mysql,redis" | bash
-```
-
-設定したいサービスを指定しない場合は、`mysql`、`redis`、`meilisearch`、`mailpit`、`selenium`のデフォルトのスタックが設定されます。
-
-URLへ`devcontainer`パラメータを追加し、デフォルトの[Devcontainer](/docs/{{version}}/sail#using-devcontainers)をインストールするよう、Sailに指示できます。
-
-```shell
-curl -s "https://laravel.build/example-app?with=mysql,redis&devcontainer" | bash
-```
 
 <a name="ide-support"></a>
 ## IDEサポート

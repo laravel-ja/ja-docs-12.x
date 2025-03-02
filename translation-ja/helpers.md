@@ -66,6 +66,8 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Arr::pull](#method-array-pull)
 [Arr::query](#method-array-query)
 [Arr::random](#method-array-random)
+[Arr::reject](#method-array-reject)
+[Arr::select](#method-array-select)
 [Arr::set](#method-array-set)
 [Arr::shuffle](#method-array-shuffle)
 [Arr::sort](#method-array-sort)
@@ -826,6 +828,42 @@ use Illuminate\Support\Arr;
 $items = Arr::random($array, 2);
 
 // [2, 5] - (retrieved randomly)
+```
+
+<a name="method-array-reject"></a>
+#### `Arr::reject()` {.collection-method}
+
+`Arr::reject`メソッドは、指定クロージャを使い配列から項目を削除します。
+
+```php
+use Illuminate\Support\Arr;
+
+$array = [100, '200', 300, '400', 500];
+
+$filtered = Arr::reject($array, function (string|int $value, int $key) {
+    return is_string($value);
+});
+
+// [0 => 100, 2 => 300, 4 => 500]
+```
+
+<a name="method-array-select"></a>
+#### `Arr::select()` {.collection-method}
+
+`Arr::select`メソッドは、配列から値の配列を選択します。
+
+```php
+use Illuminate\Support\Arr;
+
+$array = [
+    ['id' => 1, 'name' => 'Desk', 'price' => 200],
+    ['id' => 2, 'name' => 'Table', 'price' => 150],
+    ['id' => 3, 'name' => 'Chair', 'price' => 300],
+];
+
+Arr::select($array, ['name', 'price']);
+
+// [['name' => 'Desk', 'price' => 200], ['name' => 'Table', 'price' => 150], ['name' => 'Chair', 'price' => 300]]
 ```
 
 <a name="method-array-set"></a>

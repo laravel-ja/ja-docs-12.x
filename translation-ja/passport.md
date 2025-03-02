@@ -241,7 +241,7 @@ public function register(): void
 }
 ```
 
-そして、Passport自身の[ルートファイル](https://github.com/laravel/passport/blob/11.x/routes/web.php)で定義しているルートをアプリケーションの`routes/web.php`ファイルへコピーして、好みに合わせ変更してください。
+そして、Passport自身の[ルートファイル](https://github.com/laravel/passport/blob/12.x/routes/web.php)で定義しているルートをアプリケーションの`routes/web.php`ファイルへコピーして、好みに合わせ変更してください。
 
 ```php
 Route::group([

@@ -400,6 +400,39 @@ Route::get('/users.json', function () {
 });
 ```
 
+<a name="event-streams"></a>
+#### イベントストリーム
+
+`eventStream`メソッドは、`text/event-stream`コンテントタイプを使用して、サーバ送信イベント （SSE）ストリームレスポンスを返すために使用します。`eventStream`メソッドはクロージャを引数に取ります。クロージャはレスポンスが利用可能になると、ストリームに対するレスポンスを[yield](https://www.php.net/manual/en/language.generators.overview.php)します。
+
+```php
+Route::get('/chat', function () {
+    return response()->eventStream(function () {
+        $stream = OpenAI::client()->chat()->createStreamed(...);
+
+        foreach ($stream as $response) {
+            yield $response->choices[0];
+        }
+    });
+});
+```
+
+このイベントストリームは、アプリケーションのフロントエンドにより、[EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource)オブジェクトを介して使用されるでしょう。イベントストリームが完了すると、`eventStream`メソッドは自動的にイベントストリームへ`</stream>`更新を送信します。
+
+```js
+const source = new EventSource('/chat');
+
+source.addEventListener('update', (event) => {
+    if (event.data === '</stream>') {
+        source.close();
+
+        return;
+    }
+
+    console.log(event.data);
+})
+```
+
 <a name="streamed-downloads"></a>
 #### ストリームダウンロード
 

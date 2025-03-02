@@ -110,6 +110,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [Str::ulid](#method-str-ulid)
 [Str::unwrap](#method-str-unwrap)
 [Str::uuid](#method-str-uuid)
+[Str::uuid7](#method-str-uuid7)
 [Str::wordCount](#method-str-word-count)
 [Str::wordWrap](#method-str-word-wrap)
 [Str::words](#method-str-words)
@@ -713,7 +714,7 @@ $matches = Str::is('baz*', 'foobar');
 ```php
 use Illuminate\Support\Str;
 
-$matches = Str::is('*.jpg', 'photo.JPG', ignoreCase: true);     
+$matches = Str::is('*.jpg', 'photo.JPG', ignoreCase: true);
 
 // true
 ```
@@ -1172,11 +1173,11 @@ $repeat = Str::repeat($string, 5);
 ```php
 use Illuminate\Support\Str;
 
-$string = 'Laravel 10.x';
+$string = 'Laravel 11.x';
 
-$replaced = Str::replace('10.x', '11.x', $string);
+$replaced = Str::replace('11.x', '12.x', $string);
 
-// Laravel 11.x
+// Laravel 12.x
 ```
 
 `replace`メソッドは、`caseSensitive`引数も指定できます。デフォルトで`replace`メソッドは、大・小文字を区別します。
@@ -1680,6 +1681,23 @@ Str::createUuidsUsing(function () {
 
 ```php
 Str::createUuidsNormally();
+```
+
+<a name="method-str-uuid7"></a>
+#### `Str::uuid7()` {.collection-method}
+
+`Str::uuid7`メソッドは、UUID（バージョン7）を生成します。
+
+```php
+use Illuminate\Support\Str;
+
+return (string) Str::uuid7();
+```
+
+オプションとして`DateTimeInterface`をパラメータとして渡せます。`DateTimeInterface`は、順序付けしたUUIDを生成するためにつかいます。
+
+```php
+return (string) Str::uuid7(time: now());
 ```
 
 <a name="method-str-word-count"></a>

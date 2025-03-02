@@ -43,7 +43,7 @@ Laravel Sailは、macOS、Linux、Windows（[WSL2](https://docs.microsoft.com/en
 <a name="installation"></a>
 ## インストールと準備
 
-Laravel Sailはいつも、新しいLaravelアプリケーションとともに自動的にインストールされるため、すぐ使用を開始できます。新しいLaravelアプリケーションを作成する方法については、使用しているオペレーティングシステム用のLaravel[インストールドキュメント](/docs/{{version}}/installation#docker-installation-using-sail)を参照してください。インストール時には、アプリケーションで操作するSailサポートサービスを選択するよう求められます。
+Laravel Sailは、すべての新しいLaravelアプリケーションに自動的にインストールされるため、すぐに使い始められます。
 
 <a name="installing-sail-into-existing-applications"></a>
 ### 既存アプリケーションへのSailインストール
@@ -182,24 +182,6 @@ Composerコマンドは`composer`コマンドで実行できます。Laravel Sai
 ```shell
 sail composer require laravel/sanctum
 ```
-
-<a name="installing-composer-dependencies-for-existing-projects"></a>
-#### 既存アプリケーションでComposer依存関係のインストール
-
-チームでアプリケーションを開発している場合、最初にLaravelアプリケーションを作成するのは自分ではないかもしれません。そのため、アプリケーションのリポジトリをローカルコンピュータにクローンした後、Sailを含むアプリケーションのComposer依存関係は一切インストールされていません。
-
-アプリケーションの依存関係をインストールするには、アプリケーションのディレクトリに移動し、次のコマンドを実行します。このコマンドは、PHPとComposerを含む小さなDockerコンテナを使用して、アプリケーションの依存関係をインストールします。
-
-```shell
-docker run --rm \
-    -u "$(id -u):$(id -g)" \
-    -v "$(pwd):/var/www/html" \
-    -w /var/www/html \
-    laravelsail/php84-composer:latest \
-    composer install --ignore-platform-reqs
-```
-
-`laravelsail/phpXX-composer`イメージを使用する場合、アプリケーションで使用する予定のPHPと同じバージョン（`80`、`81`、`82`、`83`、`84`）を使用する必要があります。
 
 <a name="executing-artisan-commands"></a>
 ### Artisanコマンドの実行

@@ -12,6 +12,15 @@
 
 </div>
 
+<a name="medium-impact-changes"></a>
+## 影響度が中程度の変更
+
+<div class="content-list" markdown="1">
+
+- [モデルとUUIDv7](#models-and-uuidv7)
+
+</div>
+
 <a name="low-impact-changes"></a>
 ## 影響度の低い変更
 
@@ -43,6 +52,8 @@
 <div class="content-list" markdown="1">
 
 - `laravel/framework`を`^12.0`へ
+- `phpunit/phpunit` to `^11.0`
+- `pestphp/pest` to `^3.0`
 
 </div>
 
@@ -133,6 +144,23 @@ $table = Schema::getTableListing(schema: 'main', schemaQualified: false);
 ```
 
 `db:table`と`db:show`コマンドは、PostgreSQLやSQL Serverと同様に、MySQL、MariaDB、SQLiteのすべてのスキーマの結果を出力するようになりました。
+
+<a name="eloquent"></a>
+### Eloquent
+
+<a name="models-and-uuidv7"></a>
+#### Models and UUIDv7
+
+**影響の可能性：　中程度**
+
+`HasUuids`トレイトは、UUID仕様のバージョン7（順序付きUUID）と互換性のあるUUIDを返すようにしました。モデルのIDへ順序付きUUIDv4文字列を使い続けたい場合は、`HasVersion4Uuids`traitを使用してください。
+
+```php
+use Illuminate\Database\Eloquent\Concerns\HasUuids; // [tl! remove]
+use Illuminate\Database\Eloquent\Concerns\HasVersion4Uuids as HasUuids; // [tl! add]
+```
+
+`HasVersion7Uuids`トレイトは削除しました。以前このトレイトを使用していた場合は、代わりに`HasUuids`トレイトを使用してください。
 
 <a name="requests"></a>
 ### リクエスト

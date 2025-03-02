@@ -322,13 +322,11 @@ php artisan down --with-secret
 
 Laravelはデフォルトで、ファイルベースのシステムを使ってアプリケーションがメンテナンスモードかを判断します。つまり、メンテナンスモードを有効にするには、アプリケーションをホストしている各サーバ上で`php artisan down`コマンドを実行する必要があります。
 
-もしくは、Laravelはメンテナンスモードをキャッシュベースで処理する方法を提供しています。この方法では、ただ１つのサーバ上で`php artisan down`コマンドを実行するだけです。この方法を使用するには、アプリケーションの`config/app.php`ファイルの"driver"設定を`cache`へ変更してください。それから、すべてのサーバからアクセス可能なキャッシュ`store`を選択する。これにより、メンテナンスモードの状態がすべてのサーバで一貫して維持されるようになります。
+あるいは、Laravelはメンテナンスモードをキャッシュベースで処理する方法を提供しています。この方法では、ただ１つのサーバ上で、`php artisan down`コマンドを実行するだけです。この方法を使用するには、アプリケーションの`.env`ファイルでメンテナンスモード変数を変更します。すべてのサーバからアクセス可能なキャッシュ`store`を選択します。これにより、メンテナンスモードの状態が、すべてのサーバで一貫して維持されるようになります。
 
-```php
-'maintenance' => [
-    'driver' => 'cache',
-    'store' => 'database',
-],
+```ini
+APP_MAINTENANCE_DRIVER=cache
+APP_MAINTENANCE_STORE=database
 ```
 
 <a name="pre-rendering-the-maintenance-mode-view"></a>

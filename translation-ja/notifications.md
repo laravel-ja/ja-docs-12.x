@@ -939,17 +939,25 @@ public function toArray(object $notifiable): array
 }
 ```
 
-通知をアプリケーションのデータベースへ格納するとき、`type`カラムには通知クラス名を入力します。しかし、通知クラスに`databaseType`メソッドを定義し、この動作をカスタマイズできます。
+通知をアプリケーションのデータベースへ格納すると、デフォルトでは`type`カラムへ通知のクラス名が設定され、`read_at`カラムは`null`になります。しかし、通知クラスで`databaseType`メソッドと`initialDatabaseReadAtValue`メソッドを定義すれば、この動作をカスタマイズできます。
+
+    use Illuminate\Support\Carbon;
 
 ```php
 /**
  * 通知のデータベースタイプを取得
- *
- * @return string
  */
 public function databaseType(object $notifiable): string
 {
     return 'invoice-paid';
+}
+
+/**
+ * "read_at"カラムの初期値を取得
+ */
+public function initialDatabaseReadAtValue(): ?Carbon
+{
+    return null;
 }
 ```
 
