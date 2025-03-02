@@ -188,16 +188,16 @@ use Laravel\Socialite\Facades\Socialite;
 Route::get('/auth/callback', function () {
     $user = Socialite::driver('github')->user();
 
-    // OAuth 2.0 providers...
+    // OAuth2.0プロバイダ
     $token = $user->token;
     $refreshToken = $user->refreshToken;
     $expiresIn = $user->expiresIn;
 
-    // OAuth 1.0 providers...
+    // OAuth1.0プロバイダ
     $token = $user->token;
     $tokenSecret = $user->tokenSecret;
 
-    // All providers...
+    // 全プロバイダ
     $user->getId();
     $user->getNickname();
     $user->getName();

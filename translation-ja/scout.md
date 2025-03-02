@@ -240,7 +240,7 @@ class Post extends Model
     use Searchable;
 
     /**
-     * Get the name of the index associated with the model.
+     * モデルに関連付けているインデックスの名前を取得
      */
     public function searchableAs(): string
     {
@@ -267,7 +267,7 @@ class Post extends Model
     use Searchable;
 
     /**
-     * Get the indexable data array for the model.
+     * モデルのインデックス可能なデータ配列の取得
      *
      * @return array<string, mixed>
      */
@@ -275,7 +275,7 @@ class Post extends Model
     {
         $array = $this->toArray();
 
-        // Customize the data array...
+        // データ配列をカスタマイズ
 
         return $array;
     }
@@ -398,7 +398,7 @@ class User extends Model
     use Searchable;
 
     /**
-     * Get the value used to index the model.
+     * モデルのインデックスに使用する値の取得
      */
     public function getScoutKey(): mixed
     {
@@ -406,7 +406,7 @@ class User extends Model
     }
 
     /**
-     * Get the key name used to index the model.
+     * モデルのインデックスに使用するキー名の取得
      */
     public function getScoutKeyName(): mixed
     {
@@ -435,7 +435,7 @@ class User extends Model
     use Searchable;
 
     /**
-     * Get the engine used to index the model.
+     * モデルのインデックスに使用するエンジンを取得
      */
     public function searchableUsing(): Engine
     {
@@ -551,7 +551,7 @@ php artisan scout:flush "App\Models\Post"
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * Modify the query used to retrieve models when making all of the models searchable.
+ * 全モデルを検索可能にするときの、モデル取得に使用するクエリを変更
  */
 protected function makeAllSearchableUsing(Builder $query): Builder
 {
@@ -613,7 +613,7 @@ use App\Models\Order;
 
 $order = Order::find(1);
 
-// Update the order...
+// 注文の更新処理…
 
 $order->save();
 ```
@@ -645,7 +645,7 @@ $orders->searchable();
 use Illuminate\Database\Eloquent\Collection;
 
 /**
- * Modify the collection of models being made searchable.
+ * 検索可能なモデルのコレクションを変更する
  */
 public function makeSearchableUsing(Collection $models): Collection
 {
@@ -699,7 +699,7 @@ Order::removeAllFromSearch();
 use App\Models\Order;
 
 Order::withoutSyncingToSearch(function () {
-    // Perform model actions...
+    // モデルアクションを実行…
 });
 ```
 
@@ -710,7 +710,7 @@ Order::withoutSyncingToSearch(function () {
 
 ```php
 /**
- * Determine if the model should be searchable.
+ * モデルを検索可能にするかの判断
  */
 public function shouldBeSearchable(): bool
 {
@@ -851,10 +851,10 @@ Route::get('/orders', function (Request $request) {
 ```php
 use App\Models\Order;
 
-// Include trashed records when retrieving results...
+// 結果の取得時に、削除済みレコードも含める
 $orders = Order::search('Star Trek')->withTrashed()->get();
 
-// Only include trashed records when retrieving results...
+// 結果の取得時に、削除済みレコードのみを対象とする
 $orders = Order::search('Star Trek')->onlyTrashed()->get();
 ```
 

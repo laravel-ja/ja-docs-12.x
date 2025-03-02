@@ -142,7 +142,7 @@ sail up -d
 
 アプリケーションのコンテナが開始されると、Webブラウザ（http:// localhost）でプロジェクトにアクセスできます。
 
-To stop all of the containers, you may simply press Control + C to stop the container's execution. Or, if the containers are running in the background, you may use the `stop` command:
+すべてのコンテナを停止するには、シンプルにControl+Cキーを押して、コンテナの実行を停止してください。コンテナをバックグラウンドで実行している場合は、`stop`コマンドを使ってください。
 
 ```shell
 sail stop
@@ -525,7 +525,7 @@ sail build --no-cache
 
 #### LinuxホストIP設定
 
-Internally, the `XDEBUG_CONFIG` environment variable is defined as `client_host=host.docker.internal` so that Xdebug will be properly configured for Mac and Windows (WSL2). If your local machine is running Linux and you're using Docker 20.10+, `host.docker.internal` is available, and no manual configuration is required.
+内部的には `XDEBUG_CONFIG`環境変数を`client_host=host.docker.internal`として定義しているため、XdebugはMacとWindows（WSL2）で適切に設定されます。ローカルマシンがLinuxで、Docker20.10以降を使っている場合は、`host.docker.internal`が利用できるので、手作業で設定は不要です。
 
 20.10より古いバージョンのDockerでは、Linux上の`host.docker.internal`はサポートされていないため、手作業でホストIPを定義する必要があります。これを行うには、`docker-compose.yml`ファイルでカスタムネットワークを定義して、コンテナに静的IPを設定します。
 

@@ -68,7 +68,7 @@ class DatabaseSeeder extends Seeder
 use App\Models\User;
 
 /**
- * Run the database seeders.
+ * データベースシーダの実行
  */
 public function run(): void
 {
@@ -86,7 +86,7 @@ public function run(): void
 
 ```php
 /**
- * Run the database seeders.
+ * データベースシーダの実行
  */
 public function run(): void
 {

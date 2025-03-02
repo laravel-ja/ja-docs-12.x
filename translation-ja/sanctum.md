@@ -178,7 +178,7 @@ use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
 
 ```php
 Route::get('/orders', function () {
-    // Token has both "check-status" and "place-orders" abilities...
+    // トークンは"check-status"と"place-orders"アビリティの両方を持っている
 })->middleware(['auth:sanctum', 'abilities:check-status,place-orders']);
 ```
 
@@ -186,7 +186,7 @@ Route::get('/orders', function () {
 
 ```php
 Route::get('/orders', function () {
-    // Token has the "check-status" or "place-orders" ability...
+    // トークンは"check-status"か"place-orders"アビリティのどちらかを持っている
 })->middleware(['auth:sanctum', 'ability:check-status,place-orders']);
 ```
 
@@ -227,13 +227,13 @@ Route::get('/user', function (Request $request) {
 `Laravel\Sanctum\HasApiTokens`トレイトが提供する`tokens`リレーションを使用してデータベースからトークンを削除することにより、トークンを「取り消す」ことができます。
 
 ```php
-// Revoke all tokens...
+// 全トークンの削除
 $user->tokens()->delete();
 
-// Revoke the token that was used to authenticate the current request...
+// 現在のリクエストの認証に使用されたトークンを取り消す
 $request->user()->currentAccessToken()->delete();
 
-// Revoke a specific token...
+// 指定トークンを取り消す
 $user->tokens()->where('id', $tokenId)->delete();
 ```
 
@@ -464,10 +464,10 @@ Route::get('/user', function (Request $request) {
 ユーザーがモバイルデバイスに発行したAPIトークンを取り消すことができるようにするには、WebアプリケーションのUIで「アカウント設定」部分で「取り消す」ボタンと一緒に名前をリストしてください。ユーザーが「取り消す」ボタンをクリックしたら、データベースからトークンを削除できます。`Laravel\Sanctum\HasApiTokens`トレイトによって提供される`tokens`リレーションを介して、ユーザーのAPIトークンにアクセスできることを忘れないでください。
 
 ```php
-// Revoke all tokens...
+// 全トークンの削除
 $user->tokens()->delete();
 
-// Revoke a specific token...
+// 指定トークンを取り消す
 $user->tokens()->where('id', $tokenId)->delete();
 ```
 

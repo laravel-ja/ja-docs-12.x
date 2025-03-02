@@ -115,13 +115,13 @@ $value = $request->session()->get('key', function () {
 
 ```php
 Route::get('/home', function () {
-    // Retrieve a piece of data from the session...
+    // セッションからデータを取得
     $value = session('key');
 
-    // Specifying a default value...
+    // デフォルト値の指定
     $value = session('key', 'default');
 
-    // Store a piece of data in the session...
+    // セッションにデータを保存
     session(['key' => 'value']);
 });
 ```
@@ -182,10 +182,10 @@ if ($request->session()->missing('users')) {
 セッションにデータを保存するには、通常、リクエストインスタンスの`put`メソッドまたは`session`グローバルヘルパを使用します。
 
 ```php
-// Via a request instance...
+// リクエストインスタンス経由
 $request->session()->put('key', 'value');
 
-// Via the global "session" helper...
+// グローバルな"session"ヘルパ経由
 session(['key' => 'value']);
 ```
 
@@ -208,9 +208,9 @@ $value = $request->session()->pull('key', 'default');
 ```
 
 <a name="incrementing-and-decrementing-session-values"></a>
-#### Incrementing and Decrementing Session Values
+#### セッション値の増分／減分
 
-セッションデータが増分や減分をしたい整数の場合は、`increment`メソッドと`decrement`メソッドを使えます。
+セッションデータが整数で増分や減分をしたい場合は、`increment`メソッドと`decrement`メソッドを使えます。
 
 ```php
 $request->session()->increment('count');
@@ -251,10 +251,10 @@ $request->session()->now('status', 'Task was successful!');
 `forget`メソッドは、セッションからデータの一部を削除します。セッションからすべてのデータを削除したい場合は、`flush`メソッドを使用できます。
 
 ```php
-// Forget a single key...
+// 一つのキーを削除
 $request->session()->forget('name');
 
-// Forget multiple keys...
+// 複数のキーを削除
 $request->session()->forget(['name', 'status']);
 
 $request->session()->flush();
@@ -333,9 +333,9 @@ class MongoSessionHandler implements \SessionHandlerInterface
 }
 ```
 
-Since Laravel does not include a default directory to house your extensions. You are free to place them anywhere you like. In this example, we have created an `Extensions` directory to house the `MongoSessionHandler`.
+Laravelにはエクステンションを格納するデフォルトのディレクトリはありません。好きな場所に自由に置くことができます。この例では、`MongoSessionHandler`を格納するために、`Extensions`ディレクトリを作成しています。
 
-Since the purpose of these methods is not readily understandable, here is an overview of the purpose of each method:
+これらのメソッドの目的は容易に理解できないため、ここで各メソッドの目的を概説します。
 
 <div class="content-list" markdown="1">
 
@@ -379,7 +379,7 @@ class SessionServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Session::extend('mongo', function (Application $app) {
-            // Return an implementation of SessionHandlerInterface...
+            // SessionHandlerInterfaceの実装を返す…
             return new MongoSessionHandler;
         });
     }
