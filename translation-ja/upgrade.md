@@ -51,9 +51,9 @@
 
 <div class="content-list" markdown="1">
 
-- `laravel/framework`を`^12.0`へ
-- `phpunit/phpunit` to `^11.0`
-- `pestphp/pest` to `^3.0`
+- `laravel/framework` を `^12.0` へ
+- `phpunit/phpunit` を `^11.0` へ
+- `pestphp/pest` を `^3.0` へ
 
 </div>
 
