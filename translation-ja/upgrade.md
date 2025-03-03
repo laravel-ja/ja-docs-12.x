@@ -149,7 +149,7 @@ $table = Schema::getTableListing(schema: 'main', schemaQualified: false);
 ### Eloquent
 
 <a name="models-and-uuidv7"></a>
-#### Models and UUIDv7
+#### モデルとUUIDv7
 
 **影響の可能性：　中程度**
 
