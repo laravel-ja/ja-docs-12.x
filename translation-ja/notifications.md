@@ -831,6 +831,9 @@ Thanks,<br>
 </x-mail::message>
 ```
 
+> [!NOTE]
+> Markdownでメールを書く際には、過剰なインデントは使用しないでください。Markdownの記法に従い、Markdownパーサーはインデントしたコンテンツをコードブロックとしてレンダします。
+
 <a name="button-component"></a>
 #### Buttonコンポーネント
 

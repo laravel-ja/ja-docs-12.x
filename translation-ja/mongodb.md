@@ -93,7 +93,7 @@ composer require mongodb/laravel-mongodb
  - クエリビルダを使って[複雑なクエリを書く](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/query-builder/)。
  - `mongodb`[キャッシュドライバ](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/cache/) は、TTLインデックスなどのMongoDBの機能を使用し、期限切れのキャッシュエントリを自動的に消去するように最適化されています。
  - `mongodb`キュー・ドライバを使った、[キュー投入するジョブのディスパッチと処理](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/queues/)。
- - [Flysystem用GridFSアダプタ](https://flysystem.thephpleague.com/docs/adapter/gridfs/)を介して、[GridFSにファイルを保存する](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/gridfs/)。
+ - [Flysystem用GridFSアダプタ](https://flysystem.thephpleague.com/docs/adapter/filesystems/)を介して、[GridFSにファイルを保存する](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/gridfs/)。
  - データベース接続やEloquentを使うサードパーティ製パッケージのほとんどは、MongoDBと一緒に使うことができます。
 
 MongoDBとLaravelの使い方を引き続き学ぶには、MongoDBの[クイックスタートガイド](https://www.mongodb.com/docs/drivers/php/laravel-mongodb/current/quick-start/)を参照してください。

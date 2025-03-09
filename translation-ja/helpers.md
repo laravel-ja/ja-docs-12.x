@@ -60,6 +60,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Arr::mapSpread](#method-array-map-spread)
 [Arr::mapWithKeys](#method-array-map-with-keys)
 [Arr::only](#method-array-only)
+[Arr::partition](#method-array-partition)
 [Arr::pluck](#method-array-pluck)
 [Arr::prepend](#method-array-prepend)
 [Arr::prependKeysWith](#method-array-prependkeyswith)
@@ -679,6 +680,31 @@ $array = ['name' => 'Desk', 'price' => 100, 'orders' => 10];
 $slice = Arr::only($array, ['name', 'price']);
 
 // ['name' => 'Desk', 'price' => 100]
+```
+
+<a name="method-array-partition"></a>
+#### `Arr::partition()` {.collection-method}
+
+`Arr::partition`メソッドは、PHP配列の分割代入と組み合わせ、真偽判定にパスした要素とそうでない要素を分離します。
+
+```php
+<?php
+
+use Illuminate\Support\Arr;
+
+$numbers = [1, 2, 3, 4, 5, 6];
+
+[$underThree, $equalOrAboveThree] = Arr::partition($numbers, function (int $i) {
+    return $i < 3;
+});
+
+dump($underThree);
+
+// [1, 2]
+
+dump($equalOrAboveThree);
+
+// [3, 4, 5, 6]
 ```
 
 <a name="method-array-pluck"></a>

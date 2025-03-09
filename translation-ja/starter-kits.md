@@ -11,6 +11,8 @@
     - [Vue](#vue-customization)
     - [Livewire](#livewire-customization)
 - [WorkOS AuthKit認証](#workos)
+- [Inertia SSR](#inertia-ssr)
+- [コミュニティがコミュニティが保守するスターターキット](#community-maintained-starter-kits)
 - [良くある質問](#faqs)
 
 <a name="introduction"></a>
@@ -73,7 +75,7 @@ Vueスターターキットは、Vue Composition API、TypeScript、Tailwind、[
 
 Livewireは、PHPだけでダイナミックでリアクティブなフロントエンドUIを構築するパワフルな手法です。主にBladeテンプレートを使用し、ReactやVueのようなJavaScript駆動のSPAフレームワークのシンプルな代替を探しているチームに最適です。
 
-Livewireスターターキットは、Laravel Volt、Tailwind、[Flux UI](https://fluxui.dev)コンポーネントライブラリを利用しています。
+Livewireスターターキットは、Livewire、Tailwind、[Flux UI](https://fluxui.dev)コンポーネントライブラリを利用しています。
 
 <a name="starter-kit-customization"></a>
 ## スターターキットのカスタマイズ
@@ -223,6 +225,8 @@ import AuthLayout from '@/layouts/auth/AuthSplitLayout.vue'; // [tl! add]
 
 Livewireスターターキットは、Livewire3、Laravel Volt、Tailwind、[Flux UI](https://fluxui.dev/)で構築されています。他のスターターキットと同様に、バックエンドとフロントエンドのコードはすべてアプリケーション内に存在し、フルカスタマイズが可能です。
 
+#### LivewireとVolt
+
 フロントエンドのコードの大部分は、`resources/js`ディレクトリにあります。アプリケーションの外観や動作をカスタマイズするために、自由にコードを変更できます。
 
 ```text
@@ -234,6 +238,10 @@ resources/views
 ├── dashboard.blade.php   # 認証済みユーザーのダッシュボード
 ├── welcome.blade.php     # ゲストユーザーのウエルカムページ
 ```
+
+#### 旧来のLivewireコンポーネント
+
+フロントエンドのコードは`resouces/views`ディレクトリにあり、`app/Livewire`ディレクトリにはLivewireコンポーネントと対応するバックエンドロジックを置きます。
 
 <a name="livewire-available-layouts"></a>
 #### 利用可能なレイアウト
@@ -298,6 +306,35 @@ WorkOS利用のスターターキットを使用する場合、アプリケー�
 #### AuthKitセッションタイムアウトの設定
 
 さらに、WorkOS AuthKitセッションの非アクティブタイムアウトをLaravelアプリケーションで設定しているセッションタイムアウトのしきい値（通常２時間）に合わせて設定することをお勧めします。
+
+<a name="inertia-ssr"></a>
+### Inertia SSR
+
+ReactとVueのスタータキットはInertiaの[サーバサイドレンダリング](https://inertiajs.com/server-side-rendering)機能と互換性があります。あなたのアプリケーション用にInertia SSR互換バンドルをビルドするには、`build:ssr`コマンドを実行します。
+
+```shell
+npm run build:ssr
+```
+
+使いやすいように、`composer dev:ssr`コマンドも用意しています。このコマンドは、アプリケーションのSSR互換バンドルをビルドした後、Laravel開発サーバとInertia SSRサーバを起動し、Inertiaのサーバサイドレンダリングエンジンを使ってアプリケーションをローカルでテストできるようにします。
+
+```shell
+composer dev:ssr
+```
+
+<a name="community-maintained-starter-kits"></a>
+### コミュニティがコミュニティが保守するスターターキット
+
+Laravelインストーラを使用して新しいLaravelアプリケーションを作成する場合、Packagistで利用可能なコミュニティが保守しているスターターキットを`--using`フラグで指定できます。
+
+```shell
+laravel new my-app --using=example/starter-kit
+```
+
+<a name="creating-starter-kits"></a>
+#### スターターキットの作成
+
+作成したスターターキットを他の人が利用できるようにするには、[Packagist](https://packagist.org)で公開する必要があります。スターターキットは、`.env.example`ファイルで必要な環境変数を定義し、インストール後に必要なコマンドはスターターキットの`composer.json`ファイルの`post-create-project-cmd`配列に記述します。
 
 <a name="faqs"></a>
 ### 良くある質問

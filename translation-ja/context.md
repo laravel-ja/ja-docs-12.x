@@ -152,6 +152,43 @@ Context::when(
 );
 ```
 
+<a name="scoped-context"></a>
+#### スコープ付きコンテキスト
+
+`scope`メソッドは、指定コールバックの実行中のみ一時的にコンテキストを変更し、コールバックの実行が終了したときにコンテキストを元の状態に戻す方法を提供します。さらに、クロージャの実行中にコンテキストにマージする追加データを（第２引数、第３引数として）渡すこともできます。
+
+```php
+use Illuminate\Support\Facades\Context;
+use Illuminate\Support\Facades\Log;
+
+Context::add('trace_id', 'abc-999');
+Context::addHidden('user_id', 123);
+
+Context::scope(
+    function () {
+        Context::add('action', 'adding_friend');
+
+        $userId = Context::getHidden('user_id');
+
+        Log::debug("Adding user [{$userId}] to friends list.");
+        // ユーザー[987]をフレンドリストへ追加。{"trace_id":"abc-999","user_name":"taylor_otwell","action":"adding_friend"}
+    },
+    data: ['user_name' => 'taylor_otwell'],
+    hidden: ['user_id' => 987],
+);
+
+Context::all();
+// []
+
+Context::allHidden();
+// [
+//     'user_id' => 123,
+// ]
+```
+
+> [!WARNING]
+> コンテキスト内のオブジェクトをスコープ付きクロージャの内部で変更した場合、その変更はスコープの外部に反映されます。
+
 <a name="stacks"></a>
 ### スタック
 

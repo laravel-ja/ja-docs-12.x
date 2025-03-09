@@ -1214,7 +1214,7 @@ use Illuminate\Validation\Rule;
 
 フィールドは、[`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=)、並びに[`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=)、[`\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=)に含まれる、Unicodeのアルファベット文字と数字、およびASCIIのダッシュ(`-`)とASCIIの下線(`_`)であることをバリデートします。
 
-このバリデーションルールをASCII文字（`a-z`と`A-Z`）の範囲に限定したい場合は、`ascii`オプションを指定してください。
+このバリデーションルールをASCII文字（`a-z`、`A-Z`、`0-9`）の範囲に限定したい場合は、`ascii`オプションを指定してください。
 
 ```php
 'username' => 'alpha_dash:ascii',
@@ -1225,7 +1225,7 @@ use Illuminate\Validation\Rule;
 
 フィールドは、[`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=)、並びに[`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=)、[`\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=)に含まれる、Unicodeのアルファベット文字と数字のみであることをバリデートします。
 
-このバリデーションルールをASCII文字（`a-z`と`A-Z`）の範囲に限定したい場合は、`ascii`オプションを指定してください。
+このバリデーションルールをASCII文字（`a-z`、`A-Z`、`0-9`）の範囲に限定したい場合は、`ascii`オプションを指定してください。
 
 ```php
 'username' => 'alpha_num:ascii',
@@ -2316,7 +2316,7 @@ use Illuminate\Support\Facades\Validator;
 
 $validator = Validator::make($request->all(), [
     'email' => 'required|email',
-    'games' => 'required|numeric',
+    'games' => 'required|integer|min:0',
 ]);
 ```
 
@@ -2728,7 +2728,7 @@ if (strtoupper($value) !== $value) {
 ```php
 $fail('validation.location')->translate([
     'value' => $this->value,
-], 'fr')
+], 'fr');
 ```
 
 #### 追加データへのアクセス

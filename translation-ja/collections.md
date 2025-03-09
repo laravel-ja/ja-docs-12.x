@@ -859,8 +859,6 @@ $flattened->all();
 `dump`メソッドはコレクションアイテムをダンプします。
 
 ```php
-
-``````php
 $collection = collect(['John Doe', 'Jane Doe']);
 
 $collection->dump();
@@ -883,8 +881,6 @@ $collection->dump();
 `duplicates`メソッドはコレクション中の重複値を返します。
 
 ```php
-
-``````php
 $collection = collect(['a', 'b', 'a', 'c', 'b']);
 
 $collection->duplicates();
@@ -895,8 +891,6 @@ $collection->duplicates();
 コレクションが配列やオブジェクトを含む場合は、値の重複を調べたい属性のキーを渡せます。
 
 ```php
-
-``````php
 $employees = collect([
     ['email' => 'abigail@example.com', 'position' => 'Developer'],
     ['email' => 'james@example.com', 'position' => 'Designer'],

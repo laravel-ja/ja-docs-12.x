@@ -1008,7 +1008,7 @@ $name = Route::currentRouteName(); // string
 $action = Route::currentRouteAction(); // string
 ```
 
-ルートとルートクラスで使用可能な全メソッドを確認するには、[ルートファサードの元となるクラス](https://laravel.com/api/{{version}}/Illuminate/Routing/Router.html)と[ルートインスタンス](https://laravel.com/api/{{version}}/Illuminate/Routing/Route.html)の両方のAPIドキュメントを参照してください
+ルートとルートクラスで使用可能な全メソッドを確認するには、[ルートファサードの元となるクラス](https://api.laravel.com/docs/{{version}}/Illuminate/Routing/Router.html)と[ルートインスタンス](https://api.laravel.com/docs/{{version}}/Illuminate/Routing/Route.html)の両方のAPIドキュメントを参照してください
 
 <a name="cors"></a>
 ## オリジン間リソース共有 (CORS)

@@ -687,8 +687,6 @@ $path = $request->file('avatar')->storePubliclyAs(
 `local`ドライバを使用する場合、`public`の[可視性](#file-visibility)は、ディレクトリの`0755`パーミッションとファイルの`0644`パーミッションに変換されます。アプリケーションの`filesystems`設定ファイルでパーミッションマッピングを変更できます。
 
 ```php
-
-``````php
 'local' => [
     'driver' => 'local',
     'root' => storage_path('app'),
@@ -712,8 +710,6 @@ $path = $request->file('avatar')->storePubliclyAs(
 `delete`メソッドは、削除する単一のファイル名またはファイルの配列を受け入れます。
 
 ```php
-
-``````php
 use Illuminate\Support\Facades\Storage;
 
 Storage::delete('file.jpg');
@@ -724,8 +720,6 @@ Storage::delete(['file.jpg', 'file2.jpg']);
 必要に応じて、ファイルを削除するディスクを指定できます。
 
 ```php
-
-``````php
 use Illuminate\Support\Facades\Storage;
 
 Storage::disk('s3')->delete('path/file.jpg');

@@ -417,7 +417,18 @@ Route::get('/chat', function () {
 });
 ```
 
-このイベントストリームは、アプリケーションのフロントエンドにより、[EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource)オブジェクトを介して使用されるでしょう。イベントストリームが完了すると、`eventStream`メソッドは自動的にイベントストリームへ`</stream>`更新を送信します。
+イベント名をカスタマイズしたい場合は、`StreamedEvent`クラスのインスタンスを生成してください。
+
+```php
+use Illuminate\Http\StreamedEvent;
+
+yield new StreamedEvent(
+    event: 'update',
+    data: $response->choices[0],
+);
+```
+
+イベントストリームは、アプリケーションのフロントエンドにより、[EventSource](https://developer.mozilla.org/ja/docs/Web/API/EventSource) オブジェクトを介して利用されるでしょう。イベントストリームが完了すると、`eventStream`メソッドは自動的にイベントストリームへ`</stream>`更新を送信します。
 
 ```js
 const source = new EventSource('/chat');
@@ -431,6 +442,14 @@ source.addEventListener('update', (event) => {
 
     console.log(event.data);
 })
+```
+
+イベントストリームへ送信する最終イベントをカスタマイズするには、`eventStream`メソッドの`endStreamWith`引数に、`StreamedEvent`インスタンスを指定してください。
+
+```php
+return response()->eventStream(function () {
+    // ...
+}, endStreamWith: new StreamedEvent(event: 'update', data: '</stream>'));
 ```
 
 <a name="streamed-downloads"></a>
