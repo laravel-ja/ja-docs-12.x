@@ -209,7 +209,7 @@ Laravelアプリケーションを開発するときに、どのようなコー�
 
 さらに、コミュニティがメンテナンスしている[Laravel Idea](https://laravel-idea.com/) PhpStormプラグインは、コード生成、Eloquent構文補完、バリデーションルール補完など、IDEに役立つ様々な拡張機能を提供しています。
 
-[Visual Studio Code (VS Code)](https://code.visualstudio.com)で開発されている方に、公式の[Laravel VS Code Extension](https://marketplace.visualstudio.com/items?itemName=laravel.vscode-laravel)がリリースされました。この拡張は、Laravelに特化したツールをVS Code環境へ直接導入し、生産性を向上させます。
+[Visual Studio Code (VS Code)](https://code.visualstudio.com)で開発されている方に、公式の[Laravel VS Code Extension](https://marketplace.visualstudio.com/items?itemName=laravel.vscode-laravel)をリリースしました。この拡張は、Laravelに特化したツールをVS Code環境へ直接導入し、生産性を向上させます。
 
 <a name="next-steps"></a>
 ## 次のステップ
