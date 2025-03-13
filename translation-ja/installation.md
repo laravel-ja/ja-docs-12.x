@@ -153,7 +153,7 @@ php artisan migrate
 Laravelは常に、Webサーバで設定した「Webディレクトリ」のルートから提供されるべきです。「Webディレクトリ」のサブディレクトリからLaravelアプリケーションを提供しようとしないでください。そうすると、アプリケーション内に存在する機密ファイルが公開されてしまう可能性があります。
 
 <a name="installation-using-herd"></a>
-## Installation Using Herd
+## Herdを使ったインストール
 
 [Laravel Herd](https://herd.laravel.com)は、macOSとWindowsのための、超高速でネイティブなLaravelとPHPの開発環境です。Herdには、PHPやNginxなど、Laravel開発を始めるために必要なものがすべて含まれています。
 
