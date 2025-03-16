@@ -28,6 +28,7 @@
 
 - [Carbon3](#carbon-3)
 - [並列処理結果のインデックスマッピング](#concurrency-result-index-mapping)
+- [コンテナクラスの依存解決](#container-class-dependency-resolution)
 - [ImageバリデーションからSVGを除外](#image-validation)
 - [複数スキーマのデータベース調査](#multi-schema-database-inspecting)
 - [リクエストのネストした配列のマージ](#nested-array-request-merging)
@@ -107,6 +108,31 @@ $result = Concurrency::run([
 ]);
 
 // ['task-1' => 2, 'task-2' => 4]
+```
+
+<a name="container"></a>
+### Container
+
+<a name="container-class-dependency-resolution"></a>
+#### コンテナクラスの依存解決
+
+**影響の可能性： 低い**
+
+依存注入コンテナは、クラス・インスタンスを解決するときにクラス・プロパティのデフォルト値を尊重するようにしました。以前、デフォルト値なしでクラス・インスタンスを解決するためにコンテナに依存していた場合は、この新しい動作を考慮してアプリケーションを調整する必要があるかもしれません。
+
+```php
+class Example
+{
+    public function __construct(public ?Carbon $date = null) {}
+}
+
+$example = resolve(Example::class);
+
+// <= 11.x
+$example->date instanceof Carbon;
+
+// >= 12.x
+$example->date === null;
 ```
 
 <a name="database"></a>

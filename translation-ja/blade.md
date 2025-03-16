@@ -1156,6 +1156,18 @@ class Alert extends Component
 {{ $attributes->get('class') }}
 ```
 
+`only`メソッドは、指定キーの属性だけを取得するために使用します。
+
+```blade
+{{ $attributes->only(['class']) }}
+```
+
+`except`メソッドは、指定キーの属性以外のすべての属性を取得するために使用します。
+
+```blade
+{{ $attributes->except(['class']) }}
+```
+
 <a name="reserved-keywords"></a>
 ### 予約語
 

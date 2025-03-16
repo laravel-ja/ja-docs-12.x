@@ -8,6 +8,7 @@
 - [非同期プロセス](#asynchronous-processes)
     - [プロセスIDとシグナル](#process-ids-and-signals)
     - [非同期プロセス出力](#asynchronous-process-output)
+    - [非同期プロセスタイムアウト](#asynchronous-process-timeouts)
 - [同時実行プロセス](#concurrent-processes)
     - [名前付きプールアクセス](#naming-pool-processes)
     - [プールプロセスIDとシグナル](#pool-process-ids-and-signals)
@@ -299,6 +300,23 @@ $process = Process::start('bash import.sh');
 $process->waitUntil(function (string $type, string $output) {
     return $output === 'Ready...';
 });
+```
+
+<a name="asynchronous-process-timeouts"></a>
+### 非同期プロセスタイムアウト
+
+非同期プロセスの実行中、`ensureNotTimedOut`メソッドを使いプロセスがタイムアウトしていないことを確認できます。このメソッドは、プロセスがタイムアウトした場合に、[タイムアウト例外](#timeouts)を投げます。
+
+```php
+$process = Process::timeout(120)->start('bash import.sh');
+
+while ($process->running()) {
+    $process->ensureNotTimedOut();
+
+    // ...
+
+    sleep(1);
+}
 ```
 
 <a name="concurrent-processes"></a>

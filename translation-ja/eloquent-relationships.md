@@ -468,6 +468,15 @@ public function largestOrder(): HasOne
 }
 ```
 
+`one`メソッドを使い、`HasManyThrough`リレーションを`HasOneThrough`リレーションへ変換することもできます。
+
+```php
+public function latestDeployment(): HasOneThrough
+{
+    return $this->deployments()->one()->latestOfMany();
+}
+```
+
 <a name="advanced-has-one-of-many-relationships"></a>
 #### 上級Has One Of Manyリレーション
 

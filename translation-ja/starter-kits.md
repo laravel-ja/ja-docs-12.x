@@ -386,3 +386,4 @@ php artisan vendor:publish --tag=laravel-mail
 ```
 
 これにより、`resources/views/vendor/mail`にいくつかファイルを生成します。これらのファイルや`resources/views/vendor/mail/themes/default.css`ファイルを変更すれば、デフォルトのメールテンプレートの外観を変更することができます。
+

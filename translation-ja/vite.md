@@ -445,19 +445,16 @@ resources/
 <a name="working-with-stylesheets"></a>
 ## スタイルシートの操作
 
-ViteのCSSサポートは、[Viteドキュメント](https://vitejs.dev/guide/features.html#css) で詳しく説明されています。[Tailwind](https://tailwindcss.com)のようなPostCSSプラグインを使用している場合、プロジェクトのルートに`postcss.config.js`ファイルを作成すると、Vite が自動的にそれを適用してくれます。
+> [!NOTE]
+> Laravelの[スターターキット](/docs/{{version}}/starter-kits)は、あらかじめ適切なTailwindとViteの設定を用意してあります。また、スターターキットを使わずにTailwindとLaravelを使いたい場合は、[TailwindのLaravel向けインストールガイド](https://tailwindcss.com/docs/guides/laravel)を参照してください。
 
-```js
-export default {
-    plugins: {
-        tailwindcss: {},
-        autoprefixer: {},
-    },
-};
+全てのLaravelアプリケーションには、あらかじめTailwindと適切に設定された`vite.config.js`ファイルが含まれています。そのため、Vite開発サーバを起動するか、`dev`Composerコマンドを実行するだけで、LaravelとVite開発サーバの両方を起動できます。
+
+```shell
+composer run dev
 ```
 
-> [!NOTE]
-> Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、最初から適切なTailwind、PostCSS、Viteの構成を用意しています。また、スターターキットを使わずにTailwindとLaravelを使いたい場合は、[LaravelのためのTailwindインストールガイド](https://tailwindcss.com/docs/guides/laravel)をチェックしてください。
+アプリケーションのCSSは、`resources/css/app.css`ファイル内に設置します。
 
 <a name="working-with-blade-and-routes"></a>
 ## Bladeとルートの操作

@@ -416,13 +416,13 @@ class CustomizeFormatter
 
 Monolog has a variety of [available handlers](https://github.com/Seldaek/monolog/tree/main/src/Monolog/Handler) and Laravel does not include a built-in channel for each one. In some cases, you may wish to create a custom channel that is merely an instance of a specific Monolog handler that does not have a corresponding Laravel log driver.  These channels can be easily created using the `monolog` driver.
 
-When using the `monolog` driver, the `handler` configuration option is used to specify which handler will be instantiated. Optionally, any constructor parameters the handler needs may be specified using the `with` configuration option:
+When using the `monolog` driver, the `handler` configuration option is used to specify which handler will be instantiated. Optionally, any constructor parameters the handler needs may be specified using the `handler_with` configuration option:
 
 ```php
 'logentries' => [
     'driver'  => 'monolog',
     'handler' => Monolog\Handler\SyslogUdpHandler::class,
-    'with' => [
+    'handler_with' => [
         'host' => 'my.logentries.internal.datahubhost.company.com',
         'port' => '10000',
     ],
@@ -466,7 +466,7 @@ If you would like to customize the processors for a `monolog` driver, add a `pro
 'memory' => [
     'driver' => 'monolog',
     'handler' => Monolog\Handler\StreamHandler::class,
-    'with' => [
+    'handler_with' => [
         'stream' => 'php://stderr',
     ],
     'processors' => [

@@ -136,6 +136,16 @@ Context::get('key');
 // "first"
 ```
 
+Contextはまた、指定キーを増分または減分する便利なメソッドも提供しています。どちらのメソッドも最低１つの引数を受け取ります。２番目の引数で、キーの増分量や減分量を指定します。
+
+```php
+Context::increment('records_added');
+Context::increment('records_added', 5);
+
+Context::decrement('records_added');
+Context::decrement('records_added', 5);
+```
+
 <a name="conditional-context"></a>
 #### 条件付きコンテキスト
 

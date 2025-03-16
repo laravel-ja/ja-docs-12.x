@@ -323,7 +323,7 @@ LaravelやSymfonyの組み込み済み例外など、既存のレンダ可能（
 
 ```php
 /**
- * Render the exception into an HTTP response.
+ * 例外をHTTPレスポンスへレンダする
  */
 public function render(Request $request): Response|bool
 {

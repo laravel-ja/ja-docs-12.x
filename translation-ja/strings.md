@@ -1717,8 +1717,6 @@ Str::wordCount('Hello, world!'); // 2
 `Str::wordWrap`メソッドは、文字列を指定文字数で折り返します。
 
 ```php
-
-``````php
 use Illuminate\Support\Str;
 
 $text = "The quick brown fox jumped over the lazy dog."
@@ -1738,8 +1736,6 @@ dog.
 `Str::words`メソッドは、文字列内の単語数を制限します。3番目の引数で、切り捨てた文字列の末尾に追加する文字列を指定できます。
 
 ```php
-
-``````php
 use Illuminate\Support\Str;
 
 return Str::words('Perfectly balanced, as all things should be.', 3, ' >>>');
@@ -1753,8 +1749,6 @@ return Str::words('Perfectly balanced, as all things should be.', 3, ' >>>');
 `Str::wrap`メソッドは、指定文字列を追加の文字列か文字列のペアでラップします。
 
 ```php
-
-``````php
 use Illuminate\Support\Str;
 
 Str::wrap('Laravel', '"');
@@ -1772,8 +1766,6 @@ Str::wrap('is', before: 'This ', after: ' Laravel!');
 `str`関数は、指定した文字列の新しい`Illuminate\Support\Stringable`インスタンスを返します。この関数は `Str::of`メソッドと等価です。
 
 ```php
-
-``````php
 $string = str('Taylor')->append(' Otwell');
 
 // 'Taylor Otwell'
@@ -1782,8 +1774,6 @@ $string = str('Taylor')->append(' Otwell');
 `str`関数に引数を与えなかった場合、`Illuminate\Support\Str`のインスタンスを返します。
 
 ```php
-
-``````php
 $snake = str()->snake('FooBar');
 
 // 'foo_bar'
@@ -1795,8 +1785,6 @@ $snake = str()->snake('FooBar');
 `trans`関数は、指定した翻訳キーを[言語ファイル](/docs/{{version}}/localization)を使い、翻訳します。
 
 ```php
-
-``````php
 echo trans('messages.welcome');
 ```
 
@@ -3405,8 +3393,8 @@ $string = Str::of('tony stark')
 use Illuminate\Support\Str;
 use Illuminate\Support\Stringable;
 
-$string = Str::of('  ')->whenEmpty(function (Stringable $string) {
-    return $string->trim()->prepend('Laravel');
+$string = Str::of('  ')->trim()->whenEmpty(function (Stringable $string) {
+    return $string->prepend('Laravel');
 });
 
 // 'Laravel'
