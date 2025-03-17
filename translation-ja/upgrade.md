@@ -111,7 +111,7 @@ $result = Concurrency::run([
 ```
 
 <a name="container"></a>
-### Container
+### コンテナ
 
 <a name="container-class-dependency-resolution"></a>
 #### コンテナクラスの依存解決
