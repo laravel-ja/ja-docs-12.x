@@ -793,7 +793,6 @@ public function middleware(): array
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPodcast;
 use App\Models\Podcast;
 use Illuminate\Http\RedirectResponse;
@@ -837,7 +836,6 @@ ProcessPodcast::dispatchUnless($accountSuspended, $podcast);
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPodcast;
 use App\Models\Podcast;
 use Illuminate\Http\RedirectResponse;
@@ -903,7 +901,6 @@ dispatch(function () {
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPodcast;
 use App\Models\Podcast;
 use Illuminate\Http\RedirectResponse;
@@ -1067,7 +1064,6 @@ Bus::chain([
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPodcast;
 use App\Models\Podcast;
 use Illuminate\Http\RedirectResponse;
@@ -1125,7 +1121,6 @@ class ProcessPodcast implements ShouldQueue
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Jobs\ProcessPodcast;
 use App\Models\Podcast;
 use Illuminate\Http\RedirectResponse;

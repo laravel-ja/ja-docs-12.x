@@ -920,7 +920,6 @@ LaravelのMarkdownコンポーネント用にまったく新しいテーマを�
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Mail\OrderShipped;
 use App\Models\Order;
 use Illuminate\Http\RedirectResponse;

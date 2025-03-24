@@ -202,6 +202,22 @@ use Illuminate\Http\Request;
 })
 ```
 
+<a name="redirecting-authenticated-users"></a>
+#### 認証したユーザーのリダイレクト
+
+`guest`ミドルウェアは認証したユーザーを検出すると、そのユーザーを`dashboard`または`home`という名前のルートへリダイレクトします。アプリケーションの`bootstrap/app.php`ファイル内の、`redirectUsersTo`メソッドを使用し、この動作を変更できます。
+
+```php
+use Illuminate\Http\Request;
+
+->withMiddleware(function (Middleware $middleware) {
+    $middleware->redirectUsersTo('/panel');
+
+    // クロージャを使用する場合
+    $middleware->redirectUsersTo(fn (Request $request) => route('panel'));
+})
+```
+
 <a name="specifying-a-guard"></a>
 #### ガードの指定
 

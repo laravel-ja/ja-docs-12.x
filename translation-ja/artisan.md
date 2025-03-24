@@ -620,8 +620,13 @@ $name = $this->anticipate('What is your name?', ['Taylor', 'Dayle']);
 もしくは`anticipate`メソッドの２番目の引数としてクロージャを渡すこともできます。クロージャは、ユーザーが入力文字を入力するたびに呼び出されます。クロージャは、これまでのユーザーの入力を含む文字列パラメータを受け取り、オートコンプリートのオプションの配列を返す必要があります。
 
 ```php
+use App\Models\Address;
+
 $name = $this->anticipate('What is your address?', function (string $input) {
-    // 自動補完オプションを返す
+    return Address::whereLike('name', "{$input}%")
+        ->limit(5)
+        ->pluck('name')
+        ->all();
 });
 ```
 
@@ -735,7 +740,7 @@ $bar->finish();
 ```
 
 > [!NOTE]
-> より高度なオプションについては、[Symfonyのプログレスバーコンポーネントのドキュメント](https://symfony.com/doc/7.0/components/console/helpers/progressbar.html)をご覧ください。
+> より高度なオプションについては、[Symfonyのプログレスバーコンポーネントのドキュメント](https://symfony.com/doc/current/components/console/helpers/progressbar.html)をご覧ください。
 
 <a name="registering-commands"></a>
 ## コマンド登録

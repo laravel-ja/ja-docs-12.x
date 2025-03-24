@@ -245,7 +245,6 @@ PhpRedis拡張モジュールは、様々なシリアライズや圧縮アルゴ
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\View\View;
 

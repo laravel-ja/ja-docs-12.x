@@ -580,7 +580,7 @@ Precognitionでこれを行うには、`only`設定キーへ検証したいフ�
         submit() {
             this.form.submit()
                 .then(response => {
-                    form.reset();
+                    this.form.reset();
 
                     alert('User created.')
                 })

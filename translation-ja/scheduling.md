@@ -362,6 +362,15 @@ Schedule::command('report:generate')
     ->onOneServer();
 ```
 
+`useCache`メソッドを使い、シングルサーバのタスクにおいて、必要なアトミックロックを取得するためにスケジューラが使うキャッシュストアをカスタマイズできます。
+
+```php
+Schedule::command('recipes:sync')
+    ->everyThirtyMinutes()
+    ->onOneServer();
+    ->useCache('database');
+```
+
 <a name="naming-unique-jobs"></a>
 #### サーバジョブに一意名を付ける
 
@@ -602,7 +611,7 @@ Schedule::command('emails:send')
 Schedule::command('emails:send')
     ->daily()
     ->pingBeforeIf($condition, $url)
-    ->thenPingIf($condition, $url);             
+    ->thenPingIf($condition, $url);
 
 Schedule::command('emails:send')
     ->daily()

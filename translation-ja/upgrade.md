@@ -91,6 +91,16 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManage
 
 または、[Laravel Herd](https://herd.laravel.com)バンドルのLaravelインストーラを使用している場合は、Herdインストールを最新リリースへ更新してください。
 
+<a name="authentication"></a>
+### 認証
+
+<a name="updated-databasetokenrepository-constructor-signature"></a>
+#### `DatabaseTokenRepository`契約の使用法のアップデート
+
+**影響の可能性： とても低い**
+
+`Illuminate\Auth\Passwords\DatabaseTokenRepository`クラスのコンストラクタは、`$expires`パラメータを分単位ではなく秒単位で受け取るようになった。
+
 <a name="concurrency"></a>
 ### 並列処理
 

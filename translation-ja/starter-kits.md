@@ -289,13 +289,15 @@ Livewireスターターキットに含まれている、ログインページや
 
 ### WorkOSスターターキットの設定
 
-WorkOSを使用するスターターキットで新しいアプリケーションを作成したら、アプリケーションの`.env`ファイルへ、`WORKOS_CLIENT_ID`、`WORKOS_API_KEY`、`WORKOS_REDIRECT_URL` 環境変数を設定する必要があります。これらの変数はあなたのアプリケーション用に、WorkOSダッシュボードが提供した値と一致する必要があります。
+WorkOSを使用するスターターキットで新しいアプリケーションを作成したら、アプリケーションの`.env`ファイルへ、`WORKOS_CLIENT_ID`、`WORKOS_API_KEY`、`WORKOS_REDIRECT_URL` 環境変数を設定する必要があります。これらの変数はあなたのアプリケーション用に、WorkOSダッシュボードが提供した値と一致させる必要があります。
 
 ```ini
 WORKOS_CLIENT_ID=your-client-id
 WORKOS_API_KEY=your-api-key
 WORKOS_REDIRECT_URL="${APP_URL}/authenticate"
 ```
+
+さらに、WorkOSダッシュボードでアプリケーションのホームページURLを設定する必要があります。このURLは、ユーザーがアプリケーションからログアウトした後にリダイレクトされる場所です。
 
 <a name="configuring-authkit-authentication-methods"></a>
 #### AuthKit認証メソッドの設定
@@ -386,4 +388,3 @@ php artisan vendor:publish --tag=laravel-mail
 ```
 
 これにより、`resources/views/vendor/mail`にいくつかファイルを生成します。これらのファイルや`resources/views/vendor/mail/themes/default.css`ファイルを変更すれば、デフォルトのメールテンプレートの外観を変更することができます。
-

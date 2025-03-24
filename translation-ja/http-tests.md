@@ -305,7 +305,7 @@ class ExampleTest extends TestCase
 }
 ```
 
-あるいは、`dd`、`ddHeaders`、`ddSession`、`ddJson`メソッドを使って、レスポンスに関する情報をダンプしてから、実行を停止することもできます。
+あるいは、`dd`、`ddHeaders`、`ddBody`、`ddJson`、`ddSession`メソッドを使って、レスポンスに関する情報をダンプしてから、実行を停止することもできます。
 
 ```php tab=Pest
 <?php
@@ -313,10 +313,11 @@ class ExampleTest extends TestCase
 test('basic test', function () {
     $response = $this->get('/');
 
-    $response->ddHeaders();
-    $response->ddSession();
-    $response->ddJson();
     $response->dd();
+    $response->ddHeaders();
+    $response->ddBody();
+    $response->ddJson();
+    $response->ddSession();
 });
 ```
 
@@ -336,11 +337,11 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->ddHeaders();
-
-        $response->ddSession();
-
         $response->dd();
+        $response->ddHeaders();
+        $response->ddBody();
+        $response->ddJson();
+        $response->ddSession();
     }
 }
 ```

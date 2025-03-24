@@ -364,6 +364,25 @@ $user = User::find(1);
 $user->update(['options->key' => 'value']);
 ```
 
+<a name="json-and-unicode"></a>
+#### JSONとユニコード
+
+エスケープしないUnicode文字でJSONとして、配列の属性を格納したい場合は、`json:unicode`キャストを使用してください。
+
+```php
+/**
+ * キャストする属性を取得
+ *
+ * @return array<string, string>
+ */
+protected function casts(): array
+{
+    return [
+        'options' => 'json:unicode',
+    ];
+}
+```
+
 <a name="array-object-and-collection-casting"></a>
 #### 配列オブジェクトとコレクションのキャスト
 

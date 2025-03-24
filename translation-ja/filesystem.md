@@ -559,7 +559,6 @@ Webアプリケーションでは、ファイルを保存するための最も�
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class UserAvatarController extends Controller

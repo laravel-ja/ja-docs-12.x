@@ -125,7 +125,6 @@ Route::get('/profile', [UserController::class, 'show'])->middleware('auth');
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 

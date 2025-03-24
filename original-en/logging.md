@@ -55,7 +55,7 @@ Each log channel is powered by a "driver". The driver determines how and where t
 
 </div>
 
-> [!NOTE]  
+> [!NOTE]
 > Check out the documentation on [advanced channel customization](#monolog-channel-customization) to learn more about the `monolog` and `custom` drivers.
 
 <a name="configuring-the-channel-name"></a>
@@ -213,7 +213,6 @@ You may call any of these methods to log a message for the corresponding level. 
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
@@ -315,7 +314,7 @@ class AssignRequestId
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > If you need to share log context while processing queued jobs, you may utilize [job middleware](/docs/{{version}}/queues#job-middleware).
 
 <a name="writing-to-specific-channels"></a>
@@ -408,7 +407,7 @@ class CustomizeFormatter
 }
 ```
 
-> [!NOTE]  
+> [!NOTE]
 > All of your "tap" classes are resolved by the [service container](/docs/{{version}}/container), so any constructor dependencies they require will automatically be injected.
 
 <a name="creating-monolog-handler-channels"></a>
@@ -529,7 +528,7 @@ Laravel Pail is a package that allows you to easily dive into your Laravel appli
 <a name="pail-installation"></a>
 ### Installation
 
-> [!WARNING]  
+> [!WARNING]
 > Laravel Pail requires [PHP 8.2+](https://php.net/releases/) and the [PCNTL](https://www.php.net/manual/en/book.pcntl.php) extension.
 
 To get started, install Pail into your project using the Composer package manager:

@@ -932,7 +932,7 @@ return $this->belongsToMany(Podcast::class)
 
 ```php
 return $this->belongsToMany(Role::class)
-        ->withPivotValue('approved', 1);
+    ->withPivotValue('approved', 1);
 ```
 
 <a name="ordering-queries-via-intermediate-table-columns"></a>

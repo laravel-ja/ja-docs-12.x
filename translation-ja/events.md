@@ -586,7 +586,6 @@ public function backoff(): array
 namespace App\Http\Controllers;
 
 use App\Events\OrderShipped;
-use App\Http\Controllers\Controller;
 use App\Models\Order;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;

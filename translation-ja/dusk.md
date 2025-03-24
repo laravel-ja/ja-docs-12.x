@@ -1764,7 +1764,7 @@ $browser->assertSeeNothingIn($selector);
 
 ```php
 $browser->assertScript('window.isLoaded')
-        ->assertScript('document.readyState', 'complete');
+    ->assertScript('document.readyState', 'complete');
 ```
 
 <a name="assert-source-has"></a>
@@ -2288,9 +2288,9 @@ $browser->visit(new Login);
 use Tests\Browser\Pages\CreatePlaylist;
 
 $browser->visit('/dashboard')
-        ->clickLink('Create Playlist')
-        ->on(new CreatePlaylist)
-        ->assertSee('@create');
+    ->clickLink('Create Playlist')
+    ->on(new CreatePlaylist)
+    ->assertSee('@create');
 ```
 
 <a name="shorthand-selectors"></a>
@@ -2372,8 +2372,8 @@ class Dashboard extends Page
 use Tests\Browser\Pages\Dashboard;
 
 $browser->visit(new Dashboard)
-        ->createPlaylist('My Playlist')
-        ->assertSee('My Playlist');
+    ->createPlaylist('My Playlist')
+    ->assertSee('My Playlist');
 ```
 
 <a name="components"></a>

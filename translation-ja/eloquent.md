@@ -730,7 +730,6 @@ $max = Flight::where('active', 1)->max('price');
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
 use App\Models\Flight;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -873,11 +872,34 @@ $user = User::find(1);
 $user->name; // John
 $user->email; // john@example.com
 
-$user->name = "Jack";
+$user->name = 'Jack';
 $user->name; // Jack
 
 $user->getOriginal('name'); // John
 $user->getOriginal(); // Array of original attributes...
+```
+
+`getChanges`メソッドは、モデルが最後に保存されたときに変更された属性を含む配列を返します。
+
+```php
+$user = User::find(1);
+
+$user->name; // John
+$user->email; // john@example.com
+
+$user->update([
+    'name' => 'Jack',
+    'email' => 'jack@example.com',
+]);
+
+$user->getChanges();
+
+/*
+    [
+        'name' => 'Jack',
+        'email' => 'jack@example.com',
+    ]
+*/
 ```
 
 <a name="mass-assignment"></a>
@@ -1108,8 +1130,8 @@ $flight->restore();
 
 ```php
 Flight::withTrashed()
-        ->where('airline_id', 1)
-        ->restore();
+    ->where('airline_id', 1)
+    ->restore();
 ```
 
 `restore`メソッドは、[リレーション](/docs/{{version}}/eloquent-relationships)のクエリを作成するときにも使用できます。
