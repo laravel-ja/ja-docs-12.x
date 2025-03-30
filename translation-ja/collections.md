@@ -2402,7 +2402,7 @@ $collection->reduce(function (int $carry, int $item) {
 // 10
 ```
 
-また、`reduce`メソッドは、配列のキーを連想コレクションにして、与えられたコールバックに渡します。
+また、`reduce`メソッドは、配列のキーを指定コールバックへ渡します。
 
 ```php
 $collection = collect([
@@ -2417,9 +2417,9 @@ $ratio = [
     'eur' => 1.22,
 ];
 
-$collection->reduce(function (int $carry, int $value, int $key) use ($ratio) {
+$collection->reduce(function (int $carry, int $value, string $key) use ($ratio) {
     return $carry + ($value * $ratio[$key]);
-});
+}, 0);
 
 // 4264
 ```

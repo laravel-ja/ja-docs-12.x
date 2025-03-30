@@ -71,6 +71,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Arr::select](#method-array-select)
 [Arr::set](#method-array-set)
 [Arr::shuffle](#method-array-shuffle)
+[Arr::sole](#method-array-sole)
 [Arr::sort](#method-array-sort)
 [Arr::sortDesc](#method-array-sort-desc)
 [Arr::sortRecursive](#method-array-sort-recursive)
@@ -918,6 +919,21 @@ use Illuminate\Support\Arr;
 $array = Arr::shuffle([1, 2, 3, 4, 5]);
 
 // [3, 2, 5, 1, 4] - (generated randomly)
+```
+
+<a name="method-array-sole"></a>
+#### `Arr::sole()` {.collection-method}
+
+`Arr::sole`メソッドは、指定クロージャを使用して配列から単一の値を取得します。指定した真偽テストに複数の配列値がマッチする場合、`Illuminate\Support\MultipleItemsFoundException`例外をなげます。真偽テストにマッチする値がない場合、`Illuminate\Support\ItemNotFoundException`例外を投げます。
+
+```php
+use Illuminate\Support\Arr;
+
+$array = ['Desk', 'Table', 'Chair'];
+
+$value = Arr::sole($array, fn (string $value) => $value === 'Desk');
+
+// 'Desk'
 ```
 
 <a name="method-array-sort"></a>

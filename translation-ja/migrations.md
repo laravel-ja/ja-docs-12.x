@@ -134,6 +134,24 @@ public function up(): void
 }
 ```
 
+<a name="skipping-migrations"></a>
+#### マイグレーションのスキップ
+
+マイグレーションがまだ有効になっていない機能をサポートするためのもので、まだ実行させたくない場合があります。この場合、マイグレーションに`shouldRun`メソッドを定義してください。`shouldRun`メソッドが`false`を返したら、そのマイグレーションをスキップします。
+
+```php
+use App\Models\Flights;
+use Laravel\Pennant\Feature;
+
+/**
+ * Determine if this migration should run.
+ */
+public function shouldRun(): bool
+{
+    return Feature::active(Flights::class);
+}
+```
+
 <a name="running-migrations"></a>
 ## マイグレーションの実行
 

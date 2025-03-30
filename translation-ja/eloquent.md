@@ -1594,12 +1594,20 @@ class Post extends Model
 }
 ```
 
-`withAttributes`メソッドは指定属性を使用して、`where`節制約をクエリへ追加します。そして、このスコープを使用して作成したモデルへ、指定属性を追加します。
+`withAttributes`メソッドは指定属性を使用して、`where`条件をクエリへ追加します。そして、このスコープを使用して作成したモデルへ、指定属性を追加します。
 
 ```php
 $draft = Post::draft()->create(['title' => 'In Progress']);
 
 $draft->hidden; // true
+```
+
+`withAttributes`メソッドにクエリへ、`where`条件を追加しないように指示するには、`asConditions`引数を`false`へ設定してください。
+
+```php
+$query->withAttributes([
+    'hidden' => true,
+], asConditions: false);
 ```
 
 <a name="comparing-models"></a>

@@ -441,6 +441,12 @@ $this->assertThrows(
 );
 ```
 
+`assertDoesntThrow`メソッドは、指定クロージャ内のコードが例外を投げないことを宣言するために使用します。
+
+```php
+$this->assertDoesntThrow(fn () => (new ProcessOrder)->execute());
+```
+
 <a name="testing-json-apis"></a>
 ## JSON APIのテスト
 
@@ -1108,7 +1114,7 @@ $response->assertCreated();
 指定する文字列が、アプリケーションが返すレスポンスに含まれていないことを宣言します。このアサートは、２番目の引数に`false`を渡さない限り、指定する文字列を自動的にエスケープします。
 
 ```php
-$response->assertDontSee($value, $escaped = true);
+$response->assertDontSee($value, $escape = true);
 ```
 
 <a name="assert-dont-see-text"></a>
@@ -1117,7 +1123,7 @@ $response->assertDontSee($value, $escaped = true);
 指定する文字列がレスポンステキストに含まれていないことを宣言します。このアサートは、２番目の引数に`false`を渡さない限り、指定する文字列を自動的にエスケープします。このメソッドは、アサートを作成する前に、レスポンスコンテンツを`strip_tags` PHP関数へ渡します。
 
 ```php
-$response->assertDontSeeText($value, $escaped = true);
+$response->assertDontSeeText($value, $escape = true);
 ```
 
 <a name="assert-download"></a>
@@ -1577,7 +1583,7 @@ $response->assertRequestTimeout();
 指定する文字列がレスポンスに含まれていることを宣言します。このアサートは、２番目の引数に`false`を渡さない限り、指定する文字列を自動的にエスケープします。
 
 ```php
-$response->assertSee($value, $escaped = true);
+$response->assertSee($value, $escape = true);
 ```
 
 <a name="assert-see-in-order"></a>
@@ -1586,7 +1592,7 @@ $response->assertSee($value, $escaped = true);
 指定する文字列がレスポンス内に順番に含まれていることを宣言します。このアサートは、2番目の引数へ`false`を渡さない限り、指定する文字列を自動的にエスケープします。
 
 ```php
-$response->assertSeeInOrder(array $values, $escaped = true);
+$response->assertSeeInOrder(array $values, $escape = true);
 ```
 
 <a name="assert-see-text"></a>
@@ -1595,7 +1601,7 @@ $response->assertSeeInOrder(array $values, $escaped = true);
 指定する文字列がレスポンステキストに含まれていることを宣言します。このアサートは、2番目の引数に`false`を渡さない限り、指定する文字列を自動的にエスケープします。アサートが作成される前に、レスポンスの内容が`strip_tags`PHP関数に渡されます。
 
 ```php
-$response->assertSeeText($value, $escaped = true);
+$response->assertSeeText($value, $escape = true);
 ```
 
 <a name="assert-see-text-in-order"></a>
@@ -1604,7 +1610,7 @@ $response->assertSeeText($value, $escaped = true);
 指定する文字列がレスポンステキスト内に順番に含まれていることを宣言します。このアサートは、２番目の引数に`false`を渡さない限り、指定する文字列を自動的にエスケープします。アサートが作成される前に、レスポンスの内容が`strip_tags`PHP関数に渡されます。
 
 ```php
-$response->assertSeeTextInOrder(array $values, $escaped = true);
+$response->assertSeeTextInOrder(array $values, $escape = true);
 ```
 
 <a name="assert-server-error"></a>

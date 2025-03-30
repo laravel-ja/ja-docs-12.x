@@ -901,7 +901,7 @@ Echo.private(`orders.${this.order.id}`)
 
 ```js
 Echo.private(`orders.${this.order.id}`)
-    .stopListening('OrderShipmentStatusUpdated')
+    .stopListening('OrderShipmentStatusUpdated');
 ```
 
 <a name="leaving-a-channel"></a>
@@ -1145,7 +1145,7 @@ return [new Channel($this->user)];
 モデルのチャンネル名を決定する必要がある場合は、モデルインスタンスで`broadcastChannel`メソッドを呼び出してください。たとえば、`1`の`id`を持つ`App\Models\User`モデルに対し、このメソッドは文字列`App.Models.User.1`を返します。
 
 ```php
-$user->broadcastChannel()
+$user->broadcastChannel();
 ```
 
 <a name="model-broadcasting-event-conventions"></a>

@@ -725,12 +725,18 @@ public function featuredPosts(): HasMany
 }
 ```
 
-`withAttributes`メソッドは、指定属性を使用し、`where`節制約をクエリへ追加し、リレーションメソッドで作成したモデルにも指定属性を追加します。
+`withAttributes`メソッドは、指定属性を使用し、`where`条件をクエリへ追加し、リレーションメソッドで作成したモデルにも指定属性を追加します。
 
 ```php
 $post = $user->featuredPosts()->create(['title' => 'Featured Post']);
 
 $post->featured; // true
+```
+
+`withAttributes`メソッドへ、`where`条件をクエリに追加しないように指示するには、`asConditions`引数を`false`へ設定してください。
+
+```php
+return $this->posts()->withAttributes(['featured' => true], asConditions: false);
 ```
 
 <a name="many-to-many"></a>
