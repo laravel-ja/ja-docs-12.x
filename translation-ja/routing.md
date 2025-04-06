@@ -466,7 +466,7 @@ $url = route('profile', ['id' => 1, 'photos' => 'yes']);
 ```
 
 > [!NOTE]
-> 場合により現在のロケールなど、URLパラメータにリクエスト全体のデフォルト値を指定したいことがあります。これを実現するには、[`URL::defaults`メソッド](/docs/{{version}}/urls#default-values)を使用してください。
+> 場合により現在のロケールなど、URLパラメータにリクエスト全体のデフォルト値を指定したいことがあります。これを実現するには、[URL::defaultsメソッド](/docs/{{version}}/urls#default-values)を使用してください。
 
 <a name="inspecting-the-current-route"></a>
 #### 現在のルートの検査

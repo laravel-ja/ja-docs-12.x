@@ -370,7 +370,7 @@ $name = $request->input('user.name');
 <a name="retrieving-stringable-input-values"></a>
 #### Retrieving Stringable Input Values
 
-Instead of retrieving the request's input data as a primitive `string`, you may use the `string` method to retrieve the request data as an instance of [`Illuminate\Support\Stringable`](/docs/{{version}}/strings):
+Instead of retrieving the request's input data as a primitive `string`, you may use the `string` method to retrieve the request data as an instance of [Illuminate\Support\Stringable](/docs/{{version}}/strings):
 
 ```php
 $name = $request->string('name')->trim();
@@ -787,7 +787,7 @@ In addition to configuring the trusted proxies, you may also configure the proxy
 ```
 
 > [!NOTE]
-> If you are using AWS Elastic Load Balancing, the `headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. If your load balancer uses the standard `Forwarded` header from [RFC 7239](https://www.rfc-editor.org/rfc/rfc7239#section-4), the `headers` value should be `Request::HEADER_FORWARDED`. For more information on the constants that may be used in the `headers` value, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/7.0/deployment/proxies.html).
+> If you are using AWS Elastic Load Balancing, the `headers` value should be `Request::HEADER_X_FORWARDED_AWS_ELB`. If your load balancer uses the standard `Forwarded` header from [RFC 7239](https://www.rfc-editor.org/rfc/rfc7239#section-4), the `headers` value should be `Request::HEADER_FORWARDED`. For more information on the constants that may be used in the `headers` value, check out Symfony's documentation on [trusting proxies](https://symfony.com/doc/current/deployment/proxies.html).
 
 <a name="trusting-all-proxies"></a>
 #### Trusting All Proxies

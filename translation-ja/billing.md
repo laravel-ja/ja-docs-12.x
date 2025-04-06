@@ -2446,7 +2446,7 @@ Route::get('/product-checkout', function (Request $request) {
 });
 ```
 
-ゲストのチェックアウトが完了すると、Stripeは`checkout.session.completed` Webフックイベントをディスパッチします。ですから、このイベントを確実にアプリケーションへ送信するため、[StripeのWebフックを設定](https://dashboard.stripe.com/webhooks)してください。StripeのダッシュボードでWebフックを有効にしたら、[Cashierを使ってwebフックを処理](#handling-stripe-webhooks)できます。Webフックのペイロードに含まれるオブジェクトは[`checkout`オブジェクト](https://stripe.com/docs/api/checkout/sessions/object)であり、顧客の注文を処理するため確認できます。
+ゲストのチェックアウトが完了すると、Stripeは`checkout.session.completed` Webフックイベントをディスパッチします。ですから、このイベントを確実にアプリケーションへ送信するため、[StripeのWebフックを設定](https://dashboard.stripe.com/webhooks)してください。StripeのダッシュボードでWebフックを有効にしたら、[Cashierを使ってwebフックを処理](#handling-stripe-webhooks)できます。Webフックのペイロードに含まれるオブジェクトは[checkoutオブジェクト](https://stripe.com/docs/api/checkout/sessions/object)であり、顧客の注文を処理するため確認できます。
 
 <a name="handling-failed-payments"></a>
 ## 支払い失敗の処理

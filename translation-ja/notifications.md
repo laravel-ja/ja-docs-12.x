@@ -920,7 +920,7 @@ php artisan migrate
 ```
 
 > [!NOTE]
-> 通知可能なモデルで[UUIDかULIDの主キー](/docs/{{version}}/eloquent#uuid-and-ulid-keys)を使用している場合は、通知テーブルのマイグレーションで、`morphs`メソッドを[`uuidMorphs`](/docs/{{version}}/migrations#column-method-uuidMorphs)、もしくは[`ulidMorphs`](/docs/{{version}}/migrations#column-method-ulidMorphs)へ置換する必要があります。
+> 通知可能なモデルで[UUIDかULIDの主キー](/docs/{{version}}/eloquent#uuid-and-ulid-keys)を使用している場合は、通知テーブルのマイグレーションで、`morphs`メソッドを[uuidMorphs](/docs/{{version}}/migrations#column-method-uuidMorphs)、もしくは[ulidMorphs](/docs/{{version}}/migrations#column-method-ulidMorphs)へ置換する必要があります。
 
 <a name="formatting-database-notifications"></a>
 ### データベース通知のフォーマット

@@ -324,7 +324,7 @@ Bladeは、コンポーネント名をパスカルケース化し、このコン
 <a name="anonymous-components"></a>
 #### 無名コンポーネント
 
-パッケージが無名コンポーネントを持っている場合、"views"ディレクトリ（[`loadViewsFrom`](#views)で指定している場所）の`components`ディレクトリの中へ設置する必要があります。すると、パッケージのビュー名前空間を先頭に付けたコンポーネント名でレンダできます。
+パッケージが無名コンポーネントを持っている場合、"views"ディレクトリ（[loadViewsFrom](#views)で指定している場所）の`components`ディレクトリの中へ設置する必要があります。すると、パッケージのビュー名前空間を先頭に付けたコンポーネント名でレンダできます。
 
 ```blade
 <x-courier::alert />
@@ -373,7 +373,7 @@ public function boot(): void
 <a name="optimize-commands"></a>
 ### Optimizeコマンド
 
-Laravelの[`optimize`コマンド](/docs/{{version}}/deployment#optimization)は、アプリケーションの設定、イベント、ルート、ビューをキャッシュします。`optimizes`メソッドを使用すると、`optimize`コマンドと`optimize:clear`コマンドの実行時に呼び出す、パッケージ独自のArtisanコマンドを登録できます。
+Laravelの[optimizeコマンド](/docs/{{version}}/deployment#optimization)は、アプリケーションの設定、イベント、ルート、ビューをキャッシュします。`optimizes`メソッドを使用すると、`optimize`コマンドと`optimize:clear`コマンドの実行時に呼び出す、パッケージ独自のArtisanコマンドを登録できます。
 
 ```php
 /**

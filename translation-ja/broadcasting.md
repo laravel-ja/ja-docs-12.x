@@ -1163,7 +1163,7 @@ $user->broadcastChannel();
         ...
     },
     ...
-    "socket": "someSocketId",
+    "socket": "someSocketId"
 }
 ```
 

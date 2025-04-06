@@ -404,7 +404,7 @@ Recorders\SlowRequests::class => [
 <a name="servers-recorder"></a>
 #### サーバ
 
-`Servers`レコーダは、アプリケーションを動かしているサーバのCPU、メモリ、ストレージの使用状況をキャプチャし、[サーバ](#servers-card)カードに表示します。このレコーダを使うには、[`pulse:check`コマンド](#capturing-entries)を監視する各サーバ上で実行する必要があります。
+`Servers`レコーダは、アプリケーションを動かしているサーバのCPU、メモリ、ストレージの使用状況をキャプチャし、[サーバ](#servers-card)カードに表示します。このレコーダを使うには、[pulse:checkコマンド](#capturing-entries)を監視する各サーバ上で実行する必要があります。
 
 報告する各サーバは、一意な名前を持っていなければなりません。Pulseはデフォルトで、PHPの`gethostname`関数が返す値を使用します。これをカスタマイズしたい場合は、`PULSE_SERVER_NAME`環境変数を設定します。
 
@@ -509,7 +509,7 @@ php artisan pulse:restart
 
 Pulseはデフォルトで、アプリケーションで発生するすべての関連イベントをキャプチャします。トラフィックの多いアプリケーションの場合、特に長期間では、ダッシュボードに何百万ものデータベース行を集約する必要が生じる可能性があります。
 
-その代わりに、特定のPulseデータレコーダでは「サンプリング」を有効にできます。例えば、[`ユーザーリクエスト`](#user-requests-recorder)レコーダのサンプルレートを`0.1`に設定すると、アプリケーションへのリクエストの約10%だけを記録することになります。ダッシュボードでは、値はスケールアップされ、近似値であることを示すために、`~`を先頭に付けています。
+その代わりに、特定のPulseデータレコーダでは「サンプリング」を有効にできます。例えば、[ユーザーリクエスト](#user-requests-recorder)レコーダのサンプルレートを`0.1`に設定すると、アプリケーションへのリクエストの約10%だけを記録することになります。ダッシュボードでは、値はスケールアップされ、近似値であることを示すために、`~`を先頭に付けています。
 
 一般的に、特定のメトリックのエントリが多いほど、精度を犠牲にすることなく、サンプルレートを低く設定できます。
 
@@ -671,7 +671,7 @@ export default {
 @tailwind utilities;
 ```
 
-また、カードのビューに、Tailwindの[`important`セレクタ戦略](https://tailwindcss.com/docs/configuration#selector-strategy)へ渡したセレクタにマッチする`id`属性または`class`属性を含める必要があります。
+また、カードのビューに、Tailwindの[importantセレクタ戦略](https://tailwindcss.com/docs/configuration#selector-strategy)へ渡したセレクタにマッチする`id`属性または`class`属性を含める必要があります。
 
 ```blade
 <x-pulse::card id="top-sellers" :cols="$cols" :rows="$rows" class="$class">

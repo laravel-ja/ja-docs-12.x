@@ -531,7 +531,7 @@ Flight::where(function ($query) {
 <a name="chunking-using-lazy-collections"></a>
 ### レイジーコレクションを使用する分割
 
-`lazy`メソッドは、裏でチャンク単位でクエリを実行するという意味で、[`chunk`メソッド](#chunking-results)と同様に動作します。しかし、`lazy`メソッドは、各チャンクをそのままコールバックへ渡すのではなく、フラット化したEloquentモデルの[`LazyCollection`](/docs/{{version}}/collections#lazy-collections)を返すので、結果を単一のストリームとして操作できます。
+`lazy`メソッドは、裏でチャンク単位でクエリを実行するという意味で、[`chunk`メソッド](#chunking-results)と同様に動作します。しかし、`lazy`メソッドは、各チャンクをそのままコールバックへ渡すのではなく、フラット化したEloquentモデルの[LazyCollection](/docs/{{version}}/collections#lazy-collections)を返すので、結果を単一のストリームとして操作できます。
 
 ```php
 use App\Models\Flight;
@@ -1479,7 +1479,7 @@ User::withoutGlobalScopes([
 <a name="local-scopes"></a>
 ### ローカルスコープ
 
-ローカルスコープを使用すると、アプリケーション全体で簡単に再利用できる、共通のクエリ制約を定義できます。たとえば、「人気がある（popular）」と思われるすべてのユーザーを頻繁に取得する必要があるとしましょう。スコープを定義するには、Eloquentモデルメソッドの前に`scope`を付けます。
+ローカルスコープを使用すると、アプリケーション全体で簡単に再利用できる、共通のクエリ制約を定義できます。たとえば、「人気がある（popular）」と思われるすべてのユーザーを頻繁に取得する必要があるとしましょう。スコープを定義するには、Eloquentのメソッドへ`Scope`属性を追加します。
 
 スコープは常に同じクエリビルダのインスタンスか、`void`を返す必要があります。
 
@@ -1488,6 +1488,7 @@ User::withoutGlobalScopes([
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -1496,7 +1497,8 @@ class User extends Model
     /**
      * 人気のあるユーザーだけを含むようにクエリをスコープ
      */
-    public function scopePopular(Builder $query): void
+    #[Scope]
+    protected function popular(Builder $query): void
     {
         $query->where('votes', '>', 100);
     }
@@ -1504,7 +1506,8 @@ class User extends Model
     /**
      * アクティブユーザーのみを含むようにクエリをスコープ
      */
-    public function scopeActive(Builder $query): void
+    #[Scope]
+    protected function active(Builder $query): void
     {
         $query->where('active', 1);
     }
@@ -1514,7 +1517,7 @@ class User extends Model
 <a name="utilizing-a-local-scope"></a>
 #### ローカルスコープの利用
 
-スコープを定義したら、モデルをクエリするときにスコープメソッドを呼び出すことができます。ただし、メソッドを呼び出すときに`scope`プレフィックスを含めないでください。さまざまなスコープに呼び出しをチェーンすることもできます。
+スコープを定義したら、モデルをクエリするときにスコープメソッドを呼び出すことができます。さまざまなスコープに呼び出しをチェーンすることもできます。
 
 ```php
 use App\Models\User;
@@ -1546,6 +1549,7 @@ $users = User::popular()->orWhere->active()->get();
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -1554,7 +1558,8 @@ class User extends Model
     /**
      * 指定タイプのユーザーのみを含むようにクエリをスコープ
      */
-    public function scopeOfType(Builder $query, string $type): void
+    #[Scope]
+    protected function ofType(Builder $query, string $type): void
     {
         $query->where('type', $type);
     }
@@ -1577,6 +1582,7 @@ $users = User::ofType('admin')->get();
 
 namespace App\Models;
 
+use Illuminate\Database\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
@@ -1585,7 +1591,8 @@ class Post extends Model
     /**
      * ドラフトのみを含むようにクエリをスコープ
      */
-    public function scopeDraft(Builder $query): void
+    #[Scope]
+    protected function draft(Builder $query): void
     {
         $query->withAttributes([
             'hidden' => true,

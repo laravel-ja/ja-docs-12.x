@@ -376,7 +376,7 @@ class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
 ```
 
 > [!NOTE]
-> ジョブの同時処理を制限するだけでよい場合は、代わりに[`WithoutOverlapping`](/docs/{{version}}/queues#preventing-job-overlaps)ジョブミドルウェアを使用してください。
+> ジョブの同時処理を制限するだけでよい場合は、代わりに[WithoutOverlapping](/docs/{{version}}/queues#preventing-job-overlaps)ジョブミドルウェアを使用してください。
 
 <a name="encrypted-jobs"></a>
 ### ジョブの暗号化
@@ -523,7 +523,7 @@ public function middleware(): array
 }
 ```
 
-レート制限したジョブをキューに戻すと、ジョブの「試行`attempts`」の総数は増加します。それに応じて、ジョブクラスの`tries`プロパティと`maxExceptions`プロパティを調整することをお勧めします。または、[`retryUntil`メソッド](#time-based-attempts)を使用して、ジョブが試行されなくなるまでの時間を定義することもできます。
+レート制限したジョブをキューに戻すと、ジョブの「試行（`attempts`）」の総数は増加します。それに応じて、ジョブクラスの`tries`プロパティと`maxExceptions`プロパティを調整することをお勧めします。または、[retryUntilメソッド](#time-based-attempts)を使用して、ジョブが試行されなくなるまでの時間を定義することもできます。
 
 レート制限されているときにジョブを再試行させたくない場合は、`dontRelease`メソッドを使用します。
 

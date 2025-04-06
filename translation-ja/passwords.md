@@ -37,7 +37,7 @@ Laravelのパスワードリセット機能を使用する前に、アプリケ�
 
 通常、NginxやApacheなどのウェブは、指定したホスト名に一致するリクエストのみをアプリケーションへ送信するように設定する必要があります。しかし、ウェブを直接カスタマイズする権限がなく、特定のホスト名だけを応答するようにLaravelへ指示する必要がある場合は、アプリケーションの`bootstrap/app.php`ファイルで`trustHosts`ミドルウェアメソッドを使用することで可能です。これは、アプリケーションがパスワードリセット機能を提供する場合に特に重要です。
 
-このミドルウェアのメソッドの詳細は、[`TrustHosts`ミドルウェアのドキュメント](/docs/{{version}}/requests#configuring-trusted-hosts)を参照してください。
+このミドルウェアのメソッドの詳細は、[TrustHostsミドルウェアのドキュメント](/docs/{{version}}/requests#configuring-trusted-hosts)を参照してください。
 
 <a name="routing"></a>
 ## ルート

@@ -51,7 +51,7 @@ php artisan help migrate
 <a name="tinker"></a>
 ### Tinker（REPL）
 
-Laravel Tinkerは、[PsySH](https://github.com/bobthecow/psysh)パッケージを搭載したLaravelフレームワークの強力なREPLです。
+[Laravel Tinker]((https://github.com/laravel/tinker))は、[PsySH](https://github.com/bobthecow/psysh)パッケージを搭載したLaravelフレームワークの強力なREPLです。
 
 <a name="installation"></a>
 #### インストール

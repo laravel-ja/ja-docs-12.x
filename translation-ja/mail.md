@@ -36,7 +36,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-メール送信は複雑であってはいけません。Laravelは、人気のある[Symfony Mailer](https://symfony.com/doc/7.0/mailer.html)コンポーネントを利用した、クリーンでシンプルなメールAPIを提供します。LaravelとSymfony Mailerは、SMTP、Mailgun、Postmark、Resend、Amazon SES、および`sendmail`経由でメールを送信するためのドライバを提供し、ローカルまたはクラウドベースのお好みのサービスを通して、メールの送信をすぐに始められます。
+メール送信は複雑であってはいけません。Laravelは、人気のある[Symfony Mailer](https://symfony.com/doc/current/mailer.html)コンポーネントを利用した、クリーンでシンプルなメールAPIを提供します。LaravelとSymfony Mailerは、SMTP、Mailgun、Postmark、Resend、Amazon SES、および`sendmail`経由でメールを送信するためのドライバを提供し、ローカルまたはクラウドベースのお好みのサービスを通して、メールの送信をすぐに始められます。
 
 <a name="configuration"></a>
 ### 設定
@@ -176,7 +176,7 @@ AWSの[一時的な認証情報](https://docs.aws.amazon.com/IAM/latest/UserGuid
 ],
 ```
 
-SESの[サブスクリプション管理機能](https://docs.aws.amazon.com/ses/latest/dg/sending-email-subscription-management.html)を操作するため、メールメッセージの[`headers`](#headers)メソッドが返す配列の中で、`X-Ses-List-Management-Options`ヘッダを返してください。
+SESの[サブスクリプション管理機能](https://docs.aws.amazon.com/ses/latest/dg/sending-email-subscription-management.html)を操作するため、メールメッセージの[headers](#headers)メソッドが返す配列の中で、`X-Ses-List-Management-Options`ヘッダを返してください。
 
 ```php
 /**

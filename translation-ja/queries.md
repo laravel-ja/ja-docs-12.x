@@ -203,7 +203,7 @@ DB::table('users')->where(function ($query) {
 <a name="streaming-results-lazily"></a>
 ### ルーズなストリーミング結果
 
-`lazy`メソッドは、チャンク単位でクエリを実行するという意味で、[`chunk`メソッド](#chunking-results)と似たような動作をします。しかし、各チャンクをコールバックに渡すのではなく、`lazy()`メソッドは [`LazyCollection`](/docs/{{version}}/collections#lazy-collections)を返し、結果をひとつのストリームとして扱えます。
+`lazy`メソッドは、チャンク単位でクエリを実行するという意味で、[chunkメソッド](#chunking-results)と似たような動作をします。しかし、各チャンクをコールバックに渡すのではなく、`lazy()`メソッドは [LazyCollection](/docs/{{version}}/collections#lazy-collections)を返し、結果をひとつのストリームとして扱えます。
 
 ```php
 use Illuminate\Support\Facades\DB;
@@ -1194,7 +1194,7 @@ $users = DB::table('users')
     ->get();
 ```
 
-より高度な`having`ステートメントを作成するには、[`havingRaw`](#raw-methods)メソッドを参照してください。
+より高度な`having`ステートメントを作成するには、[havingRaw](#raw-methods)メソッドを参照してください。
 
 <a name="limit-and-offset"></a>
 ### 件数制限とオフセット

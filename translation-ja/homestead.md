@@ -692,7 +692,7 @@ buckets:
 <a name="laravel-dusk"></a>
 ### Laravel Dusk
 
-Homestead内で[LaravelDusk](/docs/{{version}}/dusk)テストを実行するには、Homestead設定で[`webdriver`機能](#installing-optional-features)を有効にする必要があります。
+Homestead内で[LaravelDusk](/docs/{{version}}/dusk)テストを実行するには、Homestead設定で[webdriver機能](#installing-optional-features)を有効にする必要があります。
 
 ```yaml
 features:

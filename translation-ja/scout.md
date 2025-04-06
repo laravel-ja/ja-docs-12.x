@@ -754,7 +754,7 @@ $orders = Order::search('Star Trek')->raw();
 <a name="custom-indexes"></a>
 #### カスタムインデックス
 
-検索クエリは通常、モデルの[`searchableAs`](#configuring-model-indexes)メソッドで指定するインデックスに対して実行されます。ただし、`within`メソッドを使用して、代わりに検索する必要があるカスタムインデックスを指定できます。
+検索クエリは通常、モデルの[searchableAs](#configuring-model-indexes)メソッドで指定するインデックスに対して実行されます。ただし、`within`メソッドを使用して、代わりに検索する必要があるカスタムインデックスを指定できます。
 
 ```php
 $orders = Order::search('Star Trek')

@@ -210,6 +210,16 @@ Predisを使用する場合、Laravelはクライアントサイドシャーデ�
 ],
 ```
 
+<a name="unix-socket-connections"></a>
+#### Unixソケット接続
+
+Redis接続は、TCPの代わりにUnixソケットを使用するように設定することもできます。これにより、アプリケーションと同じサーバ上のRedisインスタンスに接続する際のTCPオーバーヘッドがなくなり、パフォーマンスが向上します。Unixソケットを使用するようにRedisを設定するには、`REDIS_HOST`環境変数にRedisソケットのパスを設定し、`REDIS_PORT`環境変数に`0`を設定します。
+
+```env
+REDIS_HOST=/run/redis/redis.sock
+REDIS_PORT=0
+```
+
 <a name="phpredis-serialization"></a>
 #### PhpRedisのシリアライズと圧縮
 

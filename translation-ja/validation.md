@@ -1201,7 +1201,7 @@ use Illuminate\Validation\Rule;
 <a name="rule-alpha"></a>
 #### alpha
 
-フィールドは、[`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=)、並びに[`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=)に含まれる、Unicodeのアルファベット文字のみであることをバリデートします。
+フィールドは、[\p{L}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=)、並びに[\p{M}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=)に含まれる、Unicodeのアルファベット文字のみであることをバリデートします。
 
 このバリデーションルールをASCII文字（`a-z`と`A-Z`）の範囲に限定したい場合は、`ascii`オプションを指定してください。
 
@@ -1212,7 +1212,7 @@ use Illuminate\Validation\Rule;
 <a name="rule-alpha-dash"></a>
 #### alpha_dash
 
-フィールドは、[`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=)、並びに[`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=)、[`\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=)に含まれる、Unicodeのアルファベット文字と数字、およびASCIIのダッシュ(`-`)とASCIIの下線(`_`)であることをバリデートします。
+フィールドは、[\p{L}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=)、並びに[\p{M}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=)、[\p{N}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=)に含まれる、Unicodeのアルファベット文字と数字、およびASCIIのダッシュ(`-`)とASCIIの下線(`_`)であることをバリデートします。
 
 このバリデーションルールをASCII文字（`a-z`、`A-Z`、`0-9`）の範囲に限定したい場合は、`ascii`オプションを指定してください。
 
@@ -1223,7 +1223,7 @@ use Illuminate\Validation\Rule;
 <a name="rule-alpha-num"></a>
 #### alpha_num
 
-フィールドは、[`\p{L}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=)、並びに[`\p{M}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=)、[`\p{N}`](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=)に含まれる、Unicodeのアルファベット文字と数字のみであることをバリデートします。
+フィールドは、[\p{L}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AL%3A%5D&g=&i=)、並びに[\p{M}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AM%3A%5D&g=&i=)、[\p{N}](https://util.unicode.org/UnicodeJsps/list-unicodeset.jsp?a=%5B%3AN%3A%5D&g=&i=)に含まれる、Unicodeのアルファベット文字と数字のみであることをバリデートします。
 
 このバリデーションルールをASCII文字（`a-z`、`A-Z`、`0-9`）の範囲に限定したい場合は、`ascii`オプションを指定してください。
 
@@ -1277,7 +1277,7 @@ if ($validator->stopOnFirstFailure()->fails()) {
 <a name="rule-before"></a>
 #### before:_日付_
 
-フィールドは、指定された日付より前の値であることをバリデートします。日付を有効な`DateTime`インスタンスへ変換するために、PHPの`strtotime`関数へ渡します。さらに、[`after`](#rule-after)ルールと同様に、バリデーション中の別のフィールドの名前を`date`の値として指定できます。
+フィールドは、指定された日付より前の値であることをバリデートします。日付を有効な`DateTime`インスタンスへ変換するために、PHPの`strtotime`関数へ渡します。さらに、[after](#rule-after)ルールと同様に、バリデーション中の別のフィールドの名前を`date`の値として指定できます。
 
 便利なように、日付に基づくルールは、書きやすい`date`ルールビルダを使って構築できます。
 
@@ -1302,7 +1302,7 @@ use Illuminate\Validation\Rule;
 <a name="rule-before-or-equal"></a>
 #### before\_or\_equal:_日付_
 
-フィールドは、指定された日付より前または同じ値であることをバリデートします。日付を有効な`DateTime`インスタンスへ変換するために、PHPの`strtotime`関数へ渡します。さらに、[`after`](#rule-after)ルールと同様に、バリデーション中の別のフィールドの名前を`date`の値として指定できます。
+フィールドは、指定された日付より前または同じ値であることをバリデートします。日付を有効な`DateTime`インスタンスへ変換するために、PHPの`strtotime`関数へ渡します。さらに、[after](#rule-after)ルールと同様に、バリデーション中の別のフィールドの名前を`date`の値として指定できます。
 
 便利なように、日付に基づくルールは、書きやすい`date`ルールビルダを使って構築できます。
 
@@ -1318,7 +1318,7 @@ use Illuminate\Validation\Rule;
 <a name="rule-between"></a>
 #### between:_最小値_,_最大値_
 
-フィールドが指定した*最小値*以上で、*最大値*以下のサイズであることをバリデートします。[`size`](#rule-size)ルールと同様の判定方法で、文字列、数値、配列、ファイルが評価されます。
+フィールドが指定した*最小値*以上で、*最大値*以下のサイズであることをバリデートします。[size](#rule-size)ルールと同様の判定方法で、文字列、数値、配列、ファイルが評価されます。
 
 <a name="rule-boolean"></a>
 #### boolean
@@ -1478,7 +1478,7 @@ distinctはデフォルトで緩い比較を使用します。厳密な比較を
 <a name="rule-email"></a>
 #### email
 
-バリデーション中のフィールドは、電子メールアドレスのフォーマットである必要があります。このバリデーションルールは、[`egulias/email-validator`](https://github.com/egulias/EmailValidator)パッケージを使用して電子メールアドレスをバリデーションします。デフォルトでは`RFCValidation`バリデータが適用されますが、他のバリデーションスタイルを適用することもできます。
+バリデーション中のフィールドは、電子メールアドレスのフォーマットである必要があります。このバリデーションルールは、[egulias/email-validator](https://github.com/egulias/EmailValidator)パッケージを使用して電子メールアドレスをバリデーションします。デフォルトでは`RFCValidation`バリデータが適用されますが、他のバリデーションスタイルを適用することもできます。
 
 ```php
 'email' => 'email:rfc,dns'
@@ -1667,7 +1667,7 @@ Validator::make($data, [
 ```
 
 > [!WARNING]
-> ユーザーが割り当てた拡張子だけでファイルをバリデートしてはいけません。このルールは通常、[`mimes`](#rule-mimes)または[`mimetypes`](#rule-mimetypes)ルールと組み合わせて使用する必要があります。
+> ユーザーが割り当てた拡張子だけでファイルをバリデートしてはいけません。このルールは通常、[mimes](#rule-mimes)または[mimetypes](#rule-mimetypes)ルールと組み合わせて使用する必要があります。
 
 <a name="rule-file"></a>
 #### file
@@ -1682,12 +1682,12 @@ Validator::make($data, [
 <a name="rule-gt"></a>
 #### gt:_field_
 
-フィールドが指定した*フィールド*か*値*より大きいことをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
+フィールドが指定した*フィールド*か*値*より大きいことをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[size](#rule-size)ルールと同じ規約により評価します。
 
 <a name="rule-gte"></a>
 #### gte:_field_
 
-フィールドが指定した*フィールド*か*値*以上であることをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
+フィールドが指定した*フィールド*か*値*以上であることをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[size](#rule-size)ルールと同じ規約により評価します。
 
 <a name="rule-hex-color"></a>
 #### hex_color
@@ -1774,12 +1774,12 @@ Validator::make($input, [
 <a name="rule-lt"></a>
 #### lt:_field_
 
-フィールドが指定した*フィールド*より小さいことをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
+フィールドが指定した*フィールド*より小さいことをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[size](#rule-size)ルールと同じ規約により評価します。
 
 <a name="rule-lte"></a>
 #### lte:_field_
 
-フィールドが指定した*フィールド*以下であることをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[`size`](#rule-size)ルールと同じ規約により評価します。
+フィールドが指定した*フィールド*以下であることをバリデートします。２つのフィールドは同じタイプでなくてはなりません。文字列、数値、配列、ファイルは、[size](#rule-size)ルールと同じ規約により評価します。
 
 <a name="rule-lowercase"></a>
 #### lowercase
@@ -1799,7 +1799,7 @@ Validator::make($input, [
 <a name="rule-max"></a>
 #### max:_値_
 
-フィールドが最大値として指定された*値*以下であることをバリデートします。[`size`](#rule-size)ルールと同様の判定方法で、文字列、数値、配列、ファイルが評価されます。
+フィールドが最大値として指定された*値*以下であることをバリデートします。[size](#rule-size)ルールと同様の判定方法で、文字列、数値、配列、ファイルが評価されます。
 
 <a name="rule-max-digits"></a>
 #### max_digits:_値_
@@ -1833,12 +1833,12 @@ Validator::make($input, [
 <a name="mime-types-and-extensions"></a>
 #### MIMEタイプと拡張子
 
-このバリデーションルールは、MIMEタイプとユーザーがファイルに割り当てた拡張子との一致をバリデートするものではありません。例えば、`mimes:png`バリデーションルールは、ファイル名が`photo.txt`であっても、有効なPNGコンテンツを含むファイルを有効なPNG画像とみなします。ユーザーがファイルへ割り当てた拡張子をバリデートしたい場合は、[`extensions`](#rule-extensions)ルールを使用してください。
+このバリデーションルールは、MIMEタイプとユーザーがファイルに割り当てた拡張子との一致をバリデートするものではありません。例えば、`mimes:png`バリデーションルールは、ファイル名が`photo.txt`であっても、有効なPNGコンテンツを含むファイルを有効なPNG画像とみなします。ユーザーがファイルへ割り当てた拡張子をバリデートしたい場合は、[extensions](#rule-extensions)ルールを使用してください。
 
 <a name="rule-min"></a>
 #### min:_値_
 
-フィールドが最小値として指定された*値*以上であることをバリデートします。[`size`](#rule-size)ルールと同様の判定方法で、文字列、数値、配列、ファイルが評価されます。
+フィールドが最小値として指定された*値*以上であることをバリデートします。[size](#rule-size)ルールと同様の判定方法で、文字列、数値、配列、ファイルが評価されます。
 
 <a name="rule-min-digits"></a>
 #### min_digits:_値_
@@ -2374,7 +2374,7 @@ $validator->sometimes('channels.*.address', 'url', function (Fluent $input, Flue
 <a name="validating-arrays"></a>
 ## 配列のバリデーション
 
-[`array`バリデーションルールのドキュメント](#rule-array)で説明したように、`array`ルールは、許可する配列キーのリストを受け入れます。配列内にその他のキーが存在する場合、バリデーションは失敗します。
+[arrayバリデーションルールのドキュメント](#rule-array)で説明したように、`array`ルールは、許可する配列キーのリストを受け入れます。配列内にその他のキーが存在する場合、バリデーションは失敗します。
 
 ```php
 use Illuminate\Support\Facades\Validator;
@@ -2827,7 +2827,7 @@ $validator = Validator::make($request->all(), [
 <a name="implicit-rules"></a>
 ### 暗黙のルール
 
-デフォルトでは、バリデーションされる属性が存在しないか、空の文字列が含まれている場合、カスタムルールを含む通常のバリデーションルールは実行されません。たとえば、[`unique`](#rule-unique)ルールは空の文字列に対して実行されません。
+デフォルトでは、バリデーションされる属性が存在しないか、空の文字列が含まれている場合、カスタムルールを含む通常のバリデーションルールは実行されません。たとえば、[unique](#rule-unique)ルールは空の文字列に対して実行されません。
 
 ```php
 use Illuminate\Support\Facades\Validator;

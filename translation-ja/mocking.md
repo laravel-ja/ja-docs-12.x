@@ -111,7 +111,7 @@ class UserController extends Controller
 }
 ```
 
-`shouldReceive`メソッドを使用して`Cache`ファサードへの呼び出しをモックできます。これにより、[Mockery](https://github.com/padraic/mockery)モックのインスタンスが返されます。ファサードは実際にはLaravel[サービスコンテナ](/docs/{{version}}/container)によって依存解決および管理されるため、通常の静的クラスよりもはるかにテストがやりやすいのです。たとえば、`Cache`ファサードの`get`メソッドの呼び出しをモックしてみましょう。
+`expects`メソッドを使用して`Cache`ファサードへの呼び出しをモックできます。これにより、[Mockery](https://github.com/padraic/mockery)モックのインスタンスが返されます。ファサードは実際にはLaravel[サービスコンテナ](/docs/{{version}}/container)によって依存解決および管理されるため、通常の静的クラスよりもはるかにテストがやりやすいのです。たとえば、`Cache`ファサードの`get`メソッドの呼び出しをモックしてみましょう。
 
 ```php tab=Pest
 <?php

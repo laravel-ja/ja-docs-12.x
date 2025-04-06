@@ -2051,7 +2051,7 @@ blank(false);
 // false
 ```
 
-`blank`の逆の動作は、[`filled`](#method-filled)メソッドです。
+`blank`の逆の動作は、[filled](#method-filled)メソッドです。
 
 <a name="method-broadcast"></a>
 #### `broadcast()` {.collection-method}
@@ -2184,7 +2184,7 @@ dd($value);
 dd($value1, $value2, $value3, ...);
 ```
 
-スクリプトの実行を停止したくない場合は、代わりに[`dump`](#method-dump)関数を使ってください。
+スクリプトの実行を停止したくない場合は、代わりに[dump](#method-dump)関数を使ってください。
 
 <a name="method-dispatch"></a>
 #### `dispatch()` {.collection-method}
@@ -2215,7 +2215,7 @@ dump($value);
 dump($value1, $value2, $value3, ...);
 ```
 
-変数の値をダンプした後に実行を停止したい場合は、代わりに[`dd`](#method-dd)関数を使用してください。
+変数の値をダンプした後に実行を停止したい場合は、代わりに[dd](#method-dd)関数を使用してください。
 
 <a name="method-encrypt"></a>
 #### `encrypt()` {.collection-method}
@@ -2292,7 +2292,7 @@ filled(collect());
 // false
 ```
 
-`filled`の逆の動作は、[`blank`](#method-blank)メソッドです。
+`filled`の逆の動作は、[blank](#method-blank)メソッドです。
 
 <a name="method-info"></a>
 #### `info()` {.collection-method}
@@ -3241,7 +3241,7 @@ Sleep::for(1)->second();
 $start->diffForHumans(); // 1秒前
 ```
 
-Laravelは実行を一時停止するとき、にいつでも内部的に`Sleep`クラスを使用しています。例えば、[`retry`](#method-retry)ヘルパはスリープ時に`Sleep`クラスを使用し、そのヘルパを使用する際のテストの実行性を上げています。
+Laravelは実行を一時停止するとき、にいつでも内部的に`Sleep`クラスを使用しています。例えば、[retry](#method-retry)ヘルパはスリープ時に`Sleep`クラスを使用し、そのヘルパを使用する際のテストの実行性を上げています。
 
 <a name="timebox"></a>
 ### Timebox

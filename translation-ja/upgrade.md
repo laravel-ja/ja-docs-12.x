@@ -181,6 +181,13 @@ $table = Schema::getTableListing(schema: 'main', schemaQualified: false);
 
 `db:table`と`db:show`コマンドは、PostgreSQLやSQL Serverと同様に、MySQL、MariaDB、SQLiteのすべてのスキーマの結果を出力するようになりました。
 
+<a name="updated-blueprint-constructor-signature"></a>
+#### `Blueprint`コンストラクタ使用法の更新
+
+**影響の可能性： とても低い**
+
+`Illuminate\Database\Schema\Blueprint`クラスのコンストラクタは最初の引数として、`Illuminate\Database\Connection`のインスタンスを期待するようにしました。
+
 <a name="eloquent"></a>
 ### Eloquent
 

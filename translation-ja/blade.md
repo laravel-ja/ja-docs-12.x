@@ -155,7 +155,7 @@ Hello, @{{ name }}.
 
 JavaScript変数を初期化するために、配列をJSONとしてレンダリングする目的でビューに配列を渡す場合があります。一例を確認してください。
 
-```blade
+```php
 <script>
     var app = <?php echo json_encode($array); ?>;
 </script>
@@ -1062,7 +1062,7 @@ class Alert extends Component
 ```
 
 > [!NOTE]
-> マージした属性を受け取るべきではない他のHTML要素にクラスを条件付きでコンパイルする必要がある場合は、[`@class`ディレクティブ](#consitional-classes)を使用できます。
+> マージした属性を受け取るべきではない他のHTML要素にクラスを条件付きでコンパイルする必要がある場合は、[@classディレクティブ](#consitional-classes)を使用できます。
 
 <a name="non-class-attribute-merging"></a>
 #### 非クラス属性のマージ
@@ -1926,7 +1926,7 @@ class AppServiceProvider extends ServiceProvider
 <a name="custom-echo-handlers"></a>
 ### カスタムEchoハンドラ
 
-Bladeを使ってオブジェクトを「エコー」しようとすると、そのオブジェクトの`__toString`メソッドが呼び出されます。[`__toString`](https://www.php.net/manual/ja/language.oop5.magic.php#object.tostring)メソッドは、PHPが組み込んでいる一つの「マジックメソッド」です。しかし、操作するクラスがサードパーティのライブラリへ属している場合など、特定のクラスで`__toString`メソッドを制御できない場合が起こりえます。
+Bladeを使ってオブジェクトを「エコー」しようとすると、そのオブジェクトの`__toString`メソッドが呼び出されます。[__toString](https://www.php.net/manual/ja/language.oop5.magic.php#object.tostring)メソッドは、PHPが組み込んでいる一つの「マジックメソッド」です。しかし、操作するクラスがサードパーティのライブラリへ属している場合など、特定のクラスで`__toString`メソッドを制御できない場合が起こりえます。
 
 このような場合、Bladeで、その特定のタイプのオブジェクト用に、カスタムEchoハンドラを登録できます。Bladeの`stringable`メソッドを呼び出してください。`stringable`メソッドは、クロージャを引数に取ります。このクロージャは、自分がレンダリングを担当するオブジェクトのタイプをタイプヒントで指定する必要があります。一般的には、アプリケーションの`AppServiceProvider`クラスの`boot`メソッド内で、`stringable`メソッドを呼び出します。
 

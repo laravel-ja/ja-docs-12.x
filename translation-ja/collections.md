@@ -318,7 +318,7 @@ collect([1, 2, 3])->all();
 <a name="method-average"></a>
 #### `average()` {.collection-method}
 
-[`avg`](#method-avg)メソッドのエイリアスです。
+[avg](#method-avg)メソッドのエイリアスです。
 
 <a name="method-avg"></a>
 #### `avg()` {.collection-method}
@@ -343,7 +343,7 @@ $average = collect([1, 1, 2, 4])->avg();
 <a name="method-before"></a>
 #### `before()` {.collection-method}
 
-`before`メソッドは、[`after`](#method-after)メソッドの逆です。これは指定アイテムの前のアイテムを返します。指定アイテムが見つからなかったり、最初のアイテムの場合は、`null`を返します。
+`before`メソッドは、[after](#method-after)メソッドの逆です。これは指定アイテムの前のアイテムを返します。指定アイテムが見つからなかったり、最初のアイテムの場合は、`null`を返します。
 
 ```php
 $collection = collect([1, 2, 3, 4, 5]);
@@ -565,7 +565,7 @@ $collection->contains('product', 'Bookcase');
 // false
 ```
 
-`contains`メソッドは、アイテムを「緩く」比較します。つまり、ある整数の文字列とその整数値は等値として扱います。「厳密」な比較を行いたい場合は、[`containsStrict`](#method-containsstrict)メソッドを使ってください。
+`contains`メソッドは、アイテムを「緩く」比較します。つまり、ある整数の文字列とその整数値は等値として扱います。「厳密」な比較を行いたい場合は、[containsStrict](#method-containsstrict)メソッドを使ってください。
 
 `contains`の逆は、[doesntContain](#method-doesntcontain)メソッドをご覧ください。
 
@@ -591,7 +591,7 @@ collect(['1', '2'])->containsOneItem();
 <a name="method-containsstrict"></a>
 #### `containsStrict()` {.collection-method}
 
-このメソッドは、[`contains`](#method-contains)メソッドと使用方法は同じです。しかし、「厳密」な値の比較を行います。
+このメソッドは、[contains](#method-contains)メソッドと使用方法は同じです。しかし、「厳密」な値の比較を行います。
 
 > [!NOTE]
 > [Eloquentコレクション](/docs/{{version}}/eloquent-collections#method-contains)の使用時は、このメソッドの振る舞いが変わります。
@@ -699,7 +699,7 @@ $collection->dd();
 */
 ```
 
-スクリプトの実行を止めたくない場合は、[`dump`](#method-dump)メソッドを代わりに使用してください。
+スクリプトの実行を止めたくない場合は、[dump](#method-dump)メソッドを代わりに使用してください。
 
 <a name="method-diff"></a>
 #### `diff()` {.collection-method}
@@ -766,7 +766,7 @@ $diff->all();
 // ['color' => 'orange', 'remain' => 6]
 ```
 
-コールバックは０より小さい、等しい、大きい整数を返す比較関数でなければなりません。詳細は、PHPドキュメントの[`array_diff_uassoc`](https://www.php.net/array_diff_uassoc#refsect1-function.array-diff-uassoc-parameters)を参照してください。このPHP関数を`diffAssocUsing`メソッドは内部で使用しています。
+The callback must be a comparison function that returns an integer less than, equal to, or greater than zero. For more information, refer to the PHP documentation on [array_diff_uassoc](https://www.php.net/array_diff_uassoc#refsect1-function.array-diff-uassoc-parameters), which is the PHP function that the `diffAssocUsing` method utilizes internally.
 
 <a name="method-diffkeys"></a>
 #### `diffKeys()` {.collection-method}
@@ -873,7 +873,7 @@ $collection->dump();
 */
 ```
 
-コレクションをダンプした後にスクリプトを停止したい場合は、代わりに[`dd`](#method-dd)メソッドを使用してください。
+コレクションをダンプした後にスクリプトを停止したい場合は、代わりに[dd](#method-dd)メソッドを使用してください。
 
 <a name="method-duplicates"></a>
 #### `duplicates()` {.collection-method}
@@ -905,7 +905,7 @@ $employees->duplicates('position');
 <a name="method-duplicatesstrict"></a>
 #### `duplicatesStrict()` {.collection-method}
 
-このメソッドの使い方は[`duplicates`](#method-duplicates)メソッドと同じですが、すべての値に「厳密な」比較が行われます。
+このメソッドの使い方は[duplicates](#method-duplicates)メソッドと同じですが、すべての値に「厳密な」比較が行われます。
 
 <a name="method-each"></a>
 #### `each()` {.collection-method}
@@ -1715,7 +1715,7 @@ $multiplied->all();
 ```
 
 > [!WARNING]
-> 他のコレクションと同様に`map`は新しいコレクションインスタンスを返します。呼び出し元のコレクションは変更しません。もしオリジナルコレクションを変更したい場合は[`transform`](#method-transform)メソッドを使います。
+> 他のコレクションと同様に`map`は新しいコレクションインスタンスを返します。呼び出し元のコレクションは変更しません。もしオリジナルコレクションを変更したい場合は[transform](#method-transform)メソッドを使います。
 
 <a name="method-mapinto"></a>
 #### `mapInto()` {.collection-method}
@@ -2460,7 +2460,7 @@ $filtered->all();
 // [1, 2]
 ```
 
-`reject`メソッドの逆の働きについては、[`filter`](#method-filter)メソッドを読んでください。
+`reject`メソッドの逆の働きについては、[filter](#method-filter)メソッドを読んでください。
 
 <a name="method-replace"></a>
 #### `replace()` {.collection-method}
@@ -2716,7 +2716,7 @@ $slice->all();
 // [5, 6]
 ```
 
-sliceメソッドはデフォルトでキー値を保持したまま返します。オリジナルのキーを保持したくない場合は、[`values`](#method-values)メソッドを使えば、インデックスし直されます。
+sliceメソッドはデフォルトでキー値を保持したまま返します。オリジナルのキーを保持したくない場合は、[values](#method-values)メソッドを使えば、インデックスし直されます。
 
 <a name="method-sliding"></a>
 #### `sliding()` {.collection-method}
@@ -2733,7 +2733,7 @@ $chunks->toArray();
 // [[1, 2], [2, 3], [3, 4], [4, 5]]
 ```
 
-これは[`eachSpread`](#method-eachspread)メソッドと組み合わせて使うと、特に便利です。
+これは[eachSpread](#method-eachspread)メソッドと組み合わせて使うと、特に便利です。
 
 ```php
 $transactions->sliding(2)->eachSpread(function (Collection $previous, Collection $current) {
@@ -2796,12 +2796,12 @@ $collection->sole();
 <a name="method-some"></a>
 #### `some()` {.collection-method}
 
-[`contains`](#method-contains)メソッドのエイリアスです。
+[contains](#method-contains)メソッドのエイリアスです。
 
 <a name="method-sort"></a>
 #### `sort()` {.collection-method}
 
-`sort`メソッドはコレクションをソートします。ソート済みコレクションはオリジナル配列のキーを保持しますので、以下の例では、[`values`](#method-values)メソッドにより、連続した数字のインデックスにするためリセットしています。
+`sort`メソッドはコレクションをソートします。ソート済みコレクションはオリジナル配列のキーを保持しますので、以下の例では、[values](#method-values)メソッドにより、連続した数字のインデックスにするためリセットしています。
 
 ```php
 $collection = collect([5, 3, 1, 2, 4]);
@@ -2813,15 +2813,15 @@ $sorted->values()->all();
 // [1, 2, 3, 4, 5]
 ```
 
-より高度なソートを行いたい場合は`sort`にコールバックを渡し、自分のアルゴリズムを実行できます。コレクションの`sort`メソッドが使用している[`uasort`](http://php.net/manual/en/function.uasort.php#refsect1-function.usort-parameters)のPHPドキュメントを参照してください。
+より高度なソートを行いたい場合は`sort`にコールバックを渡し、自分のアルゴリズムを実行できます。コレクションの`sort`メソッドが使用している[uasort](http://php.net/manual/en/function.uasort.php#refsect1-function.usort-parameters)のPHPドキュメントを参照してください。
 
 > [!NOTE]
-> ネストした配列やオブジェクトのコレクションのソートは、[`sortBy`](#method-sortby)と[`sortByDesc`](#method-sortbydesc)メソッドを参照してください。
+> ネストした配列やオブジェクトのコレクションのソートは、[sortBy](#method-sortby)と[sortByDesc](#method-sortbydesc)メソッドを参照してください。
 
 <a name="method-sortby"></a>
 #### `sortBy()` {.collection-method}
 
-`sortBy`メソッドは指定したキーでコレクションをソートします。ソート済みコレクションはオリジナル配列のキーを保持しますので、以下の例では、[`values`](#method-values)メソッドにより、連続した数字のインデックスにするためリセットしています。
+`sortBy`メソッドは指定したキーでコレクションをソートします。ソート済みコレクションはオリジナル配列のキーを保持しますので、以下の例では、[values](#method-values)メソッドにより、連続した数字のインデックスにするためリセットしています。
 
 ```php
 $collection = collect([
@@ -2946,12 +2946,12 @@ $sorted->values()->all();
 <a name="method-sortbydesc"></a>
 #### `sortByDesc()` {.collection-method}
 
-このメソッドの使い方は[`sortBy`](#method-sortby)と同じで、コレクションを逆順にソートします。
+このメソッドの使い方は[sortBy](#method-sortby)と同じで、コレクションを逆順にソートします。
 
 <a name="method-sortdesc"></a>
 #### `sortDesc()` {.collection-method}
 
-このメソッドは[`sort`](#method-sort)メソッドの逆順でコレクションをソートします。
+このメソッドは[sort](#method-sort)メソッドの逆順でコレクションをソートします。
 
 ```php
 $collection = collect([5, 3, 1, 2, 4]);
@@ -2963,7 +2963,7 @@ $sorted->values()->all();
 // [5, 4, 3, 2, 1]
 ```
 
-`sort`とは異なり、`sortDesc`にクロージャを渡すことはできません。代わりに、[`sort`](#method-sort)メソッドを使用して、比較を逆にする必要があります。
+`sort`とは異なり、`sortDesc`にクロージャを渡すことはできません。代わりに、[sort](#method-sort)メソッドを使用して、比較を逆にする必要があります。
 
 <a name="method-sortkeys"></a>
 #### `sortKeys()` {.collection-method}
@@ -2993,7 +2993,7 @@ $sorted->all();
 <a name="method-sortkeysdesc"></a>
 #### `sortKeysDesc()` {.collection-method}
 
-このメソッドは、[`sortKeys`](#method-sortkeys)メソッドと使い方は同じですが、逆順にコレクションをソートします。
+このメソッドは、[sortKeys](#method-sortkeys)メソッドと使い方は同じですが、逆順にコレクションをソートします。
 
 <a name="method-sortkeysusing"></a>
 #### `sortKeysUsing()` {.collection-method}
@@ -3020,7 +3020,7 @@ $sorted->all();
 */
 ```
 
-コールバックは0か、0より小さいか、0より大きい整数を返す比較関数でなければなりません。詳細については、[`uksort`](https://www.php.net/manual/ja/function.uksort.php#refsect1-function.uksort-parameters)のPHPドキュメントを参照してください。この関数は`sortKeysUsing`メソッドが内部で利用しているPHP関数です。
+コールバックは0か、0より小さいか、0より大きい整数を返す比較関数でなければなりません。詳細については、[uksort](https://www.php.net/manual/ja/function.uksort.php#refsect1-function.uksort-parameters)のPHPドキュメントを参照してください。この関数は`sortKeysUsing`メソッドが内部で利用しているPHP関数です。
 
 <a name="method-splice"></a>
 #### `splice()` {.collection-method}
@@ -3271,7 +3271,7 @@ $collection->toArray();
 ```
 
 > [!WARNING]
-> `toArray`は、ネストした`Arrayable`インスタンスのオブジェクトすべてを配列へ変換します。コレクションの裏の素の配列をそのまま取得したい場合は、代わりに[`all`](#method-all)メソッドを使用してください。
+> `toArray`は、ネストした`Arrayable`インスタンスのオブジェクトすべてを配列へ変換します。コレクションの裏の素の配列をそのまま取得したい場合は、代わりに[all](#method-all)メソッドを使用してください。
 
 <a name="method-tojson"></a>
 #### `toJson()` {.collection-method}
@@ -3304,7 +3304,7 @@ $collection->all();
 ```
 
 > [!WARNING]
-> 他のコレクションメソッドとは異なり、`transform`はコレクション自身を更新します。代わりに新しいコレクションを生成したい場合は、 [`map`](#method-map)メソッドを使用してください。
+> 他のコレクションメソッドとは異なり、`transform`はコレクション自身を更新します。代わりに新しいコレクションを生成したい場合は、 [map](#method-map)メソッドを使用してください。
 
 <a name="method-undot"></a>
 #### `undot()` {.collection-method}
@@ -3361,7 +3361,7 @@ $union->all();
 <a name="method-unique"></a>
 #### `unique()` {.collection-method}
 
-`unique`メソッドはコレクションの重複を取り除いた全アイテムを返します。ソート済みのコレクションはオリジナルの配列キーを保っています。下の例では[`values`](#method-values)メソッドで連続した数字のインデックスにするためリセットしています。
+`unique`メソッドはコレクションの重複を取り除いた全アイテムを返します。ソート済みのコレクションはオリジナルの配列キーを保っています。下の例では[values](#method-values)メソッドで連続した数字のインデックスにするためリセットしています。
 
 ```php
 $collection = collect([1, 1, 2, 2, 3, 4, 2]);
@@ -3415,7 +3415,7 @@ $unique->values()->all();
 */
 ```
 
-`unique`メソッドは、アイテムの判定に「緩い」比較を使用します。つまり、同じ値の文字列と整数値は等しいと判定します。「厳密」な比較でフィルタリングしたい場合は、[`uniqueStrict`](#method-uniquestrict)メソッドを使用してください。
+`unique`メソッドは、アイテムの判定に「緩い」比較を使用します。つまり、同じ値の文字列と整数値は等しいと判定します。「厳密」な比較でフィルタリングしたい場合は、[uniqueStrict](#method-uniquestrict)メソッドを使用してください。
 
 > [!NOTE]
 > [Eloquentコレクション](/docs/{{version}}/eloquent-collections#method-contains)の使用時は、このメソッドの振る舞いは変わります。
@@ -3423,7 +3423,7 @@ $unique->values()->all();
 <a name="method-uniquestrict"></a>
 #### `uniqueStrict()` {.collection-method}
 
-このメソッドは、[`unique`](#method-unique)と同じ使用方法です。しかし、全値は「厳密」に比較されます。
+このメソッドは、[unique](#method-unique)と同じ使用方法です。しかし、全値は「厳密」に比較されます。
 
 <a name="method-unless"></a>
 #### `unless()` {.collection-method}
@@ -3462,17 +3462,17 @@ $collection->all();
 // [1, 2, 3, 5]
 ```
 
-`unless`の逆の動作は、[`when`](#method-when)メソッドです。
+`unless`の逆の動作は、[when](#method-when)メソッドです。
 
 <a name="method-unlessempty"></a>
 #### `unlessEmpty()` {.collection-method}
 
-[`whenNotEmpty`](#method-whennotempty)メソッドのエイリアスです。
+[whenNotEmpty](#method-whennotempty)メソッドのエイリアスです。
 
 <a name="method-unlessnotempty"></a>
 #### `unlessNotEmpty()` {.collection-method}
 
-[`whenEmpty`](#method-whenempty)メソッドのエイリアスです。
+[whenEmpty](#method-whenempty)メソッドのエイリアスです。
 
 <a name="method-unwrap"></a>
 #### `unwrap()` {.collection-method}
@@ -3569,7 +3569,7 @@ $collection->all();
 // [1, 2, 3, 5]
 ```
 
-`when`の逆の動作は、[`unless`](#method-unless)メソッドです。
+`when`の逆の動作は、[unless](#method-unless)メソッドです。
 
 <a name="method-whenempty"></a>
 #### `whenEmpty()` {.collection-method}
@@ -3614,7 +3614,7 @@ $collection->all();
 // ['Michael', 'Tom', 'Taylor']
 ```
 
-`whenEmpty`の逆の動作は、[`whenNotEmpty`](#method-whennotempty)メソッドです。
+`whenEmpty`の逆の動作は、[whenNotEmpty](#method-whennotempty)メソッドです。
 
 <a name="method-whennotempty"></a>
 #### `whenNotEmpty()` {.collection-method}
@@ -3659,7 +3659,7 @@ $collection->all();
 // ['taylor']
 ```
 
-`whenNotEmpty`の逆の動作は、[`whenEmpty`](#method-whenempty)メソッドです。
+`whenNotEmpty`の逆の動作は、[whenEmpty](#method-whenempty)メソッドです。
 
 <a name="method-where"></a>
 #### `where()` {.collection-method}
@@ -3686,7 +3686,7 @@ $filtered->all();
 */
 ```
 
-`where`メソッドはアイテム値の確認を「緩く」比較します。つまり、同じ値の文字列と整数値は、同値と判断します。「厳格」な比較でフィルタリングしたい場合は、[`whereStrict`](#method-wherestrict)メソッドを使ってください。
+`where`メソッドはアイテム値の確認を「緩く」比較します。つまり、同じ値の文字列と整数値は、同値と判断します。「厳格」な比較でフィルタリングしたい場合は、[whereStrict](#method-wherestrict)メソッドを使ってください。
 
 第２引数に比較演算子をオプションとして渡すこともできます。サポートしている演算子は、'==='、'!=='、'!='、'=='、'='、'<>'、'>'、'<'、'>='、'<='です。
 
@@ -3712,7 +3712,7 @@ $filtered->all();
 <a name="method-wherestrict"></a>
 #### `whereStrict()` {.collection-method}
 
-このメソッドの使用法は、[`where`](#method-where)メソッドと同じです。しかし、値の比較はすべて「厳格」な比較で行います。
+このメソッドの使用法は、[where](#method-where)メソッドと同じです。しかし、値の比較はすべて「厳格」な比較で行います。
 
 <a name="method-wherebetween"></a>
 #### `whereBetween()` {.collection-method}
@@ -3766,12 +3766,12 @@ $filtered->all();
 */
 ```
 
-`whereIn`メソッドはアイテム値のチェックを「緩く」比較します。つまり同じ値の文字列と整数値は同値と判定します。「厳密」な比較でフィルタリングしたい場合は、[`whereInStrict`](#method-whereinstrict)メソッドを使ってください。
+`whereIn`メソッドはアイテム値のチェックを「緩く」比較します。つまり同じ値の文字列と整数値は同値と判定します。「厳密」な比較でフィルタリングしたい場合は、[whereInStrict](#method-whereinstrict)メソッドを使ってください。
 
 <a name="method-whereinstrict"></a>
 #### `whereInStrict()` {.collection-method}
 
-このメソッドの使い方は、[`whereIn`](#method-wherein)メソッドと同じです。違いは全値を「厳密」に比較することです。
+このメソッドの使い方は、[whereIn](#method-wherein)メソッドと同じです。違いは全値を「厳密」に比較することです。
 
 <a name="method-whereinstanceof"></a>
 #### `whereInstanceOf()` {.collection-method}
@@ -3846,12 +3846,12 @@ $filtered->all();
 */
 ```
 
-`whereNotIn`メソッドは、値を「緩く」比較します。つまり、同じ値の文字列と整数は、同値と判定されます。「厳密」にフィルタリングしたい場合は、[`whereNotInStrict`](#method-wherenotinstrict)メソッドを使用します。
+`whereNotIn`メソッドは、値を「緩く」比較します。つまり、同じ値の文字列と整数は、同値と判定されます。「厳密」にフィルタリングしたい場合は、[whereNotInStrict](#method-wherenotinstrict)メソッドを使用します。
 
 <a name="method-wherenotinstrict"></a>
 #### `whereNotInStrict()` {.collection-method}
 
-このメソッドは、[`whereNotIn`](#method-wherenotin)と使い方は同じですが、全値の比較が「厳密」に行われる点が異なります。
+このメソッドは、[whereNotIn](#method-wherenotin)と使い方は同じですが、全値の比較が「厳密」に行われる点が異なります。
 
 <a name="method-wherenotnull"></a>
 #### `whereNotNull()` {.collection-method}
@@ -3945,7 +3945,7 @@ $zipped->all();
 <a name="higher-order-messages"></a>
 ## Higher Orderメッセージ
 
-コレクションで繁用するアクションを手短に実行できるよう、"Higher Orderメッセージ"をサポートしました。[`average`](#method-average)、[`avg`](#method-avg)、[`contains`](#method-contains)、[`each`](#method-each)、[`every`](#method-every)、[`filter`](#method-filter)、[`first`](#method-first)、[`flatMap`](#method-flatmap)、[`groupBy`](#method-groupby)、[`keyBy`](#method-keyby)、[`map`](#method-map)、[`max`](#method-max)、[`min`](#method-min)、[`partition`](#method-partition)、[`reject`](#method-reject)、[`skipUntil`](#method-skipuntil)、[`skipWhile`](#method-skipwhile)、[`some`](#method-some)、[`sortBy`](#method-sortby)、[`sortByDesc`](#method-sortbydesc)、[`sum`](#method-sum)、[`unique`](#method-unique)、[`takeUntil`](#method-takeuntil)、[`takeWhile`](#method-takewhile)コレクションメソッドでHigher Orderメッセージが使用できます。
+コレクションで繁用するアクションを手短に実行できるよう、"Higher Orderメッセージ"をサポートしました。[average](#method-average)、[avg](#method-avg)、[contains](#method-contains)、[each](#method-each)、[every](#method-every)、[filter](#method-filter)、[first](#method-first)、[flatMap](#method-flatmap)、[groupBy](#method-groupby)、[keyBy](#method-keyby)、[map](#method-map)、[max](#method-max)、[min](#method-min)、[partition](#method-partition)、[reject](#method-reject)、[skipUntil](#method-skipuntil)、[skipWhile](#method-skipwhile)、[some](#method-some)、[sortBy](#method-sortby)、[sortByDesc](#method-sortbydesc)、[sum](#method-sum)、[unique](#method-unique)、[takeUntil](#method-takeuntil)、[takeWhile](#method-takewhile)コレクションメソッドでHigher Orderメッセージが使用できます。
 
 各Higher Orderメッセージへは、コレクションインスタンスの動的プロパティとしてアクセスできます。例として、コレクション中の各オブジェクトメソッドを呼び出す、`each` Higher Orderメッセージを使用してみましょう。
 

@@ -18,7 +18,7 @@ Bcryptは、その「作業係数」が調整可能であるため、パスワ�
 <a name="configuration"></a>
 ## 設定
 
-Laravelはデフォルトで、データのハッシュ化に`bcrypt`ハッシュドライバを使用します。しかし、[`argon`](https://en.wikipedia.org/wiki/Argon2)や[`argon2id`](https://en.wikipedia.org/wiki/Argon2)など、他のハッシュドライバもサポートしています。
+Laravelはデフォルトで、データのハッシュ化に`bcrypt`ハッシュドライバを使用します。しかし、[`argon`](https://en.wikipedia.org/wiki/Argon2)や[argon2id](https://en.wikipedia.org/wiki/Argon2)など、他のハッシュドライバもサポートしています。
 
 `HASH_DRIVER`環境変数を浸かり、アプリケーションのハッシュドライバを指定できます。しかし、Laravelのハッシュドライバオプションをすべてカスタマイズしたい場合は、`config:publish` Artisanコマンドを使用して、完全な`hashing`設定ファイルをリソース公開する必要があります。
 

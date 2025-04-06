@@ -175,7 +175,7 @@ export default defineConfig({
 });
 ```
 
-もし、あなたのシステムで信頼できる証明書を生成できない場合は、[`@vitejs/plugin-basic-ssl`プラグイン](https://github.com/vitejs/vite-plugin-basic-ssl)をインストールし、設定してください。信頼できない証明書を使用する場合は、`npm run dev`コマンドを実行する際にコンソールの"Local"リンクをたどり、ブラウザからVite開発サーバが出す証明書の警告を受け入れる必要があります。
+もし、あなたのシステムで信頼できる証明書を生成できない場合は、[@vitejs/plugin-basic-sslプラグイン](https://github.com/vitejs/vite-plugin-basic-ssl)をインストールし、設定してください。信頼できない証明書を使用する場合は、`npm run dev`コマンドを実行する際にコンソールの"Local"リンクをたどり、ブラウザからVite開発サーバが出す証明書の警告を受け入れる必要があります。
 
 <a name="configuring-hmr-in-sail-on-wsl2"></a>
 #### WSL2上のSailの中で開発サーバを実行する
@@ -195,7 +195,7 @@ export default defineConfig({
 });
 ```
 
-開発サーバ実行中に、ファイルの変更がブラウザへ反映されない場合は、Viteの[`server.watch.usePolling`オプション](https://vitejs.dev/config/server-options.html#server-watch)の設定も必要です。
+開発サーバ実行中に、ファイルの変更がブラウザへ反映されない場合は、Viteの[server.watch.usePollingオプション](https://vitejs.dev/config/server-options.html#server-watch)の設定も必要です。
 
 <a name="loading-your-scripts-and-styles"></a>
 ### スクリプトとスタイルの読み込み
@@ -525,7 +525,7 @@ export default defineConfig({
 });
 ```
 
-Laravel Viteプラグインの内部では、[`vite-plugin-full-reload`](https://github.com/ElMassimo/vite-plugin-full-reload)パッケージを使用しており、この機能の動作を微調整するために高度な設定オプションを用意しています。このレベルのカスタマイズが必要な場合は、`config`定義を指定してください。
+Laravel Viteプラグインの内部では、[vite-plugin-full-reload](https://github.com/ElMassimo/vite-plugin-full-reload)パッケージを使用しており、この機能の動作を微調整するために高度な設定オプションを用意しています。このレベルのカスタマイズが必要な場合は、`config`定義を指定してください。
 
 ```js
 import { defineConfig } from 'vite';
@@ -766,7 +766,7 @@ php artisan inertia:start-ssr
 <a name="content-security-policy-csp-nonce"></a>
 ### コンテンツセキュリティポリシー（CSP）ノンス
 
-[コンテンツセキュリティポリシー](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)の一環として、スクリプトやスタイルタグに、[`nonce`属性](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce)を含めたい場合は、カスタム[ミドルウェア](/docs/{{version}}/middleware)の`useCspNonce`メソッドを使用して、ノンスを生成・指定できます。
+[コンテンツセキュリティポリシー](https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP)の一環として、スクリプトやスタイルタグに、[nonce属性](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/nonce)を含めたい場合は、カスタム[ミドルウェア](/docs/{{version}}/middleware)の`useCspNonce`メソッドを使用して、ノンスを生成・指定できます。
 
 ```php
 <?php
@@ -813,7 +813,7 @@ Vite::useCspNonce($nonce);
 <a name="subresource-integrity-sri"></a>
 ### サブリソース完全性（SRI）
 
-Viteマニフェストにアセット用の`integrity`ハッシュが含まれている場合、Laravelは自動的に`integrity`属性を生成するスクリプトとスタイルタグに追加し、[サブリソース完全性](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)を強要します。Viteはデフォルトでは、`integrity`ハッシュをマニフェストに含みませんが、 [`vite-plugin-manifest-sri`](https://www.npmjs.com/package/vite-plugin-manifest-sri) NPMプラグインをインストールすれば、これを有効にできます。
+Viteマニフェストにアセット用の`integrity`ハッシュが含まれている場合、Laravelは自動的に`integrity`属性を生成するスクリプトとスタイルタグに追加し、[サブリソース完全性](https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity)を強要します。Viteはデフォルトでは、`integrity`ハッシュをマニフェストに含みませんが、 [vite-plugin-manifest-sri](https://www.npmjs.com/package/vite-plugin-manifest-sri) NPMプラグインをインストールすれば、これを有効にできます。
 
 ```shell
 npm install --save-dev vite-plugin-manifest-sri
@@ -853,7 +853,7 @@ Vite::useIntegrityKey(false);
 <a name="arbitrary-attributes"></a>
 ### 任意の属性
 
-もし、スクリプトタグやスタイルタグに追加の属性、例えば [`data-turbo-track`](https://turbo.hotwired.dev/handbook/drive#reloading-when-assets-change)属性を含める必要がある場合は、`useScriptTagAttributes`と`useStyleTagAttributes`メソッドで指定できます。通常、このメソッドは [サービスプロバイダ](/docs/{{version}}/providers)から呼び出す必要があります。
+もし、スクリプトタグやスタイルタグに追加の属性、例えば [data-turbo-track](https://turbo.hotwired.dev/handbook/drive#reloading-when-assets-change)属性を含める必要がある場合は、`useScriptTagAttributes`と`useStyleTagAttributes`メソッドで指定できます。通常、このメソッドは [サービスプロバイダ](/docs/{{version}}/providers)から呼び出す必要があります。
 
 ```php
 use Illuminate\Support\Facades\Vite;

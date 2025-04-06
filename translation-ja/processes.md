@@ -23,7 +23,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-Laravelは、[Symfonyプロセスコンポーネント](https://symfony.com/doc/7.0/components/process.html)の周りに表現力豊かで最小限のAPIを提供し、Laravelアプリケーションから外部プロセスを便利に呼び出せるようにしています。Laravelのプロセス機能は、最も一般的なユースケースと素晴らしい開発者体験に傾注しています。
+Laravelは、[Symfonyプロセスコンポーネント](https://symfony.com/doc/current/components/process.html)の周りに表現力豊かで最小限のAPIを提供し、Laravelアプリケーションから外部プロセスを便利に呼び出せるようにしています。Laravelのプロセス機能は、最も一般的なユースケースと素晴らしい開発者体験に傾注しています。
 
 <a name="invoking-processes"></a>
 ## プロセスの起動

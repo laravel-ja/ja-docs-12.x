@@ -946,7 +946,7 @@ clear();
 
 Laravel PromptsはmacOS、Linux、WindowsのWSLをサポートしています。Windows版のPHPの制限により、現在のところWSL以外のWindowsでは、Laravel Promptsを使用できません。
 
-このため、Laravel Promptsは[Symfony Console Question Helper](https://symfony.com/doc/7.0/components/console/helpers/questionhelper.html)のような代替実装のフォールバックをサポートしています。
+このため、Laravel Promptsは[Symfony Console Question Helper](https://symfony.com/doc/current/components/console/helpers/questionhelper.html)のような代替実装のフォールバックをサポートしています。
 
 > [!NOTE]
 > LaravelフレームワークでLaravel Promptsを使用する場合、各プロンプトのフォールバックが設定済みで、未サポートの環境では自動的に有効になります。

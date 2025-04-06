@@ -51,7 +51,6 @@ LaravelのソースコードはGitHubで管理され、各Laravelプロジェク
 - [Laravel Socialite](https://github.com/laravel/socialite)
 - [Laravel Telescope](https://github.com/laravel/telescope)
 - [Laravel Vue Starter Kit](https://github.com/laravel/vue-starter-kit)
-- [Laravel Webサイト](https://github.com/laravel/laravel.com)
 
 </div>
 
