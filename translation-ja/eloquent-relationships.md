@@ -33,6 +33,7 @@
 - [Eagerロード](#eager-loading)
     - [Eagerロードの制約](#constraining-eager-loads)
     - [遅延Eagerロード](#lazy-eager-loading)
+    - [自動Eagerロード](#automatic-eager-loading)
     - [遅延ロードの防止](#preventing-lazy-loading)
 - [関連モデルの挿入と更新](#inserting-and-updating-related-models)
     - [`save`メソッド](#the-save-method)
@@ -1642,6 +1643,23 @@ $posts = Post::whereHas('comments', function (Builder $query) {
 > [!WARNING]
 > Eloquentは現在、データベース間をまたぐリレーションの存在のクエリをサポートしていません。リレーションは同じデータベース内に存在する必要があります。
 
+<a name="many-to-many-relationship-existence-queries"></a>
+#### Many to Many Relationship Existence Queries
+
+The `whereAttachedTo` method may be used to query for models that have a many to many attachment to a model or collection of models:
+
+```php
+$users = User::whereAttachedTo($role)->get();
+```
+
+You may also provide a [collection](/docs/{{version}}/eloquent-collections) instance to the `whereAttachedTo` method. When doing so, Laravel will retrieve models that are attached to any of the models within the collection:
+
+```php
+$tags = Tag::whereLike('name', '%laravel%')->get();
+
+$posts = Post::whereAttachedTo($tags)->get();
+```
+
 <a name="inline-relationship-existence-queries"></a>
 #### インライン関係存在クエリ
 
@@ -2225,6 +2243,52 @@ $activities = ActivityFeed::with('parentable')
         Photo::class => ['tags'],
         Post::class => ['author'],
     ]);
+```
+
+<a name="automatic-eager-loading"></a>
+### 自動Eagerロード
+
+> [!WARNING]
+> この機能はコミュニティからのフィードバックを集めているため、現在ベータ版です。この機能の動作や機能は、パッチリリースでも変更する可能性があります。
+
+多くの場合Laravelは、あなたがアクセスしたリレーションを自動的にEagerロードできます。自動的なEagerロードを有効にするには、アプリケーションの`AppServiceProvider`の`boot`メソッド内で`Model::automaticallyEagerLoadRelationships`メソッドを呼び出す必要があります。
+
+```php
+use Illuminate\Database\Eloquent\Model;
+
+/**
+ * 全アプリケーションサービスの初期起動処理
+ */
+public function boot(): void
+{
+    Model::automaticallyEagerLoadRelationships();
+}
+```
+
+この機能を有効にすると、Laravelはアクセスしたリレーションのうち、以前にロードしていないものを自動的にロードしようとします。例として、以下のシナリオを考えてみましょう。
+
+```php
+use App\Models\User;
+
+$users = User::all();
+
+foreach ($users as $user) {
+    foreach ($user->posts as $post) {
+        foreach ($post->comments as $comment) {
+            echo $comment->content;
+        }
+    }
+}
+```
+
+通常、上記のコードでは、各ユーザーの投稿を取得するために各ユーザーのクエリを実行し、コメントを取得するために各投稿のクエリを実行します。しかし、`automaticallyEagerLoadRelationships`機能が有効になっている場合、取得したユーザーの投稿へアクセスしようとすると、Laravelはユーザーコレクション内の全ユーザーの投稿を自動的に[遅延Eagerロード](#lazy-eager-loading)します。同様に、検索した投稿のコメントにアクセスしようとすると、最初に検索したすべての投稿に対するすべてのコメントを遅延読み込みします。
+
+自動Eagerロードをグローバルに有効にしたくない場合でも、コレクションで`withRelationshipAutoloading`メソッドを呼び出せば、単一のEloquentコレクションインスタンスに対してこの機能を有効にできます。
+
+```php
+$users = User::where('vip', true)->get();
+
+return $users->withRelationshipAutoloading();
 ```
 
 <a name="preventing-lazy-loading"></a>

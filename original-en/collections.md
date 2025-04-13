@@ -35,6 +35,8 @@ As mentioned above, the `collect` helper returns a new `Illuminate\Support\Colle
 $collection = collect([1, 2, 3]);
 ```
 
+You may also create a collection using the [make](#method-make) and [fromJson](#method-fromjson) methods.
+
 > [!NOTE]
 > The results of [Eloquent](/docs/{{version}}/eloquent) queries are always returned as `Collection` instances.
 
@@ -144,6 +146,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [flip](#method-flip)
 [forget](#method-forget)
 [forPage](#method-forpage)
+[fromJson](#method-fromjson)
 [get](#method-get)
 [groupBy](#method-groupby)
 [has](#method-has)
@@ -509,7 +512,7 @@ $combined->all();
 <a name="method-concat"></a>
 #### `concat()` {.collection-method}
 
-The `concat` method appends the given `array` or collection's values onto the end of another collection:
+The `concat` method appends the given array or collection's values onto the end of another collection:
 
 ```php
 $collection = collect(['John Doe']);
@@ -624,13 +627,13 @@ $counted->all();
 // [1 => 1, 2 => 3, 3 => 1]
 ```
 
-You pass a closure to the `countBy` method to count all items by a custom value:
+You may pass a closure to the `countBy` method to count all items by a custom value:
 
 ```php
 $collection = collect(['alice@gmail.com', 'bob@yahoo.com', 'carlos@gmail.com']);
 
 $counted = $collection->countBy(function (string $email) {
-    return substr(strrchr($email, "@"), 1);
+    return substr(strrchr($email, '@'), 1);
 });
 
 $counted->all();
@@ -1246,6 +1249,23 @@ $chunk->all();
 // [4, 5, 6]
 ```
 
+<a name="method-fromjson"></a>
+#### `fromJson()` {.collection-method}
+
+The static `fromJson` method creates a new collection instance by decoding a given JSON string using the `json_decode` PHP function:
+
+```php
+use Illuminate\Support\Collection;
+
+$json = json_encode([
+    'name' => 'Taylor Otwell',
+    'role' => 'Developer',
+    'status' => 'Active',
+]);
+
+$collection = Collection::fromJson($json);
+```
+
 <a name="method-get"></a>
 #### `get()` {.collection-method}
 
@@ -1421,7 +1441,7 @@ $collection = collect([
 
 $collection->implode('product', ', ');
 
-// Desk, Chair
+// 'Desk, Chair'
 ```
 
 If the collection contains simple strings or numeric values, you should pass the "glue" as the only argument to the method:
@@ -1439,13 +1459,13 @@ $collection->implode(function (array $item, int $key) {
     return strtoupper($item['product']);
 }, ', ');
 
-// DESK, CHAIR
+// 'DESK, CHAIR'
 ```
 
 <a name="method-intersect"></a>
 #### `intersect()` {.collection-method}
 
-The `intersect` method removes any values from the original collection that are not present in the given `array` or collection. The resulting collection will preserve the original collection's keys:
+The `intersect` method removes any values from the original collection that are not present in the given array or collection. The resulting collection will preserve the original collection's keys:
 
 ```php
 $collection = collect(['Desk', 'Sofa', 'Chair']);
@@ -1463,7 +1483,7 @@ $intersect->all();
 <a name="method-intersectusing"></a>
 #### `intersectUsing()` {.collection-method}
 
-The `intersectUsing` method removes any values from the original collection that are not present in the given `array` or collection, using a custom callback to compare the values. The resulting collection will preserve the original collection's keys:
+The `intersectUsing` method removes any values from the original collection that are not present in the given array or collection, using a custom callback to compare the values. The resulting collection will preserve the original collection's keys:
 
 ```php
 $collection = collect(['Desk', 'Sofa', 'Chair']);
@@ -1480,7 +1500,7 @@ $intersect->all();
 <a name="method-intersectAssoc"></a>
 #### `intersectAssoc()` {.collection-method}
 
-The `intersectAssoc` method compares the original collection against another collection or `array`, returning the key / value pairs that are present in all of the given collections:
+The `intersectAssoc` method compares the original collection against another collection or array, returning the key / value pairs that are present in all of the given collections:
 
 ```php
 $collection = collect([
@@ -1503,7 +1523,7 @@ $intersect->all();
 <a name="method-intersectassocusing"></a>
 #### `intersectAssocUsing()` {.collection-method}
 
-The `intersectAssocUsing` method compares the original collection against another collection or `array`, returning the key / value pairs that are present in both, using a custom comparison callback to determine equality for both keys and values:
+The `intersectAssocUsing` method compares the original collection against another collection or array, returning the key / value pairs that are present in both, using a custom comparison callback to determine equality for both keys and values:
 
 ```php
 $collection = collect([
@@ -1528,7 +1548,7 @@ $intersect->all();
 <a name="method-intersectbykeys"></a>
 #### `intersectByKeys()` {.collection-method}
 
-The `intersectByKeys` method removes any keys and their corresponding values from the original collection that are not present in the given `array` or collection:
+The `intersectByKeys` method removes any keys and their corresponding values from the original collection that are not present in the given array or collection:
 
 ```php
 $collection = collect([
@@ -1696,6 +1716,12 @@ The static `macro` method allows you to add methods to the `Collection` class at
 #### `make()` {.collection-method}
 
 The static `make` method creates a new collection instance. See the [Creating Collections](#creating-collections) section.
+
+```php
+use Illuminate\Support\Collection;
+
+$collection = Collection::make([1, 2, 3]);
+```
 
 <a name="method-map"></a>
 #### `map()` {.collection-method}

@@ -35,6 +35,8 @@ $collection = collect(['taylor', 'abigail', null])->map(function (?string $name)
 $collection = collect([1, 2, 3]);
 ```
 
+[make](#method-make)メソッドや[fromJson](#method-fromjson)メソッドを使い、コレクションを作成することもできます。
+
 > [!NOTE]
 > [Eloquent](/docs/{{version}}/eloquent)クエリの結果は、常に`Collection`インスタンスを返します。
 
@@ -144,6 +146,7 @@ $translated = $collection->toLocale('es');
 [flip](#method-flip)
 [forget](#method-forget)
 [forPage](#method-forpage)
+[fromJson](#method-fromjson)
 [get](#method-get)
 [groupBy](#method-groupby)
 [has](#method-has)
@@ -509,7 +512,7 @@ $combined->all();
 <a name="method-concat"></a>
 #### `concat()` {.collection-method}
 
-`concat`メソッドは、指定した`array`またはコレクションの値を別のコレクションの最後に追加します。
+`concat`メソッドは、指定の配列やコレクションの値を別のコレクションの末尾へ追加します。
 
 ```php
 $collection = collect(['John Doe']);
@@ -624,13 +627,13 @@ $counted->all();
 // [1 => 1, 2 => 3, 3 => 1]
 ```
 
-`countBy`メソッドにクロージャを渡して、すべてのアイテムをカスタム値でカウントします。
+カスタム値ですべてのアイテムをカウントするには、`countBy`メソッドにクロージャを渡します。
 
 ```php
 $collection = collect(['alice@gmail.com', 'bob@yahoo.com', 'carlos@gmail.com']);
 
 $counted = $collection->countBy(function (string $email) {
-    return substr(strrchr($email, "@"), 1);
+    return substr(strrchr($email, '@'), 1);
 });
 
 $counted->all();
@@ -1246,6 +1249,23 @@ $chunk->all();
 // [4, 5, 6]
 ```
 
+<a name="method-fromjson"></a>
+#### `fromJson()` {.collection-method}
+
+`fromJson`スタティックメソッドは、PHPの`json_decode`関数を使用して、JSON文字列をデコードし、新しいコレクションのインスタンスを作成します。
+
+```php
+use Illuminate\Support\Collection;
+
+$json = json_encode([
+    'name' => 'Taylor Otwell',
+    'role' => 'Developer',
+    'status' => 'Active',
+]);
+
+$collection = Collection::fromJson($json);
+```
+
 <a name="method-get"></a>
 #### `get()` {.collection-method}
 
@@ -1421,7 +1441,7 @@ $collection = collect([
 
 $collection->implode('product', ', ');
 
-// Desk, Chair
+// 'Desk, Chair'
 ```
 
 コレクションに単純な文字列または数値が含まれている場合は、メソッドへの唯一の引数として「接着」文字列を渡す必要があります。
@@ -1439,13 +1459,13 @@ $collection->implode(function (array $item, int $key) {
     return strtoupper($item['product']);
 }, ', ');
 
-// DESK, CHAIR
+// 'DESK, CHAIR'
 ```
 
 <a name="method-intersect"></a>
 #### `intersect()` {.collection-method}
 
-`intersect`メソッドは、指定した「配列」かコレクションに存在していない値をオリジナルコレクションから取り除きます。結果のコレクションには、オリジナルコレクションのキーがリストされます。
+`intersect`メソッドは、指定した配列またはコレクションに存在していない値をオリジナルコレクションから取り除きます。結果のコレクションには、オリジナルコレクションのキーがリストされます。
 
 ```php
 $collection = collect(['Desk', 'Sofa', 'Chair']);
@@ -1463,7 +1483,7 @@ $intersect->all();
 <a name="method-intersectusing"></a>
 #### `intersectUsing()` {.collection-method}
 
-`intersectUsing`メソッドは、値を比較するカスタムコールバックを使用して、元のコレクションから、指定した`array`やコレクションに存在しない値を削除します。結果のコレクションは元のコレクションのキーを保持します。
+`intersectUsing`メソッドは、値を比較するカスタムコールバックを使用して、元のコレクションから、指定した配列やコレクションに存在しない値を削除します。結果のコレクションは元のコレクションのキーを保持します。
 
 ```php
 $collection = collect(['Desk', 'Sofa', 'Chair']);
@@ -1480,7 +1500,7 @@ $intersect->all();
 <a name="method-intersectAssoc"></a>
 #### `intersectAssoc()` {.collection-method}
 
-`intersectAssoc`メソッドは、元のコレクションと別のコレクションまたは配列（`array`）を比較し、指定したコレクションの全てに存在するキーと値のペアを返します。
+`intersectAssoc`メソッドは、元のコレクションと別のコレクションまたは配列を比較し、指定したコレクションの全てに存在するキーと値のペアを返します。
 
 ```php
 $collection = collect([
@@ -1503,7 +1523,7 @@ $intersect->all();
 <a name="method-intersectassocusing"></a>
 #### `intersectAssocUsing()` {.collection-method}
 
-`intersectAssocUsing`メソッドは、キーと値の両方について等しいかを判断するカスタム比較コールバックを使用して、元のコレクションと他のコレクションや`array`を比較し、両方に存在するキーと値のペアを返します。
+`intersectAssocUsing`メソッドは、キーと値の両方について等しいかを判断するカスタム比較コールバックを使用して、元のコレクションと他のコレクションや配列を比較し、両方に存在するキーと値のペアを返します。
 
 ```php
 $collection = collect([
@@ -1696,6 +1716,12 @@ staticの`macro`メソッドで、実行時に`Collection`クラスへメソッ�
 #### `make()` {.collection-method}
 
 staticの`make`メソッドは、新しいコレクションインスタンスを生成します。[コレクションの生成](#creating-collections)セクションを参照してください。
+
+```php
+use Illuminate\Support\Collection;
+
+$collection = Collection::make([1, 2, 3]);
+```
 
 <a name="method-map"></a>
 #### `map()` {.collection-method}

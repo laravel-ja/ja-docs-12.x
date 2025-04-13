@@ -33,6 +33,7 @@
     - [増分と減分](#increment-and-decrement)
 - [DELETE文](#delete-statements)
 - [悲観的ロック](#pessimistic-locking)
+- [再利用可能なクエリコンポーネント](#reusable-query-components)
 - [デバッグ](#debugging)
 
 <a name="introduction"></a>
@@ -1466,6 +1467,131 @@ DB::transaction(function () {
             'balance' => $receiver->balance + 100
         ]);
 });
+```
+
+<a name="reusable-query-components"></a>
+## 再利用可能なクエリコンポーネント
+
+アプリケーション全体でクエリロジックを繰り返す場合、クエリビルダの`tap`メソッドと`pipe`メソッドを使用して、ロジックを再利用可能なオブジェクトに抽出できます。アプリケーションに２つの異なるクエリがある場合を考えましょう。
+
+```php
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
+
+$destination = $request->query('destination');
+
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) {
+        $query->where('destination', $destination);
+    })
+    ->orderByDesc('price')
+    ->get();
+
+// ...
+
+$destination = $request->query('destination');
+
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) {
+        $query->where('destination', $destination);
+    })
+    ->where('user', $request->user()->id)
+    ->orderBy('destination')
+    ->get();
+```
+
+クエリ間で共通する宛先フィルタリングを再利用可能なオブジェクトに抽出したいと思うことでしょう。
+
+```php
+<?php
+
+namespace App\Scopes;
+
+use Illuminate\Database\Query\Builder;
+
+class DestinationFilter
+{
+    public function __construct(
+        private ?string $destination,
+    ) {
+        //
+    }
+
+    public function __invoke(Builder $query): void
+    {
+        $query->when($this->destination, function (Builder $query) {
+            $query->where('destination', $this->destination);
+        });
+    }
+}
+```
+
+次に、クエリビルダの`tap`メソッドを使用し、オブジェクトのロジックをクエリへ適用できます。
+
+```php
+use App\Scopes\DestinationFilter;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Support\Facades\DB;
+
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) { // [tl! remove]
+        $query->where('destination', $destination); // [tl! remove]
+    }) // [tl! remove]
+    ->tap(new DestinationFilter($destination)) // [tl! add]
+    ->orderByDesc('price')
+    ->get();
+
+// ...
+
+DB::table('flights')
+    ->when($destination, function (Builder $query, string $destination) { // [tl! remove]
+        $query->where('destination', $destination); // [tl! remove]
+    }) // [tl! remove]
+    ->tap(new DestinationFilter($destination)) // [tl! add]
+    ->where('user', $request->user()->id)
+    ->orderBy('destination')
+    ->get();
+```
+
+<a name="query-pipes"></a>
+#### クエリのパイプ
+
+`tap`メソッドは常にクエリビルダを返します。クエリを実行して別の値を返すオブジェクトを抽出したい場合は、代わりに`pipe`メソッドを使用します。
+
+アプリケーション全体で共有する[ペジネーション](/docs/{{version}}/pagination)ロジックを含む、以下のクエリオブジェクトを考えてみましょう。クエリへ条件を適用する`DestinationFilter`とは異なり、`Paginate`オブジェクトはクエリを実行し、ペギネータインスタンスを返します。
+
+```php
+<?php
+
+namespace App\Scopes;
+
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Query\Builder;
+
+class Paginate
+{
+    public function __construct(
+        private string $sortBy = 'timestamp',
+        private string $sortDirection = 'desc',
+        private string $perPage = 25,
+    ) {
+        //
+    }
+
+    public function __invoke(Builder $query): LengthAwarePaginator
+    {
+        return $query->orderBy($this->sortBy, $this->sortDirection)
+            ->paginate($this->perPage, pageName: 'p');
+    }
+}
+```
+
+クエリビルダの`pipe`メソッドを使うと、このオブジェクトを利用して共有ペジネーションロジックを適用できます。
+
+```php
+$flights = DB::table('flights')
+    ->tap(new DestinationFilter($destination))
+    ->pipe(new Paginate);
 ```
 
 <a name="debugging"></a>

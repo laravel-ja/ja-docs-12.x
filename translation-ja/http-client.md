@@ -627,13 +627,21 @@ Http::fake([
 ```
 
 <a name="faking-connection-exceptions"></a>
-#### 接続例外のfake
+#### 例外のfake
 
 HTTPクライアントがリクエストしようとしたときに、`Illuminate\Http\Client\ConnectionException`が発生したときの、アプリケーション動作をテストする必要があるかもしれません。`failedConnection`メソッドを使用して、HTTPクライアントへ接続例外を投げるよう指示できます。
 
 ```php
 Http::fake([
     'github.com/*' => Http::failedConnection(),
+]);
+```
+
+`Illuminate\Http\Client\RequestException`が投げられたときの、アプリケーションの動作をテストするには、`failedRequest`メソッドを使用します。
+
+```php
+Http::fake([
+    'github.com/*' => Http::failedRequest(['code' => 'not_found'], 404),
 ]);
 ```
 

@@ -90,6 +90,14 @@ Route::get('/user/{id}', function (string $id) {
 });
 ```
 
+使いやすくするため、モデルの`toResource`メソッドを使用できます。このメソッドはフレームワークの規約を使用し、モデルの基礎となるリソースを自動的に検出します。
+
+```php
+return User::findOrFail($id)->toResource();
+```
+
+`toResource`メソッドを呼び出すと、モデルの名前に一致し、オプションでモデルの名前空間に最も近い`Http\Resources`名前空間内の`Resource`という接尾辞が付いたリソースをLaravelは探します。
+
 <a name="resource-collections"></a>
 ### リソースコレクション
 
@@ -104,7 +112,18 @@ Route::get('/users', function () {
 });
 ```
 
-これでは、コレクションとともに返す必要のあるカスタムメタデータがある場合でもそれらを追加できないことに注意してください。リソースコレクションのレスポンスをカスタマイズする場合は、コレクションを表す専用のリソースを生成してください。
+あるいは、使いやすいように、Eloquentコレクションの`toResourceCollection`メソッドを使用することもできます。このメソッドはフレームワークの規約を使用して、モデルの基礎となるリソースコレクションを自動的に検出します。
+
+```php
+return User::all()->toResourceCollection();
+```
+
+`toResourceCollection`メソッドを呼び出すと、モデルの名前空間に最も近い`Http\Resources`名前空間内で、モデルの名前に一致し、接尾辞が`Collection`であるリソースコレクションをLaravelは探します。
+
+<a name="custom-resource-collections"></a>
+#### カスタムリソースコレクション
+
+リソースコレクションはデフォルトで、コレクションと一緒に返す必要のあるカスタムメタデータを追加できません。リソースコレクションのレスポンスをカスタマイズしたい場合は、コレクションを表す専用のリソースを作成してください。
 
 ```shell
 php artisan make:resource UserCollection
@@ -149,6 +168,14 @@ Route::get('/users', function () {
     return new UserCollection(User::all());
 });
 ```
+
+あるいは、使いやすいように、Eloquentコレクションの`toResourceCollection`メソッドを使用できます。このメソッドはフレームワークの規約を使用して、モデルの基礎となるリソースコレクションを自動的に検出します。
+
+```php
+return User::all()->toResourceCollection();
+```
+
+`toResourceCollection`メソッドを呼び出すと、Laravelはモデルの名前空間に最も近い`Http\Resources`名前空間内で、モデルの名前に一致し、接尾辞が`Collection`であるリソースコレクションを探します。
 
 <a name="preserving-collection-keys"></a>
 #### コレクションキーの保存
@@ -248,11 +275,10 @@ class UserResource extends JsonResource
 リソースを定義したら、ルートまたはコントローラから直接返せます。
 
 ```php
-use App\Http\Resources\UserResource;
 use App\Models\User;
 
 Route::get('/user/{id}', function (string $id) {
-    return new UserResource(User::findOrFail($id));
+    return User::findOrFail($id)->toUserResource();
 });
 ```
 
@@ -289,14 +315,13 @@ public function toArray(Request $request): array
 <a name="writing-resource-collections"></a>
 #### リソースコレクション
 
-リソースは単一のモデルを配列に変換しますが、リソースコレクションはモデルのコレクションを配列に変換します。ただし、すべてのリソースが「アドホック」リソースコレクションを簡単に生成するために`collection`メソッドを提供しているため、モデルごとにリソースコレクションクラスを定義する必要はありません。
+リソースが単一のモデルを配列に変換するのに対し、リソースコレクションはモデルのコレクションを配列へ変換します。しかし、すべてのEloquentモデルコレクションは`toResourceCollection`メソッドを提供し、そのまま「アドホック」なリソースコレクションを生成できるため、モデルごとにリソースコレクションクラスを定義する必要はありません。
 
 ```php
-use App\Http\Resources\UserResource;
 use App\Models\User;
 
 Route::get('/users', function () {
-    return UserResource::collection(User::all());
+    return User::all()->toResourceCollection();
 });
 ```
 
@@ -339,6 +364,14 @@ Route::get('/users', function () {
     return new UserCollection(User::all());
 });
 ```
+
+あるいは、使いやすいように、Eloquentコレクションの`toResourceCollection`メソッドを使用することもできます。このメソッドはフレームワークの規約を使用して、モデルの基礎となるリソースコレクションを自動的に検出します。
+
+```php
+return User::all()->toResourceCollection();
+```
+
+`toResourceCollection`メソッドを呼び出すと、モデルの名前空間に最も近い`Http\Resources`名前空間内で、モデルの名前に一致し、接尾辞が`Collection`であるリソースコレクションをLaravelは探します。
 
 <a name="data-wrapping"></a>
 ### データのラップ
@@ -472,6 +505,12 @@ use App\Models\User;
 Route::get('/users', function () {
     return new UserCollection(User::paginate());
 });
+```
+
+あるいは使いやすいように、ペジネータの`toResourceCollection`メソッドを使用することもできます。このメソッドはフレームワークの規約を使用して、ペジネートしたモデルの基底リソースコレクションを自動的に検出します。
+
+```php
+return User::paginate()->toResourceCollection();
 ```
 
 ページ化されたレスポンスには、常に、ページネーターの状態に関する情報を含む`meta`キーと`links`キーが含まれます。
@@ -800,7 +839,9 @@ class UserCollection extends ResourceCollection
 ルートまたはコントローラでリソースインスタンスを構築するときに、トップレベルのデータを追加することもできます。すべてのリソースで使用できる`additional`メソッドは、リソースレスポンスへ追加する必要のあるデータの配列を引数に取ります。
 
 ```php
-return (new UserCollection(User::all()->load('roles')))
+return User::all()
+    ->load('roles')
+    ->toResourceCollection()
     ->additional(['meta' => [
         'key' => 'value',
     ]]);
@@ -812,11 +853,10 @@ return (new UserCollection(User::all()->load('roles')))
 すでにお読みになったように、リソースはルートとコントローラから直接返します。
 
 ```php
-use App\Http\Resources\UserResource;
 use App\Models\User;
 
 Route::get('/user/{id}', function (string $id) {
-    return new UserResource(User::findOrFail($id));
+    return User::findOrFail($id)->toResource();
 });
 ```
 
@@ -827,7 +867,8 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 
 Route::get('/user', function () {
-    return (new UserResource(User::find(1)))
+    return User::find(1)
+        ->toResource()
         ->response()
         ->header('X-Value', 'True');
 });

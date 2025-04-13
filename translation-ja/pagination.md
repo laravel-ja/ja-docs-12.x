@@ -376,6 +376,7 @@ public function boot(): void
 | `$paginator->lastPage()`                | 最後に利用可能なページのページ番号を取得（`simplePaginate`使用時は使用不可能）     |
 | `$paginator->nextPageUrl()`             | 次のページのURLを取得                                                              |
 | `$paginator->onFirstPage()`             | ペジネータが最初のページにあるかを判定                                             |
+| `$paginator->onLastPage()`              | ペジネータが最後のページにあるかを判定 |
 | `$paginator->perPage()`                 | １ページ中に表示するアイテムの数                                                   |
 | `$paginator->previousPageUrl()`         | 前のページのURLを取得                                                              |
 | `$paginator->total()`                   | データストア内の一致するアイテムの総数を判定（`simplePaginate`使用時は使用不可能） |

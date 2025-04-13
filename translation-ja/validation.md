@@ -1096,6 +1096,7 @@ The credit card number field is required when payment type is credit card.
 
 <div class="collection-method-list" markdown="1">
 
+[どれでも一致](#rule-anyof)
 [終了](#rule-bail)
 [除外](#rule-exclude)
 [条件一致時除外](#rule-exclude-if)
@@ -1195,6 +1196,23 @@ use Illuminate\Validation\Rule;
 'start_date' => [
     'required',
     Rule::date()->afterOrEqual(today()->addDays(7)),
+],
+```
+
+<a name="rule-anyof"></a>
+#### anyOf
+
+`Rule::anyOf`バリデーションルールは、フィールドが指定したバリデーションルールセットのいずれかを満たすことをバリデートします。例えば、次のルールは、`username`フィールドがメールアドレスか、６文字以上の半角英数字(ダッシュを含む)であることを検証します：
+
+```php
+use Illuminate\Validation\Rule;
+
+'username' => [
+    'required',
+    Rule::anyOf([
+        ['string', 'email'],
+        ['string', 'alpha_dash', 'min:6'],
+    ]),
 ],
 ```
 
