@@ -439,3 +439,9 @@ public function boot(): void
 ```shell
 php artisan vendor:publish --tag=courier-config
 ```
+
+また、ユーザーは`--provider`フラグを使用することで、パッケージのサービスプロバイダが定義したすべての公開可能ファイルをリソース公開できます。
+
+```shell
+php artisan vendor:publish --provider="Your\Package\ServiceProvider"
+```

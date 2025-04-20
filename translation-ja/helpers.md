@@ -10,6 +10,7 @@
     - [パイプライン](#pipeline)
     - [スリープ](#sleep)
     - [Timebox](#timebox)
+    - [URI](#uri)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -143,6 +144,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [secure_asset](#method-secure-asset)
 [secure_url](#method-secure-url)
 [to_route](#method-to-route)
+[uri](#method-uri)
 [url](#method-url)
 
 </div>
@@ -1920,6 +1922,39 @@ return to_route('users.show', ['user' => 1]);
 return to_route('users.show', ['user' => 1], 302, ['X-Framework' => 'Laravel']);
 ```
 
+<a name="method-uri"></a>
+#### `uri()` {.collection-method}
+
+`uri`関数は、指定したURIの[読み書きしやすいURIインスタンス](#uri)を生成します。
+
+```php
+$uri = uri('https://example.com')
+    ->withPath('/users')
+    ->withQuery(['page' => 1])
+```
+
+`uri`関数へ呼び出し可能なコントローラとメソッドのペアを含む配列を渡すと、コントローラメソッドのルートパスへの`Uri`インスタンスを作成します。
+
+```php
+use App\Http\Controllers\UserController;
+
+$uri = uri([UserController::class, 'show'], ['user' => $user])
+```
+
+コントローラがInvokableの場合は、コントローラのクラス名を指定します。
+
+```php
+use App\Http\Controllers\UserIndexController;
+
+$uri = uri(UserIndexController::class);
+```
+
+`uri`関数へ指定した値が[名前付きルート](/docs/{{version}}/routing#named-routes)の名前と一致する場合、そのルートのパスに対する`Uri`インスタンスを生成します。
+
+```php
+$uri = uri('users.show', ['user' => $user]);
+```
+
 <a name="method-url"></a>
 #### `url()` {.collection-method}
 
@@ -3261,3 +3296,112 @@ use Illuminate\Support\Timebox;
 ```
 
 クロージャ内で例外が投げられた場合、このクラスは定義された遅延を尊重し、遅延後に例外を再び投げます。
+
+<a name="uri"></a>
+### URI
+
+Laravelの`Uri`クラスは、URIの作成と操作のために、便利で読み書きしやすいインターフェイスを提供します。このクラスは、基盤となるLeague　URIパッケージが提供する機能をラップし、Laravelのルーティングシステムとシームレスに統合しています。
+
+静的メソッドを使用し、`Uri`インスタンスを簡単に作成できます。
+
+```php
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\InvokableController;
+use Illuminate\Support\Uri;
+
+// 指定した文字列から、URIインスタンスを生成
+$uri = Uri::of('https://example.com/path');
+
+// パス、名前付きルート、コントローラから、URIインスタンスを生成
+$uri = Uri::to('/dashboard');
+$uri = Uri::route('users.show', ['user' => 1]);
+$uri = Uri::signedRoute('users.show', ['user' => 1]);
+$uri = Uri::temporarySignedRoute('user.index', now()->addMinutes(5));
+$uri = Uri::action([UserController::class, 'index']);
+$uri = Uri::action(InvokableController::class);
+
+// 現在のリクエストのURIから、URIインスタンスを生成
+$uri = $request->uri();
+```
+
+一度URIインスタンスを作れば、それを流暢に変更できます。
+
+```php
+$uri = Uri::of('https://example.com')
+    ->withScheme('http')
+    ->withHost('test.com')
+    ->withPort(8000)
+    ->withPath('/users')
+    ->withQuery(['page' => 2])
+    ->withFragment('section-1');
+```
+
+<a name="inspecting-uris"></a>
+#### URIの調査
+
+`Uri`クラスでは、URIの様々な構成要素を簡単に調査することもできます。
+
+```php
+$scheme = $uri->scheme();
+$host = $uri->host();
+$port = $uri->port();
+$path = $uri->path();
+$query = $uri->query();
+$fragment = $uri->fragment();
+```
+
+<a name="manipulating-query-strings"></a>
+#### クエリ文字列の操作
+
+`Uri`クラスは、URIのクエリ文字列を操作するメソッドをいくつか提供しています。`withQuery`メソッドを使うと、追加のクエリ文字列パラメータを既存のクエリ文字列へマージできます。
+
+```php
+$uri = $uri->withQuery(['sort' => 'name']);
+```
+
+`withQueryIfMissing`メソッドは、指定キーがクエリ文字列中にまだ存在していない場合に、追加のクエリ文字列パラメータを既存のクエリ文字列にマージするために使用します。
+
+```php
+$uri = $uri->withQueryIfMissing(['page' => 1]);
+```
+
+`replaceQuery`メソッドは、既存のクエリ文字列を新しいものへ置き換えるために使います。
+
+```php
+$uri = $uri->replaceQuery(['page' => 1]);
+```
+
+`pushOntoQuery`メソッドは、配列の値を持つクエリ文字列パラメータへパラメータを追加するために使います。
+
+```php
+$uri = $uri->pushOntoQuery('filter', ['active', 'pending']);
+```
+
+`withoutQuery`メソッドは、クエリ文字列からパラメータを取り除クために使います。
+
+```php
+$uri = $uri->withoutQuery(['page']);
+```
+
+<a name="generating-responses-from-uris"></a>
+#### URIからのレスポンス生成
+
+`redirect`メソッドは、指定URIに対する`RedirectResponse`インスタンスを生成するために使います。
+
+```php
+$uri = Uri::of('https://example.com');
+
+return $uri->redirect();
+```
+
+あるいは、ルートやコントローラのアクションから、`Uri`インスタンスをただ返せば、返したURIへのリダイレクトレスポンスを自動的に生成します。
+
+```php
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Uri;
+
+Route::get('/redirect', function () {
+    return Uri::to('/index')
+        ->withQuery(['sort' => 'name']);
+});
+```

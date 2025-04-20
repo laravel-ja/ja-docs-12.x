@@ -8,6 +8,7 @@
     - [キャッシュからのアイテム取得](#retrieving-items-from-the-cache)
     - [キャッシュへのアイテム保存](#storing-items-in-the-cache)
     - [キャッシュからのアイテム削除](#removing-items-from-the-cache)
+    - [キャッシュのメモ](#cache-memoization)
     - [キャッシュヘルパ](#the-cache-helper)
 - [アトミックロック](#atomic-locks)
     - [ロック管理](#managing-locks)
@@ -324,6 +325,50 @@ Cache::flush();
 
 > [!WARNING]
 > キャッシュのフラッシュは、設定したキャッシュの「プレフィックス」を尊重せず、キャッシュからすべてのエントリを削除します。他のアプリケーションと共有するキャッシュをクリアするときは、これを慎重に検討してください。
+
+<a name="cache-memoization"></a>
+### キャッシュのメモ
+
+Laravelの`memo`キャッシュドライバは、１回のリクエスト中やジョブの実行中、解決したキャッシュ値を一時的にメモリへ保存できます。これにより、同じ実行内でキャッシュヒットが繰り返されることを防ぎ、パフォーマンスを大幅に向上させます。
+
+このキャッシュのメモを使うには、`memo`メソッドを呼び出します。
+
+```php
+use Illuminate\Support\Facades\Cache;
+
+$value = Cache::memo()->get('key');
+```
+
+`memo`メソッドのオプションとして、キャッシュストア名も指定できます。これは、メモ化のドライバがデコレートする元のキャッシュストアを指定します。
+
+```php
+// デフォルトキャッシュストアの使用
+$value = Cache::memo()->get('key');
+
+// Redisキャッシュストアの使用
+$value = Cache::memo('redis')->get('key');
+```
+
+指定したキーに対する最初の`get`呼び出しはキャッシュストアから値を取得しますが、同じリクエストまたはジョブ内でのそれ以降の呼び出しはメモリから値を取得します。
+
+```php
+// キャッシュをヒットする
+$value = Cache::memo()->get('key');
+
+// キャッシュをヒットせずに、メモの値を返す
+$value = Cache::memo()->get('key');
+```
+
+キャッシュの値を変更するメソッド（`put`、`increment`、`remember` など）を呼び出すと、メモしたキャッシュは自動的にその値をクリアし、変更したメソッドの呼び出しを元のキャッシュストアへ引き継ぎます。
+
+```php
+Cache::memo()->put('name', 'Taylor'); // 元のキャッシュへ書き込む
+Cache::memo()->get('name');           // 元のキャッシュをヒットする
+Cache::memo()->get('name');           // メモ済みなので、キャッシュをヒットしない
+
+Cache::memo()->put('name', 'Tim');    // メモ済みの値をクリアし、新しい値を書き込む
+Cache::memo()->get('name');           // 再度、元のキャッシュをヒットする
+```
 
 <a name="the-cache-helper"></a>
 ### キャッシュヘルパ

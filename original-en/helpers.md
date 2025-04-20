@@ -10,6 +10,7 @@
     - [Pipeline](#pipeline)
     - [Sleep](#sleep)
     - [Timebox](#timebox)
+    - [URI](#uri)
 
 <a name="introduction"></a>
 ## Introduction
@@ -143,6 +144,7 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [secure_asset](#method-secure-asset)
 [secure_url](#method-secure-url)
 [to_route](#method-to-route)
+[uri](#method-uri)
 [url](#method-url)
 
 </div>
@@ -1920,6 +1922,39 @@ If necessary, you may pass the HTTP status code that should be assigned to the r
 return to_route('users.show', ['user' => 1], 302, ['X-Framework' => 'Laravel']);
 ```
 
+<a name="method-uri"></a>
+#### `uri()` {.collection-method}
+
+The `uri` function generates a [fluent URI instance](#uri) for the given URI:
+
+```php
+$uri = uri('https://example.com')
+    ->withPath('/users')
+    ->withQuery(['page' => 1])
+```
+
+If the `uri` function is given an array containing a callable controller and method pair, the function will create a `Uri` instance for the controller method's route path:
+
+```php
+use App\Http\Controllers\UserController;
+
+$uri = uri([UserController::class, 'show'], ['user' => $user])
+```
+
+If the controller is invokable, you may simply provide the controller class name:
+
+```php
+use App\Http\Controllers\UserIndexController;
+
+$uri = uri(UserIndexController::class);
+```
+
+If the value given to the `uri` function matches the name of a [named route](/docs/{{version}}/routing#named-routes), a `Uri` instance will be generated for that route's path:
+
+```php
+$uri = uri('users.show', ['user' => $user]);
+```
+
 <a name="method-url"></a>
 #### `url()` {.collection-method}
 
@@ -3261,3 +3296,112 @@ use Illuminate\Support\Timebox;
 ```
 
 If an exception is thrown within the closure, this class will respect the defined delay and re-throw the exception after the delay.
+
+<a name="uri"></a>
+### URI
+
+Laravel's `Uri` class provides a convenient and fluent interface for creating and manipulating URIs. This class wraps the functionality provided by the underlying League URI package and integrates seamlessly with Laravel's routing system.
+
+You can create a `Uri` instance easily using static methods:
+
+```php
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\InvokableController;
+use Illuminate\Support\Uri;
+
+// Generate a URI instance from the given string...
+$uri = Uri::of('https://example.com/path');
+
+// Generate URI instances to paths, named routes, or controller actions...
+$uri = Uri::to('/dashboard');
+$uri = Uri::route('users.show', ['user' => 1]);
+$uri = Uri::signedRoute('users.show', ['user' => 1]);
+$uri = Uri::temporarySignedRoute('user.index', now()->addMinutes(5));
+$uri = Uri::action([UserController::class, 'index']);
+$uri = Uri::action(InvokableController::class);
+
+// Generate a URI instance from the current request URL...
+$uri = $request->uri();
+```
+
+Once you have a URI instance, you can fluently modify it:
+
+```php
+$uri = Uri::of('https://example.com')
+    ->withScheme('http')
+    ->withHost('test.com')
+    ->withPort(8000)
+    ->withPath('/users')
+    ->withQuery(['page' => 2])
+    ->withFragment('section-1');
+```
+
+<a name="inspecting-uris"></a>
+#### Inspecting URIs
+
+The `Uri` class also allows you to easily inspect the various components of the underlying URI:
+
+```php
+$scheme = $uri->scheme();
+$host = $uri->host();
+$port = $uri->port();
+$path = $uri->path();
+$query = $uri->query();
+$fragment = $uri->fragment();
+```
+
+<a name="manipulating-query-strings"></a>
+#### Manipulating Query Strings
+
+The `Uri` class offers several methods that may be used to manipulate a URI's query string. The `withQuery` method may be used to merge additional query string parameters into the existing query string:
+
+```php
+$uri = $uri->withQuery(['sort' => 'name']);
+```
+
+The `withQueryIfMissing` method may be used to merge additional query string parameters into the existing query string if the given keys do not already exist in the query string:
+
+```php
+$uri = $uri->withQueryIfMissing(['page' => 1]);
+```
+
+The `replaceQuery` method may be used to complete replace the existing query string with a new one:
+
+```php
+$uri = $uri->replaceQuery(['page' => 1]);
+```
+
+The `pushOntoQuery` method may be used to push additional parameters onto a query string parameter that has an array value:
+
+```php
+$uri = $uri->pushOntoQuery('filter', ['active', 'pending']);
+```
+
+The `withoutQuery` method may be used to remove parameters from the query string:
+
+```php
+$uri = $uri->withoutQuery(['page']);
+```
+
+<a name="generating-responses-from-uris"></a>
+#### Generating Responses From URIs
+
+The `redirect` method may be used to generate a `RedirectResponse` instance to the given URI:
+
+```php
+$uri = Uri::of('https://example.com');
+
+return $uri->redirect();
+```
+
+Or, you may simply return the `Uri` instance from a route or controller action, which will automatically generate a redirect response to the returned URI:
+
+```php
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Uri;
+
+Route::get('/redirect', function () {
+    return Uri::to('/index')
+        ->withQuery(['sort' => 'name']);
+});
+```
