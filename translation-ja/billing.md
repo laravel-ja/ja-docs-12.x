@@ -2211,6 +2211,7 @@ return $request->user()->downloadInvoice($invoiceId, [
 
 ```php
 return $request->user()->downloadInvoice($invoiceId, [], 'my-invoice');
+```
 
 <a name="custom-invoice-render"></a>
 #### カスタムインボイスレンダラ

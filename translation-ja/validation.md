@@ -1117,6 +1117,8 @@ The credit card number field is required when payment type is credit card.
 [全存在時存在](#rule-present-with-all)
 [禁止](#rule-prohibited)
 [条件一致時禁止](#rule-prohibited-if)
+[受容時禁止](#rule-prohibited-if-accepted)
+[拒否時禁止](#rule-prohibited-if-declined)
 [条件不一致時禁止](#rule-prohibited-unless)
 [他フィールド禁止](#rule-prohibits)
 [必須](#rule-required)
@@ -1506,8 +1508,8 @@ distinctはデフォルトで緩い比較を使用します。厳密な比較を
 
 <div class="content-list" markdown="1">
 
-- `rfc`: `RFCValidation` - RFC 5322に従い、メールアドレスをバリデーションする。
-- `strict`: `NoRFCWarningsValidation` - RFC 5322に従い、メールアドレスをバリデーションするが、末尾のピリオドや連続するピリオドは拒絶する。
+- `rfc`: `RFCValidation` - [サポートしているRFC](https://github.com/egulias/EmailValidator?tab=readme-ov-file#supported-rfcs)に従い、メールアドレスを確認する。
+- `strict`: `NoRFCWarningsValidation` - [サポートしているRFC](https://github.com/egulias/EmailValidator?tab=readme-ov-file#supported-rfcs)に従ってメールを確認し、警告を見つけた場合は失敗する。(末尾のピリオドや、連続する複数のピリオドなど。)
 - `dns`: `DNSCheckValidation` - メールアドレスのドメインに、有効なMXレコードがあることを確認する。
 - `spoof`: `SpoofCheckValidation` - メールアドレスにホモグラフや偽のUnicode文字が含まれていないことを確認する。
 - `filter`: `FilterEmailValidation` - PHPの`filter_var`関数に従い、メールアドレスが有効であることを確認する。
@@ -1996,6 +1998,15 @@ Validator::make($request->all(), [
     'role_id' => Rule::prohibitedIf(fn () => $request->user()->is_admin),
 ]);
 ```
+<a name="rule-prohibited-if-accepted"></a>
+#### prohibited_if_accepted:_他のフィールド_,…
+
+*他のフィールド*が`"yes"`、`"on"`、`1`、`"1"`、`true`、`"true"`のいずれかに等しい場合、フィールドは存在しないか空であることをバリデートします。
+
+<a name="rule-prohibited-if-declined"></a>
+#### prohibited_if_declined:_anotherfield_,...
+
+*他のフィールド*が`"no"`、`"off"`、`0`、`"0"`、`false`、`"false"`のいずれかに等しい場合、フィールドは存在しないか空であることをバリデートします。
 
 <a name="rule-prohibited-unless"></a>
 #### prohibited_unless:_他のフィールド_,_値_,…

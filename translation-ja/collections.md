@@ -2077,7 +2077,7 @@ $filtered->all();
 <a name="method-partition"></a>
 #### `partition()` {.collection-method}
 
-`partition`メソッドは、PHPの配列のデストラクションと組み合わせて、与えられた真理値テストに合格した要素とそうでない要素を分離します。
+`partition`メソッドは、PHPの配列のデストラクションと組み合わせて、指定する真理値テストに合格した要素とそうでない要素を分離します。
 
 ```php
 $collection = collect([1, 2, 3, 4, 5, 6]);
@@ -2094,6 +2094,9 @@ $equalOrAboveThree->all();
 
 // [3, 4, 5, 6]
 ```
+
+> [!NOTE]
+> [Eloquentコレクション](/docs/{{version}}/eloquent-collections#method-partition)を操作するとき、このメソッドの振る舞いを変更します。。
 
 <a name="method-percentage"></a>
 #### `percentage()` {.collection-method}

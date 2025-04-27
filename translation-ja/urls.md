@@ -7,6 +7,7 @@
 - [名前付きルートのURL](#urls-for-named-routes)
     - [署名付きURL](#signed-urls)
 - [コントローラアクションのURL](#urls-for-controller-actions)
+- [Fluent URIオブジェクト](#fluent-uri-objects)
 - [デフォルト値](#default-values)
 
 <a name="introduction"></a>
@@ -238,6 +239,47 @@ $url = action([HomeController::class, 'index']);
 ```php
 $url = action([UserController::class, 'profile'], ['id' => 1]);
 ```
+
+<a name="fluent-uri-objects"></a>
+## Fluent URIオブジェクト
+
+Laravelの`Uri`クラスは、オブジェクトを介してURIを作成・操作するための便利で流暢（Fluent）なインターフェイスを提供します。このクラスは、基盤のLeague URIパッケージが提供する機能をラップし、Laravelのルーティングシステムとシームレスに統合しています。
+
+静的メソッドを使い、`Uri`インスタンスを簡単に作成できます。
+
+```php
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\InvokableController;
+use Illuminate\Support\Uri;
+
+// 指定した文字列から、URIインスタンスを生成
+$uri = Uri::of('https://example.com/path');
+
+// パス、名前付きルート、コントローラアクションからURIインスタンスを生成
+$uri = Uri::to('/dashboard');
+$uri = Uri::route('users.show', ['user' => 1]);
+$uri = Uri::signedRoute('users.show', ['user' => 1]);
+$uri = Uri::temporarySignedRoute('user.index', now()->addMinutes(5));
+$uri = Uri::action([UserController::class, 'index']);
+$uri = Uri::action(InvokableController::class);
+
+// 現在のリクエストからURIインスタンスを生成
+$uri = $request->uri();
+```
+
+URIインスタンスを生成したら、スラスラと変更できます。
+
+```php
+$uri = Uri::of('https://example.com')
+    ->withScheme('http')
+    ->withHost('test.com')
+    ->withPort(8000)
+    ->withPath('/users')
+    ->withQuery(['page' => 2])
+    ->withFragment('section-1');
+```
+
+Fluent URIオブジェクトの操作の詳細は、[URIドキュメント](/docs/{{version}}/helpers#uri)を参照してください。
 
 <a name="default-values"></a>
 ## デフォルト値

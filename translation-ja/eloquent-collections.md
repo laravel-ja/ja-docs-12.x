@@ -80,6 +80,7 @@ $names = User::all()->reject(function (User $user) {
 [makeVisible](#method-makeVisible)
 [makeHidden](#method-makeHidden)
 [only](#method-only)
+[partition](#method-partition)
 [setVisible](#method-setVisible)
 [setHidden](#method-setHidden)
 [toQuery](#method-toquery)
@@ -235,6 +236,19 @@ $users = $users->makeHidden(['address', 'phone_number']);
 
 ```php
 $users = $users->only([1, 2, 3]);
+```
+
+<a name="method-partition"></a>
+#### `partition` {.collection-method}
+
+`partition`メソッドは、`Illuminate\Support\Collection`コレクションインスタンスを含む`Illuminate\Support\Collection`インスタンスを返します。
+
+```php
+$partition = $users->partition(fn ($user) => $user->age > 18);
+
+dump($partition::class);    // Illuminate\Support\Collection
+dump($partition[0]::class); // Illuminate\Database\Eloquent\Collection
+dump($partition[1]::class); // Illuminate\Database\Eloquent\Collection
 ```
 
 <a name="method-setVisible"></a>

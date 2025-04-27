@@ -648,8 +648,14 @@ Or, if you only need to use PHP to import a class, you may use the `@use` direct
 
 A second argument may be provided to the `@use` directive to alias the imported class:
 
-```php
+```blade
 @use('App\Models\Flight', 'FlightModel')
+```
+
+If you have multiple classes within the same namespace, you may group the imports of those classes:
+
+```blade
+@use('App\Models\{Flight, Airport}')
 ```
 
 <a name="comments"></a>

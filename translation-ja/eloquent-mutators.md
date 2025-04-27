@@ -449,6 +449,74 @@ protected function casts(): array
 }
 ```
 
+`of`メソッドは、コレクションの[`mapInto`メソッド](/docs/{{version}}/collections#method-mapinto)を介して指定したクラスへ、コレクションアイテムがマップされるべきであることを示すために使用します。
+
+```php
+use App\ValueObjects\Option;
+use Illuminate\Database\Eloquent\Casts\AsCollection;
+
+/**
+ * キャストする属性を取得
+ *
+ * @return array<string, string>
+ */
+protected function casts(): array
+{
+    return [
+        'options' => AsCollection::of(Option::class)
+    ];
+}
+```
+
+コレクションをオブジェクトにマッピングするとき、そのオブジェクトは`Illuminate\Contracts\Support\Arrayable`と`JsonSerializable`インターフェイスを実装して、インスタンスをJSONとしてデータベースへシリアライズする方法を定義する必要があります。
+
+```php
+<?php
+
+namespace App\ValueObjects;
+
+use Illuminate\Contracts\Support\Arrayable;
+use JsonSerilizable;
+
+class Option implements Arrayable, JsonSerializable
+{
+    /**
+     * 新しいOptionインスタンスの生成
+     */
+    public function __construct(
+        public string $name,
+        public mixed $value,
+        public bool $isLocked = false
+    ) {
+        //
+    }
+
+    /**
+     * インスタンスを配列として取得
+     *
+     * @return array{name: string, data: string, is_locked: bool}
+     */
+    public function toArray(): array
+    {
+        return [
+            'name' => $this->name,
+            'value' => $this->value,
+            'is_locked' => $this->isLocked,
+        ];
+    }
+
+    /**
+     * JSONへシリアライズすべきデータの指定
+     *
+     * @return array{name: string, data: string, is_locked: bool}
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->toArray();
+    }
+}
+```
+
 <a name="date-casting"></a>
 ### 日付のキャスト
 
@@ -601,7 +669,7 @@ $users = User::select([
 Laravelには多種多様の便利な組み込みキャストタイプがあります。それでも、独自のキャストタイプを定義する必要がある場合も起きるでしょう。キャストを作成するには、`make:cast` Artisanコマンドを実行します。新しいキャストクラスは、`app/Casts`ディレクトリに配置されます。
 
 ```shell
-php artisan make:cast Json
+php artisan make:cast AsJson
 ```
 
 すべてのカスタムキャストクラスは、`CastsAttributes`インターフェイスを実装します。このインターフェイスを実装するクラスは、`get`と`set`メソッドを定義しなければなりません。`get`メソッドはデータベースから素の値をキャスト値に変換する役割を果たし、`set`メソッドはキャスト値をデータベースへ保存できる素の値に変換する必要があります。例として、組み込みのキャスト型である`json`をカスタムキャスト型として再実装してみます。
@@ -614,7 +682,7 @@ namespace App\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class Json implements CastsAttributes
+class AsJson implements CastsAttributes
 {
     /**
      * 指定値のキャスト
@@ -622,8 +690,12 @@ class Json implements CastsAttributes
      * @param  array<string, mixed>  $attributes
      * @return array<string, mixed>
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes): array
-    {
+    public function get(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): array {
         return json_decode($value, true);
     }
 
@@ -632,8 +704,12 @@ class Json implements CastsAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): string
-    {
+    public function set(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): string {
         return json_encode($value);
     }
 }
@@ -646,7 +722,7 @@ class Json implements CastsAttributes
 
 namespace App\Models;
 
-use App\Casts\Json;
+use App\Casts\AsJson;
 use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
@@ -659,7 +735,7 @@ class User extends Model
     protected function casts(): array
     {
         return [
-            'options' => Json::class,
+            'options' => AsJson::class,
         ];
     }
 }
@@ -668,30 +744,34 @@ class User extends Model
 <a name="value-object-casting"></a>
 ### 値オブジェクトのキャスト
 
-値をプリミティブ型へキャストすることに限定しません。値をオブジェクトへキャストすることもできます。オブジェクトへ値をキャストするカスタムキャストの定義は、プリミティブ型へのキャストと非常によく似ています。ただし、`set`メソッドは、モデルに素の保存可能な値を設定するために使用するキー／値のペアの配列を返す必要があります。
+プリミティブ型への値のキャストに限定されません。値をオブジェクトへキャストすることもできます。値をオブジェクトにキャストするカスタムキャストを定義することは、プリミティブ型へのキャストと非常に似ています。しかし、値オブジェクトが複数のデータベースカラムを含む場合、`set`メソッドはキーと値のペアの配列を返さなければなりません。値オブジェクトが単一のカラムにしか影響しない場合は、単純に保存可能な値を返します。
 
-例として、複数のモデル値を単一の`Address`値オブジェクトにキャストするカスタムキャストクラスを定義します。`Address`値には、`lineOne`と`lineTwo`の２つのパブリックプロパティがあると想定します。
+例として、複数のモデル値を単一の`Address`値オブジェクトへキャストする、カスタムキャストクラスを定義します。ここでは、`Address`値オブジェクトに２つ、`lineOne`と`lineTwo`のpublicプロパティがあると仮定します。
 
 ```php
 <?php
 
 namespace App\Casts;
 
-use App\ValueObjects\Address as AddressValueObject;
+use App\ValueObjects\Address;
 use Illuminate\Contracts\Database\Eloquent\CastsAttributes;
 use Illuminate\Database\Eloquent\Model;
 use InvalidArgumentException;
 
-class Address implements CastsAttributes
+class AsAddress implements CastsAttributes
 {
     /**
      * 指定値のキャスト
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function get(Model $model, string $key, mixed $value, array $attributes): AddressValueObject
-    {
-        return new AddressValueObject(
+    public function get(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): Address {
+        return new Address(
             $attributes['address_line_one'],
             $attributes['address_line_two']
         );
@@ -703,9 +783,13 @@ class Address implements CastsAttributes
      * @param  array<string, mixed>  $attributes
      * @return array<string, string>
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): array
-    {
-        if (! $value instanceof AddressValueObject) {
+    public function set(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): array {
+        if (! $value instanceof Address) {
             throw new InvalidArgumentException('The given value is not an Address instance.');
         }
 
@@ -740,7 +824,7 @@ $user->save();
 カスタムキャストクラスのオブジェクトキャッシュ動作を無効にしたい場合は、カスタムキャストクラスでpublicの`withoutObjectCaching`プロパティを宣言してください。
 
 ```php
-class Address implements CastsAttributes
+class AsAddress implements CastsAttributes
 {
     public bool $withoutObjectCaching = true;
 
@@ -761,8 +845,12 @@ Eloquentモデルを`toArray`および`toJson`メソッドを使用して配列�
  *
  * @param  array<string, mixed>  $attributes
  */
-public function serialize(Model $model, string $key, mixed $value, array $attributes): string
-{
+public function serialize(
+    Model $model,
+    string $key,
+    mixed $value,
+    array $attributes,
+): string {
     return (string) $value;
 }
 ```
@@ -775,7 +863,7 @@ public function serialize(Model $model, string $key, mixed $value, array $attrib
 受け取り専用のカスタムキャストは、`CastsInboundAttributes`インターフェイスを実装し、`set`メソッドのみを定義する必要があります。Artisanの`make:cast`コマンドに`--inbound`オプションを付けて実行すると、受け取り専用のキャストクラスを生成できます。
 
 ```shell
-php artisan make:cast Hash --inbound
+php artisan make:cast AsHash --inbound
 ```
 
 受け取り専用キャストの典型的な例は、「ハッシュ」キャストです。たとえば、あるアルゴリズムで受け取った値をハッシュするキャストを定義できます。
@@ -788,7 +876,7 @@ namespace App\Casts;
 use Illuminate\Contracts\Database\Eloquent\CastsInboundAttributes;
 use Illuminate\Database\Eloquent\Model;
 
-class Hash implements CastsInboundAttributes
+class AsHash implements CastsInboundAttributes
 {
     /**
      * 新しいキャストクラスインスタンスの生成
@@ -802,8 +890,12 @@ class Hash implements CastsInboundAttributes
      *
      * @param  array<string, mixed>  $attributes
      */
-    public function set(Model $model, string $key, mixed $value, array $attributes): string
-    {
+    public function set(
+        Model $model,
+        string $key,
+        mixed $value,
+        array $attributes,
+    ): string {
         return is_null($this->algorithm)
             ? bcrypt($value)
             : hash($this->algorithm, $value);
@@ -825,7 +917,7 @@ class Hash implements CastsInboundAttributes
 protected function casts(): array
 {
     return [
-        'secret' => Hash::class.':sha256',
+        'secret' => AsHash::class.':sha256',
     ];
 }
 ```
@@ -854,7 +946,7 @@ protected function casts(): array
 namespace App\ValueObjects;
 
 use Illuminate\Contracts\Database\Eloquent\Castable;
-use App\Casts\Address as AddressCast;
+use App\Casts\AsAddress;
 
 class Address implements Castable
 {
@@ -865,7 +957,7 @@ class Address implements Castable
      */
     public static function castUsing(array $arguments): string
     {
-        return AddressCast::class;
+        return AsAddress::class;
     }
 }
 ```
@@ -909,16 +1001,24 @@ class Address implements Castable
     {
         return new class implements CastsAttributes
         {
-            public function get(Model $model, string $key, mixed $value, array $attributes): Address
-            {
+            public function get(
+                Model $model,
+                string $key,
+                mixed $value,
+                array $attributes,
+            ): Address {
                 return new Address(
                     $attributes['address_line_one'],
                     $attributes['address_line_two']
                 );
             }
 
-            public function set(Model $model, string $key, mixed $value, array $attributes): array
-            {
+            public function set(
+                Model $model,
+                string $key,
+                mixed $value,
+                array $attributes,
+            ): array {
                 return [
                     'address_line_one' => $value->lineOne,
                     'address_line_two' => $value->lineTwo,

@@ -1259,7 +1259,7 @@ composer require laravel/slack-notification-channel
 
 さらに、Slackワークスペース用の[Slack App](https://api.slack.com/apps?new_app=1)を作成する必要もあります。
 
-作成したAppと同じSlackワークスペースにのみ通知を送る必要がある場合は、Appへ`chat:write`、`chat:write.public`、`chat:write.customize`のスコープを確実に持たせてください。Slackアプリとしてメッセージを送信したい場合は、アプリにも`chat:write:bot`スコープがあることを確認してください。これらのスコープは、Slack内の"OAuth & Permissions" App管理タブで追加できます。
+作成したAppと同じSlackワークスペースにのみ通知を送る必要がある場合は、Appへ`chat:write`、`chat:write.public`、`chat:write.customize`のスコープを確実に持たせてください。これらのスコープは、Slack内の"OAuth & Permissions" App管理タブで追加できます。
 
 次に、アプリの"Bot User OAuth Token"をコピーし、アプリケーションの`services.php`設定ファイル内の`slack`設定配列内へ配置します。このトークンはSlackの"OAuth & Permissions"タブにあります。
 
