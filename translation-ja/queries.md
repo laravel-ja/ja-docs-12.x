@@ -568,6 +568,8 @@ $users = DB::table('users')
 括弧内に"or"条件をグループ化する必要がある場合は、`orWhere`メソッドの最初の引数としてクロージャを渡してください。
 
 ```php
+use Illuminate\Database\Query\Builder; 
+
 $users = DB::table('users')
     ->where('votes', '>', 100)
     ->orWhere(function (Builder $query) {

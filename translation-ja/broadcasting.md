@@ -571,6 +571,8 @@ public function broadcastQueue(): string
 ```php
 <?php
 
+namespace App\Events;
+
 use Illuminate\Contracts\Broadcasting\ShouldBroadcastNow;
 
 class OrderShipmentStatusUpdated implements ShouldBroadcastNow

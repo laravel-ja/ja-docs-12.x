@@ -251,7 +251,7 @@ $response = Http::timeout(3)->get(/* ... */);
 
 指定したタイムアウトを超えると、`Illuminate\Http\Client\ConnectionException`インスタンスを投げます。
 
-サーバへの接続を試みる最長待ち秒数を`connectTimeout`メソッドで指定できます。
+サーバへの接続を試みる最長待ち秒数を`connectTimeout`メソッドで指定できます。デフォルトは１０秒です。
 
 ```php
 $response = Http::connectTimeout(3)->get(/* ... */);

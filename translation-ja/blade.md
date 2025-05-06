@@ -658,6 +658,26 @@ If you have multiple classes within the same namespace, you may group the import
 @use('App\Models\{Flight, Airport}')
 ```
 
+`use`ディレクティブは、インポートパスの前に`function`または`const`修飾子を付けることで、PHP関数や定数のインポートもサポートしています。
+
+```blade
+@use(function App\Helpers\format_currency)
+```
+
+クラスのインポートと同様に、関数や定数のエイリアスもサポートしています。
+
+```blade
+@use(function App\Helpers\format_currency, 'formatMoney')
+@use(const App\Constants\MAX_ATTEMPTS, 'MAX_TRIES')
+```
+
+グループ化したインポートも、functionとconst修飾子の両方でサポートしており、１つのディレクティブで同じ名前空間から複数のシンボルをインポート可能です。
+
+```blade
+@use(function App\Helpers\{format_currency, format_date})
+@use(const App\Constants\{MAX_ATTEMPTS, DEFAULT_TIMEOUT})
+```
+
 <a name="comments"></a>
 ### コメント
 

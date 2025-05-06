@@ -417,7 +417,7 @@ $chunks->all();
 <a name="method-collapse"></a>
 #### `collapse()` {.collection-method}
 
-`collapse`メソッドは、配列のコレクションをフラットな一次コレクションに展開します。
+`collapse`メソッドは、配列やコレクションのコレクションをフラットな一次コレクションへ展開します。
 
 ```php
 $collection = collect([

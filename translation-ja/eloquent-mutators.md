@@ -286,7 +286,7 @@ $user->mergeCasts([
 <a name="stringable-casting"></a>
 #### Stringableのキャスト
 
-モデルの属性を[fluentの`Illuminate\Support\Stringable`オブジェクト](/docs/{{version}}/strings#fluent-strings-method-list)へキャストするには、`Illuminate\Database\Eloquent\Casts\AsStringable`キャストクラスを使用します。
+モデルの属性を[fluentのIlluminate\Support\Stringableオブジェクト](/docs/{{version}}/strings#fluent-strings-method-list)へキャストするには、`Illuminate\Database\Eloquent\Casts\AsStringable`キャストクラスを使用します。
 
 ```php
 <?php
@@ -449,7 +449,7 @@ protected function casts(): array
 }
 ```
 
-`of`メソッドは、コレクションの[`mapInto`メソッド](/docs/{{version}}/collections#method-mapinto)を介して指定したクラスへ、コレクションアイテムがマップされるべきであることを示すために使用します。
+`of`メソッドは、コレクションの[mapIntoメソッド](/docs/{{version}}/collections#method-mapinto)を介して指定したクラスへ、コレクションアイテムがマップされるべきであることを示すために使用します。
 
 ```php
 use App\ValueObjects\Option;
@@ -476,19 +476,22 @@ protected function casts(): array
 namespace App\ValueObjects;
 
 use Illuminate\Contracts\Support\Arrayable;
-use JsonSerilizable;
+use JsonSerializable;
 
 class Option implements Arrayable, JsonSerializable
 {
+    public string $name;
+    public mixed $value;
+    public bool $isLocked;
+
     /**
      * 新しいOptionインスタンスの生成
      */
-    public function __construct(
-        public string $name,
-        public mixed $value,
-        public bool $isLocked = false
-    ) {
-        //
+    public function __construct(array $data)
+    {
+        $this->name = $data['name'];
+        $this->value = $data['value'];
+        $this->isLocked = $data['is_locked'];
     }
 
     /**

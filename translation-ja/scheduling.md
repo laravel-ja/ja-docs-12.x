@@ -365,10 +365,7 @@ Schedule::command('report:generate')
 `useCache`メソッドを使い、シングルサーバのタスクにおいて、必要なアトミックロックを取得するためにスケジューラが使うキャッシュストアをカスタマイズできます。
 
 ```php
-Schedule::command('recipes:sync')
-    ->everyThirtyMinutes()
-    ->onOneServer();
-    ->useCache('database');
+Schedule::useCache('database');
 ```
 
 <a name="naming-unique-jobs"></a>

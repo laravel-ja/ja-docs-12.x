@@ -40,6 +40,8 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 
 [Arr::accessible](#method-array-accessible)
 [Arr::add](#method-array-add)
+[Arr::array](#method-array-array)
+[Arr::boolean](#method-array-boolean)
 [Arr::collapse](#method-array-collapse)
 [Arr::crossJoin](#method-array-crossjoin)
 [Arr::divide](#method-array-divide)
@@ -48,10 +50,12 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Arr::exists](#method-array-exists)
 [Arr::first](#method-array-first)
 [Arr::flatten](#method-array-flatten)
+[Arr::float](#method-array-float)
 [Arr::forget](#method-array-forget)
 [Arr::get](#method-array-get)
 [Arr::has](#method-array-has)
 [Arr::hasAny](#method-array-hasany)
+[Arr::integer](#method-array-integer)
 [Arr::isAssoc](#method-array-isassoc)
 [Arr::isList](#method-array-islist)
 [Arr::join](#method-array-join)
@@ -76,6 +80,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Arr::sort](#method-array-sort)
 [Arr::sortDesc](#method-array-sort-desc)
 [Arr::sortRecursive](#method-array-sort-recursive)
+[Arr::string](#method-array-string)
 [Arr::take](#method-array-take)
 [Arr::toCssClasses](#method-array-to-css-classes)
 [Arr::toCssStyles](#method-array-to-css-styles)
@@ -261,6 +266,45 @@ $array = Arr::add(['name' => 'Desk', 'price' => null], 'price', 100);
 // ['name' => 'Desk', 'price' => 100]
 ```
 
+<a name="method-array-array"></a>
+#### `Arr::array()` {.collection-method}
+
+`Arr::array`メソッドは[Arr::get()](#method-array-get)と同様に、深くネストした配列から「ドット」記法で値を取得します。ただし、要求した値が`array`でなかった場合は、`InvalidArgumentException`を投げます。
+
+```
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
+
+$value = Arr::array($array, 'languages');
+
+// ['PHP', 'Ruby']
+
+$value = Arr::array($array, 'name');
+
+// InvalidArgumentExceptionを投げる
+```
+
+<a name="method-array-boolean"></a>
+#### `Arr::boolean()` {.collection-method}
+
+`Arr::boolean`メソッドは[Arr::get()](#method-array-get)と同様に、深くネストした配列から「ドット」記法で値を取得します。ただし、要求した値が`boolean`でなかった場合は、`InvalidArgumentException`を投げます。
+
+```
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Joe', 'available' => true];
+
+$value = Arr::boolean($array, 'available');
+
+// true
+
+$value = Arr::boolean($array, 'name');
+
+// InvalidArgumentExceptionを投げる
+```
+
+
 <a name="method-array-collapse"></a>
 #### `Arr::collapse()` {.collection-method}
 
@@ -413,6 +457,25 @@ $flattened = Arr::flatten($array);
 // ['Joe', 'PHP', 'Ruby']
 ```
 
+<a name="method-array-float"></a>
+#### `Arr::float()` {.collection-method}
+
+`Arr::float`メソッドは[Arr::get()](#method-array-get)と同様に、深くネストした配列から「ドット」記法で値を取得します。ただし、要求された値が`float`でない場合は、`InvalidArgumentException`を投げます。
+
+```
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Joe', 'balance' => 123.45];
+
+$value = Arr::float($array, 'balance');
+
+// 123.45
+
+$value = Arr::float($array, 'name');
+
+// InvalidArgumentExceptionを投げる
+```
+
 <a name="method-array-forget"></a>
 #### `Arr::forget()` {.collection-method}
 
@@ -493,6 +556,25 @@ $contains = Arr::hasAny($array, ['product.name', 'product.discount']);
 $contains = Arr::hasAny($array, ['category', 'product.discount']);
 
 // false
+```
+
+<a name="method-array-integer"></a>
+#### `Arr::integer()` {.collection-method}
+
+`Arr::integer`メソッドは[Arr::get()](#method-array-get)と同様に、深くネストした配列から「ドット」記法で値を取得します。ただし、要求した値が`int`でない場合は、`InvalidArgumentException`を投げます。
+
+```
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Joe', 'age' => 42];
+
+$value = Arr::integer($array, 'age');
+
+// 42
+
+$value = Arr::integer($array, 'name');
+
+// InvalidArgumentExceptionを投げる
 ```
 
 <a name="method-array-isassoc"></a>
@@ -1048,6 +1130,25 @@ $sorted = Arr::sortRecursive($array);
 $sorted = Arr::sortRecursiveDesc($array);
 ```
 
+<a name="method-array-string"></a>
+#### `Arr::string()` {.collection-method}
+
+`Arr::string`メソッドは[Arr::get()](#method-array-get)と同様に、深くネストした配列から「ドット」記法で値を取得します。しかし、要求した値が`string`でない場合は、`InvalidArgumentException`を投げます。
+
+```
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Joe', 'languages' => ['PHP', 'Ruby']];
+
+$value = Arr::string($array, 'name');
+
+// Joe
+
+$value = Arr::string($array, 'languages');
+
+// InvalidArgumentExceptionを投げる
+```
+
 <a name="method-array-take"></a>
 #### `Arr::take()` {.collection-method}
 
@@ -1577,7 +1678,7 @@ use Illuminate\Support\Number;
 
 $result = Number::pairs(25, 10);
 
-// [[1, 10], [11, 20], [21, 25]]
+// [[0, 9], [10, 19], [20, 25]]
 
 $result = Number::pairs(25, 10, offset: 0);
 

@@ -812,6 +812,7 @@ User::create([
 ```php
 use function Laravel\Prompts\form;
 use function Laravel\Prompts\outro;
+use function Laravel\Prompts\text;
 
 $responses = form()
     ->text('What is your name?', required: true, name: 'name')

@@ -2218,6 +2218,7 @@ return $request->user()->downloadInvoice($invoiceId, [], 'my-invoice');
 
 また、Cashierはカスタムインボイスレンダラを使用可能です。デフォルトでCashierは、[dompdf](https://github.com/dompdf/dompdf) PHPライブラリを利用し請求書を生成する、`DompdfInvoiceRenderer`の実装を使用します。しかし、`Laravel\Cashier\Contracts\InvoiceRenderer`インターフェイスを実装することにより、任意のレンダラを使用できます。例えば、サードパーティのPDFレンダリングサービスへのAPIコールを使用し、請求書PDFをレンダリングするとしましょう。
 
+```php
 use Illuminate\Support\Facades\Http;
 use Laravel\Cashier\Contracts\InvoiceRenderer;
 use Laravel\Cashier\Invoice;
