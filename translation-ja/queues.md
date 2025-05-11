@@ -525,6 +525,20 @@ public function middleware(): array
 
 レート制限したジョブをキューに戻すと、ジョブの「試行（`attempts`）」の総数は増加します。それに応じて、ジョブクラスの`tries`プロパティと`maxExceptions`プロパティを調整することをお勧めします。または、[retryUntilメソッド](#time-based-attempts)を使用して、ジョブが試行されなくなるまでの時間を定義することもできます。
 
+`releaseAfter`メソッドを使用することで、リリースしたジョブを再度試行するまでの経過秒数を指定することもできます。
+
+```php
+/**
+ * このジョブを通過させるミドルウェアを取得
+ *
+ * @return array<int, object>
+ */
+public function middleware(): array
+{
+    return [(new RateLimited('backups'))->releaseAfter(60)];
+}
+```
+
 レート制限されているときにジョブを再試行させたくない場合は、`dontRelease`メソッドを使用します。
 
 ```php
@@ -1803,6 +1817,14 @@ $podcast = App\Podcast::find(1);
 dispatch(function () use ($podcast) {
     $podcast->publish();
 });
+```
+
+キューレポートダッシュボードで使用したり、`queue:work`コマンドで表示したりするキュー名を付けるには、`name`メソッドを使用してください。
+
+```php
+dispatch(function () {
+    // ...
+})->name('Publish Podcast');
 ```
 
 `catch`メソッドを使用して、キューで[設定した再試行](#max-job-attempts-and-timeout)をすべて使い果たしても、キュー投入したクロージャが正常に完了しなかった場合に実行する必要があるクロージャを提供できます。

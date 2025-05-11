@@ -428,7 +428,87 @@ yield new StreamedEvent(
 );
 ```
 
-イベントストリームは、アプリケーションのフロントエンドにより、[EventSource](https://developer.mozilla.org/ja/docs/Web/API/EventSource) オブジェクトを介して利用されるでしょう。イベントストリームが完了すると、`eventStream`メソッドは自動的にイベントストリームへ`</stream>`更新を送信します。
+イベントストリームは、Laravelのイベントストリームを操作するための便利なAPIを提供する、Laravelの`stream` npmパッケージを使用して利用できます。使い始めるには、`@laravel/stream-react`または`@laravel/stream-vue`パッケージをインストールしてください。
+
+```shell tab=React
+npm install @laravel/stream-react
+```
+
+```shell tab=Vue
+npm install @laravel/stream-vue
+```
+
+次に、`useEventStream`を使用してイベントストリームを使用します。ストリームのURLを指定すると、フックは自動的に`message`を連結したレスポンスで更新します。このメッセージは、Laravelアプリケーションから返したものです。
+
+```jsx tab=React
+import { useEventStream } from "@laravel/stream-react";
+
+function App() {
+  const { message } = useEventStream("/chat");
+
+  return <div>{message}</div>;
+}
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEventStream } from "@laravel/stream-vue";
+
+const { message } = useEventStream("/chat");
+</script>
+
+<template>
+  <div>{{ message }}</div>
+</template>
+```
+
+`useEventStream`に指定する、２番目の引数はオプションオブジェクトで、ストリームの利用動作をカスタマイズするために使用します。このオブジェクトのデフォルト値を以下に示します。
+
+```jsx tab=React
+import { useEventStream } from "@laravel/stream-react";
+
+function App() {
+  const { message } = useEventStream("/stream", {
+    event: "update",
+    onMessage: (message) => {
+      //
+    },
+    onError: (error) => {
+      //
+    },
+    onComplete: () => {
+      //
+    },
+    endSignal: "</stream>",
+    glue: " ",
+  });
+
+  return <div>{message}</div>;
+}
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEventStream } from "@laravel/stream-vue";
+
+const { message } = useEventStream("/chat", {
+  event: "update",
+  onMessage: (message) => {
+    // ...
+  },
+  onError: (error) => {
+    // ...
+  },
+  onComplete: () => {
+    // ...
+  },
+  endSignal: "</stream>",
+  glue: " ",
+});
+</script>
+```
+
+イベントストリームは、アプリケーションのフロントエンドによって、[EventSource](https://developer.mozilla.org/en-US/docs/Web/API/EventSource) オブジェクトを介して手作業で利用することもできます。ストリームが終了すると、`eventStream`メソッドは自動的にイベントストリームへ`</stream>`更新を送信します。
 
 ```js
 const source = new EventSource('/chat');
@@ -441,7 +521,7 @@ source.addEventListener('update', (event) => {
     }
 
     console.log(event.data);
-})
+});
 ```
 
 イベントストリームへ送信する最終イベントをカスタマイズするには、`eventStream`メソッドの`endStreamWith`引数に、`StreamedEvent`インスタンスを指定してください。

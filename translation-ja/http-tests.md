@@ -1003,6 +1003,7 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 [assertPaymentRequired](#assert-payment-required)
 [assertPlainCookie](#assert-plain-cookie)
 [assertRedirect](#assert-redirect)
+[assertRedirectBack](#assert-redirect-back)
 [assertRedirectContains](#assert-redirect-contains)
 [assertRedirectToRoute](#assert-redirect-to-route)
 [assertRedirectToSignedRoute](#assert-redirect-to-signed-route)
@@ -1539,6 +1540,15 @@ $response->assertPlainCookie($cookieName, $value = null);
 
 ```php
 $response->assertRedirect($uri = null);
+```
+
+<a name="assert-redirect-back"></a>
+#### assertRedirectBack
+
+レスポンスが直前のページへリダイレクトで戻ることを宣言します。
+
+```php
+$response->assertRedirectBack();
 ```
 
 <a name="assert-redirect-contains"></a>

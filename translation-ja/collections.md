@@ -3457,16 +3457,16 @@ $unique->values()->all();
 <a name="method-unless"></a>
 #### `unless()` {.collection-method}
 
-`unless`メソッドは最初の引数が`true`と評価されない場合、コールバックを実行します。
+`unless`メソッドは最初の引数が`true`と評価されない場合、コールバックを実行します。 コレクションのインスタンスと`unless`メソッドへ指定した最初の引数をクロージャへ渡します。
 
 ```php
 $collection = collect([1, 2, 3]);
 
-$collection->unless(true, function (Collection $collection) {
+$collection->unless(true, function (Collection $collection, bool $value) {
     return $collection->push(4);
 });
 
-$collection->unless(false, function (Collection $collection) {
+$collection->unless(false, function (Collection $collection, bool $value) {
     return $collection->push(5);
 });
 
@@ -3480,9 +3480,9 @@ $collection->all();
 ```php
 $collection = collect([1, 2, 3]);
 
-$collection->unless(true, function (Collection $collection) {
+$collection->unless(true, function (Collection $collection, bool $value) {
     return $collection->push(4);
-}, function (Collection $collection) {
+}, function (Collection $collection, bool $value) {
     return $collection->push(5);
 });
 
@@ -3569,11 +3569,11 @@ $values->all();
 ```php
 $collection = collect([1, 2, 3]);
 
-$collection->when(true, function (Collection $collection, int $value) {
+$collection->when(true, function (Collection $collection, bool $value) {
     return $collection->push(4);
 });
 
-$collection->when(false, function (Collection $collection, int $value) {
+$collection->when(false, function (Collection $collection, bool $value) {
     return $collection->push(5);
 });
 
@@ -3587,9 +3587,9 @@ $collection->all();
 ```php
 $collection = collect([1, 2, 3]);
 
-$collection->when(false, function (Collection $collection, int $value) {
+$collection->when(false, function (Collection $collection, bool $value) {
     return $collection->push(4);
-}, function (Collection $collection) {
+}, function (Collection $collection, bool $value) {
     return $collection->push(5);
 });
 

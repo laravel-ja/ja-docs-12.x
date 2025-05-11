@@ -1677,6 +1677,14 @@ Validator::make($data, [
 'state' => Rule::exists('states', 'abbreviation'),
 ```
 
+場合により、値の配列がデータベースに存在するかを検証したい場合も起こるでしょう。その場合は、`exists`ルールと[array](#rule-array)ルールをバリデーション対象のフィールドへ追加できます。
+
+```php
+'states' => ['array', Rule::exists('states', 'abbreviation')],
+```
+
+これらの両方のルールをフィールドへ割り当てると、Laravelは自動的に１つのクエリを構築し、指定したテーブルに指定値がすべて存在するかを判定します。
+
 <a name="rule-extensions"></a>
 #### extensions:_foo_,_bar_,...
 

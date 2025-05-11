@@ -1582,7 +1582,7 @@ $users = User::ofType('admin')->get();
 
 namespace App\Models;
 
-use Illuminate\Database\Attributes\Scope;
+use Illuminate\Database\Eloquent\Attributes\Scope;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
