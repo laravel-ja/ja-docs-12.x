@@ -1670,7 +1670,7 @@ use Illuminate\Notifications\Events\NotificationSending;
 class CheckNotificationStatus
 {
     /**
-     * 指定イベントの処理
+     * イベントの処理
      */
     public function handle(NotificationSending $event): void
     {
@@ -1683,7 +1683,7 @@ class CheckNotificationStatus
 
 ```php
 /**
- * 指定イベントを処理
+ * イベントの処理
  */
 public function handle(NotificationSending $event): bool
 {
@@ -1695,7 +1695,7 @@ public function handle(NotificationSending $event): bool
 
 ```php
 /**
- * 指定イベントを処理
+ * イベントの処理
  */
 public function handle(NotificationSending $event): void
 {
@@ -1716,7 +1716,7 @@ use Illuminate\Notifications\Events\NotificationSent;
 class LogNotification
 {
     /**
-     * 指定イベントの処理
+     * イベントの処理
      */
     public function handle(NotificationSent $event): void
     {
@@ -1729,7 +1729,7 @@ class LogNotification
 
 ```php
 /**
- * 指定イベントを処理
+ * イベントの処理
  */
 public function handle(NotificationSent $event): void
 {

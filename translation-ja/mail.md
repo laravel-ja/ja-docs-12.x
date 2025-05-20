@@ -1415,7 +1415,7 @@ use Illuminate\Mail\Events\MessageSending;
 class LogMessage
 {
     /**
-     * 指定イベントを処理
+     * イベントの処理
      */
     public function handle(MessageSending $event): void
     {

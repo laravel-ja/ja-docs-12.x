@@ -266,10 +266,12 @@ use Illuminate\Support\Facades\Context;
 $value = Context::get('key');
 ```
 
-`only`メソッドは、コンテキスト内の情報のサブセットを取得するために使用します。
+`only`メソッドと`except`メソッドを使用すると、コンテキスト内の情報のサブセットを取得できます。
 
 ```php
 $data = Context::only(['first_key', 'second_key']);
+
+$data = Context::except(['first_key']);
 ```
 
 `pull`メソッドは、コンテキストから情報を取得し、すぐにコンテキストから削除するために使用します。
@@ -372,6 +374,7 @@ Context::getHidden(/* ... */);
 Context::pullHidden(/* ... */);
 Context::popHidden(/* ... */);
 Context::onlyHidden(/* ... */);
+Context::exceptHidden(/* ... */);
 Context::allHidden(/* ... */);
 Context::hasHidden(/* ... */);
 Context::forgetHidden(/* ... */);

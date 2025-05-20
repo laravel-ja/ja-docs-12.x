@@ -738,6 +738,23 @@ public function middleware(): array
 }
 ```
 
+ジョブをキューに戻すか例外を投げる`when`メソッドとは異なり、`deleteWhen`メソッドでは、指定例外が発生したときにジョブを完全に削除できます。
+
+```php
+use App\Exceptions\CustomerDeletedException;
+use Illuminate\Queue\Middleware\ThrottlesExceptions;
+
+/**
+ * このジョブを通過させるミドルウェアを取得
+ *
+ * @return array<int, object>
+ */
+public function middleware(): array
+{
+    return [(new ThrottlesExceptions(2, 10 * 60))->deleteWhen(CustomerDeletedException::class)];
+}
+```
+
 スロットルした例外をアプリケーションの例外ハンドラへ報告させたい場合は、ミドルウェアをジョブへ指定するときに、`report`メソッドを呼び出してください。`report`めそっどのオプションとしてクロージャを指定でき、その指定クロージャが`true`を返した場合にのみ例外を報告します。
 
 ```php
@@ -1252,6 +1269,8 @@ public function retryUntil(): DateTime
     return now()->addMinutes(10);
 }
 ```
+
+`retryUntil`と`tries`の両方を定義した場合、Laravelは`retryUntil`メソッドを優先します。
 
 > [!NOTE]
 > [キュー投入済みイベントリスナ](/docs/{{version}}/events#queued-event-listeners)で`tries`プロパティまたは`retryUntil`メソッドを定義することもできます。

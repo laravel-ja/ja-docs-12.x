@@ -52,6 +52,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Arr::flatten](#method-array-flatten)
 [Arr::float](#method-array-float)
 [Arr::forget](#method-array-forget)
+[Arr::from](#method-array-from)
 [Arr::get](#method-array-get)
 [Arr::has](#method-array-has)
 [Arr::hasAny](#method-array-hasany)
@@ -489,6 +490,27 @@ $array = ['products' => ['desk' => ['price' => 100]]];
 Arr::forget($array, 'products.desk');
 
 // ['products' => []]
+```
+
+<a name="method-array-from"></a>
+#### `Arr::from()` {.collection-method}
+
+`Arr::from`メソッドは、様々な入力型をプレーンなPHPの配列へ変換します。`Arrayable`、`Enumerable`、`Jsonable`、`JsonSerializable`など、Laravelの一般的なインターフェイスをサポートしています。さらに、`Traversable`と`WeakMap`インスタンスも扱うことができます。
+
+```php
+use Illuminate\Support\Arr;
+
+Arr::from((object) ['foo' => 'bar']); // ['foo' => 'bar']
+
+class TestJsonableObject implements Jsonable
+{
+    public function toJson($options = 0)
+    {
+        return json_encode(['foo' => 'bar']);
+    }
+}
+
+Arr::from(new TestJsonableObject); // ['foo' => 'bar']
 ```
 
 <a name="method-array-get"></a>

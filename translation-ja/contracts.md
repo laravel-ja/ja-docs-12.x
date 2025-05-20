@@ -50,7 +50,7 @@ use Illuminate\Contracts\Redis\Factory;
 class CacheOrderInformation
 {
     /**
-     * 新しいイベントハンドラインスタンス生成
+     * 新しいイベントリスナの生成
      */
     public function __construct(
         protected Factory $redis,

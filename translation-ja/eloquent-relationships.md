@@ -1700,13 +1700,13 @@ $posts = Post::whereDoesntHave('comments', function (Builder $query) {
 })->get();
 ```
 
-「ドット」表記を使用して、ネストしたリレーションに対しクエリを実行できます。たとえば、次のクエリはコメントが無いすべての投稿を取得します。ただし、バンされていない著者からのコメントがある投稿は結果に含みます。
+「ドット」記法を使用して、ネストしたリレーションに対しクエリを実行できます。例えば、以下のクエリは、コメントの無い全投稿と、コメントのある投稿のうち禁止ユーザーのコメントが一つもない投稿を取得します。
 
 ```php
 use Illuminate\Database\Eloquent\Builder;
 
 $posts = Post::whereDoesntHave('comments.author', function (Builder $query) {
-    $query->where('banned', 0);
+    $query->where('banned', 1);
 })->get();
 ```
 

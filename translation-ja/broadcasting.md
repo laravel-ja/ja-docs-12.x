@@ -1,8 +1,8 @@
 # ブロードキャスト
 
 - [イントロダクション](#introduction)
+- [クイックスタート](#quickstart)
 - [サーバ側インストール](#server-side-installation)
-    - [設定](#configuration)
     - [Reverb](#reverb)
     - [Pusherチャンネル](#pusher-channels)
     - [Ably](#ably)
@@ -29,6 +29,7 @@
     - [イベントのリッスン](#listening-for-events)
     - [チャンネルの離脱](#leaving-a-channel)
     - [名前空間](#namespaces)
+    - [ReactとVueの使用](#using-react-or-vue)
 - [プレゼンスチャンネル](#presence-channels)
     - [プレゼンスチャンネルの認可](#authorizing-presence-channels)
     - [プレゼンスチャンネルへの接続](#joining-presence-channels)
@@ -58,40 +59,49 @@ Laravelはデフォルトで、３つのサーバサイド・ブロードキャ�
 > [!NOTE]
 > イベントブロードキャストに取り掛かる前に、[イベントとリスナ](/docs/{{version}}/events)に関するLaravelのドキュメントをしっかりと読んでください。
 
-<a name="server-side-installation"></a>
-## サーバ側インストール
+<a name="quickstart"></a>
+## クイックスタート
 
-Laravelのイベントブロードキャストの使用を開始するには、Laravelアプリケーション内でいくつかの設定を行い、いくつかのパッケージをインストールする必要があります。
-
-イベントブロードキャストは、Laravel Echo(JavaScriptライブラリ)がブラウザクライアント内でイベントを受信できるように、Laravelイベントをブロードキャストするサーバ側ブロードキャストドライバによって実行されます。心配いりません。以降から、インストール手順の各部分を段階的に説明します。
-
-<a name="configuration"></a>
-### 設定
-
-アプリケーションのイベントブロードキャスト設定はすべて`config/broadcasting.php`設定ファイルに保存されます。アプリケーションの中にこのファイルがなくても、心配ありません。`install:broadcasting` Artisanコマンドを実行するで作成できます。
-
-Laravelはいくつかのブロードキャストドライバをあらかじめサポートしています。 [Laravel Reverb](/docs/{{version}}/reverb)、[Pusher Channels](https://pusher.com/channels)、[Ably](https://ably.com)、ローカル開発とデバッグ用の`log` ドライバです。さらに、テスト中にブロードキャストを完全に 無効にできる、`null`ドライバも用意しています。これらの各ドライバの設定例は、`config/broadcasting.php`設定ファイルにあります。
-
-<a name="installation"></a>
-#### インストール
-
-新しいLaravelアプリケーションでブロードキャストは、デフォルトで有効になっていません。ブロードキャストを有効にするには、`install:broadcasting` Artisanコマンドを使用します。
+新規Laravelアプリケーションのブロードキャストは、デフォルトで有効になっていません。ブロードキャストを有効にするには、`install:broadcasting` Artisanコマンドを使用してください。
 
 ```shell
 php artisan install:broadcasting
 ```
 
-`install:broadcasting`コマンドを実行すると、`config/broadcasting.php`ファイルができます。更に、`routes/channels.php`ファイルも生成され、これでアプリケーションのブロードキャスト認可ルートとコールバックを登録します。
+`install:broadcasting`コマンドを実行すると、どのイベントブロードキャストサービスを使用するかを尋ねるプロンプトが表示されます。さらに、`config/broadcasting.php`設定ファイルと`routes/channels.php`ファイルが作成され、アプリケーションのブロードキャスト認可ルートとコールバックを登録してください。
 
-<a name="queue-configuration"></a>
-#### キュー設定
+Laravelはいくつかのブロードキャストドライバをあらかじめサポートしています。 [Laravel Reverb](/docs/{{version}}/reverb)、[Pusher Channels](https://pusher.com/channels)、[Ably](https://ably.com)、ローカル開発とデバッグ用の`log` ドライバです。さらに、テスト中にブロードキャストを完全に 無効にできる、`null`ドライバも用意しています。これらの各ドライバの設定例は、`config/broadcasting.php`設定ファイルにあります。
 
-イベントをブロードキャストする前に、まず[キューワーカ](/docs/{{version}}/queues)を設定し、実行する必要があります。すべてのイベントブロードキャストはキュー投入するジョブを介して実行されるため、イベントをブロードキャストしても、アプリケーションのレスポンスタイムに深刻な影響を与えません。
+アプリケーションのイベントブロードキャスト設定はすべて、`install:broadcasting` Artisanコマンドを実行すると作成される`config/broadcasting.php`設定ファイルへ保存します。
+
+<a name="quickstart-next-steps"></a>
+#### 次のステップ
+
+イベントブロードキャストを有効にしたら、[ブロードキャストイベントの定義](#defining-broadcast-events)と[イベントのリスニング](#listening-for-events)について詳しく学ぶ準備ができました。LaravelのReactまたはVueの[スターターキット](/docs/{{version}}/starter-kits)を使っている場合は、Echoの[useEchoフック](#using-react-or-vue)を使ってイベントをリッスンできます。
+
+> [!NOTE]
+> イベントをブロードキャストする前に、[キューワーカ](/docs/{{version}}/queues)をまず設定し、実行する必要があります。すべてのイベントブロードキャストはキュー投入するジョブを介して行うため、イベントをブロードキャストしてもアプリケーションのレスポンスタイムに深刻な影響を与えることはありません。
+
+<a name="server-side-installation"></a>
+## サーバ側インストール
+
+Laravelのイベントブロードキャストの使用を開始するには、Laravelアプリケーション内でいくつかの設定を行い、いくつかのパッケージをインストールする必要があります。
+
+イベントブロードキャストは、Laravel Echo(JavaScriptライブラリ)がブラウザクライアント内でイベントを受信できるように、Laravelイベントをブロードキャストするサーバ側ブロードキャストドライバにより実行されます。心配いりません。以降から、インストール手順の各部分を段階的に説明します。
 
 <a name="reverb"></a>
 ### Reverb
 
-`install:broadcasting`コマンドを実行すると、[Laravel Reverb](/docs/{{version}}/reverb)をインストールするよう促されます。もちろん、Composerパッケージマネージャを使い、手作業でReverbをインストールすることもできます。
+イベントブロードキャスタとしてReverbを使用しながら、Laravelのブロードキャスト機能のサポートを素早く有効にするには、`--reverb`オプションを指定して`install:broadcasting` Artisanコマンドを実行してください。このArtisanコマンドは、Reverbに必要なComposerパッケージとNPMパッケージをインストールし、アプリケーションの`.env`ファイルを適切な変数で更新します：
+
+```shell
+php artisan install:broadcasting --reverb
+```
+
+<a name="reverb-manual-installation"></a>
+#### 手作業によるインストール
+
+`install:broadcasting`コマンドを実行すると、[Laravel Reverb](/docs/{{version}}/reverb)をインストールするよう促されます。もちろん、Composerパッケージマネージャを使って手作業でReverbをインストールすることもできます。
 
 ```shell
 composer require laravel/reverb
@@ -108,7 +118,16 @@ Reverbのインストールと使い方の詳しい説明は、[Reverbのドキ�
 <a name="pusher-channels"></a>
 ### Pusherチャンネル
 
-[Pusherチャンネル](https://pusher.com/channels)を使用してイベントをブロードキャストする場合は、Composerパッケージマネージャを使用してPusher Channels PHP SDKをインストールする必要があります。
+イベントブロードキャスタとしてPusherを使用しながら、Laravelのブロードキャスト機能を素早く有効にするには、`--pusher`オプションを指定して`install:broadcasting` Artisanコマンドを実行してください。このArtisanコマンドは、Pusher認証情報の入力を促し、Pusher PHPとJavaScript SDKをインストールし、アプリケーションの`.env`ファイルを適切な変数で更新します：
+
+```shell
+php artisan install:broadcasting --pusher
+```
+
+<a name="pusher-manual-installation"></a>
+#### 手作業によるインストール
+
+Pusherサポートを手作業でインストールするには、Composerパッケージマネージャを使い、Pusher Channels PHP SDKをインストールしてください。
 
 ```shell
 composer require pusher/pusher-php-server
@@ -142,7 +161,18 @@ BROADCAST_CONNECTION=pusher
 > [!NOTE]
 > 以下のドキュメントでは、Ablyを「Pusher互換」モードで使用する方法について説明していきます。しかし、Ablyチームは、Ablyが提供するユニークな機能を活用できるブロードキャスターとEchoクライアントを推奨し、保守しています。Ablyが保守するドライバの使用に関する詳細については、[AblyのLaravelブロードキャスターのドキュメントを参照](https://github.com/ably/laravel-broadcaster)してください。
 
-[Ably](https://ably.com)を使用してイベントをブロードキャストする場合は、Composerパッケージマネージャを使用してAbly PHP SDKをインストールする必要があります。
+イベントブロードキャスターとして[Ably](https://ably.com)を使用しながら、Laravelのブロードキャスト機能のサポートを素早く有効にするには、`--ably`オプションを指定して`install:broadcasting` Artisanコマンドを起動してください。このArtisanコマンドは、Ablyの認証情報の入力を促し、Ably PHPとJavaScript SDKをインストールし、アプリケーションの`.env`ファイルを適切な変数で更新します。
+
+```shell
+php artisan install:broadcasting --ably
+```
+
+**続ける前に、Ablyアプリケーションの設定で、Pusherプロトコルのサポートを有効にしてください。この機能は、Ablyアプリケーションの設定ダッシュボードの「プロトコルアダプターの設定」で有効にできます。**
+
+<a name="ably-manual-installation"></a>
+#### 手作業によるインストール
+
+Ablyサポートを手作業でインストールするには、Composerパッケージマネージャを使用して、Ably PHP SDKをインストールする必要があります。
 
 ```shell
 composer require ably/ably-php
@@ -168,15 +198,22 @@ BROADCAST_CONNECTION=ably
 <a name="client-reverb"></a>
 ### Reverb
 
-[Laravel Echo](https://github.com/laravel/echo)は、サーバサイドのブロードキャストドライバによりブロードキャストされるチャンネルやイベントを簡単にサブスクライブできるJavaScriptライブラリです。EchoはNPMパッケージマネージャでインストールできます。以下の紹介例では、ReverbがWebSocketサブスクリプション、チャンネル、メッセージにPusherプロトコルを利用しているため、`pusher-js`パッケージもインストールします。
+[Laravel Echo](https://github.com/laravel/echo)は、サーバサイドのブロードキャストドライバによりブロードキャストされる、チャンネルの購買や、イベントのリッスンを苦労なく実現できるJavaScriptライブラリです。
+
+`install:broadcasting` ArtisanコマンドでLaravel Reverbをインストールすると、ReverbとEchoのスカフォールドと設定を自動的にアプリケーションへ挿入します。しかし、Laravel Echoを手作業で設定したい場合は、以下の手順に従ってください。
+
+<a name="reverb-client-manual-installation"></a>
+#### 手作業によるインストール
+
+アプリケーションのフロントエンドへLaravel Echoを手作業で設定するには、まず`pusher-js`パッケージをインストールします。ReverbはWebSocketサブスクリプション、チャンネル、メッセージにPusherプロトコルを利用するためです。
 
 ```shell
 npm install --save-dev laravel-echo pusher-js
 ```
 
-Echoをインストールしたら、アプリケーションのJavaScriptで新しいEchoインスタンスを生成します。これを行うのに最適な場所は、Laravelフレームワークに用意してある、`resources/js/bootstrap.js`ファイルの一番下です。デフォルトでは、Echoの設定例をあらかじめこのファイルに用意してあります。コメントを解除し、`broadcaster`設定オプションを`reverb`に更新するだけです。
+Echoをインストールしたら、アプリケーションのJavaScriptで新しいEchoインスタンスを作成します。これを行うのに最適な場所は、Laravelフレームワークに含まれている`resources/js/bootstrap.js`ファイルの一番下です：
 
-```js
+```js tab=JavaScript
 import Echo from 'laravel-echo';
 
 import Pusher from 'pusher-js';
@@ -193,6 +230,34 @@ window.Echo = new Echo({
 });
 ```
 
+```js tab=React
+import { configureEcho } from "@laravel/echo-react";
+
+configureEcho({
+    broadcaster: "reverb",
+    // key: import.meta.env.VITE_REVERB_APP_KEY,
+    // wsHost: import.meta.env.VITE_REVERB_HOST,
+    // wsPort: import.meta.env.VITE_REVERB_PORT,
+    // wssPort: import.meta.env.VITE_REVERB_PORT,
+    // forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
+    // enabledTransports: ['ws', 'wss'],
+});
+```
+
+```js tab=Vue
+import { configureEcho } from "@laravel/echo-vue";
+
+configureEcho({
+    broadcaster: "reverb",
+    // key: import.meta.env.VITE_REVERB_APP_KEY,
+    // wsHost: import.meta.env.VITE_REVERB_HOST,
+    // wsPort: import.meta.env.VITE_REVERB_PORT,
+    // wssPort: import.meta.env.VITE_REVERB_PORT,
+    // forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
+    // enabledTransports: ['ws', 'wss'],
+});
+```
+
 次に、アプリケーションのアセットをコンパイルします。
 
 ```shell
@@ -200,22 +265,27 @@ npm run build
 ```
 
 > [!WARNING]
-> The Laravel Echo `reverb` broadcaster requires laravel-echo v1.16.0+.
+> Laravel Echoの`reverb` ロードキャスタは、laravel-echov1.16.0以降が必要です。
 
 <a name="client-pusher-channels"></a>
 ### Pusherチャンネル
 
-[Laravel Echo](https://github.com/laravel/echo)は、サーバサイドのブロードキャストドライバにより、ブロードキャストされるチャンネルやイベントを簡単にサブスクライブできるJavaScriptライブラリです。また、Echoは`pusher-js` NPMパッケージを利用して、WebSocketサブスクリプション、チャンネル、メッセージ用のPusherプロトコルを実装しています。
+[Laravel Echo](https://github.com/laravel/echo)は、サーバサイドのブロードキャスト・ドライバ側がブロードキャストするチャンネルやイベントを簡単に購読できるJavaScriptライブラリです。
 
-`install:broadcasting` Artisanのコマンドは、自動的に`laravel-echo`と`pusher-js`パッケージをインストールしますが、NPMを使用し手作業でインストールすることもできます。
+`installation:broadcasting --pusher` Artisanコマンドでブロードキャスト・サポートをインストールすると、PusherとEchoのスカフォールドと設定を自動的にアプリケーションへ挿入します。ただし、Laravel Echoを手作業で設定したい場合は、以下の手順に従ってください。
+
+<a name="pusher-client-manual-installation"></a>
+#### 手作業によるインストール
+
+アプリケーションのフロントエンドにLaravel Echoを手作業で設定するには、最初にWebSocketサブスクリプション、チャンネル、メッセージにPusherプロトコルを利用する`laravel-echo`と`pusher-js`パッケージをインストールします。
 
 ```shell
 npm install --save-dev laravel-echo pusher-js
 ```
 
-Echoをインストールしたら、アプリケーションのJavaScriptで新しいEchoインスタンスを生成する準備が整いました。`install:broadcasting`コマンドは`resources/js/echo.js`へ、Echoの設定ファイルを作成しますが、このファイルのデフォルト設定はLaravel Reverb用のものです。以下の設定をコピーしてPusher用へ移行できます。
+Echoをインストールしたら、アプリケーションの`resources/js/bootstrap.js`ファイルで新しいEchoインスタンスを作成する準備が整いました。
 
-```js
+```js tab=JavaScript
 import Echo from 'laravel-echo';
 
 import Pusher from 'pusher-js';
@@ -226,6 +296,36 @@ window.Echo = new Echo({
     key: import.meta.env.VITE_PUSHER_APP_KEY,
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
     forceTLS: true
+});
+```
+
+```js tab=React
+import { configureEcho } from "@laravel/echo-react";
+
+configureEcho({
+    broadcaster: "pusher",
+    // key: import.meta.env.VITE_PUSHER_APP_KEY,
+    // cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+    // forceTLS: true,
+    // wsHost: import.meta.env.VITE_PUSHER_HOST,
+    // wsPort: import.meta.env.VITE_PUSHER_PORT,
+    // wssPort: import.meta.env.VITE_PUSHER_PORT,
+    // enabledTransports: ["ws", "wss"],
+});
+```
+
+```js tab=Vue
+import { configureEcho } from "@laravel/echo-vue";
+
+configureEcho({
+    broadcaster: "pusher",
+    // key: import.meta.env.VITE_PUSHER_APP_KEY,
+    // cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+    // forceTLS: true,
+    // wsHost: import.meta.env.VITE_PUSHER_HOST,
+    // wsPort: import.meta.env.VITE_PUSHER_PORT,
+    // wssPort: import.meta.env.VITE_PUSHER_PORT,
+    // enabledTransports: ["ws", "wss"],
 });
 ```
 
@@ -283,9 +383,14 @@ window.Echo = new Echo({
 > [!NOTE]
 > 以下のドキュメントでは、Ablyを「Pusher互換」モードで使用する方法について説明していきます。しかし、Ablyチームは、Ablyが提供するユニークな機能を活用できるブロードキャスターとEchoクライアントを推奨し、保守しています。Ablyが保守するドライバの使用に関する詳細については、[AblyのLaravelブロードキャスターのドキュメントを参照](https://github.com/ably/laravel-broadcaster)してください。
 
-[Laravel Echo](https://github.com/laravel/echo)は、サーバサイドのブロードキャストドライバにより、ブロードキャストされるチャンネルやイベントを簡単にサブスクライブできるJavaScriptライブラリです。また、Echoは`pusher-js` NPMパッケージを利用して、WebSocketサブスクリプション、チャンネル、メッセージ用のPusherプロトコルを実装しています。
+[Laravel Echo](https://github.com/laravel/echo)は、サーバサイドのブロードキャスト・ドライバ側がブロードキャストするチャンネルやイベントを簡単に購読できるJavaScriptライブラリです。
 
-`install:broadcasting` Artisanのコマンドは、自動的に`laravel-echo`と`pusher-js`パッケージをインストールしますが、NPMを使用し手作業でインストールすることもできます。
+`installation:broadcasting --ably` Artisanコマンドでブロードキャスト・サポートをインストールすると、AblyとEchoのスカフォールドと設定が自動的にアプリケーションへ挿入されます。ただし、Laravel Echoを手作業で設定したい場合は、以降の手順に従ってください。
+
+<a name="ably-client-manual-installation"></a>
+#### 手作業によるインストール
+
+アプリケーションのフロントエンドにLaravel Echoを手作業で設定するには、最初にWebSocketサブスクリプション、チャンネル、メッセージにPusherプロトコルを利用する、`laravel-echo`と`pusher-js`パッケージをインストールします。
 
 ```shell
 npm install --save-dev laravel-echo pusher-js
@@ -293,9 +398,9 @@ npm install --save-dev laravel-echo pusher-js
 
 **続行する前に、Ablyアプリケーション設定でPusherプロトコルサポートを有効にする必要があります。この機能は、Ablyアプリケーションの設定ダッシュボードの「プロトコルアダプター設定」部分で有効にできます。**
 
-Echoをインストールしたら、アプリケーションのJavaScriptで新しいEchoインスタンスを生成する準備が整いました。`install:broadcasting`コマンドは`resources/js/echo.js`へEchoの設定ファイルを作成しますが、このファイルのデフォルト設定はLaravel Reverb用のものです。以下の設定をコピーして、設定をAbly用へ移行できます。
+Echoをインストールしたら、アプリケーションの`resources/js/bootstrap.js`ファイルで、新しいEchoインスタンスを作成する準備が整いました。
 
-```js
+```js tab=JavaScript
 import Echo from 'laravel-echo';
 
 import Pusher from 'pusher-js';
@@ -308,6 +413,32 @@ window.Echo = new Echo({
     wsPort: 443,
     disableStats: true,
     encrypted: true,
+});
+```
+
+```js tab=React
+import { configureEcho } from "@laravel/echo-react";
+
+configureEcho({
+    broadcaster: "ably",
+    // key: import.meta.env.VITE_ABLY_PUBLIC_KEY,
+    // wsHost: "realtime-pusher.ably.io",
+    // wsPort: 443,
+    // disableStats: true,
+    // encrypted: true,
+});
+```
+
+```js tab=Vue
+import { configureEcho } from "@laravel/echo-vue";
+
+configureEcho({
+    broadcaster: "ably",
+    // key: import.meta.env.VITE_ABLY_PUBLIC_KEY,
+    // wsHost: "realtime-pusher.ably.io",
+    // wsPort: 443,
+    // disableStats: true,
+    // encrypted: true,
 });
 ```
 
@@ -425,13 +556,32 @@ Broadcast::channel('orders.{orderId}', function (User $user, int $orderId) {
 <a name="listening-for-event-broadcasts"></a>
 #### イベントブロードキャストのリッスン
 
-他に残っているのは、JavaScriptアプリケーションでイベントをリッスンすることだけです。[Laravel Echo](#client-side-installation)を使用してこれを行えます。まず、`private`メソッドを使用し、プライベートチャンネルをサブスクライブします。次に、`listen`メソッドを使用して`OrderShipmentStatusUpdated`イベントをリッスンします。デフォルトでは、イベントのすべてのパブリックプロパティがブロードキャストイベントに含まれます。
+次ですが、残りはJavaScriptアプリケーションでイベントをリッスンすることだけです。これには[Laravel Echo](#client-side-installation)を使います。Laravel EchoのビルトインReactとVueフックを使えば簡単に始められ、デフォルトでは、イベントのパブリックプロパティがすべてブロードキャストイベントで取り込まれます。
 
-```js
-Echo.private(`orders.${orderId}`)
-    .listen('OrderShipmentStatusUpdated', (e) => {
+```js tab=React
+import { useEcho } from "@laravel/echo-react";
+
+useEcho(
+    `orders.${orderId}`,
+    "OrderShipmentStatusUpdated",
+    (e) => {
         console.log(e.order);
-    });
+    },
+);
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEcho } from "@laravel/echo-vue";
+
+useEcho(
+    `orders.${orderId}`,
+    "OrderShipmentStatusUpdated",
+    (e) => {
+        console.log(e.order);
+    },
+);
+</script>
 ```
 
 <a name="defining-broadcast-events"></a>
@@ -942,6 +1092,167 @@ Echo.channel('orders')
     });
 ```
 
+<a name="using-react-or-vue"></a>
+### ReactとVueの使用
+
+Laravel EchoにはReactとVueのフックがあり、イベントを苦労なくリッスンできます。使用開始するには、プライベートイベントをリッスンするために使用する`useEcho`フックを呼び出します。`useEcho`フックは、利用しているコンポーネントがアンマウントされると、自動的にチャンネルを抜けます。
+
+```js tab=React
+import { useEcho } from "@laravel/echo-react";
+
+useEcho(
+    `orders.${orderId}`,
+    "OrderShipmentStatusUpdated",
+    (e) => {
+        console.log(e.order);
+    },
+);
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEcho } from "@laravel/echo-vue";
+
+useEcho(
+    `orders.${orderId}`,
+    "OrderShipmentStatusUpdated",
+    (e) => {
+        console.log(e.order);
+    },
+);
+</script>
+```
+
+複数のイベントをリッスンするには、`useEcho`でイベントの配列を指定してください。
+
+```js
+useEcho(
+    `orders.${orderId}`,
+    ["OrderShipmentStatusUpdated", "OrderShipped"],
+    (e) => {
+        console.log(e.order);
+    },
+);
+```
+
+また、ブロードキャスト・イベントのペイロード・データの形状を指定することもでき、型の安全性と編集の利便性を高めることができます。
+
+```ts
+type OrderData = {
+    order: {
+        id: number;
+        user: {
+            id: number;
+            name: string;
+        };
+        created_at: string;
+    };
+};
+
+useEcho<OrderData>(`orders.${orderId}`, "OrderShipmentStatusUpdated", (e) => {
+    console.log(e.order.id);
+    console.log(e.order.user.id);
+});
+```
+
+`useEcho`フックは、コンシューマー・コンポーネントがアンマウントされると、自動的にチャンネルから離脱します。しかし、必要に応じて、提供しているフック関数を使用して、手作業でチャンネルを開始／停止できます：
+
+```js tab=React
+import { useEcho } from "@laravel/echo-react";
+
+const { leaveChannel, leave, stopListening, listen } = useEcho(
+    `orders.${orderId}`,
+    "OrderShipmentStatusUpdated",
+    (e) => {
+        console.log(e.order);
+    },
+);
+
+// チャンネルを残したままリッスン停止
+stopListening();
+
+// リッスンの再開
+listen();
+
+// チャンネル離脱
+leaveChannel();
+
+// チャンネルと関連するプライベートチャンネル、プレゼンスチャンネルから離脱
+leave();
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEcho } from "@laravel/echo-vue";
+
+const { leaveChannel, leave, stopListening, listen } = useEcho(
+    `orders.${orderId}`,
+    "OrderShipmentStatusUpdated",
+    (e) => {
+        console.log(e.order);
+    },
+);
+
+// チャンネルを残したままリッスン停止
+stopListening();
+
+// リッスンの再開
+listen();
+
+// チャンネル離脱
+leaveChannel();
+
+// チャンネルと関連するプライベートチャンネル、プレゼンスチャンネルから離脱
+leave();
+</script>
+```
+
+<a name="react-vue-connecting-to-public-channels"></a>
+#### パブリックチャンネルとの接続
+
+パブリックチャンネルへ接続するには、`useEchoPublic`フックを使用してください。
+
+```js tab=React
+import { useEchoPublic } from "@laravel/echo-react";
+
+useEchoPublic("posts", "PostPublished", (e) => {
+    console.log(e.post);
+});
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEchoPublic } from "@laravel/echo-vue";
+
+useEchoPublic("posts", "PostPublished", (e) => {
+    console.log(e.post);
+});
+</script>
+```
+
+<a name="react-vue-connecting-to-presence-channels"></a>
+#### プレゼンスチャンネルとの接続
+
+プレゼンスチャンネルへ接続するには、`useEchoPresence`フックを使用してください。
+
+```js tab=React
+import { useEchoPresence } from "@laravel/echo-react";
+
+useEchoPresence("posts", "PostPublished", (e) => {
+    console.log(e.post);
+});
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEchoPresence } from "@laravel/echo-vue";
+
+useEchoPresence("posts", "PostPublished", (e) => {
+    console.log(e.post);
+});
+</script>
+```
+
 <a name="presence-channels"></a>
 ## プレゼンスチャンネル
 
@@ -1210,9 +1521,47 @@ public function broadcastWith(string $event): array
 
 ```js
 Echo.private(`App.Models.User.${this.user.id}`)
-    .listen('.PostUpdated', (e) => {
+    .listen('.UserUpdated', (e) => {
         console.log(e.model);
     });
+```
+
+<a name="model-broadcasts-with-react-or-vue"></a>
+#### ReactとVueの使用
+
+ReactやVueを使用している場合、Laravel Echoに用意してある`useEchoModel`フックを使用し、モデルブロードキャストを簡単にリッスンできます。
+
+```js tab=React
+import { useEchoModel } from "@laravel/echo-react";
+
+useEchoModel("App.Models.User", userId, ["UserUpdated"], (e) => {
+    console.log(e.model);
+});
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEchoModel } from "@laravel/echo-vue";
+
+useEchoModel("App.Models.User", userId, ["UserUpdated"], (e) => {
+    console.log(e.model);
+});
+</script>
+```
+
+また、モデルイベントのペイロードデータの形状を指定することにより、型の安全性と編集の利便性を高めることが可能です。
+
+```ts
+type User = {
+    id: number;
+    name: string;
+    email: string;
+};
+
+useEchoModel<User, "App.Models.User">("App.Models.User", userId, ["UserUpdated"], (e) => {
+    console.log(e.model.id);
+    console.log(e.model.name);
+});
 ```
 
 <a name="client-events"></a>
@@ -1225,20 +1574,68 @@ Laravelアプリケーションにまったくアクセスせずに、接続済�
 
 クライアントイベントをブロードキャストするには、Echoの`whisper`メソッドを使用できます。
 
-```js
+```js tab=JavaScript
 Echo.private(`chat.${roomId}`)
     .whisper('typing', {
         name: this.user.name
     });
 ```
 
+```js tab=React
+import { useEcho } from "@laravel/echo-react";
+
+const { channel } = useEcho(`chat.${roomId}`, ['update'], (e) => {
+    console.log('Chat event received:', e);
+});
+
+channel().whisper('typing', { name: user.name });
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEcho } from "@laravel/echo-vue";
+
+const { channel } = useEcho(`chat.${roomId}`, ['update'], (e) => {
+    console.log('Chat event received:', e);
+});
+
+channel().whisper('typing', { name: user.name });
+</script>
+```
+
 クライアントイベントをリッスンするには、`listenForWhisper`メソッドを使用します。
 
-```js
+```js tab=JavaScript
 Echo.private(`chat.${roomId}`)
     .listenForWhisper('typing', (e) => {
         console.log(e.name);
     });
+```
+
+```js tab=React
+import { useEcho } from "@laravel/echo-react";
+
+const { channel } = useEcho(`chat.${roomId}`, ['update'], (e) => {
+    console.log('Chat event received:', e);
+});
+
+channel().listenForWhisper('typing', (e) => {
+    console.log(e.name);
+});
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEcho } from "@laravel/echo-vue";
+
+const { channel } = useEcho(`chat.${roomId}`, ['update'], (e) => {
+    console.log('Chat event received:', e);
+});
+
+channel().listenForWhisper('typing', (e) => {
+    console.log(e.name);
+});
+</script>
 ```
 
 <a name="notifications"></a>
@@ -1248,11 +1645,33 @@ Echo.private(`chat.${roomId}`)
 
 ブロードキャストチャンネルを使用するように通知を設定すると、Echoの`notification`メソッドを使用してブロードキャストイベントをリッスンできます。チャンネル名は、通知を受信するエンティティのクラス名と一致する必要があることに注意してください。
 
-```js
+```js tab=JavaScript
 Echo.private(`App.Models.User.${userId}`)
     .notification((notification) => {
         console.log(notification.type);
     });
+```
+
+```js tab=React
+import { useEchoModel } from "@laravel/echo-react";
+
+const { channel } = useEchoModel('App.Models.User', userId);
+
+channel().notification((notification) => {
+    console.log(notification.type);
+});
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEchoModel } from "@laravel/echo-vue";
+
+const { channel } = useEchoModel('App.Models.User', userId);
+
+channel().notification((notification) => {
+    console.log(notification.type);
+});
+</script>
 ```
 
 この例では`broadcast`チャネル経由で`App\Models\User`インスタンスへ送信されたすべての通知をコールバックが受信しています。`App.Models.User.{id}`チャネルのチャネル認可コールバックは、アプリケーションの`routes/channels.php`ファイルに含まれます。

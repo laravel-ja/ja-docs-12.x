@@ -719,7 +719,7 @@ public function middleware(): array
 }
 ```
 
-By default, this middleware will throttle every exception. You can modify this behavior by invoking the `when` method when attaching the middleware to your job. The exception will then only be throttled if closure provided to the `when` method returns `true`:
+By default, this middleware will throttle every exception. You can modify this behavior by invoking the `when` method when attaching the middleware to your job. The exception will then only be throttled if the closure provided to the `when` method returns `true`:
 
 ```php
 use Illuminate\Http\Client\HttpClientException;
@@ -735,6 +735,23 @@ public function middleware(): array
     return [(new ThrottlesExceptions(10, 10 * 60))->when(
         fn (Throwable $throwable) => $throwable instanceof HttpClientException
     )];
+}
+```
+
+Unlike the `when` method, which releases the job back onto the queue or throws an exception, the `deleteWhen` method allows you to delete the job entirely when a given exception occurs:
+
+```php
+use App\Exceptions\CustomerDeletedException;
+use Illuminate\Queue\Middleware\ThrottlesExceptions;
+
+/**
+ * Get the middleware the job should pass through.
+ *
+ * @return array<int, object>
+ */
+public function middleware(): array
+{
+    return [(new ThrottlesExceptions(2, 10 * 60))->deleteWhen(CustomerDeletedException::class)];
 }
 ```
 
@@ -1252,6 +1269,8 @@ public function retryUntil(): DateTime
     return now()->addMinutes(10);
 }
 ```
+
+If both `retryUntil` and `tries` are defined, Laravel gives precedence to the `retryUntil` method.
 
 > [!NOTE]
 > You may also define a `tries` property or `retryUntil` method on your [queued event listeners](/docs/{{version}}/events#queued-event-listeners).

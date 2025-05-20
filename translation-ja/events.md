@@ -61,7 +61,7 @@ use App\Events\PodcastProcessed;
 class SendPodcastNotification
 {
     /**
-     * 指定イベントの処理
+     * イベントの処理
      */
     public function handle(PodcastProcessed $event): void
     {
@@ -74,7 +74,7 @@ PHPのユニオン型を使い、複数のイベントをリッスンできま�
 
 ```php
 /**
- * 指定イベントを処理
+ * イベントの処理
  */
 public function handle(PodcastProcessed|PodcastPublished $event): void
 {
