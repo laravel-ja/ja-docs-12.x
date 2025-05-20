@@ -866,7 +866,9 @@ test('orders can be processed', function () {
     Event::assertDispatched(OrderCreated::class);
 
     // 他のイベントは普段通りディスパッチする
-    $order->update([...]);
+    $order->update([
+        // ...
+    ]);
 });
 ```
 
@@ -885,7 +887,9 @@ public function test_orders_can_be_processed(): void
     Event::assertDispatched(OrderCreated::class);
 
     // 他のイベントは普段通りディスパッチする
-    $order->update([...]);
+    $order->update([
+        // ...
+    ]);
 }
 ```
 
@@ -919,7 +923,9 @@ test('orders can be processed', function () {
     });
 
     // イベントを通常通りディスパッチし、オブザーバが実行される
-    $order->update([...]);
+    $order->update([
+        // ...
+    ]);
 });
 ```
 
@@ -949,7 +955,9 @@ class ExampleTest extends TestCase
         });
 
         // イベントを通常通りディスパッチし、オブザーバが実行される
-        $order->update([...])
+        $order->update([
+            // ...
+        ]);
     }
 }
 ```

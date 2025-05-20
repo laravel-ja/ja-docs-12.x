@@ -662,6 +662,7 @@ If you have multiple classes within the same namespace, you may group the import
 
 ```blade
 @use(function App\Helpers\format_currency)
+@use(const App\Constants\MAX_ATTEMPTS)
 ```
 
 クラスのインポートと同様に、関数や定数のエイリアスもサポートしています。

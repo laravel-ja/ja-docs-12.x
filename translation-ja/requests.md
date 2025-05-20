@@ -422,6 +422,12 @@ use App\Enums\Status;
 $status = $request->enum('status', Status::class);
 ```
 
+また、値がない場合や無効な場合に返す、デフォルト値を指定することもできます。
+
+```php
+$status = $request->enum('status', Status::class, Status::Pending);
+```
+
 入力値がPHPのEnumに対応する値の配列である場合は、`enums`メソッドを使用して、値の配列をEnumのインスタンスとして取得できます。
 
 ```php

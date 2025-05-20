@@ -961,6 +961,7 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 
 [assertAccepted](#assert-accepted)
 [assertBadRequest](#assert-bad-request)
+[assertClientError](#assert-client-error)
 [assertConflict](#assert-conflict)
 [assertCookie](#assert-cookie)
 [assertCookieExpired](#assert-cookie-expired)
@@ -1037,6 +1038,15 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 
 </div>
 
+<a name="assert-accepted"></a>
+#### assertAccepted
+
+レスポンスのHTTPステータスコードが、Accepted（202）であることを宣言します。
+
+```php
+$response->assertAccepted();
+```
+
 <a name="assert-bad-request"></a>
 #### assertBadRequest
 
@@ -1046,13 +1056,13 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 $response->assertBadRequest();
 ```
 
-<a name="assert-accepted"></a>
-#### assertAccepted
+<a name="assert-client-error"></a>
+#### assertClientError
 
-レスポンスのHTTPステータスコードが、accepted（202）であることを宣言します。
+レスポンスのHTTPステータスコードが、クライアントエラー（400以上、500未満）であることを宣言します。
 
 ```php
-$response->assertAccepted();
+$response->assertClientError();
 ```
 
 <a name="assert-conflict"></a>
