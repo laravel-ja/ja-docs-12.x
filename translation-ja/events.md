@@ -535,6 +535,8 @@ public function retryUntil(): DateTime
 }
 ```
 
+`retryUntil`と`tries`の両方を定義した場合、Laravelは`retryUntil`メソッドを優先します。
+
 <a name="specifying-queued-listener-backoff"></a>
 #### キュー投入済みリスナの再試行待ち秒数指定
 

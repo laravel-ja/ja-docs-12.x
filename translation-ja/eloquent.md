@@ -876,10 +876,10 @@ $user->name = 'Jack';
 $user->name; // Jack
 
 $user->getOriginal('name'); // John
-$user->getOriginal(); // Array of original attributes...
+$user->getOriginal(); // ｑ配列か元の属性
 ```
 
-`getChanges`メソッドは、モデルが最後に保存されたときに変更された属性を含む配列を返します。
+`getChanges`メソッドは、モデルが最後に保存されたときに変更された属性を含む配列を返します。一方、`getPrevious`メソッドは、モデルを最後に保存する前の元の属性値を含む配列を返します。
 
 ```php
 $user = User::find(1);
@@ -898,6 +898,15 @@ $user->getChanges();
     [
         'name' => 'Jack',
         'email' => 'jack@example.com',
+    ]
+*/
+
+$user->getPrevious();
+
+/*
+    [
+        'name' => 'John',
+        'email' => 'john@example.com',
     ]
 */
 ```

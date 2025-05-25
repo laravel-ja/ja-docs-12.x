@@ -14,7 +14,11 @@
     - [JSONレスポンス](#json-responses)
     - [Fileダウンロード](#file-downloads)
     - [Fileレスポンス](#file-responses)
-    - [Streamedレスポンス](#streamed-responses)
+- [ストリームレスポンス](#streamed-responses)
+    - [ストリームレスポンスの利用](#consuming-streamed-responses)
+    - [ストリームJSONレスポンス](#streamed-json-responses)
+    - [イベントストリーム（SES）](#event-streams)
+    - [ストリームのダウンロード](#streamed-downloads)
 - [レスポンスマクロ](#response-macros)
 
 <a name="creating-responses"></a>
@@ -360,20 +364,15 @@ return response()->file($pathToFile, $headers);
 ```
 
 <a name="streamed-responses"></a>
-### Streamedレスポンス
+## ストリームレスポンス
 
 生成済みのデータをクライアントへストリーミングすることで、特に非常に大きなレスポンスでは、メモリ使用量とパフォーマンスを大幅に削減できます。Streamedレスポンスでは、サーバがデータの送信を終える前にクライアントがデータの処理を始めることができます。
 
 ```php
-function streamedContent(): Generator {
-    yield 'Hello, ';
-    yield 'World!';
-}
-
 Route::get('/stream', function () {
     return response()->stream(function (): void {
-        foreach (streamedContent() as $chunk) {
-            echo $chunk;
+        foreach (['developer', 'admin'] as $string) {
+            echo $string;
             ob_flush();
             flush();
             sleep(2); // チャンク間の遅延をシミュレート
@@ -382,11 +381,262 @@ Route::get('/stream', function () {
 });
 ```
 
-> [!NOTE]
-> Laravelは内部的に、PHPの出力バッファリング機能を利用しています。上の例でわかるように、バッファリングされたコンテンツをクライアントにプッシュするには、`ob_flush`関数と`flush`関数を使用します。
+使いやすいように、`stream`メソッドで指定したクロージャが[ジェネレータ](https://www.php.net/manual/ja/language.generators.overview.php)を返す場合、Laravelはジェネレーターが返す文字列間の出力バッファを自動的にフラッシュし、Nginxの出力バッファリングも無効にします。
+
+```php
+Route::get('/chat', function () {
+    return response()->stream(function (): void {
+        $stream = OpenAI::client()->chat()->createStreamed(...);
+
+        foreach ($stream as $response) {
+            yield $response->choices[0];
+        }
+    });
+});
+```
+
+<a name="consuming-streamed-responses"></a>
+### ストリームレスポンスの利用
+
+ストリームレスポンスは、Laravelの`stream` npmパッケージを使用して利用できます。このパッケージはLaravelのレスポンスやイベントストリームとやり取りするための便利なAPIを提供します。利用開始するには、`@laravel/stream-react`または`@laravel/stream-vue`パッケージをインストールしてください。
+
+```shell tab=React
+npm install @laravel/stream-react
+```
+
+```shell tab=Vue
+npm install @laravel/stream-vue
+```
+
+次に、イベントストリームを利用するために、`useStream`を使用します。ストリームのURLを指定後、Laravelアプリケーションからコンテンツが返されると、フックは自動的に`data`を連結したレスポンスで更新します。
+
+```tsx tab=React
+import { useStream } from "@laravel/stream-react";
+
+function App() {
+    const { data, isFetching, isStreaming, send } = useStream("chat");
+
+    const sendMessage = () => {
+        send({
+            message: `Current timestamp: ${Date.now()}`,
+        });
+    };
+
+    return (
+        <div>
+            <div>{data}</div>
+            {isFetching && <div>接続中…</div>}
+            {isStreaming && <div>生成中…</div>}
+            <button onClick={sendMessage}>メッセージ送信</button>
+        </div>
+    );
+}
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useStream } from "@laravel/stream-vue";
+
+const { data, isFetching, isStreaming, send } = useStream("chat");
+
+const sendMessage = () => {
+    send({
+        message: `Current timestamp: ${Date.now()}`,
+    });
+};
+</script>
+
+<template>
+    <div>
+        <div>{{ data }}</div>
+        <div v-if="isFetching">接続中…</div>
+        <div v-if="isStreaming">生成中…</div>
+        <button @click="sendMessage">メッセージ送信</button>
+    </div>
+</template>
+```
+
+データを`send`を使いストリームに送り返す場合、ストリームへのアクティブな接続は新しいデータを送信する前にキャンセルします。すべてのリクエストは、JSON `POST`リクエストとして送信します。
+
+`useStream`の第２引数は、オプションオブジェクトで、ストリームの利用動作をカスタマイズするために使用します。このオブジェクトのデフォルト値を以下に示します。
+
+```tsx tab=React
+import { useStream } from "@laravel/stream-react";
+
+function App() {
+    const { data } = useStream("chat", {
+        id: undefined,
+        initialInput: undefined,
+        headers: undefined,
+        csrfToken: undefined,
+        onResponse: (response: Response) => void,
+        onData: (data: string) => void,
+        onCancel: () => void,
+        onFinish: () => void,
+        onError: (error: Error) => void,
+    });
+
+    return <div>{data}</div>;
+}
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useStream } from "@laravel/stream-vue";
+
+const { data } = useStream("chat", {
+    id: undefined,
+    initialInput: undefined,
+    headers: undefined,
+    csrfToken: undefined,
+    onResponse: (response: Response) => void,
+    onData: (data: string) => void,
+    onCancel: () => void,
+    onFinish: () => void,
+    onError: (error: Error) => void,
+});
+</script>
+
+<template>
+    <div>{{ data }}</div>
+</template>
+```
+
+ストリームからの最初のレスポンスが成功した後に、`onResponse`をトリガーし、素の[レスポンス](https://developer.mozilla.org/ja/docs/Web/API/Response)をコールバックへ渡します。各チャンクが受信されるたびに`onData`を呼び出し、現在のチャンクをコールバックへ渡します。`onFinish`は、ストリームが終了したときと、フェッチ/読み込みのサイクルでエラーが発生したときに呼び出します。
+
+デフォルトでは、初期化時にストリームへのリクエストを行いません。ストリームに初期ペイロードを渡す場合は、`initialInput`オプションを使用してください。
+
+```tsx tab=React
+import { useStream } from "@laravel/stream-react";
+
+function App() {
+    const { data } = useStream("chat", {
+        initialInput: {
+            message: "Introduce yourself.",
+        },
+    });
+
+    return <div>{data}</div>;
+}
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useStream } from "@laravel/stream-vue";
+
+const { data } = useStream("chat", {
+    initialInput: {
+        message: "Introduce yourself.",
+    },
+});
+</script>
+
+<template>
+    <div>{{ data }}</div>
+</template>
+```
+
+ストリームを手作業でキャンセルするには、フックが返す、`cancel`メソッドを使用します。
+
+```tsx tab=React
+import { useStream } from "@laravel/stream-react";
+
+function App() {
+    const { data, cancel } = useStream("chat");
+
+    return (
+        <div>
+            <div>{data}</div>
+            <button onClick={cancel}>Cancel</button>
+        </div>
+    );
+}
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useStream } from "@laravel/stream-vue";
+
+const { data, cancel } = useStream("chat");
+</script>
+
+<template>
+    <div>
+        <div>{{ data }}</div>
+        <button @click="cancel">Cancel</button>
+    </div>
+</template>
+```
+
+`useStream`フックを使用するたびに、そのストリームを識別するためのランダムな`id`を生成します。これはリクエストごとに`X-STREAM-ID`ヘッダとしてサーバへ返します。複数のコンポーネントで同じストリームを使用する場合、独自の`id`を指定することにより、ストリームの読み書きが行えます。
+
+```tsx tab=React
+// App.tsx
+import { useStream } from "@laravel/stream-react";
+
+function App() {
+    const { data, id } = useStream("chat");
+
+    return (
+        <div>
+            <div>{data}</div>
+            <StreamStatus id={id} />
+        </div>
+    );
+}
+
+// StreamStatus.tsx
+import { useStream } from "@laravel/stream-react";
+
+function StreamStatus({ id }) {
+    const { isFetching, isStreaming } = useStream("chat", { id });
+
+    return (
+        <div>
+            {isFetching && <div>接続中…</div>}
+            {isStreaming && <div>生成中…</div>}
+        </div>
+    );
+}
+```
+
+```vue tab=Vue
+<!-- App.vue -->
+<script setup lang="ts">
+import { useStream } from "@laravel/stream-vue";
+import StreamStatus from "./StreamStatus.vue";
+
+const { data, id } = useStream("chat");
+</script>
+
+<template>
+    <div>
+        <div>{{ data }}</div>
+        <StreamStatus :id="id" />
+    </div>
+</template>
+
+<!-- StreamStatus.vue -->
+<script setup lang="ts">
+import { useStream } from "@laravel/stream-vue";
+
+const props = defineProps<{
+    id: string;
+}>();
+
+const { isFetching, isStreaming } = useStream("chat", { id: props.id });
+</script>
+
+<template>
+    <div>
+        <div v-if="isFetching">接続中…</div>
+        <div v-if="isStreaming">生成中…</div>
+    </div>
+</template>
+```
 
 <a name="streamed-json-responses"></a>
-#### Streamed JSONレスポンス
+### ストリームJSONレスポンス
 
 JSONデータを徐々にストリーミングする必要がある場合は、`streamJson`メソッドを利用してください。このメソッドは、JavaScriptで簡単にパースできる形式で、ブラウザに逐次送信する必要がある大きなデータセットの場合に特に有用です。
 
@@ -400,8 +650,74 @@ Route::get('/users.json', function () {
 });
 ```
 
+`useJsonStream`フックは、[`useStream`フック](#consuming-streamed-responses)と同じですが、ストリーミングが終了すると、データをJSONとしてパースしようと試みます。
+
+```tsx tab=React
+import { useJsonStream } from "@laravel/stream-react";
+
+type User = {
+    id: number;
+    name: string;
+    email: string;
+};
+
+function App() {
+    const { data, send } = useJsonStream<{ users: User[] }>("users");
+
+    const loadUsers = () => {
+        send({
+            query: "taylor",
+        });
+    };
+
+    return (
+        <div>
+            <ul>
+                {data?.users.map((user) => (
+                    <li>
+                        {user.id}: {user.name}
+                    </li>
+                ))}
+            </ul>
+            <button onClick={loadUsers}>Load Users</button>
+        </div>
+    );
+}
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useJsonStream } from "@laravel/stream-vue";
+
+type User = {
+    id: number;
+    name: string;
+    email: string;
+};
+
+const { data, send } = useJsonStream<{ users: User[] }>("users");
+
+const loadUsers = () => {
+    send({
+        query: "taylor",
+    });
+};
+</script>
+
+<template>
+    <div>
+        <ul>
+            <li v-for="user in data?.users" :key="user.id">
+                {{ user.id }}: {{ user.name }}
+            </li>
+        </ul>
+        <button @click="loadUsers">Load Users</button>
+    </div>
+</template>
+```
+
 <a name="event-streams"></a>
-#### イベントストリーム
+### イベントストリーム（SES）
 
 `eventStream`メソッドは、`text/event-stream`コンテントタイプを使用して、サーバ送信イベント （SSE）ストリームレスポンスを返すために使用します。`eventStream`メソッドはクロージャを引数に取ります。クロージャはレスポンスが利用可能になると、ストリームに対するレスポンスを[yield](https://www.php.net/manual/en/language.generators.overview.php)します。
 
@@ -427,6 +743,9 @@ yield new StreamedEvent(
     data: $response->choices[0],
 );
 ```
+
+<a name="consuming-event-streams"></a>
+#### イベントストリームの利用
 
 イベントストリームは、Laravelのイベントストリームを操作するための便利なAPIを提供する、Laravelの`stream` npmパッケージを使用して利用できます。使い始めるには、`@laravel/stream-react`または`@laravel/stream-vue`パッケージをインストールしてください。
 
@@ -533,7 +852,7 @@ return response()->eventStream(function () {
 ```
 
 <a name="streamed-downloads"></a>
-#### ストリームダウンロード
+### ストリームのダウンロード
 
 特定の操作の文字列レスポンスを、操作の内容をディスクに書き込まずにダウンロード可能なレスポンスへ変換したい場合もあるでしょう。このシナリオでは、`streamDownload`メソッドを使用します。このメソッドは、コールバック、ファイル名、およびオプションのヘッダ配列を引数に取ります。
 

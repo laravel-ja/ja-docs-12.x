@@ -227,6 +227,7 @@ Context::get('breadcrumbs');
 use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\DB;
 
+// AppServiceProvider.php内
 DB::listen(function ($event) {
     Context::push('queries', [$event->time, $event->sql]);
 });

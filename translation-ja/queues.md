@@ -1273,7 +1273,7 @@ public function retryUntil(): DateTime
 `retryUntil`と`tries`の両方を定義した場合、Laravelは`retryUntil`メソッドを優先します。
 
 > [!NOTE]
-> [キュー投入済みイベントリスナ](/docs/{{version}}/events#queued-event-listeners)で`tries`プロパティまたは`retryUntil`メソッドを定義することもできます。
+> [キュー投入済みイベントリスナ](/docs/{{version}}/events#queued-event-listeners)で`tries`プロパティや`retryUntil`メソッド、[キュー投入済み通知](/docs/{{version}}/notifications#queueing-notifications)を定義することもできます。
 
 <a name="max-exceptions"></a>
 #### 最大例外数

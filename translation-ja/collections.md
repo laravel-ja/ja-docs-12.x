@@ -697,12 +697,10 @@ $collection = collect(['John Doe', 'Jane Doe']);
 $collection->dd();
 
 /*
-    Collection {
-        #items: array:2 [
-            0 => "John Doe"
-            1 => "Jane Doe"
-        ]
-    }
+    array:2 [
+        0 => "John Doe"
+        1 => "Jane Doe"
+    ]
 */
 ```
 
@@ -871,12 +869,10 @@ $collection = collect(['John Doe', 'Jane Doe']);
 $collection->dump();
 
 /*
-    Collection {
-        #items: array:2 [
-            0 => "John Doe"
-            1 => "Jane Doe"
-        ]
-    }
+    array:2 [
+        0 => "John Doe"
+        1 => "Jane Doe"
+    ]
 */
 ```
 
@@ -2258,7 +2254,7 @@ $plucked->all();
 <a name="method-pop"></a>
 #### `pop()` {.collection-method}
 
-`pop`メソッドはコレクションの最後のアイテムを削除し、返します。
+`pop`メソッドはコレクションの最後のアイテムを削除し、返します。コレクションが空の場合は、`null`を返します。
 
 ```php
 $collection = collect([1, 2, 3, 4, 5]);

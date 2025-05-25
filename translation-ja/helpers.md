@@ -3067,9 +3067,6 @@ Carbonの概要や特徴については、[Carbon公式ドキュメント](https
 <a name="deferred-functions"></a>
 ### 遅延関数
 
-> [!WARNING]
-> 遅延関数は、現在コミュニティーからのフィードバックを集めており、ベータです。
-
 Laravelの[ジョブキュー投入](/docs/{{version}}/queues)では、バックグラウンド処理のためにタスクをキューに入れることができますが、時には、長時間実行するキューワーカの設定やメンテナンスをせずに、単純にタスク実行を先延ばししたいこともあるでしょう。
 
 遅延関数により、HTTPレスポンスをユーザーへ送信した後まで、クロージャの実行を遅延でき、アプリケーションの高速性と応答性を保てます。クロージャの実行を遅延させるには、`Illuminate\Support\defer`関数にクロージャを渡すだけです。
@@ -3104,19 +3101,6 @@ defer(fn () => Metrics::reportOrder($order))->always();
 defer(fn () => Metrics::report(), 'reportMetrics');
 
 defer()->forget('reportMetrics');
-```
-
-<a name="deferred-function-compatibility"></a>
-#### 並列処理互換性
-
-Laravel10.xのアプリケーションから、Larave11.xへアップグレードし、アプリケーションのスケルトンに`app/Http/Kernel.php`ファイルが残っている場合、カーネルの`$middleware`プロパティの先頭へ、`InvokeDeferredCallbacks`ミドルウェアを追加する必要があります。
-
-```php
-protected $middleware = [
-    \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class, // [tl! add]
-    \App\Http\Middleware\TrustProxies::class,
-    // ...
-];
 ```
 
 <a name="disabling-deferred-functions-in-tests"></a>
