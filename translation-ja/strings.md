@@ -206,6 +206,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [title](#method-fluent-str-title)
 [toBase64](#method-fluent-str-to-base64)
 [toHtmlString](#method-fluent-str-to-html-string)
+[toUri](#method-fluent-str-to-uri)
 [transliterate](#method-fluent-str-transliterate)
 [trim](#method-fluent-str-trim)
 [ltrim](#method-fluent-str-ltrim)
@@ -3191,6 +3192,17 @@ $base64 = Str::of('Laravel')->toBase64();
 use Illuminate\Support\Str;
 
 $htmlString = Str::of('Nuno Maduro')->toHtmlString();
+```
+
+<a name="method-fluent-str-to-uri"></a>
+#### `toUri` {.collection-method}
+
+`toUri`メソッドは、指定文字列を[Illuminate\Support\Uri](/docs/{{version}}/helpers#uri)のインスタンスへ変換します。
+
+```php
+use Illuminate\Support\Str;
+
+$uri = Str::of('https://example.com')->toUri();
 ```
 
 <a name="method-fluent-str-transliterate"></a>

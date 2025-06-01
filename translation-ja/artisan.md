@@ -108,7 +108,7 @@ Tinkerは「許可」リストを利用して、シェル内で実行できるAr
 <a name="writing-commands"></a>
 ## コマンド記述
 
-Artisanが提供するコマンドに加え、独自のカスタムコマンドを作成することもできます。コマンドは通常、`app/Console/Commands`ディレクトリに保存します。ただし、Composerでコマンドをロードできる限り、独自の保存場所を自由に選択できます。
+Artisanが提供するコマンドに加え、独自のカスタムコマンドを作成することもできます。コマンドは通常、`app/Console/Commands`ディレクトリに保存します。ただし、Laravelに[Artisanコマンドのために他のディレクトリをスキャンする](#registering-commands)ように指示すれば、独自の保存場所を自由に選択できます。
 
 <a name="generating-commands"></a>
 ### コマンド生成
@@ -387,7 +387,7 @@ php artisan mail:send 1 -Qdefault
 'mail:send {user*}'
 ```
 
-このメソッドを呼び出すときは、コマンドラインへ順番に、`user`引数を渡せます。たとえば、次のコマンドは、`user`の値に`1`と`2`の値を配列に設定します。
+このコマンドを実行するときは、コマンドラインへ順番に、`user`引数を渡せます。たとえば、次のコマンドは、`user`の値に`1`と`2`の値を配列に設定します。
 
 ```shell
 php artisan mail:send 1 2

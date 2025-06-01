@@ -394,6 +394,15 @@ $perPage = $request->integer('per_page');
 $archived = $request->boolean('archived');
 ```
 
+<a name="retrieving-array-input-values"></a>
+#### 配列入力値の取得
+
+配列を含む入力値は、`array`メソッドを使って取り出せます。このメソッドは常に入力値を配列へキャストします。リクエストに指定した名前の入力値が含まれていない場合は、空の配列が返します。
+
+```php
+$versions = $request->array('versions');
+```
+
 <a name="retrieving-date-input-values"></a>
 #### データ入力値の取得
 

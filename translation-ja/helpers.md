@@ -55,6 +55,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Arr::from](#method-array-from)
 [Arr::get](#method-array-get)
 [Arr::has](#method-array-has)
+[Arr::hasAll](#method-array-hasall)
 [Arr::hasAny](#method-array-hasany)
 [Arr::integer](#method-array-integer)
 [Arr::isAssoc](#method-array-isassoc)
@@ -555,6 +556,21 @@ $contains = Arr::has($array, 'product.name');
 $contains = Arr::has($array, ['product.price', 'product.discount']);
 
 // false
+```
+
+<a name="method-array-hasall"></a>
+#### `Arr::hasAll()` {.collection-method}
+
+`Arr::hasAll`メソッドは、「ドット」記法を用いて、指定配列に指定キーがすべて存在するかを判定します。
+
+```php
+use Illuminate\Support\Arr;
+
+$array = ['name' => 'Taylor', 'language' => 'PHP'];
+
+Arr::hasAll($array, ['name']); // true
+Arr::hasAll($array, ['name', 'language']); // true
+Arr::hasAll($array, ['name', 'IDE']); // false
 ```
 
 <a name="method-array-hasany"></a>
@@ -2282,7 +2298,7 @@ $traits = class_uses_recursive(App\Models\User::class);
 `collect`関数は、指定値から[コレクション](/docs/{{version}}/collections)インスタンスを生成します。
 
 ```php
-$collection = collect(['taylor', 'abigail']);
+$collection = collect(['Taylor', 'Abigail']);
 ```
 
 <a name="method-config"></a>
@@ -2828,7 +2844,7 @@ session()->put('key', $value);
 
 ```php
 $user = tap(User::first(), function (User $user) {
-    $user->name = 'taylor';
+    $user->name = 'Taylor';
 
     $user->save();
 });

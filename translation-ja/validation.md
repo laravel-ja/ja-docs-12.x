@@ -1044,6 +1044,7 @@ The credit card number field is required when payment type is credit card.
 [内包](#rule-contains)
 [一意](#rule-distinct)
 [他のフィールド値](#rule-in-array)
+[キーを内包](#rule-in-array-keys)
 [リスト](#rule-list)
 [最大値](#rule-max)
 [最小値](#rule-min)
@@ -1353,9 +1354,22 @@ use Illuminate\Validation\Rule;
 カスタム確認フィールド名を渡すこともできます。例えば、`confirmed:repeat_username`は、`repeat_username`フィールドが検証中のフィールドと一致することを期待します。
 
 <a name="rule-contains"></a>
-#### contains:_foo_,_bar_,...
+#### contains:_foo_,_bar_,…
 
-フィールドが、指定するパラメータ値を全部含んでいる配列であることをバリデートします。
+フィールドが、指定パラメータ値をすべて含む配列であることをバリデートします。このルールではしばしば配列を`implode`する必要があるため、`Rule::contains`メソッドを使用すると、ルールを簡潔に構築できます。
+
+```php
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
+Validator::make($data, [
+    'roles' => [
+        'required',
+        'array',
+        Rule::contains(['admin', 'editor']),
+    ],
+]);
+```
 
 <a name="rule-current-password"></a>
 #### current_password
@@ -1770,6 +1784,15 @@ Validator::make($input, [
 #### in_array:_他のフィールド_.*
 
 フィールドが、*他のフィールド*の値のどれかであることをバリデートします。
+
+<a name="rule-in-array-keys"></a>
+#### in_array_keys:_value_.*
+
+フィールドが、配列内にキーとして指定した*value*を少なくとも１つ持つ配列であることをバリデートします。
+
+```php
+'config' => 'array|in_array_keys:timezone'
+```
 
 <a name="rule-integer"></a>
 #### integer

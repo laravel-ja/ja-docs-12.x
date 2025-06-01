@@ -17,7 +17,7 @@
 `Illuminate\Support\Collection`クラスは配列データを操作するための、書きやすく使いやすいラッパーです。以下の例をご覧ください。配列から新しいコレクションインスタンスを作成するために`collect`ヘルパを使用し、各要素に対し`strtoupper`を実行し、それから空の要素を削除しています。
 
 ```php
-$collection = collect(['taylor', 'abigail', null])->map(function (?string $name) {
+$collection = collect(['Taylor', 'Abigail', null])->map(function (?string $name) {
     return strtoupper($name);
 })->reject(function (string $name) {
     return empty($name);
@@ -1152,9 +1152,9 @@ $flattened->all();
 
 ```php
 $collection = collect([
-    'name' => 'taylor',
+    'name' => 'Taylor',
     'languages' => [
-        'php', 'javascript'
+        'PHP', 'JavaScript'
     ]
 ]);
 
@@ -1162,7 +1162,7 @@ $flattened = $collection->flatten();
 
 $flattened->all();
 
-// ['taylor', 'php', 'javascript'];
+// ['Taylor', 'PHP', 'JavaScript'];
 ```
 
 必要に応じて、`flatten`メソッドに「depth」引数を渡すことができます。
@@ -1203,13 +1203,13 @@ $products->values()->all();
 `flip`メソッドはコレクションのキーと対応する値を入れ替えます。
 
 ```php
-$collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
+$collection = collect(['name' => 'Taylor', 'framework' => 'Laravel']);
 
 $flipped = $collection->flip();
 
 $flipped->all();
 
-// ['taylor' => 'name', 'laravel' => 'framework']
+// ['Taylor' => 'name', 'Laravel' => 'framework']
 ```
 
 <a name="method-forget"></a>
@@ -1218,12 +1218,12 @@ $flipped->all();
 `forget`メソッドはキーによりコレクションのアイテムを削除します。
 
 ```php
-$collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
+$collection = collect(['name' => 'Taylor', 'framework' => 'Laravel']);
 
 // Forget a single key...
 $collection->forget('name');
 
-// ['framework' => 'laravel']
+// ['framework' => 'Laravel']
 
 // Forget multiple keys...
 $collection->forget(['name', 'framework']);
@@ -1272,17 +1272,17 @@ $collection = Collection::fromJson($json);
 `get`メソッドは指定されたキーのアイテムを返します。キーが存在していない場合は`null`を返します。
 
 ```php
-$collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
+$collection = collect(['name' => 'Taylor', 'framework' => 'Laravel']);
 
 $value = $collection->get('name');
 
-// taylor
+// Taylor
 ```
 
 オプションとして第２引数にデフォルト値を指定することもできます。
 
 ```php
-$collection = collect(['name' => 'taylor', 'framework' => 'laravel']);
+$collection = collect(['name' => 'Taylor', 'framework' => 'Laravel']);
 
 $value = $collection->get('age', 34);
 
@@ -2509,7 +2509,7 @@ $replaced->all();
 <a name="method-replacerecursive"></a>
 #### `replaceRecursive()` {.collection-method}
 
-このメソッドは`replace`と似た動作をしますが、配列を再帰的に下り、次元の低い値も同様に置換します。
+`replaceRecursive`メソッドは`replace`と似た動作をしますが、配列を再帰的に下り、次元の低い値も同様に置換します。
 
 ```php
 $collection = collect([
@@ -3651,20 +3651,20 @@ $collection->all();
 `whenNotEmpty`メソッドは、コレクションが空でない場合に、指定したコールバックを実行します。
 
 ```php
-$collection = collect(['michael', 'tom']);
+$collection = collect(['Michael', 'Tom']);
 
 $collection->whenNotEmpty(function (Collection $collection) {
-    return $collection->push('adam');
+    return $collection->push('Adam');
 });
 
 $collection->all();
 
-// ['michael', 'tom', 'adam']
+// ['Michael', 'Tom', 'Adam']
 
 $collection = collect();
 
 $collection->whenNotEmpty(function (Collection $collection) {
-    return $collection->push('adam');
+    return $collection->push('Adam');
 });
 
 $collection->all();
@@ -3678,14 +3678,14 @@ $collection->all();
 $collection = collect();
 
 $collection->whenNotEmpty(function (Collection $collection) {
-    return $collection->push('adam');
+    return $collection->push('Adam');
 }, function (Collection $collection) {
-    return $collection->push('taylor');
+    return $collection->push('Taylor');
 });
 
 $collection->all();
 
-// ['taylor']
+// ['Taylor']
 ```
 
 `whenNotEmpty`の逆の動作は、[whenEmpty](#method-whenempty)メソッドです。

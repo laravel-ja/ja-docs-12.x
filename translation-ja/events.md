@@ -569,7 +569,7 @@ public function backoff(): int
 /**
  * キュー投入したリスナを再試行するまで待つ秒数を計算
  *
- * @return array<int, int>
+ * @return list<int>
  */
 public function backoff(): array
 {
@@ -658,7 +658,7 @@ class OrderShipped implements ShouldDispatchAfterCommit
 <a name="writing-event-subscribers"></a>
 ### イベントサブスクライバの記述
 
-イベントサブスクライバは、サブスクライバクラス自体から複数のイベントを購読できるクラスであり、単一のクラス内で複数のイベントハンドラを定義できます。サブスクライバは、イベントディスパッチャーインスタンスを渡す`subscribe`メソッドを定義する必要があります。特定のディスパッチャ上の`listen`メソッドを呼び出して、イベントリスナを登録します。
+イベントサブスクライバは、サブスクライバクラス自体から複数のイベントを購読できるクラスであり、単一のクラス内で複数のイベントハンドラを定義できます。サブスクライバは、イベントディスパッチャーインスタンスを受け取る`subscribe`メソッドを定義する必要があります。特定のディスパッチャ上の`listen`メソッドを呼び出して、イベントリスナを登録します。
 
 ```php
 <?php

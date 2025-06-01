@@ -108,7 +108,7 @@ Typically, Tinker automatically aliases classes as you interact with them in Tin
 <a name="writing-commands"></a>
 ## Writing Commands
 
-In addition to the commands provided with Artisan, you may build your own custom commands. Commands are typically stored in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as your commands can be loaded by Composer.
+In addition to the commands provided with Artisan, you may build your own custom commands. Commands are typically stored in the `app/Console/Commands` directory; however, you are free to choose your own storage location as long as you instruct Laravel to [scan other directories for Artisan commands](#registering-commands).
 
 <a name="generating-commands"></a>
 ### Generating Commands
@@ -387,7 +387,7 @@ If you would like to define arguments or options to expect multiple input values
 'mail:send {user*}'
 ```
 
-When calling this method, the `user` arguments may be passed in order to the command line. For example, the following command will set the value of `user` to an array with `1` and `2` as its values:
+When running this command, the `user` arguments may be passed in order to the command line. For example, the following command will set the value of `user` to an array with `1` and `2` as its values:
 
 ```shell
 php artisan mail:send 1 2

@@ -160,10 +160,10 @@ $example->date === null;
 $tables = Schema::getTables();
 
 // `main`スキーマの全テーブル
-$table = Schema::getTables(schema: 'main');
+$tables = Schema::getTables(schema: 'main');
 
 // 'main'と'blog'スキーマの全テーブル
-$table = Schema::getTables(schema: ['main', 'blog']);
+$tables = Schema::getTables(schema: ['main', 'blog']);
 ```
 
 `Schema::getTableListing()`メソッドは、スキーマ修飾されたテーブル名をデフォルトで返すようになりました。必要に応じ、`schemaQualified`引数を渡して動作を変更できます。
@@ -172,10 +172,10 @@ $table = Schema::getTables(schema: ['main', 'blog']);
 $tables = Schema::getTableListing();
 // ['main.migrations', 'main.users', 'blog.posts']
 
-$table = Schema::getTableListing(schema: 'main');
+$tables = Schema::getTableListing(schema: 'main');
 // ['main.migrations', 'main.users']
 
-$table = Schema::getTableListing(schema: 'main', schemaQualified: false);
+$tables = Schema::getTableListing(schema: 'main', schemaQualified: false);
 // ['migrations', 'users']
 ```
 
