@@ -191,7 +191,7 @@ import { Switch } from '@/Components/ui/switch'
 <a name="vue-available-layouts"></a>
 #### 利用可能なレイアウト
 
-Reactスターターキットには、「サイドバー」レイアウトと「ヘッダ」レイアウトの２つの異なる主要レイアウトを用意してあり、選択できます。デフォルトはサイドバーレイアウトですが、アプリケーションの`resources/js/layouts/AppLayout.vue`ファイルの一番上にインポートしているレイアウトを変更すれば、ヘッダレイアウトへ切り替えられます。
+Vueスターターキットには、「サイドバー」レイアウトと「ヘッダ」レイアウトの２つの異なる主要レイアウトを用意してあり、選択できます。デフォルトはサイドバーレイアウトですが、アプリケーションの`resources/js/layouts/AppLayout.vue`ファイルの一番上にインポートしているレイアウトを変更すれば、ヘッダレイアウトへ切り替えられます。
 
 ```js
 import AppLayout from '@/layouts/app/AppSidebarLayout.vue'; // [tl! remove]
