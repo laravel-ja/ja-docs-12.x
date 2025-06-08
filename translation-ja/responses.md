@@ -384,7 +384,7 @@ Route::get('/stream', function () {
 使いやすいように、`stream`メソッドで指定したクロージャが[ジェネレータ](https://www.php.net/manual/ja/language.generators.overview.php)を返す場合、Laravelはジェネレーターが返す文字列間の出力バッファを自動的にフラッシュし、Nginxの出力バッファリングも無効にします。
 
 ```php
-Route::get('/chat', function () {
+Route::post('/chat', function () {
     return response()->stream(function (): void {
         $stream = OpenAI::client()->chat()->createStreamed(...);
 
@@ -457,6 +457,9 @@ const sendMessage = () => {
 ```
 
 データを`send`を使いストリームに送り返す場合、ストリームへのアクティブな接続は新しいデータを送信する前にキャンセルします。すべてのリクエストは、JSON `POST`リクエストとして送信します。
+
+> [!WARNING]
+> `useStream`フックは、アプリケーションに対し`POST`リクエストを行うため、有効なCSRFトークンが必要です。CSRFトークンを提供する最も簡単な方法は、[アプリケーションレイアウトの`head`に`meta`タグとして含めることです](/docs/{{version}}/csrf#csrf-x-csrf-token)。
 
 `useStream`の第２引数は、オプションオブジェクトで、ストリームの利用動作をカスタマイズするために使用します。このオブジェクトのデフォルト値を以下に示します。
 

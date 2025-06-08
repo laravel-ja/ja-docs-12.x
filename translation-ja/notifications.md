@@ -944,9 +944,9 @@ public function toArray(object $notifiable): array
 
 通知をアプリケーションのデータベースへ格納すると、デフォルトでは`type`カラムへ通知のクラス名が設定され、`read_at`カラムは`null`になります。しかし、通知クラスで`databaseType`メソッドと`initialDatabaseReadAtValue`メソッドを定義すれば、この動作をカスタマイズできます。
 
-    use Illuminate\Support\Carbon;
-
 ```php
+use Illuminate\Support\Carbon;
+
 /**
  * 通知のデータベースタイプを取得
  */
@@ -1092,6 +1092,82 @@ Echo.private('App.Models.User.' + userId)
     .notification((notification) => {
         console.log(notification.type);
     });
+```
+
+<a name="using-react-or-vue"></a>
+#### ReactやVueの使用
+
+Laravel EchoはReactとVueのフックを含んでおり、通知を簡単にリッスンできます。使用開始するには、`useEchoNotification`フックを呼び出します。`useEchoNotification`フックは、利用しているコンポーネントがアンマウントすると、自動的にチャンネルから抜けます。
+
+```js tab=React
+import { useEchoNotification } from "@laravel/echo-react";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+);
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEchoNotification } from "@laravel/echo-vue";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+);
+</script>
+```
+
+このフックはすべての通知をデフォルトでリッスンします。リッスンしたい通知の種類を指定するには、文字列か型の配列を `useEchoNotification` に指定します：
+
+```js tab=React
+import { useEchoNotification } from "@laravel/echo-react";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+    'App.Notifications.InvoicePaid',
+);
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useEchoNotification } from "@laravel/echo-vue";
+
+useEchoNotification(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.type);
+    },
+    'App.Notifications.InvoicePaid',
+);
+</script>
+```
+
+また、通知ペイロードデータの形状を指定することもでき、より大きな型の安全性と編集の利便性を提供します。
+
+```ts
+type InvoicePaidNotification = {
+    invoice_id: number;
+    created_at: string;
+};
+
+useEchoNotification<InvoicePaidNotification>(
+    `App.Models.User.${userId}`,
+    (notification) => {
+        console.log(notification.invoice_id);
+        console.log(notification.created_at);
+        console.log(notification.type);
+    },
+    'App.Notifications.InvoicePaid',
+);
 ```
 
 <a name="customizing-the-notification-channel"></a>

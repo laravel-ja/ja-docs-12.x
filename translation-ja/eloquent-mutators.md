@@ -214,6 +214,7 @@ protected function address(): Attribute
 
 - `array`
 - `AsStringable::class`
+- `AsUri::class`
 - `boolean`
 - `collection`
 - `date`

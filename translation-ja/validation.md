@@ -1166,7 +1166,7 @@ The credit card number field is required when payment type is credit card.
 'finish_date' => 'required|date|after:start_date'
 ```
 
-便利なように、日付に基づくルールは、書きやすい`date`ルールビルダを使って構築できます。
+使いやすいように、日付に基づくルールは、書きやすい`date`ルールビルダを使って構築できます。
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1191,7 +1191,7 @@ use Illuminate\Validation\Rule;
 
 フィールドが指定した日付以降であることをバリデートします。詳細は[after](#rule-after)ルールを参照してください。
 
-便利なように、日付に基づくルールは、書きやすい`date`ルールビルダを使って構築できます。
+使いやすいように、日付に基づくルールは、書きやすい`date`ルールビルダを使って構築できます。
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1300,7 +1300,7 @@ if ($validator->stopOnFirstFailure()->fails()) {
 
 フィールドは、指定された日付より前の値であることをバリデートします。日付を有効な`DateTime`インスタンスへ変換するために、PHPの`strtotime`関数へ渡します。さらに、[after](#rule-after)ルールと同様に、バリデーション中の別のフィールドの名前を`date`の値として指定できます。
 
-便利なように、日付に基づくルールは、書きやすい`date`ルールビルダを使って構築できます。
+使いやすいように、日付に基づくルールは、書きやすい`date`ルールビルダを使って構築できます。
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1325,7 +1325,7 @@ use Illuminate\Validation\Rule;
 
 フィールドは、指定された日付より前または同じ値であることをバリデートします。日付を有効な`DateTime`インスタンスへ変換するために、PHPの`strtotime`関数へ渡します。さらに、[after](#rule-after)ルールと同様に、バリデーション中の別のフィールドの名前を`date`の値として指定できます。
 
-便利なように、日付に基づくルールは、書きやすい`date`ルールビルダを使って構築できます。
+使いやすいように、日付に基づくルールは、書きやすい`date`ルールビルダを使って構築できます。
 
 ```php
 use Illuminate\Validation\Rule;
@@ -1395,7 +1395,7 @@ Validator::make($data, [
 
 バリデーションされる値が、指定する*フォーマット*定義のどれか一つと一致するかバリデートします。バリデーション時には`date`か`date_format`の*どちらか*を使用しなくてはならず、両方はできません。このバリデーションはPHPの[DateTime](https://www.php.net/manual/ja/class.datetime.php)クラスがサポートするフォーマットをすべてサポートしています。
 
-便利なように、日付に基づくルールは、書きやすい`date`ルールビルダを使って構築できます。
+使いやすいように、日付に基づくルールは、書きやすい`date`ルールビルダを使って構築できます。
 
 ```php
 use Illuminate\Validation\Rule;

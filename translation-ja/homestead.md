@@ -36,6 +36,9 @@
 <a name="introduction"></a>
 ## イントロダクション
 
+> [!WARNING]
+> Laravel Homesteadはレガシーパッケージであり、現在はアクティブにメンテナンスしていません。[Laravel Sail](/docs/{{version}}/sail)が最新の代替パッケージとして使用可能です。
+
 Laravelはローカル開発環境を含め、PHP開発体験全体を楽しいものにするよう努めています。[Laravel Homestead](https://github.com/laravel/homestead)は、PHP、Webサーバ、その他のサーバソフトウェアをローカルマシンにインストールしなくても、すばらしい開発環境を提供する公式のパッケージ済みVagrantボックスです。
 
 [Vagrant](https://www.vagrantup.com)は、仮想マシンを管理およびプロビジョニングするためのシンプルでエレガントな方法を提供しています。Vagrantボックスは完全に使い捨てです。何か問題が発生した場合は、数分でボックスを破棄して再作成できます。

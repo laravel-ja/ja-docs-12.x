@@ -67,6 +67,8 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [Str::lower](#method-str-lower)
 [Str::markdown](#method-str-markdown)
 [Str::mask](#method-str-mask)
+[Str::match](#method-str-match)
+[Str::matchAll](#method-str-match-all)
 [Str::orderedUuid](#method-str-ordered-uuid)
 [Str::padBoth](#method-str-padboth)
 [Str::padLeft](#method-str-padleft)
@@ -150,6 +152,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [excerpt](#method-fluent-str-excerpt)
 [explode](#method-fluent-str-explode)
 [finish](#method-fluent-str-finish)
+[hash](#method-fluent-str-hash)
 [headline](#method-fluent-str-headline)
 [inlineMarkdown](#method-fluent-str-inline-markdown)
 [is](#method-fluent-str-is)
@@ -951,6 +954,48 @@ $string = Str::mask('taylor@example.com', '*', -15, 3);
 // tay***@example.com
 ```
 
+<a name="method-str-match"></a>
+#### `Str::match()` {.collection-method}
+
+`Str::match`メソッドは、指定正規表現パターンにマッチする文字列の部分を返します。
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::match('/bar/', 'foo bar');
+
+// 'bar'
+
+$result = Str::match('/foo (.*)/', 'foo bar');
+
+// 'bar'
+```
+
+<a name="method-str-match-all"></a>
+#### `Str::matchAll()` {.collection-method}
+
+`Str::matchAll`メソッドは、指定正規表現パターンにマッチする文字列の部分を含むコレクションを返します。
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::matchAll('/bar/', 'bar foo bar');
+
+// collect(['bar', 'bar'])
+```
+
+式の中でマッチするグループを指定すると、Laravelは最初にマッチしたグループのコレクションを返します。
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::matchAll('/f(\w*)/', 'bar fun bar fly');
+
+// collect(['un', 'ly']);
+```
+
+マッチしなかった場合は、空のコレクションを返します。
+
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {.collection-method}
 
@@ -1184,7 +1229,14 @@ $replaced = Str::replace('11.x', '12.x', $string);
 `replace`メソッドは、`caseSensitive`引数も指定できます。デフォルトで`replace`メソッドは、大・小文字を区別します。
 
 ```php
-Str::replace('Framework', 'Laravel', caseSensitive: false);
+$replaced = Str::replace(
+    'php',
+    'Laravel',
+    'PHP Framework for Web Artisans',
+    caseSensitive: false
+);
+
+// Laravel Framework for Web Artisans
 ```
 
 <a name="method-str-replace-array"></a>
@@ -2232,6 +2284,19 @@ $adjusted = Str::of('this/string')->finish('/');
 $adjusted = Str::of('this/string/')->finish('/');
 
 // this/string/
+```
+
+<a name="method-fluent-str-hash"></a>
+#### `hash` {.collection-method}
+
+`hash`メソッドは、指定[アルゴリズム](https://www.php.net/manual/ja/function.hash-algos.php)を使って文字列をハッシュします。
+
+```php
+use Illuminate\Support\Str;
+
+$hashed = Str::of('secret')->hash(algorithm: 'sha256');
+
+// '2bb80d537b1da3e38bd30361aa855686bde0eacd7162fef6a25fe97bf527a25b'
 ```
 
 <a name="method-fluent-str-headline"></a>

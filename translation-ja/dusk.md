@@ -1414,6 +1414,7 @@ Duskはアプリケーションに対する数多くのアサートを提供し�
 [assertDontSeeIn](#assert-dont-see-in)
 [assertSeeAnythingIn](#assert-see-anything-in)
 [assertSeeNothingIn](#assert-see-nothing-in)
+[assertCount](#assert-count)
 [assertScript](#assert-script)
 [assertSourceHas](#assert-source-has)
 [assertSourceMissing](#assert-source-missing)
@@ -1755,6 +1756,15 @@ $browser->assertSeeAnythingIn($selector);
 
 ```php
 $browser->assertSeeNothingIn($selector);
+```
+
+<a name="assert-count"></a>
+#### assertCount
+
+指定したセレクタにマッチする要素が指定回数出現することを宣言します。
+
+```php
+$browser->assertCount($selector, $count);
 ```
 
 <a name="assert-script"></a>
@@ -2503,6 +2513,16 @@ class ExampleTest extends DuskTestCase
         });
     }
 }
+```
+
+`component`メソッドは、指定コンポーネントをスコープする、ブラウザインスタンスを取得するために使用します。
+
+```php
+$datePicker = $browser->component(new DatePickerComponent);
+
+$datePicker->selectDate(2019, 1, 30);
+
+$datePicker->assertSee('January');
 ```
 
 <a name="continuous-integration"></a>
