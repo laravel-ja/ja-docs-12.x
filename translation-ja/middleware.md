@@ -245,21 +245,21 @@ Laravelには定義済みの`web`ミドルウェアグループと`api`ミドル
 
 <div class="overflow-auto">
 
-|`web`ミドルウェアグループ |
-| --- |
-| `Illuminate\Cookie\Middleware\EncryptCookies` |
+| `web`ミドルウェアグループ                                      |
+| --------------------------------------------------------- |
+| `Illuminate\Cookie\Middleware\EncryptCookies`             |
 | `Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse` |
-| `Illuminate\Session\Middleware\StartSession` |
-| `Illuminate\View\Middleware\ShareErrorsFromSession` |
+| `Illuminate\Session\Middleware\StartSession`              |
+| `Illuminate\View\Middleware\ShareErrorsFromSession`       |
 | `Illuminate\Foundation\Http\Middleware\ValidateCsrfToken` |
-| `Illuminate\Routing\Middleware\SubstituteBindings` |
+| `Illuminate\Routing\Middleware\SubstituteBindings`        |
 
 </div>
 
 <div class="overflow-auto">
 
-| `api`ミドルウェアグループ |
-| --- |
+| `api`ミドルウェアグループ                               |
+| -------------------------------------------------- |
 | `Illuminate\Routing\Middleware\SubstituteBindings` |
 
 </div>
@@ -355,20 +355,20 @@ Route::get('/profile', function () {
 
 <div class="overflow-auto">
 
-| エイリアス | ミドルウェア |
-| --- | --- |
-| `auth` | `Illuminate\Auth\Middleware\Authenticate` |
-| `auth.basic` | `Illuminate\Auth\Middleware\AuthenticateWithBasicAuth` |
-| `auth.session` | `Illuminate\Session\Middleware\AuthenticateSession` |
-| `cache.headers` | `Illuminate\Http\Middleware\SetCacheHeaders` |
-| `can` | `Illuminate\Auth\Middleware\Authorize` |
-| `guest` | `Illuminate\Auth\Middleware\RedirectIfAuthenticated` |
-| `password.confirm` | `Illuminate\Auth\Middleware\RequirePassword` |
-| `precognitive` | `Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests` |
-| `signed` | `Illuminate\Routing\Middleware\ValidateSignature` |
-| `subscribed` | `\Spark\Http\Middleware\VerifyBillableIsSubscribed` |
-| `throttle` | `Illuminate\Routing\Middleware\ThrottleRequests` or `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` |
-| `verified` | `Illuminate\Auth\Middleware\EnsureEmailIsVerified` |
+| エイリアス            | ミドルウェア                                                                                                    |
+| ------------------ | ------------------------------------------------------------------------------------------------------------- |
+| `auth`             | `Illuminate\Auth\Middleware\Authenticate`                                                                     |
+| `auth.basic`       | `Illuminate\Auth\Middleware\AuthenticateWithBasicAuth`                                                        |
+| `auth.session`     | `Illuminate\Session\Middleware\AuthenticateSession`                                                           |
+| `cache.headers`    | `Illuminate\Http\Middleware\SetCacheHeaders`                                                                  |
+| `can`              | `Illuminate\Auth\Middleware\Authorize`                                                                        |
+| `guest`            | `Illuminate\Auth\Middleware\RedirectIfAuthenticated`                                                          |
+| `password.confirm` | `Illuminate\Auth\Middleware\RequirePassword`                                                                  |
+| `precognitive`     | `Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests`                                            |
+| `signed`           | `Illuminate\Routing\Middleware\ValidateSignature`                                                             |
+| `subscribed`       | `\Spark\Http\Middleware\VerifyBillableIsSubscribed`                                                           |
+| `throttle`         | `Illuminate\Routing\Middleware\ThrottleRequests` or `Illuminate\Routing\Middleware\ThrottleRequestsWithRedis` |
+| `verified`         | `Illuminate\Auth\Middleware\EnsureEmailIsVerified`                                                            |
 
 </div>
 

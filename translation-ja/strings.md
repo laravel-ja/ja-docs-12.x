@@ -145,8 +145,10 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [chopEnd](#method-fluent-str-chop-end)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
+[decrypt](#method-fluent-str-decrypt)
 [deduplicate](#method-fluent-str-deduplicate)
 [dirname](#method-fluent-str-dirname)
+[encrypt](#method-fluent-str-encrypt)
 [endsWith](#method-fluent-str-ends-with)
 [exactly](#method-fluent-str-exactly)
 [excerpt](#method-fluent-str-excerpt)
@@ -2140,6 +2142,21 @@ $containsAll = Str::of('This is my name')->containsAll(['MY', 'NAME'], ignoreCas
 // true
 ```
 
+<a name="method-fluent-str-decrypt"></a>
+#### `decrypt` {.collection-method}
+
+`decrypt`メソッドは、暗号化済み文字列を[復号化](/docs/{{version}}/encryption)します。
+
+```php
+use Illuminate\Support\Str;
+
+$decrypted = $encrypted->decrypt();
+
+// 'secret'
+```
+
+`decrypt`の逆は、[encrypt](#method-fluent-str-encrypt)メソッドを参照してください。
+
 <a name="method-fluent-str-deduplicate"></a>
 #### `deduplicate` {.collection-method}
 
@@ -2185,6 +2202,19 @@ $string = Str::of('/foo/bar/baz')->dirname(2);
 
 // '/foo'
 ```
+
+<a name="method-fluent-str-encrypt"></a>
+#### `encrypt` {.collection-method}
+
+`encrypt`メソッドは、文字列を[暗号化](/docs/{{version}}/encryption)します。
+
+```php
+use Illuminate\Support\Str;
+
+$encrypted = Str::of('secret')->encrypt();
+```
+
+`encrypt`の逆は、[decrypt](#method-fluent-str-decrypt)メソッドを参照してください。
 
 <a name="method-fluent-str-ends-with"></a>
 #### `endsWith` {.collection-method}

@@ -15,6 +15,7 @@
     - [配列／JSONのシリアル化](#array-json-serialization)
     - [インバウンドのキャスト](#inbound-casting)
     - [キャストのパラメータ](#cast-parameters)
+    - [キャスト値の比較](#comparing-cast-values)
     - [Castable](#castables)
 
 <a name="introduction"></a>
@@ -923,6 +924,33 @@ protected function casts(): array
     return [
         'secret' => AsHash::class.':sha256',
     ];
+}
+```
+
+<a name="comparing-cast-values"></a>
+### キャスト値の比較
+
+指定する２つのキャスト値を比較して、変更されているかを判定する方法を定義したい場合、カスタムキャストクラスで`Illuminate\Contracts\Database\Eloquent\ComparesCastableAttributes`インターフェイスを実装してください。これにより、モデルが更新されたときに、Eloquentがどの値を変更されたとみなしてデータベースへ保存するかを細かくコントロールできるようになります。
+
+このインターフェイスは、指定値を等価とみなす場合に`true`を返す、`compare`メソッドを含む必要があると示しています。
+
+```php
+/**
+ * 指定値が等しいか判定
+ *
+ * @param  \Illuminate\Database\Eloquent\Model  $model
+ * @param  string  $key
+ * @param  mixed  $firstValue
+ * @param  mixed  $secondValue
+ * @return bool
+ */
+public function compare(
+    Model $model,
+    string $key,
+    mixed $firstValue,
+    mixed $secondValue
+): bool {
+    return $firstValue === $secondValue;
 }
 ```
 

@@ -145,8 +145,10 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [chopEnd](#method-fluent-str-chop-end)
 [contains](#method-fluent-str-contains)
 [containsAll](#method-fluent-str-contains-all)
+[decrypt](#method-fluent-str-decrypt)
 [deduplicate](#method-fluent-str-deduplicate)
 [dirname](#method-fluent-str-dirname)
+[encrypt](#method-fluent-str-encrypt)
 [endsWith](#method-fluent-str-ends-with)
 [exactly](#method-fluent-str-exactly)
 [excerpt](#method-fluent-str-excerpt)
@@ -468,7 +470,7 @@ $url = Str::chopEnd('laravel.com/index.php', ['/index.html', '/index.php']);
 <a name="method-str-contains"></a>
 #### `Str::contains()` {.collection-method}
 
-The `Str::contains` method determines if the given string contains the given value. By default this method is case sensitive:
+The `Str::contains` method determines if the given string contains the given value. By default, this method is case sensitive:
 
 ```php
 use Illuminate\Support\Str;
@@ -524,7 +526,7 @@ $containsAll = Str::containsAll('This is my name', ['MY', 'NAME'], ignoreCase: t
 <a name="method-str-doesnt-contain"></a>
 #### `Str::doesntContain()` {.collection-method}
 
-The `Str::doesntContain` method determines if the given string doesn't contain the given value. By default this method is case sensitive:
+The `Str::doesntContain` method determines if the given string doesn't contain the given value. By default, this method is case sensitive:
 
 ```php
 use Illuminate\Support\Str;
@@ -2087,7 +2089,7 @@ $url = Str::of('http://laravel.com')->chopEnd(['.com', '.io']);
 <a name="method-fluent-str-contains"></a>
 #### `contains` {.collection-method}
 
-The `contains` method determines if the given string contains the given value. By default this method is case sensitive:
+The `contains` method determines if the given string contains the given value. By default, this method is case sensitive:
 
 ```php
 use Illuminate\Support\Str;
@@ -2140,6 +2142,21 @@ $containsAll = Str::of('This is my name')->containsAll(['MY', 'NAME'], ignoreCas
 // true
 ```
 
+<a name="method-fluent-str-decrypt"></a>
+#### `decrypt` {.collection-method}
+
+The `decrypt` method [decrypts](/docs/{{version}}/encryption) the encrypted string:
+
+```php
+use Illuminate\Support\Str;
+
+$decrypted = $encrypted->decrypt();
+
+// 'secret'
+```
+
+For the inverse of `decrypt`, see the [encrypt](#method-fluent-str-encrypt) method.
+
 <a name="method-fluent-str-deduplicate"></a>
 #### `deduplicate` {.collection-method}
 
@@ -2185,6 +2202,19 @@ $string = Str::of('/foo/bar/baz')->dirname(2);
 
 // '/foo'
 ```
+
+<a name="method-fluent-str-encrypt"></a>
+#### `encrypt` {.collection-method}
+
+The `encrypt` method [encrypts](/docs/{{version}}/encryption) the string:
+
+```php
+use Illuminate\Support\Str;
+
+$encrypted = Str::of('secret')->encrypt();
+```
+
+For the inverse of `encrypt`, see the [decrypt](#method-fluent-str-decrypt) method.
 
 <a name="method-fluent-str-ends-with"></a>
 #### `endsWith` {.collection-method}

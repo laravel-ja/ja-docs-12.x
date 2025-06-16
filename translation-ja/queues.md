@@ -458,7 +458,7 @@ class RateLimited
 
 ご覧のとおり、[routeミドルウェア](/docs/{{version}}/middleware)のように、ジョブミドルウェアは処理中のジョブと、ジョブの処理を続行するために呼び出す必要のあるコールバックを受け取ります。
 
-ジョブミドルウェアを作成したら、ジョブの`middleware`メソッドから返すことで、ジョブにアタッチできます。このメソッドは、`make:job` Artisanコマンドによってスカフォールドされたジョブには存在しないため、手作業でジョブクラスへ追加する必要があります。
+`make:job-middleware` Artisanコマンドを使い、新しいジョブミドルウェアクラスを生成できます。ジョブミドルウェアを作成したら、ジョブの`middleware`メソッドから返すことで、ジョブにアタッチできます。このメソッドは、`make:job` Artisanコマンドによってスカフォールドされたジョブには存在しないため、手作業でジョブクラスへ追加する必要があります。
 
 ```php
 use App\Jobs\Middleware\RateLimited;
@@ -475,7 +475,7 @@ public function middleware(): array
 ```
 
 > [!NOTE]
-> Jobミドルウェアは、Queueableなイベントリスナ、Mailable、通知にも割り当てできます。
+> ジョブミドルウェアは、[キュー投入可能なイベントリスナ](/docs/{{version}}/events#queued-event-listeners)、[Mailables](/docs/{{version}}/mail#queueing-mail)、[通知](/docs/{{version}}/notifications#queueing-notifications)にも割り当てることができます。
 
 <a name="rate-limiting"></a>
 ### レート制限

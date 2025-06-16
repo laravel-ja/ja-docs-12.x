@@ -343,6 +343,24 @@ public function boot(): void
 }
 ```
 
+あるいは、モデルクラスに`UsePolicy`属性を指定して、そのモデルに対応するポリシーをLaravelへ通知することもできます。
+
+```php
+<?php
+
+namespace App\Models;
+
+use App\Policies\OrderPolicy;
+use Illuminate\Database\Eloquent\Attributes\UsePolicy;
+use Illuminate\Database\Eloquent\Model;
+
+#[UsePolicy(OrderPolicy::class)]
+class Order extends Model
+{
+    //
+}
+```
+
 <a name="writing-policies"></a>
 ## ポリシーの作成
 

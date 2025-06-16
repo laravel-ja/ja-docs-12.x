@@ -409,6 +409,12 @@ use Illuminate\Foundation\Configuration\Exceptions;
 })
 ```
 
+あるいは、`truncateExceptionsAt`メソッドを使い、リクエストごとに例外の切り捨て動作をカスタマイズすることもできます。
+
+```php
+return Http::truncateExceptionsAt(240)->post(/* ... */);
+```
+
 <a name="guzzle-middleware"></a>
 ### Guzzleミドルウェア
 

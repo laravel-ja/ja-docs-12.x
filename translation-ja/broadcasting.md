@@ -25,6 +25,7 @@
     - [他の人だけへの送信](#only-to-others)
     - [コネクションのカスタマイズ](#customizing-the-connection)
     - [無名イベント](#anonymous-events)
+    - [Rescuing Broadcasts](#rescuing-broadcasts)
 - [ブロードキャストの受け取り](#receiving-broadcasts)
     - [イベントのリッスン](#listening-for-events)
     - [チャンネルの離脱](#leaving-a-channel)
@@ -1020,6 +1021,27 @@ Broadcast::on('orders.'.$order->id)->sendNow();
 Broadcast::on('orders.'.$order->id)
     ->toOthers()
     ->send();
+```
+
+<a name="rescuing-broadcasts"></a>
+### Rescuing Broadcasts
+
+アプリケーションのキューサーバが利用できなかったり、Laravelがイベントブロードキャスト中にエラーに遭遇したりすると、例外を投げます。その場合、一般的にエンドユーザーへアプリケーションエラーを表示します。イベントブロードキャストは多くの場合、アプリケーションのコア機能を補足するものなので、イベントに`ShouldRescue`インターフェイスを実装し、こうした例外がユーザーエクスペリエンスを邪魔するのを防げられます。
+
+`ShouldRescue`インターフェイスを実装したイベントは、ブロードキャストを試みる間、自動的にLaravelの[rescueヘルパ関数](/docs/{{version}}/helpers#method-rescue)を利用します。このヘルパは例外をキャッチし、アプリケーションの例外ハンドラに報告してログに記録し、ユーザーのワークフローを中断することなく、アプリケーションを正常に実行し続けられます。
+
+```php
+<?php
+
+namespace App\Events;
+
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Contracts\Broadcasting\ShouldRescue;
+
+class ServerCreated implements ShouldBroadcast, ShouldRescue
+{
+    // …
+}
 ```
 
 <a name="receiving-broadcasts"></a>

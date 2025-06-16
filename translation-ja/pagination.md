@@ -363,28 +363,28 @@ public function boot(): void
 
 <div class="overflow-auto">
 
-| メソッド                                | 説明                                                                               |
-| --------------------------------------- | ---------------------------------------------------------------------------------- |
-| `$paginator->count()`                   | 現在のページのアイテム数を取得                                                     |
-| `$paginator->currentPage()`             | 現在のページ番号を取得                                                             |
-| `$paginator->firstItem()`               | 結果の最初の項目の結果番号を取得                                                   |
-| `$paginator->getOptions()`              | ペジネータオプションを取得                                                         |
-| `$paginator->getUrlRange($start, $end)` | ペジネーションURLを範囲内で生成                                                    |
-| `$paginator->hasPages()`                | 複数のページに分割するのに十分なアイテムがあるかどうかを判定                       |
-| `$paginator->hasMorePages()`            | データストアにさらにアイテムがあるかどうかを判定                                   |
-| `$paginator->items()`                   | 現在のページのアイテムを取得                                                       |
-| `$paginator->lastItem()`                | 結果の最後のアイテムの結果番号を取得                                               |
-| `$paginator->lastPage()`                | 最後に利用可能なページのページ番号を取得（`simplePaginate`使用時は使用不可能）     |
-| `$paginator->nextPageUrl()`             | 次のページのURLを取得                                                              |
-| `$paginator->onFirstPage()`             | ペジネータが最初のページにあるかを判定                                             |
-| `$paginator->onLastPage()`              | ペジネータが最後のページにあるかを判定 |
-| `$paginator->perPage()`                 | １ページ中に表示するアイテムの数                                                   |
-| `$paginator->previousPageUrl()`         | 前のページのURLを取得                                                              |
+| メソッド                                  | 説明                                                                                                           |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `$paginator->count()`                   | 現在のページのアイテム数を取得                                                                |
+| `$paginator->currentPage()`             | 現在のページ番号を取得                                                                                 |
+| `$paginator->firstItem()`               | 結果の最初の項目の結果番号を取得                                                      |
+| `$paginator->getOptions()`              | ペジネータオプションを取得                                                                                   |
+| `$paginator->getUrlRange($start, $end)` | ペジネーションURLを範囲内で生成                                                                           |
+| `$paginator->hasPages()`                | 複数のページに分割するのに十分なアイテムがあるかどうかを判定                                            |
+| `$paginator->hasMorePages()`            | データストアにさらにアイテムがあるかどうかを判定                                                         |
+| `$paginator->items()`                   | 現在のページのアイテムを取得                                                                          |
+| `$paginator->lastItem()`                | 結果の最後のアイテムの結果番号を取得                                                       |
+| `$paginator->lastPage()`                | 最後に利用可能なページのページ番号を取得（`simplePaginate`使用時は使用不可能）                 |
+| `$paginator->nextPageUrl()`             | 次のページのURLを取得                                                                               |
+| `$paginator->onFirstPage()`             | ペジネータが最初のページにあるかを判定                                                             |
+| `$paginator->onLastPage()`              | ペジネータが最後のページにあるかを判定                                                              |
+| `$paginator->perPage()`                 | １ページ中に表示するアイテムの数                                                                    |
+| `$paginator->previousPageUrl()`         | 前のページのURLを取得                                                                           |
 | `$paginator->total()`                   | データストア内の一致するアイテムの総数を判定（`simplePaginate`使用時は使用不可能） |
-| `$paginator->url($page)`                | 指定するページ番号のURLを取得                                                      |
-| `$paginator->getPageName()`             | ページの保存に使用するクエリ文字列変数を取得                                       |
-| `$paginator->setPageName($name)`        | ページの保存に使用するクエリ文字列変数を設定                                       |
-| `$paginator->through($callback)`        | コールバックを使い、各アイテムを変換                                               |
+| `$paginator->url($page)`                | 指定するページ番号のURLを取得                                                                         |
+| `$paginator->getPageName()`             | ページの保存に使用するクエリ文字列変数を取得                                                        |
+| `$paginator->setPageName($name)`        | ページの保存に使用するクエリ文字列変数を設定                                                        |
+| `$paginator->through($callback)`        | コールバックを使い、各アイテムを変換                                                                        |
 
 </div>
 

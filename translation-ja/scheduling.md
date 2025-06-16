@@ -623,12 +623,12 @@ Laravelは、スケジュールの処理中に様々な[イベント](/docs/{{ve
 
 <div class="overflow-auto">
 
-| イベント名 |
-| --- |
-| `Illuminate\Console\Events\ScheduledTaskStarting` |
-| `Illuminate\Console\Events\ScheduledTaskFinished` |
+| イベント名                                                  |
+| ----------------------------------------------------------- |
+| `Illuminate\Console\Events\ScheduledTaskStarting`           |
+| `Illuminate\Console\Events\ScheduledTaskFinished`           |
 | `Illuminate\Console\Events\ScheduledBackgroundTaskFinished` |
-| `Illuminate\Console\Events\ScheduledTaskSkipped` |
-| `Illuminate\Console\Events\ScheduledTaskFailed` |
+| `Illuminate\Console\Events\ScheduledTaskSkipped`            |
+| `Illuminate\Console\Events\ScheduledTaskFailed`             |
 
 </div>

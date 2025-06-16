@@ -1312,10 +1312,10 @@ Passportはアクセストークンやリフレッシュトークンを発行す
 
 <div class="overflow-auto">
 
-| イベント名 |
-| ------------- |
-| `Laravel\Passport\Events\AccessTokenCreated` |
-| `Laravel\Passport\Events\AccessTokenRevoked` |
+| イベント名                                      |
+| --------------------------------------------- |
+| `Laravel\Passport\Events\AccessTokenCreated`  |
+| `Laravel\Passport\Events\AccessTokenRevoked`  |
 | `Laravel\Passport\Events\RefreshTokenCreated` |
 
 </div>

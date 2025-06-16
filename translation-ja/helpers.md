@@ -2805,12 +2805,13 @@ return retry([100, 200], function () {
 特定条件下でのみ再試行するには、`retry`関数への4番目の引数としてクロージャを渡せます。
 
 ```php
+use App\Exceptions\TemporaryException;
 use Exception;
 
 return retry(5, function () {
     // ...
 }, 100, function (Exception $exception) {
-    return $exception instanceof RetryException;
+    return $exception instanceof TemporaryException;
 });
 ```
 

@@ -568,7 +568,7 @@ $users = DB::table('users')
 括弧内に"or"条件をグループ化する必要がある場合は、`orWhere`メソッドの最初の引数としてクロージャを渡してください。
 
 ```php
-use Illuminate\Database\Query\Builder; 
+use Illuminate\Database\Query\Builder;
 
 $users = DB::table('users')
     ->where('votes', '>', 100)
@@ -1161,6 +1161,14 @@ $unorderedUsers = $query->reorder()->get();
 $query = DB::table('users')->orderBy('name');
 
 $usersOrderedByEmail = $query->reorder('email', 'desc')->get();
+```
+
+使いやすくするため、`reorderDesc`メソッドを使い、クエリ結果を降順に並べ替えられます。
+
+```php
+$query = DB::table('users')->orderBy('name');
+
+$usersOrderedByEmail = $query->reorderDesc('email')->get();
 ```
 
 <a name="grouping"></a>
