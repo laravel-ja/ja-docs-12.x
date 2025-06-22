@@ -1428,6 +1428,63 @@ $this->fail('Something went wrong.');
 > [!NOTE]
 > 失敗したジョブの詳細は、[ジョブの失敗の処理に関するドキュメント](#dealing-with-failed-jobs)を確認してください。
 
+<a name="fail-jobs-on-exceptions"></a>
+#### Failing Jobs on Specific Exceptions
+
+`FailOnException`[ジョブミドルウェア](#job-middleware)を使うと、特定の例外が投げられたときにリトライを省略できます。これにより、外部APIのエラーのような一時的な例外ではリトライさせ、ユーザー権限の取り消しのような永続的な例外でジョブを永久に失敗させられます。
+
+```php
+<?php
+
+namespace App\Jobs;
+
+use App\Models\User;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\FailOnException;
+use Illuminate\Support\Facades\Http;
+
+class SyncChatHistory implements ShouldQueue
+{
+    use InteractsWithQueue;
+
+    public $tries = 3;
+
+    /**
+     * 新しいジョブインスタンスの生成
+     */
+    public function __construct(
+        public User $user,
+    ) {}
+
+    /**
+     * ジョブの実行
+     */
+    public function handle(): void
+    {
+        $user->authorize('sync-chat-history');
+
+        $response = Http::throw()->get(
+            "https://chat.laravel.test/?user={$user->uuid}"
+        );
+
+        // ...
+    }
+
+    /**
+     * このジョブを通過させるミドルウェアを取得
+     */
+    public function middleware(): array
+    {
+        return [
+            new FailOnException([AuthorizationException::class])
+        ];
+    }
+}
+```
+
 <a name="job-batching"></a>
 ## ジョブバッチ
 

@@ -202,6 +202,7 @@ use App\Models\Passport\Client;
 use App\Models\Passport\DeviceCode;
 use App\Models\Passport\RefreshToken;
 use App\Models\Passport\Token;
+use Laravel\Passport\Passport;
 
 /**
  * Bootstrap any application services.
@@ -212,7 +213,7 @@ public function boot(): void
     Passport::useRefreshTokenModel(RefreshToken::class);
     Passport::useAuthCodeModel(AuthCode::class);
     Passport::useClientModel(Client::class);
-    Passport::useDeviceCodeModel(DeviceCode::class)
+    Passport::useDeviceCodeModel(DeviceCode::class);
 }
 ```
 

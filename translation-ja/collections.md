@@ -436,7 +436,7 @@ $collapsed->all();
 <a name="method-collapsewithkeys"></a>
 #### `collapseWithKeys()` {.collection-method}
 
-`collapseWithKeys`メソッドは、配列またはコレクションのコレクションを元のキーを保持したまま、１つのコレクションへ一元化します。
+`collapseWithKeys`メソッドは、配列またはコレクションのコレクションを元のキーを保持したまま、１つのコレクションへ一元化します。コレクションがすでに一元化されている場合は、空のコレクションを返します。
 
 ```php
 $collection = collect([

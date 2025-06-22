@@ -241,7 +241,7 @@ resources/views
 
 #### 旧来のLivewireコンポーネント
 
-フロントエンドのコードは`resouces/views`ディレクトリにあり、`app/Livewire`ディレクトリにはLivewireコンポーネントと対応するバックエンドロジックを置きます。
+フロントエンドのコードは`resources/views`ディレクトリにあり、`app/Livewire`ディレクトリにはLivewireコンポーネントと対応するバックエンドロジックを置きます。
 
 <a name="livewire-available-layouts"></a>
 #### 利用可能なレイアウト

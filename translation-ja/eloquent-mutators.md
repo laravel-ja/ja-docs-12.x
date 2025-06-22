@@ -214,6 +214,7 @@ protected function address(): Attribute
 <div class="content-list" markdown="1">
 
 - `array`
+- `AsFluent::class`
 - `AsStringable::class`
 - `AsUri::class`
 - `boolean`

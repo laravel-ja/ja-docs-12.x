@@ -1005,6 +1005,8 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 [assertPlainCookie](#assert-plain-cookie)
 [assertRedirect](#assert-redirect)
 [assertRedirectBack](#assert-redirect-back)
+[assertRedirectBackWithErrors](#assert-redirect-back-with-errors)
+[assertRedirectBackWithoutErrors](#assert-redirect-back-without-errors)
 [assertRedirectContains](#assert-redirect-contains)
 [assertRedirectToRoute](#assert-redirect-to-route)
 [assertRedirectToSignedRoute](#assert-redirect-to-signed-route)
@@ -1559,6 +1561,26 @@ $response->assertRedirect($uri = null);
 
 ```php
 $response->assertRedirectBack();
+```
+
+<a name="assert-redirect-back-with-errors"></a>
+#### assertRedirectBackWithErrors
+
+レスポンスが直前のページへリダイレクトされ、[セッションに指定のエラーがあること](#assert-session-has-errors)を宣言します。
+
+```php
+$response->assertRedirectBackWithErrors(
+    array $keys = [], $format = null, $errorBag = 'default'
+);
+```
+
+<a name="assert-redirect-back-without-errors"></a>
+#### assertRedirectBackWithoutErrors
+
+レスポンスが直前のページへリダイレクトされ、セッションにエラーメッセージが含まれないことを宣言します。
+
+```php
+$response->assertRedirectBackWithoutErrors();
 ```
 
 <a name="assert-redirect-contains"></a>
