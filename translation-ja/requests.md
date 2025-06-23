@@ -644,7 +644,7 @@ return redirect('/form')->withInput(
 $username = $request->old('username');
 ```
 
-Laravelはグローバルな`old`ヘルパも提供しています。[Bladeテンプレート](/docs/{{version}}/Blade)内に古い入力を表示する場合は、`old`ヘルパを使用してフォームを再入力する方が便利です。指定されたフィールドに古い入力が存在しない場合、`null`を返します。
+Laravelはグローバルな`old`ヘルパも提供しています。[Bladeテンプレート](/docs/{{version}}/blade)内に古い入力を表示する場合は、`old`ヘルパを使用してフォームを再入力する方が便利です。指定されたフィールドに古い入力が存在しない場合、`null`を返します。
 
 ```blade
 <input type="text" name="username" value="{{ old('username') }}">
