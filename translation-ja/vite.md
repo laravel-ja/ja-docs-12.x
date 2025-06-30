@@ -34,7 +34,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-[Vite](https://vitejs.dev) is a modern frontend build tool that provides an extremely fast development environment and bundles your code for production. When building applications with Laravel, you will typically use Vite to bundle your application's CSS and JavaScript files into production-ready assets.
+[Vite](https://vitejs.dev)は、非常に高速な開発環境を提供してくれる、コードを本番用に構築する最新のフロントエンド・ビルド・ツールです。Laravelでアプリケーションを構築する場合、通常、Viteを使用してアプリケーションのCSSとJavaScriptファイルを本番環境用のアセットへ構築することになります。
 
 Laravelは、開発および実働用アセットをロードするため、公式プラグインとBladeディレクティブを提供し、Viteをシームレスに統合しています。
 
