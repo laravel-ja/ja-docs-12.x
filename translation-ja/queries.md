@@ -1122,6 +1122,14 @@ $users = DB::table('users')
     ->get();
 ```
 
+ソート順はオプションで、デフォルトでは昇順です。降順でソートしたい場合は、`orderBy`メソッドの第２パラメータを指定するか、`orderByDesc`を使用してください。
+
+```php
+$users = DB::table('users')
+    ->orderByDesc('verified_at')
+    ->get();
+```
+
 <a name="latest-oldest"></a>
 #### `latest`と`oldest`メソッド
 
@@ -1210,16 +1218,7 @@ $users = DB::table('users')
 <a name="limit-and-offset"></a>
 ### 件数制限とオフセット
 
-<a name="skip-take"></a>
-#### `skip`と`take`メソッド
-
-`skip`メソッドと`take`メソッドを使用して、クエリから返される結果の数を制限したり、クエリ内の特定の数の結果をスキップしたりできます。
-
-```php
-$users = DB::table('users')->skip(10)->take(5)->get();
-```
-
-または、`limit`メソッドと`offset`メソッドを使用することもできます。これらのメソッドは、それぞれ「take」メソッドと「skip」メソッドと機能的に同等です。
+`limit`メソッドと`offset`メソッドを使用すると、クエリが返す結果の個数を制限したり、クエリ内の指定した数だけ結果をスキップしたりすることができます。
 
 ```php
 $users = DB::table('users')

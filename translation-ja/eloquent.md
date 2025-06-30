@@ -431,7 +431,7 @@ Eloquentの`all`メソッドは、モデルのテーブルにあるすべての�
 ```php
 $flights = Flight::where('active', 1)
     ->orderBy('name')
-    ->take(10)
+    ->limit(10)
     ->get();
 ```
 

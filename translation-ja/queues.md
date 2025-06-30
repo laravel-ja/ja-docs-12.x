@@ -1933,7 +1933,7 @@ php artisan queue:work
 > [!NOTE]
 > `queue:work`プロセスをバックグラウンドで永続的に実行し続けるには、[Supervisor](#supervisor-configuration)などのプロセスモニタを使用して、キューワーカの実行が停止しないようにする必要があります。
 
-処理済みのジョブIDをコマンド出力へ含めたい場合は、`queue:work`コマンドを実行する際に、`-v`フラグを指定します。
+処理済みのジョブID、コネクション名、キュー名をコマンド出力へ含めたい場合は、`queue:work`コマンドを実行する際に、`-v`フラグを指定します。
 
 ```shell
 php artisan queue:work -v

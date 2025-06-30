@@ -701,27 +701,6 @@ Http::fake(function (Request $request) {
 });
 ```
 
-<a name="preventing-stray-requests"></a>
-### 行き先がないリクエストの防止
-
-HTTPクライアントから送信したすべてのリクエストを個々のテスト、またはテストスイート全体で確実にフェイクにしたい場合は、`preventStrayRequests`メソッドをコールします。このメソッドを呼び出すと、対応するフェイクレスポンスがないリクエストは、実際にHTTPリクエストを行うのではなく、例外を投げるようになります。
-
-```php
-use Illuminate\Support\Facades\Http;
-
-Http::preventStrayRequests();
-
-Http::fake([
-    'github.com/*' => Http::response('ok'),
-]);
-
-// An "ok" response is returned...
-Http::get('https://github.com/laravel/framework');
-
-// An exception is thrown...
-Http::get('https://laravel.com');
-```
-
 <a name="inspecting-requests"></a>
 ### レスポンスの検査
 
@@ -821,6 +800,27 @@ $recorded = Http::recorded(function (Request $request, Response $response) {
     return $request->url() !== 'https://laravel.com' &&
            $response->successful();
 });
+```
+
+<a name="preventing-stray-requests"></a>
+### 行き先がないリクエストの防止
+
+もし個々のテストやテストスイート全体で、HTTPクライアント経由で送信するすべてのリクエストが、Fakeであることを確認したい場合は、`preventStrayRequests`メソッドを呼び出してください。このメソッドを呼び出すと、対応するFakeレスポンスがないリクエストは、実際のHTTPリクエストを行うのではなく例外を投げるようになります。
+
+```php
+use Illuminate\Support\Facades\Http;
+
+Http::preventStrayRequests();
+
+Http::fake([
+    'github.com/*' => Http::response('ok'),
+]);
+
+// "ok"レスポンスが返される
+Http::get('https://github.com/laravel/framework');
+
+// 例外が投げられる
+Http::get('https://laravel.com');
 ```
 
 <a name="events"></a>

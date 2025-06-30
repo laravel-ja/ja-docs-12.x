@@ -47,9 +47,6 @@ php artisan octane:install
 <a name="server-prerequisites"></a>
 ## サーバ要件
 
-> [!WARNING]
-> Laravel Octane requires [PHP 8.1+](https://php.net/releases/).
-
 <a name="frankenphp"></a>
 ### FrankenPHP
 

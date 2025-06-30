@@ -134,7 +134,6 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [config_path](#method-config-path)
 [database_path](#method-database-path)
 [lang_path](#method-lang-path)
-[mix](#method-mix)
 [public_path](#method-public-path)
 [resource_path](#method-resource-path)
 [storage_path](#method-storage-path)
@@ -171,6 +170,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [bcrypt](#method-bcrypt)
 [blank](#method-blank)
 [broadcast](#method-broadcast)
+[broadcast_if](#method-broadcast-if)
+[broadcast_unless](#method-broadcast-unless)
 [cache](#method-cache)
 [class_uses_recursive](#method-class-uses-recursive)
 [collect](#method-collect)
@@ -481,7 +482,7 @@ $value = Arr::float($array, 'name');
 <a name="method-array-forget"></a>
 #### `Arr::forget()` {.collection-method}
 
-The `Arr::forget` method removes a given key / value pair from a deeply nested array using "dot" notation:
+The `Arr::forget` method removes a given key / value pairs from a deeply nested array using "dot" notation:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1952,15 +1953,6 @@ $path = lang_path('en/messages.php');
 > [!NOTE]
 > By default, the Laravel application skeleton does not include the `lang` directory. If you would like to customize Laravel's language files, you may publish them via the `lang:publish` Artisan command.
 
-<a name="method-mix"></a>
-#### `mix()` {.collection-method}
-
-The `mix` function returns the path to a [versioned Mix file](/docs/{{version}}/mix):
-
-```php
-$path = mix('css/app.css');
-```
-
 <a name="method-public-path"></a>
 #### `public_path()` {.collection-method}
 
@@ -2095,7 +2087,7 @@ The `uri` function generates a [fluent URI instance](#uri) for the given URI:
 ```php
 $uri = uri('https://example.com')
     ->withPath('/users')
-    ->withQuery(['page' => 1])
+    ->withQuery(['page' => 1]);
 ```
 
 If the `uri` function is given an array containing a callable controller and method pair, the function will create a `Uri` instance for the controller method's route path:
@@ -2103,7 +2095,7 @@ If the `uri` function is given an array containing a callable controller and met
 ```php
 use App\Http\Controllers\UserController;
 
-$uri = uri([UserController::class, 'show'], ['user' => $user])
+$uri = uri([UserController::class, 'show'], ['user' => $user]);
 ```
 
 If the controller is invokable, you may simply provide the controller class name:
@@ -2140,6 +2132,8 @@ $full = url()->full();
 
 $previous = url()->previous();
 ```
+
+For more information on working with the `url` function, consult the [URL generation documentation](/docs/{{version}}/urls#generating-urls).
 
 <a name="miscellaneous"></a>
 ## Miscellaneous
@@ -2262,6 +2256,28 @@ The `broadcast` function [broadcasts](/docs/{{version}}/broadcasting) the given 
 broadcast(new UserRegistered($user));
 
 broadcast(new UserRegistered($user))->toOthers();
+```
+
+<a name="method-broadcast-if"></a>
+#### `broadcast_if()` {.collection-method}
+
+The `broadcast_if` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners if a given boolean expression evaluates to `true`:
+
+```php
+broadcast_if($user->isActive(), new UserRegistered($user));
+
+broadcast_if($user->isActive(), new UserRegistered($user))->toOthers();
+```
+
+<a name="method-broadcast-unless"></a>
+#### `broadcast_unless()` {.collection-method}
+
+The `broadcast_unless` function [broadcasts](/docs/{{version}}/broadcasting) the given [event](/docs/{{version}}/events) to its listeners if a given boolean expression evaluates to `false`:
+
+```php
+broadcast_unless($user->isBanned(), new UserRegistered($user));
+
+broadcast_unless($user->isBanned(), new UserRegistered($user))->toOthers();
 ```
 
 <a name="method-cache"></a>
@@ -2661,7 +2677,7 @@ $policy = policy(App\Models\User::class);
 The `redirect` function returns a [redirect HTTP response](/docs/{{version}}/responses#redirects), or returns the redirector instance if called with no arguments:
 
 ```php
-return redirect($to = null, $status = 302, $headers = [], $https = null);
+return redirect($to = null, $status = 302, $headers = [], $secure = null);
 
 return redirect('/home');
 
@@ -2686,7 +2702,7 @@ report('Something went wrong.');
 <a name="method-report-if"></a>
 #### `report_if()` {.collection-method}
 
-The `report_if` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions) if the given condition is `true`:
+The `report_if` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions) if a given boolean expression evaluates to `true`:
 
 ```php
 report_if($shouldReport, $e);
@@ -2697,7 +2713,7 @@ report_if($shouldReport, 'Something went wrong.');
 <a name="method-report-unless"></a>
 #### `report_unless()` {.collection-method}
 
-The `report_unless` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions) if the given condition is `false`:
+The `report_unless` function will report an exception using your [exception handler](/docs/{{version}}/errors#handling-exceptions) if a given boolean expression evaluates to `false`:
 
 ```php
 report_unless($reportingDisabled, $e);
@@ -3056,7 +3072,7 @@ To invoke a callback more than once, you may specify the number of iterations th
 Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
 ```
 
-Sometimes, you may want to benchmark the execution of a callback while still obtaining the value returned by the callback. The `value` method will return a tuple containing the value returned by the callback and the amount of milliseconds it took to execute the callback:
+Sometimes, you may want to benchmark the execution of a callback while still obtaining the value returned by the callback. The `value` method will return a tuple containing the value returned by the callback and the number of milliseconds it took to execute the callback:
 
 ```php
 [$count, $duration] = Benchmark::value(fn () => User::count());
@@ -3399,7 +3415,7 @@ Sleep::assertNeverSlept();
 Sleep::assertInsomniac();
 ```
 
-Sometimes it may be useful to perform an action whenever a fake sleep occurs in your application code. To achieve this, you may provide a callback to the `whenFakingSleep` method. In the following example, we use Laravel's [time manipulation helpers](/docs/{{version}}/mocking#interacting-with-time) to instantly progress time by the duration of each sleep:
+Sometimes it may be useful to perform an action whenever a fake sleep occurs. To achieve this, you may provide a callback to the `whenFakingSleep` method. In the following example, we use Laravel's [time manipulation helpers](/docs/{{version}}/mocking#interacting-with-time) to instantly progress time by the duration of each sleep:
 
 ```php
 use Carbon\CarbonInterval as Duration;

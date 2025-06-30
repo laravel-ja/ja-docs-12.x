@@ -20,7 +20,7 @@ LaravelでRedisを使い始める前に、PECLにより[PhpRedis](https://github
 PhpRedis拡張機能をインストールできない場合は、Composerを介して`predis/predis`パッケージをインストールしてください。PredisはすべてPHPで記述されたRedisクライアントであり、追加の拡張機能は必要ありません。
 
 ```shell
-composer require predis/predis:^2.0
+composer require predis/predis
 ```
 
 <a name="configuration"></a>

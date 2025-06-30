@@ -1076,6 +1076,35 @@ class OrderShipped extends Mailable implements ShouldQueue
 > [!NOTE]
 > これらの問題の回避方法の詳細は、[キュー投入したジョブとデータベーストランザクション](/docs/{{version}}/queues#jobs-and-database-transactions)に関するドキュメントを確認してください。
 
+<a name="queued-email-failures"></a>
+#### キー投入したメールの失敗
+
+キュー投入したメールが失敗すると、キュー投入したMailableクラスに`failed`メソッドが定義されていれば、それを呼び出します。キュー投入したメールが失敗する原因となった、`Throwable`インスタンスを`failed`メソッドへ渡します。
+
+```php
+<?php
+
+namespace App\Mail;
+
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Mail\Mailable;
+use Illuminate\Queue\SerializesModels;
+use Throwable;
+
+class OrderDelayed extends Mailable implements ShouldQueue
+{
+    use SerializesModels;
+
+    /**
+     * キュー投入したメールの失敗を処理
+     */
+    public function failed(Throwable $exception): void
+    {
+        // ...
+    }
+}
+```
+
 <a name="rendering-mailables"></a>
 ## Mailableのレンダ
 

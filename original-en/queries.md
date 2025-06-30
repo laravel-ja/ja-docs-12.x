@@ -1122,6 +1122,14 @@ $users = DB::table('users')
     ->get();
 ```
 
+The sort direction is optional, and is ascending by default. If you want to sort in descending order, you can specify the second parameter for the `orderBy` method, or just use `orderByDesc`:
+
+```php
+$users = DB::table('users')
+    ->orderByDesc('verified_at')
+    ->get();
+```
+
 <a name="latest-oldest"></a>
 #### The `latest` and `oldest` Methods
 
@@ -1210,16 +1218,7 @@ To build more advanced `having` statements, see the [havingRaw](#raw-methods) me
 <a name="limit-and-offset"></a>
 ### Limit and Offset
 
-<a name="skip-take"></a>
-#### The `skip` and `take` Methods
-
-You may use the `skip` and `take` methods to limit the number of results returned from the query or to skip a given number of results in the query:
-
-```php
-$users = DB::table('users')->skip(10)->take(5)->get();
-```
-
-Alternatively, you may use the `limit` and `offset` methods. These methods are functionally equivalent to the `take` and `skip` methods, respectively:
+You may use the `limit` and `offset` methods to limit the number of results returned from the query or to skip a given number of results in the query:
 
 ```php
 $users = DB::table('users')

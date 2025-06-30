@@ -134,7 +134,6 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [config_path](#method-config-path)
 [database_path](#method-database-path)
 [lang_path](#method-lang-path)
-[mix](#method-mix)
 [public_path](#method-public-path)
 [resource_path](#method-resource-path)
 [storage_path](#method-storage-path)
@@ -171,6 +170,8 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [bcrypt](#method-bcrypt)
 [blank](#method-blank)
 [broadcast](#method-broadcast)
+[broadcast_if](#method-broadcast-if)
+[broadcast_unless](#method-broadcast-unless)
 [cache](#method-cache)
 [class_uses_recursive](#method-class-uses-recursive)
 [collect](#method-collect)
@@ -1952,15 +1953,6 @@ $path = lang_path('en/messages.php');
 > [!NOTE]
 > Laravelアプリケーションのスケルトンは、デフォルトで`lang`ディレクトリを用意していません。Laravelの言語ファイルをカスタマイズしたい場合は、`lang:publish` Artisanコマンドでリソース公開することができます。
 
-<a name="method-mix"></a>
-#### `mix()` {.collection-method}
-
-`mix`関数は、[バージョンつけしたMixファイル](/docs/{{version}}/mix)のパスを取得します。
-
-```php
-$path = mix('css/app.css');
-```
-
 <a name="method-public-path"></a>
 #### `public_path()` {.collection-method}
 
@@ -2095,7 +2087,7 @@ return to_route('users.show', ['user' => 1], 302, ['X-Framework' => 'Laravel']);
 ```php
 $uri = uri('https://example.com')
     ->withPath('/users')
-    ->withQuery(['page' => 1])
+    ->withQuery(['page' => 1]);
 ```
 
 `uri`関数へ呼び出し可能なコントローラとメソッドのペアを含む配列を渡すと、コントローラメソッドのルートパスへの`Uri`インスタンスを作成します。
@@ -2103,7 +2095,7 @@ $uri = uri('https://example.com')
 ```php
 use App\Http\Controllers\UserController;
 
-$uri = uri([UserController::class, 'show'], ['user' => $user])
+$uri = uri([UserController::class, 'show'], ['user' => $user]);
 ```
 
 コントローラがInvokableの場合は、コントローラのクラス名を指定します。
@@ -2140,6 +2132,8 @@ $full = url()->full();
 
 $previous = url()->previous();
 ```
+
+`url`関数の取り扱いの詳細は、[URL生成ドキュメント](/docs/{{version}}/urls#generating-urls)を参照してください。
 
 <a name="miscellaneous"></a>
 ## その他
@@ -2262,6 +2256,28 @@ blank(false);
 broadcast(new UserRegistered($user));
 
 broadcast(new UserRegistered($user))->toOthers();
+```
+
+<a name="method-broadcast-if"></a>
+#### `broadcast_if()` {.collection-method}
+
+`broadcast_if`関数は、指定した論理式が`true`と評価された場合に、指定[イベント](/docs/{{version}}/broadcasting)をリスナへブロードキャストします。
+
+```php
+broadcast_if($user->isActive(), new UserRegistered($user));
+
+broadcast_if($user->isActive(), new UserRegistered($user))->toOthers();
+```
+
+<a name="method-broadcast-unless"></a>
+#### `broadcast_unless()` {.collection-method}
+
+`broadcast_unless`関数は、指定した論理式が`false`と評価された場合に、指定[イベント](/docs/{{version}}/broadcasting)をリスナへブロードキャストします。
+
+```php
+broadcast_unless($user->isBanned(), new UserRegistered($user));
+
+broadcast_unless($user->isBanned(), new UserRegistered($user))->toOthers();
 ```
 
 <a name="method-cache"></a>
@@ -2661,7 +2677,7 @@ $policy = policy(App\Models\User::class);
 `redirect`関数は、[リダイレクトHTTPレスポンス](/docs/{{version}}/responses#redirects)を返します。引数無しで呼び出した場合は、リダイレクタインスタンスを返します。
 
 ```php
-return redirect($to = null, $status = 302, $headers = [], $https = null);
+return redirect($to = null, $status = 302, $headers = [], $secure = null);
 
 return redirect('/home');
 
@@ -2686,7 +2702,7 @@ report('Something went wrong.');
 <a name="method-report-if"></a>
 #### `report_if()` {.collection-method}
 
-`report_if`関数は、指定条件が`true`であれば、あなたの[例外ハンドラ](/docs/{{version}}/errors#handling-exceptions)を使って例外を報告します。
+`report_if`関数は、指定した論理式が`true`と評価された場合に、あなたの[例外ハンドラ](/docs/{{version}}/errors#handling-exceptions)を使って例外を報告します。
 
 ```php
 report_if($shouldReport, $e);
@@ -2697,7 +2713,7 @@ report_if($shouldReport, 'Something went wrong.');
 <a name="method-report-unless"></a>
 #### `report_unless()` {.collection-method}
 
-`report_unless`関数は、指定条件が`false`であれば、あなたの[例外ハンドラ](/docs/{{version}}/errors#handling-exceptions)を使って例外を報告します。
+`report_unless`関数は、指定した論理式が`false`と評価された場合に、あなたの[例外ハンドラ](/docs/{{version}}/errors#handling-exceptions)を使って例外を報告します。
 
 ```php
 report_unless($reportingDisabled, $e);
@@ -3399,7 +3415,7 @@ Sleep::assertNeverSlept();
 Sleep::assertInsomniac();
 ```
 
-アプリケーションコードで、Fakeスリープが発生するたびに、アクションを実行できれば便利な場合が時々あるでしょう。これを行うには、`whenFakingSleep`メソッドへコールバックを渡します。以下の例では、Laravelの[時間操作ヘルパ](/docs/{{version}}/mocking#interacting-with-time)を使い、Sleepの間隔ごとで、瞬時に時間を進めています。
+Fakeスリープが発生するたびに、アクションを実行できれば便利な場合が時々あるでしょう。これを行うには、`whenFakingSleep`メソッドへコールバックを渡します。以下の例では、Laravelの[時間操作ヘルパ](/docs/{{version}}/mocking#interacting-with-time)を使い、Sleepの間隔ごとで、瞬時に時間を進めています。
 
 ```php
 use Carbon\CarbonInterval as Duration;

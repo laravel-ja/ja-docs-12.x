@@ -5,6 +5,9 @@
 <a name="introduction"></a>
 ## イントロダクション
 
+> [!WARNING]
+> Laravel Mixはレガシーパッケージであり、現在はアクティブにメンテナンスしていません。[Vite](/docs/{{version}}/vite)を最新の代替パッケージとして使ってください。
+
 [Laravel Mix](https://github.com/laravel-mix/laravel-mix) は、[Laracasts](https://laracasts.com) を作った、Jeffrey Wayが開発したパッケージで、Laravelアプリケーションのため、一般的なCSSとJavaScriptプリプロセッサを使い、[webpack](https://webpack.js.org)ビルド手順を定義する流暢なAPIを提供するものです。
 
 言い換えると、Mixを使用すると、アプリケーションのCSSファイルとJavaScriptファイルを簡単にコンパイルして圧縮できます。シンプルなメソッドチェーンにより、アセットパイプラインを流暢に定義できます。例をご覧ください。
