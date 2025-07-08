@@ -24,7 +24,7 @@
 - [テスト時のVite無効](#disabling-vite-in-tests)
 - [サーバサイドレンダリング(SSR)](#ssr)
 - [Scriptとstyleタグ属性](#script-and-style-attributes)
-  - [コンテンツセキュリティポリシー（CSP)ノンス](#content-security-policy-csp-nonce)
+  - [コンテンツセキュリティポリシー（CSP）ノンス](#content-security-policy-csp-nonce)
   - [サブリソース完全性(SRI)](#subresource-integrity-sri)
   - [任意の属性](#arbitrary-attributes)
 - [高度なカスタマイズ](#advanced-customization)
