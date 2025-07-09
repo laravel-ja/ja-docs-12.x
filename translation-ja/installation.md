@@ -205,11 +205,11 @@ Herdの詳細は、[Windows向けHerdドキュメント](https://herd.laravel.co
 <a name="ide-support"></a>
 ## IDEサポート
 
-Laravelアプリケーションを開発するときに、どのようなコードエディタを使用するかは自由ですが、[PhpStorm](https://www.jetbrains.com/phpstorm/laravel/)は、[Laravel Pint](https://www.jetbrains.com/help/phpstorm/using-laravel-pint.html)を含むLaravelとそのエコシステムを幅広くサポートしています。
+Laravelアプリケーションを開発する際に、どのコードエディタを使用するかは自由です。軽量で拡張性の高いエディタをお探しの場合、[VS Code](https://code.visualstudio.com)や[Cursor](https://cursor.com)と公式の[Laravel VS Code Extension](https://marketplace.visualstudio.com/items?itemName=laravel.vscode-laravel)を組み合わせると、シンタックスハイライト、スニペット、Artisanコマンドの統合、Eloquentモデル、ルート、ミドルウェア、アセット、設定、Inertia.jsのスマートオートコンプリートなどの機能により、優れたLaravelサポートを提供しています。
 
-さらに、コミュニティがメンテナンスしている[Laravel Idea](https://laravel-idea.com/) PhpStormプラグインは、コード生成、Eloquent構文補完、バリデーションルール補完など、IDEに役立つ様々な拡張機能を提供しています。
+JetBrainsの[PhpStorm](https://www.jetbrains.com/phpstorm/laravel/)と[Laravel Ideaプラグイン](https://laravel-idea.com/)の組み合わせは、Laravel Pint、Larastan、Pestを含むLaravelとそのエコシステムを幅広くサポートします。フレームワークのサポートは、Bladeテンプレート、Eloquentモデル、ルート、ビュー、翻訳、コンポーネントのスマートなオートコンプリート、Laravelプロジェクト全体の強力なコード生成とナビゲーションをカバーしています。
 
-[Visual Studio Code (VS Code)](https://code.visualstudio.com)で開発されている方に、公式の[Laravel VS Code Extension](https://marketplace.visualstudio.com/items?itemName=laravel.vscode-laravel)をリリースしました。この拡張は、Laravelに特化したツールをVS Code環境へ直接導入し、生産性を向上させます。
+クラウドベースの開発体験をお求めの方には、[Firebase Studio](https://firebase.studio/)がブラウザで直接Laravelをビルドするための即時アクセスを提供します。セットアップ不要のFirebase Studioは、どのデバイスからでも簡単にLaravelアプリケーションを構築できます。
 
 <a name="next-steps"></a>
 ## 次のステップ

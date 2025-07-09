@@ -321,6 +321,17 @@ JavaScript変数を初期化するために、配列をJSONとしてレンダリ
 @endsession
 ```
 
+<a name="context-directives"></a>
+#### コンテキストディレクティブ
+
+`context`ディレクティブは、[コンテキスト](/docs/{{version}}/context)の値が存在するかを判断するために使用します。コンテキストの値が存在する場合、`@context`ディレクティブと`@endcontext`ディレクティブ内のテンプレートの内容を評価します。コンテキストの値を表示するため、`context`ディレクティブの内容の中では、`$value`変数をechoできます。
+
+```blade
+@context('canonical')
+    <link href="{{ $value }}" rel="canonical">
+@endcontext
+```
+
 <a name="switch-statements"></a>
 ### Switch文
 

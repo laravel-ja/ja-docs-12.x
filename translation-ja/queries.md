@@ -522,6 +522,15 @@ $users = DB::table('users')
 $users = DB::table('users')->where('votes', 100)->get();
 ```
 
+`where`メソッドへ連想配列を渡し、複数のカラムに対して素早くクエリを実行することもできます。
+
+```php
+$users = DB::table('users')->where([
+    'first_name' => 'Jane',
+    'last_name' => 'Doe',
+])->get();
+```
+
 前述のように、データベースシステムがサポートしている任意の演算子を使用できます。
 
 ```php
@@ -689,23 +698,43 @@ $users = DB::table('users')
     ->get();
 ```
 
-`whereJsonContains`を使用してJSON配列をクエリできます。
+`whereJsonContains`メソッドと`whereJsonDoesntContain`メソッドを使用すると、JSON配列をクエリできます。
 
 ```php
 $users = DB::table('users')
     ->whereJsonContains('options->languages', 'en')
     ->get();
+
+$users = DB::table('users')
+    ->whereJsonDoesntContain('options->languages', 'en')
+    ->get();
 ```
 
-アプリケーションがMariaDB、MySQL、PostgreSQLデータベースを使用している場合は、値の配列を`whereJsonContains`メソッドで渡してください。
+アプリケーションがMariaDB、MySQL、PostgreSQLデータベースを使用している場合、値の配列を`whereJsonContains`メソッドと`whereJsonDoesntContain`メソッドへ渡せます。
 
 ```php
 $users = DB::table('users')
     ->whereJsonContains('options->languages', ['en', 'de'])
     ->get();
+
+$users = DB::table('users')
+    ->whereJsonDoesntContain('options->languages', ['en', 'de'])
+    ->get();
 ```
 
-`whereJsonLength`メソッドを使用して、JSON配列をその長さでクエリできます。
+さらに、`whereJsonContainsKey`メソッドまたは`whereJsonDoesntContainKey`メソッドを使用して、JSONキーを含むか含まないかの結果を取得できます。
+
+```php
+$users = DB::table('users')
+    ->whereJsonContainsKey('preferences->dietary_requirements')
+    ->get();
+
+$users = DB::table('users')
+    ->whereJsonDoesntContainKey('preferences->dietary_requirements')
+    ->get();
+```
+
+最後に、`whereJsonLength`メソッドを使用し、JSON配列の長さによりクエリを実行できます。
 
 ```php
 $users = DB::table('users')
@@ -1127,6 +1156,15 @@ $users = DB::table('users')
 ```php
 $users = DB::table('users')
     ->orderByDesc('verified_at')
+    ->get();
+```
+
+最後に、`->`演算子を使用すると、JSONカラム内の値で結果をソートできます。
+
+```php
+$corporations = DB::table('corporations')
+    ->where('country', 'US')
+    ->orderBy('location->state')
     ->get();
 ```
 

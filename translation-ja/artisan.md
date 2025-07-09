@@ -204,6 +204,7 @@ Artisan::command('mail:send {user}', function (string $user) {
 ```php
 use App\Models\User;
 use App\Support\DripEmailer;
+use Illuminate\Support\Facades\Artisan;
 
 Artisan::command('mail:send {user}', function (DripEmailer $drip, string $user) {
     $drip->send(User::find($user));
@@ -772,6 +773,7 @@ CLIの外部でArtisanコマンドを実行したい場合があります。た�
 
 ```php
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/user/{user}/mail', function (string $user) {
     $exitCode = Artisan::call('mail:send', [
@@ -795,6 +797,7 @@ Artisan::call('mail:send 1 --queue=default');
 
 ```php
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/mail', function () {
     $exitCode = Artisan::call('mail:send', [
@@ -821,6 +824,7 @@ $exitCode = Artisan::call('migrate:refresh', [
 
 ```php
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Route;
 
 Route::post('/user/{user}/mail', function (string $user) {
     Artisan::queue('mail:send', [

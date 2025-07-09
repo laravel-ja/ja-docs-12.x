@@ -57,7 +57,7 @@ $response->headers() : array;
 return Http::get('http://example.com/users/1')['name'];
 ```
 
-上記レスポンスメソッドに加え、以下のメソッドにより、レスポンスが特定のステータスコードを持つか判断できます。
+上記レスポンスメソッドに加え、以下のメソッドにより、レスポンスが指定ステータスコードを持つか判断できます。
 
 ```php
 $response->ok() : bool;                  // 200 OK
@@ -87,7 +87,7 @@ HTTPクライアントは、[URIテンプレート仕様](https://www.rfc-editor
 Http::withUrlParameters([
     'endpoint' => 'https://laravel.com',
     'page' => 'docs',
-    'version' => '11.x',
+    'version' => '12.x',
     'topic' => 'validation',
 ])->get('{+endpoint}/{page}/{version}/{topic}');
 ```

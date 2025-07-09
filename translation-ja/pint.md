@@ -35,6 +35,12 @@ composer require laravel/pint --dev
 ./vendor/bin/pint
 ```
 
+Pintを並列モード（試験中）で実行してパフォーマンスを向上させたい場合は、`--parallel`オプションを使用します。
+
+```shell
+./vendor/bin/pint --parallel
+```
+
 また、特定のファイルやディレクトリに対してPintを実行することもできます。
 
 ```shell

@@ -161,7 +161,7 @@ Sometimes you may pass an array to your view with the intention of rendering it 
 </script>
 ```
 
-However, instead of manually calling `json_encode`, you may use the `Illuminate\Support\Js::from` method directive. The `from` method accepts the same arguments as PHP's `json_encode` function; however, it will ensure that the resulting JSON is properly escaped for inclusion within HTML quotes. The `from` method will return a string `JSON.parse` JavaScript statement that will convert the given object or array into a valid JavaScript object:
+However, instead of manually calling `json_encode`, you may use the `Illuminate\Support\Js::from` method directive. The `from` method accepts the same arguments as PHP's `json_encode` function; however, it will ensure that the resulting JSON has been properly escaped for inclusion within HTML quotes. The `from` method will return a string `JSON.parse` JavaScript statement that will convert the given object or array into a valid JavaScript object:
 
 ```blade
 <script>
@@ -319,6 +319,17 @@ The `@session` directive may be used to determine if a [session](/docs/{{version
         {{ $value }}
     </div>
 @endsession
+```
+
+<a name="context-directives"></a>
+#### Context Directives
+
+The `@context` directive may be used to determine if a [context](/docs/{{version}}/context) value exists. If the context value exists, the template contents within the `@context` and `@endcontext` directives will be evaluated. Within the `@context` directive's contents, you may echo the `$value` variable to display the context value:
+
+```blade
+@context('canonical')
+    <link href="{{ $value }}" rel="canonical">
+@endcontext
 ```
 
 <a name="switch-statements"></a>

@@ -14,6 +14,7 @@
     - [リソースURIのローカライズ](#restful-localizing-resource-uris)
     - [リソースコントローラへのルート追加](#restful-supplementing-resource-controllers)
     - [シングルトンリソースコントローラ](#singleton-resource-controllers)
+    - [ミドルウェアとリソースコントローラ](#middleware-and-resource-controllers)
 - [依存注入とコントローラ](#dependency-injection-and-controllers)
 
 <a name="introduction"></a>
@@ -537,6 +538,64 @@ Route::apiSingleton('profile', ProfileController::class);
 
 ```php
 Route::apiSingleton('photos.thumbnail', ProfileController::class)->creatable();
+```
+<a name="middleware-and-resource-controllers"></a>
+### ミドルウェアとリソースコントローラ
+
+Laravelでは、`middleware`、`middlewareFor`、`withoutMiddlewareFor`メソッドを使用して、リソースルートの全メソッド、または特定のメソッドのみにミドルウェアを割り当てられます。これらのメソッドでは、各リソースアクションにどのミドルウェアを適用するかを細かく制御できます。
+
+#### すべてのメソッドにミドルウェアを適用
+
+`middleware`メソッドは、リソースまたはシングルトンのリソースルートが生成する、すべてのルートへミドルウェアを割り当てるために使用します。
+
+```php
+Route::resource('users', UserController::class)
+    ->middleware(['auth', 'verified']);
+
+Route::singleton('profile', ProfileController::class)
+    ->middleware('auth');
+```
+
+#### 特定メソッドにミドルウェアを適用
+
+指定リソースコントローラの特定メソッドへ、ミドルウェアを割り当てるには、`middlewareFor`メソッドを使用してください。
+
+```php
+Route::resource('users', UserController::class)
+    ->middlewareFor('show', 'auth');
+
+Route::apiResource('users', UserController::class)
+    ->middlewareFor(['show', 'update'], 'auth');
+
+Route::resource('users', UserController::class)
+    ->middlewareFor('show', 'auth')
+    ->middlewareFor('update', 'auth');
+
+Route::apiResource('users', UserController::class)
+    ->middlewareFor(['show', 'update'], ['auth', 'verified']);
+```
+
+`middlewareFor`メソッドは、シングルトンやAPIシングルトンリソースコントローラと組み合わせて使うこともできます。
+
+```php
+Route::singleton('profile', ProfileController::class)
+    ->middlewareFor('show', 'auth');
+
+Route::apiSingleton('profile', ProfileController::class)
+    ->middlewareFor(['show', 'update'], 'auth');
+```
+
+#### 特定メソッドからのミドルウェア除去
+
+リソースコントローラの特定メソッドからミドルウェアを除外するには、`withoutMiddlewareFor`メソッドを使用します。
+
+```php
+Route::middleware(['auth', 'verified', 'subscribed'])->group(function () {
+    Route::resource('users', UserController::class)
+        ->withoutMiddlewareFor('index', ['auth', 'verified'])
+        ->withoutMiddlewareFor(['create', 'store'], 'verified')
+        ->withoutMiddlewareFor('destroy', 'subscribed');
+});
 ```
 
 <a name="dependency-injection-and-controllers"></a>

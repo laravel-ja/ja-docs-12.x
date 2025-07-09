@@ -48,6 +48,8 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [Str::contains](#method-str-contains)
 [Str::containsAll](#method-str-contains-all)
 [Str::doesntContain](#method-str-doesnt-contain)
+[Str::doesntEndWith](#method-str-doesnt-end-with)
+[Str::doesntStartWith](#method-str-doesnt-start-with)
 [Str::deduplicate](#method-deduplicate)
 [Str::endsWith](#method-ends-with)
 [Str::excerpt](#method-excerpt)
@@ -149,6 +151,8 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [decrypt](#method-fluent-str-decrypt)
 [deduplicate](#method-fluent-str-deduplicate)
 [dirname](#method-fluent-str-dirname)
+[doesntEndWith](#method-fluent-str-doesnt-end-with)
+[doesntStartWith](#method-fluent-str-doesnt-start-with)
 [encrypt](#method-fluent-str-encrypt)
 [endsWith](#method-fluent-str-ends-with)
 [exactly](#method-fluent-str-exactly)
@@ -225,6 +229,8 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [when](#method-fluent-str-when)
 [whenContains](#method-fluent-str-when-contains)
 [whenContainsAll](#method-fluent-str-when-contains-all)
+[whenDoesntEndWith](#method-fluent-str-when-doesnt-end-with)
+[whenDoesntStartWith](#method-fluent-str-when-doesnt-start-with)
 [whenEmpty](#method-fluent-str-when-empty)
 [whenNotEmpty](#method-fluent-str-when-not-empty)
 [whenStartsWith](#method-fluent-str-when-starts-with)
@@ -579,6 +585,54 @@ use Illuminate\Support\Str;
 $result = Str::deduplicate('The---Laravel---Framework', '-');
 
 // The-Laravel-Framework
+```
+
+<a name="method-str-doesnt-end-with"></a>
+#### `Str::doesntEndWith()` {.collection-method}
+
+`Str::doesntEndWith`メソッドは、指定文字列が指定値で終わらないことを判定します。
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::doesntEndWith('This is my name', 'dog');
+
+// true
+```
+
+また、値の配列を渡し、指定文字列が配列中のどの値でも終わらないことを判定することもできます。
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::doesntEndWith('This is my name', ['this', 'foo']);
+
+// true
+
+$result = Str::doesntEndWith('This is my name', ['name', 'foo']);
+
+// false
+```
+
+<a name="method-str-doesnt-start-with"></a>
+#### `Str::doesntStartWith()` {.collection-method}
+
+`Str::doesntStartWith`メソッドは、指定文字列が指定値で始まっていないことを判定します。
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::doesntStartWith('This is my name', 'That');
+
+// true
+```
+
+指定可能な値の配列を渡す場合、`doesntStartWith`メソッドは、文字列が指定値のどれからも始まらない場合に`true`を返します。
+
+```php
+$result = Str::doesntStartWith('This is my name', ['This', 'That', 'There']);
+
+// true
 ```
 
 <a name="method-ends-with"></a>
@@ -2218,6 +2272,56 @@ $string = Str::of('/foo/bar/baz')->dirname(2);
 // '/foo'
 ```
 
+<a name="method-fluent-str-doesnt-end-with"></a>
+#### `doesntEndWith` {.collection-method}
+
+`doesntEndWith`メソッドは、指定文字列が指定値で終わらないことを判定します。
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->doesntEndWith('dog');
+
+// true
+```
+
+また、値の配列を渡し、指定文字列が配列のどの値でも終わらないことを判定することもできます。
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->doesntEndWith(['this', 'foo']);
+
+// true
+
+$result = Str::of('This is my name')->doesntEndWith(['name', 'foo']);
+
+// false
+```
+
+<a name="method-fluent-str-doesnt-start-with"></a>
+#### `doesntStartWith` {.collection-method}
+
+`doesntStartWith`メソッドは、指定文字列が指定値で始まらないことを判定します。
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->doesntStartWith('That');
+
+// true
+```
+
+値の配列を渡し、指定文字列が配列中のどの値でも始まらないことを判定することもできます。
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->doesntStartWith(['This', 'That', 'There']);
+
+// true
+```
+
 <a name="method-fluent-str-encrypt"></a>
 #### `encrypt` {.collection-method}
 
@@ -3518,6 +3622,38 @@ $string = Str::of('tony stark')
 ```
 
 必要であれば、３番目のパラメータとして別のクロージャを`when`メソッドに渡せます。このクロージャは、条件パラメータが`false`と評価された場合に実行します。
+
+<a name="method-fluent-str-when-doesnt-end-with"></a>
+#### `whenDoesntEndWith` {.collection-method}
+
+`whenDoesntEndWith`メソッドは、文字列が指定部分文字列で終わらない場合に、指定クロージャを呼び出します。クロージャはFluent文字列インスタンスを受け取ります。
+
+```php
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
+
+$string = Str::of('disney world')->whenDoesntEndWith('land', function (Stringable $string) {
+    return $string->title();
+});
+
+// 'Disney World'
+```
+
+<a name="method-fluent-str-when-doesnt-start-with"></a>
+#### `whenDoesntStartWith` {.collection-method}
+
+`whenDoesntStartWith`メソッドは、文字列が指定部分文字列で始まらない場合に、指定クロージャを呼び出します。クロージャはFluent文字列インスタンスを受け取ります。
+
+```php
+use Illuminate\Support\Str;
+use Illuminate\Support\Stringable;
+
+$string = Str::of('disney world')->whenDoesntStartWith('sea', function (Stringable $string) {
+    return $string->title();
+});
+
+// 'Disney World'
+```
 
 <a name="method-fluent-str-when-empty"></a>
 #### `whenEmpty` {.collection-method}

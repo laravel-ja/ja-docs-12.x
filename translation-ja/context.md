@@ -293,6 +293,15 @@ Context::get('breadcrumbs');
 // ['first_value']
 ```
 
+`remember`と`rememberHidden`メソッドは、コンテキストから情報を取得するために使用します。要求された情報が存在しない場合は、指定クロージャが返す値をコンテキスト値に設定します。
+
+```php
+$permissions = Context::remember(
+    'user-permissions',
+    fn () => $user->permissions,
+);
+```
+
 コンテキストが格納しているすべての情報を取得したい場合は、`all` メソッドを呼び出します。
 
 ```php

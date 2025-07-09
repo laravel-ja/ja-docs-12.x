@@ -522,6 +522,15 @@ For convenience, if you want to verify that a column is `=` to a given value, yo
 $users = DB::table('users')->where('votes', 100)->get();
 ```
 
+You may also provide an associative array to the `where` method to quickly query against multiple columns:
+
+```php
+$users = DB::table('users')->where([
+    'first_name' => 'Jane',
+    'last_name' => 'Doe',
+])->get();
+```
+
 As previously mentioned, you may use any operator that is supported by your database system:
 
 ```php
@@ -689,23 +698,43 @@ $users = DB::table('users')
     ->get();
 ```
 
-You may use `whereJsonContains` to query JSON arrays:
+You may use the `whereJsonContains` and `whereJsonDoesntContain` methods to query JSON arrays:
 
 ```php
 $users = DB::table('users')
     ->whereJsonContains('options->languages', 'en')
     ->get();
+
+$users = DB::table('users')
+    ->whereJsonDoesntContain('options->languages', 'en')
+    ->get();
 ```
 
-If your application uses the MariaDB, MySQL, or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` method:
+If your application uses the MariaDB, MySQL, or PostgreSQL databases, you may pass an array of values to the `whereJsonContains` and `whereJsonDoesntContain` methods:
 
 ```php
 $users = DB::table('users')
     ->whereJsonContains('options->languages', ['en', 'de'])
     ->get();
+
+$users = DB::table('users')
+    ->whereJsonDoesntContain('options->languages', ['en', 'de'])
+    ->get();
 ```
 
-You may use `whereJsonLength` method to query JSON arrays by their length:
+In addition, you may use the `whereJsonContainsKey` or `whereJsonDoesntContainKey` methods to retrieve the results that include or do not include a JSON key:
+
+```php
+$users = DB::table('users')
+    ->whereJsonContainsKey('preferences->dietary_requirements')
+    ->get();
+
+$users = DB::table('users')
+    ->whereJsonDoesntContainKey('preferences->dietary_requirements')
+    ->get();
+```
+
+Finally, you may use `whereJsonLength` method to query JSON arrays by their length:
 
 ```php
 $users = DB::table('users')
@@ -1127,6 +1156,15 @@ The sort direction is optional, and is ascending by default. If you want to sort
 ```php
 $users = DB::table('users')
     ->orderByDesc('verified_at')
+    ->get();
+```
+
+Finally, using the `->` operator, the results can be sorted by a value within a JSON column:
+
+```php
+$corporations = DB::table('corporations')
+    ->where('country', 'US')
+    ->orderBy('location->state')
     ->get();
 ```
 

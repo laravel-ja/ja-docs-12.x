@@ -113,6 +113,8 @@ Laravel includes a variety of global "helper" PHP functions. Many of these funct
 [Number::format](#method-number-format)
 [Number::ordinal](#method-number-ordinal)
 [Number::pairs](#method-number-pairs)
+[Number::parseInt](#method-number-parse-int)
+[Number::parseFloat](#method-number-parse-float)
 [Number::percentage](#method-number-percentage)
 [Number::spell](#method-number-spell)
 [Number::spellOrdinal](#method-number-spell-ordinal)
@@ -311,7 +313,7 @@ $value = Arr::boolean($array, 'name');
 <a name="method-array-collapse"></a>
 #### `Arr::collapse()` {.collection-method}
 
-The `Arr::collapse` method collapses an array of arrays into a single array:
+The `Arr::collapse` method collapses an array of arrays or collections into a single array:
 
 ```php
 use Illuminate\Support\Arr;
@@ -1728,6 +1730,40 @@ $result = Number::pairs(25, 10, offset: 0);
 // [[0, 10], [10, 20], [20, 25]]
 ```
 
+<a name="method-number-parse-int"></a>
+#### `Number::parseInt()` {.collection-method}
+
+The `Number::parseInt` method parse a string into an integer according to the specified locale:
+
+```php
+use Illuminate\Support\Number;
+
+$result = Number::parseInt('10.123');
+
+// (int) 10
+
+$result = Number::parseInt('10,123', locale: 'fr');
+
+// (int) 10
+```
+
+<a name="method-number-parse-float"></a>
+#### `Number::parseFloat()` {.collection-method}
+
+The `Number::parseFloat` method parse a string into a float according to the specified locale:
+
+```php
+use Illuminate\Support\Number;
+
+$result = Number::parseFloat('10');
+
+// (float) 10.0
+
+$result = Number::parseFloat('10', locale: 'fr');
+
+// (float) 10.0
+```
+
 <a name="method-number-percentage"></a>
 #### `Number::percentage()` {.collection-method}
 
@@ -2245,7 +2281,7 @@ blank(false);
 // false
 ```
 
-For the inverse of `blank`, see the [filled](#method-filled) method.
+For the inverse of `blank`, see the [filled](#method-filled) function.
 
 <a name="method-broadcast"></a>
 #### `broadcast()` {.collection-method}
@@ -2320,7 +2356,7 @@ $collection = collect(['Taylor', 'Abigail']);
 <a name="method-config"></a>
 #### `config()` {.collection-method}
 
-The `config` function gets the value of a [configuration](/docs/{{version}}/configuration) variable. The configuration values may be accessed using "dot" syntax, which includes the name of the file and the option you wish to access. A default value may be specified and is returned if the configuration option does not exist:
+The `config` function gets the value of a [configuration](/docs/{{version}}/configuration) variable. The configuration values may be accessed using "dot" syntax, which includes the name of the file and the option you wish to access. You may also provide a default value that will be returned if the configuration option does not exist:
 
 ```php
 $value = config('app.timezone');
@@ -2337,7 +2373,7 @@ config(['app.debug' => true]);
 <a name="method-context"></a>
 #### `context()` {.collection-method}
 
-The `context` function gets the value from the [current context](/docs/{{version}}/context). A default value may be specified and is returned if the context key does not exist:
+The `context` function gets the value from the current [context](/docs/{{version}}/context). You may also provide a default value that will be returned if the context key does not exist:
 
 ```php
 $value = context('trace_id');
@@ -2388,6 +2424,8 @@ The `decrypt` function [decrypts](/docs/{{version}}/encryption) the given value.
 ```php
 $password = decrypt($value);
 ```
+
+For the inverse of `decrypt`, see the [encrypt](#method-encrypt) function.
 
 <a name="method-dd"></a>
 #### `dd()` {.collection-method}
@@ -2441,6 +2479,8 @@ The `encrypt` function [encrypts](/docs/{{version}}/encryption) the given value.
 ```php
 $secret = encrypt('my-secret-value');
 ```
+
+For the inverse of `encrypt`, see the [decrypt](#method-decrypt) function.
 
 <a name="method-env"></a>
 #### `env()` {.collection-method}
@@ -2508,7 +2548,7 @@ filled(collect());
 // false
 ```
 
-For the inverse of `filled`, see the [blank](#method-blank) method.
+For the inverse of `filled`, see the [blank](#method-blank) function.
 
 <a name="method-info"></a>
 #### `info()` {.collection-method}
@@ -3066,7 +3106,7 @@ Benchmark::dd([
 
 By default, the given callbacks will be executed once (one iteration), and their duration will be displayed in the browser / console.
 
-To invoke a callback more than once, you may specify the number of iterations that the callback should be invoked as the second argument to the method. When executing a callback more than once, the `Benchmark` class will return the average amount of milliseconds it took to execute the callback across all iterations:
+To invoke a callback more than once, you may specify the number of iterations that the callback should be invoked as the second argument to the method. When executing a callback more than once, the `Benchmark` class will return the average number of milliseconds it took to execute the callback across all iterations:
 
 ```php
 Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
@@ -3257,7 +3297,7 @@ $user = Pipeline::send($user)
 
 As you can see, each invokable class or closure in the pipeline is provided the input and a `$next` closure. Invoking the `$next` closure will invoke the next callable in the pipeline. As you may have noticed, this is very similar to [middleware](/docs/{{version}}/middleware).
 
-When the last callable in the pipeline invokes the `$next` closure, the callable provided to the `then` method will be invoked. Typically, this callable will simply return the given input.
+When the last callable in the pipeline invokes the `$next` closure, the callable provided to the `then` method will be invoked. Typically, this callable will simply return the given input. For convenience, if you simply want to return the input after it has been processed, you may use the `thenReturn` method.
 
 Of course, as discussed previously, you are not limited to providing closures to your pipeline. You may also provide invokable classes. If a class name is provided, the class will be instantiated via Laravel's [service container](/docs/{{version}}/container), allowing dependencies to be injected into the invokable class:
 
@@ -3268,7 +3308,7 @@ $user = Pipeline::send($user)
         ActivateSubscription::class,
         SendWelcomeEmail::class,
     ])
-    ->then(fn (User $user) => $user);
+    ->thenReturn();
 ```
 
 <a name="sleep"></a>

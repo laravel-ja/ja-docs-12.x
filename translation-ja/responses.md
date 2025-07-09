@@ -459,7 +459,7 @@ const sendMessage = () => {
 データを`send`を使いストリームに送り返す場合、ストリームへのアクティブな接続は新しいデータを送信する前にキャンセルします。すべてのリクエストは、JSON `POST`リクエストとして送信します。
 
 > [!WARNING]
-> `useStream`フックは、アプリケーションに対し`POST`リクエストを行うため、有効なCSRFトークンが必要です。CSRFトークンを提供する最も簡単な方法は、[アプリケーションレイアウトの`head`に`meta`タグとして含めることです](/docs/{{version}}/csrf#csrf-x-csrf-token)。
+> `useStream`フックは、アプリケーションに対し`POST`リクエストを行うため、有効なCSRFトークンが必要です。CSRFトークンを提供する最も簡単な方法は、[アプリケーションレイアウトのheadにmetaタグとして含めることです](/docs/{{version}}/csrf#csrf-x-csrf-token)。
 
 `useStream`の第２引数は、オプションオブジェクトで、ストリームの利用動作をカスタマイズするために使用します。このオブジェクトのデフォルト値を以下に示します。
 
@@ -653,7 +653,7 @@ Route::get('/users.json', function () {
 });
 ```
 
-`useJsonStream`フックは、[`useStream`フック](#consuming-streamed-responses)と同じですが、ストリーミングが終了すると、データをJSONとしてパースしようと試みます。
+`useJsonStream`フックは、[useStreamフック](#consuming-streamed-responses)と同じですが、ストリーミングが終了すると、データをJSONとしてパースしようと試みます。
 
 ```tsx tab=React
 import { useJsonStream } from "@laravel/stream-react";
@@ -791,7 +791,7 @@ import { useEventStream } from "@laravel/stream-react";
 
 function App() {
   const { message } = useEventStream("/stream", {
-    event: "update",
+    eventName: "update",
     onMessage: (message) => {
       //
     },
@@ -814,7 +814,7 @@ function App() {
 import { useEventStream } from "@laravel/stream-vue";
 
 const { message } = useEventStream("/chat", {
-  event: "update",
+  eventName: "update",
   onMessage: (message) => {
     // ...
   },

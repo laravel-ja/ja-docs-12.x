@@ -534,7 +534,7 @@ Laravel Pail（ペール：バケツ、手杓）は、Laravelアプリケーシ�
 使用開始するには、Composerパッケージマネージャを使い、プロジェクトにPailをインストールしてください。
 
 ```shell
-composer require laravel/pail
+composer require --dev laravel/pail
 ```
 
 <a name="pail-usage"></a>

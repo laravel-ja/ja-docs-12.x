@@ -1,8 +1,9 @@
 # パスワードリセット
 
 - [イントロダクション](#introduction)
+    - [設定](#configuration)
+    - [ドライバの動作要件](#driver-prerequisites)
     - [モデルの準備](#model-preparation)
-    - [データベース準備](#database-preparation)
     - [信頼するホストの設定](#configuring-trusted-hosts)
 - [ルート](#routing)
     - [パスワードリセットリンクの要求](#requesting-the-password-reset-link)
@@ -18,17 +19,53 @@
 > [!NOTE]
 > さっそく始めたいですか？Laravel[アプリケーションスターターキット](/docs/{{version}}/starter-kits)を新しいLaravelアプリケーションにインストールしてください。Laravelのスターターキットは、忘れたパスワードのリセットを含む、認証システム全体のスカフォールドの面倒を見ています。
 
+<a name="configuration"></a>
+### 設定
+
+アプリケーションのパスワードリセット設定ファイルは、`config/auth.php`に保存しています。このファイルをみて、利用可能なオプションを確認してください。Laravelはデフォルトで、`database`パスワードリセットドライバを使用するように設定しています。
+
+パスワードリセットの`ドライバ`設定オプションは、パスワードリセットデータを保存する場所を定義します。Laravelには2つのドライバがあります：
+
+<div class="content-list" markdown="1">
+
+- `database` - パスワードリセットデータをリレーショナルデータベースに保存する
+- `cache` - password reset data is stored in one of your cache-based stores.パスワードリセットデータをキャッシュベースの保存域の１つに保存する
+
+</div>
+
+<a name="driver-prerequisites"></a>
+### ドライバの動作要件
+
+<a name="database"></a>
+#### データベース
+
+デフォルトの`database`ドライバを使用する場合、アプリケーションのパスワードリセットトークンを格納するテーブルを作成する必要があります。通常、これはLaravelデフォルトの、`0001_01_000000_create_users_table.php`データベースマイグレーションに用意しています。
+
+<a name="cache"></a>
+#### キャッシュ
+
+また、パスワードリセットを処理するためのキャッシュドライバも用意しており、専用のデータベーステーブルを必要としません。エントリはユーザーのメールアドレスによりキーを決めるため、アプリケーションの他の場所では絶対にキャッシュキーとしてメールアドレスを使用しないでください。
+
+```php
+'passwords' => [
+    'users' => [
+        'driver' => 'cache',
+        'provider' => 'users',
+        'store' => 'passwords', // オプション
+        'expire' => 60,
+        'throttle' => 60,
+    ],
+],
+```
+
+パスワードリセットデータが、`artisan cache:clear`の呼び出しによりフラッシュされるのを防ぐため、オプションの`store`設定キーで別のキャッシュストアを指定できます。この値は`config/cache.php`設定値で設定したストアに対応する必要があります。
+
 <a name="model-preparation"></a>
 ### モデルの準備
 
 Laravelのパスワードリセット機能を使用する前に、アプリケーションの`App\Models\User`モデルで`Illuminate\Notifications\Notifiable`トレイトを使用する必要があります。通常、このトレイトは、新しいLaravelアプリケーションで作成されるデフォルトの`App\Models\User`モデルに最初から含まれています。
 
 次に、`App\Models\User`モデルが`Illuminate\Contracts\Auth\CanResetPassword`コントラクトを実装していることを確認します。フレームワークに含まれている`App\Models\User`モデルは、最初からこのインターフェイスを実装しており、`Illuminate\Auth\Passwords\CanResetPassword`トレイトを使用して、インターフェイスの実装に必要なメソッドを持っています。
-
-<a name="database-preparation"></a>
-### データベース準備
-
-アプリケーションのパスワードリセットトークンを保存するテーブルを作成する必要があります。通常、これはLaravelのデフォルトの`0001_01_000000_create_users_table.php`データベースマイグレーションに含まれています。
 
 <a name="configuring-trusted-hosts"></a>
 ### 信頼するホストの設定
@@ -160,7 +197,7 @@ Route::post('/reset-password', function (Request $request) {
 <a name="deleting-expired-tokens"></a>
 ## 期限切れトークンの削除
 
-期限が切れたパスワードリセットトークンは、データベース内にまだ存在します。しかし、これらのレコードは、`auth:clear-resets` Artisanコマンドで簡単に削除できます。
+`database`ドライバを使用している場合、期限切れのパスワードリセットトークンは依然データベース内に存在しています。しかし、`auth:clear-resets` Artisanコマンドを使用して、これらのレコードを簡単に削除できます。
 
 ```shell
 php artisan auth:clear-resets

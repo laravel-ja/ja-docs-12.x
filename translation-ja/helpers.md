@@ -113,6 +113,8 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Number::format](#method-number-format)
 [Number::ordinal](#method-number-ordinal)
 [Number::pairs](#method-number-pairs)
+[Number::parseInt](#method-number-parse-int)
+[Number::parseFloat](#method-number-parse-float)
 [Number::percentage](#method-number-percentage)
 [Number::spell](#method-number-spell)
 [Number::spellOrdinal](#method-number-spell-ordinal)
@@ -311,7 +313,7 @@ $value = Arr::boolean($array, 'name');
 <a name="method-array-collapse"></a>
 #### `Arr::collapse()` {.collection-method}
 
-`Arr::collapse`メソッドは配列の配列を一次元の配列へ展開します。
+`Arr::collapse`メソッドは配列やコレクションの配列を一次元の配列へ展開します。
 
 ```php
 use Illuminate\Support\Arr;
@@ -1728,6 +1730,40 @@ $result = Number::pairs(25, 10, offset: 0);
 // [[0, 10], [10, 20], [20, 25]]
 ```
 
+<a name="method-number-parse-int"></a>
+#### `Number::parseInt()` {.collection-method}
+
+`Number::parseInt`メソッドは、指定したロケールに従い文字列を整数にパースします。
+
+```php
+use Illuminate\Support\Number;
+
+$result = Number::parseInt('10.123');
+
+// (int) 10
+
+$result = Number::parseInt('10,123', locale: 'fr');
+
+// (int) 10
+```
+
+<a name="method-number-parse-float"></a>
+#### `Number::parseFloat()` {.collection-method}
+
+`Number::parseFloat`メソッドは、指定ロケールに従い文字列を浮動小数点数にパースします。
+
+```php
+use Illuminate\Support\Number;
+
+$result = Number::parseFloat('10');
+
+// (float) 10.0
+
+$result = Number::parseFloat('10', locale: 'fr');
+
+// (float) 10.0
+```
+
 <a name="method-number-percentage"></a>
 #### `Number::percentage()` {.collection-method}
 
@@ -2245,7 +2281,7 @@ blank(false);
 // false
 ```
 
-`blank`の逆の動作は、[filled](#method-filled)メソッドです。
+`blank`の逆の動作は、[filled](#method-filled)関数です。
 
 <a name="method-broadcast"></a>
 #### `broadcast()` {.collection-method}
@@ -2320,7 +2356,7 @@ $collection = collect(['Taylor', 'Abigail']);
 <a name="method-config"></a>
 #### `config()` {.collection-method}
 
-`config`関数は、[設定](/docs/{{version}}/configuration)変数の値を取得します。設定値はファイル名とアクセスしたいオプションを「ドット」記法で指定します。デフォルト値が指定でき、設定オプションが存在しない時に返されます。
+`config`関数は、[設定](/docs/{{version}}/configuration)変数の値を取得します。設定値はファイル名とアクセスしたいオプションを「ドット」記法で指定します。デフォルト値が指定でき、設定オプションが存在しない時に返します。
 
 ```php
 $value = config('app.timezone');
@@ -2337,7 +2373,7 @@ config(['app.debug' => true]);
 <a name="method-context"></a>
 #### `context()` {.collection-method}
 
-`context`関数は、[現在のコンテキスト](/docs/{{version}}/context)から値を取得します。デフォルト値を指定でき、コンテキストキーが存在しない場合にそれを返します。
+`context`関数は、現在の[コンテキスト](/docs/{{version}}/context)から値を取得します。デフォルト値も指定でき、コンテキストキーが存在しない場合にそれを返します。
 
 ```php
 $value = context('trace_id');
@@ -2388,6 +2424,8 @@ $token = csrf_token();
 ```php
 $password = decrypt($value);
 ```
+
+`decrypt`の逆関数については、[encrypt](#method-encrypt)関数を参照してください。
 
 <a name="method-dd"></a>
 #### `dd()` {.collection-method}
@@ -2441,6 +2479,8 @@ dump($value1, $value2, $value3, ...);
 ```php
 $secret = encrypt('my-secret-value');
 ```
+
+`encrypt`の逆関数については、[decrypt](#method-decrypt)関数を参照してください。
 
 <a name="method-env"></a>
 #### `env()` {.collection-method}
@@ -2508,7 +2548,7 @@ filled(collect());
 // false
 ```
 
-`filled`の逆の動作は、[blank](#method-blank)メソッドです。
+`filled`の逆関数については、[blank](#method-blank)関数を参照してください。
 
 <a name="method-info"></a>
 #### `info()` {.collection-method}
@@ -3257,7 +3297,7 @@ $user = Pipeline::send($user)
 
 ご覧のように、パイプライン中の呼び出し可能な各クラスやクロージャには、入力と`$next`クロージャを引数に渡します。`next`クロージャが呼び出されると、パイプラインの次の呼び出し可能なクラスを呼び出します。お気づきかもしれませんが、これは [ミドルウェア](/docs/{{version}}/middleware) と非常によく似ています。
 
-パイプラインの最後のCallableが`$next`クロージャを呼び出すと、`then`メソッドに渡されたCallableを呼び出します。一般的に、このCallableは単に与えられた入力を返すだけです。
+パイプラインの最後のCallableが`$next`クロージャを呼び出すと、`then`メソッドに渡されたCallableを呼び出します。一般的に、このCallableは単に与えられた入力を返すだけです。使いやすいように、単に入力を処理した後に返したい場合は、`thenReturn`メソッドが使えます。
 
 もちろん、前述したように、パイプラインに渡すのは、クロージャに限定されません。呼び出し可能なクラスを提供することもできます。クラス名が提供された場合、そのクラスはLaravelの[サービスコンテナ](/docs/{{version}}/container)を通じてインスタンス化し、呼び出し可能なクラスへ依存関係を注入します。
 
@@ -3268,7 +3308,7 @@ $user = Pipeline::send($user)
         ActivateSubscription::class,
         SendWelcomeEmail::class,
     ])
-    ->then(fn (User $user) => $user);
+    ->thenReturn();
 ```
 
 <a name="sleep"></a>
