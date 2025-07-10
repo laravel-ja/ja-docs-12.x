@@ -12,7 +12,7 @@
     - [Livewire](#livewire-customization)
 - [WorkOS AuthKit認証](#workos)
 - [Inertia SSR](#inertia-ssr)
-- [コミュニティがコミュニティが保守するスターターキット](#community-maintained-starter-kits)
+- [コミュニティが保守するスターターキット](#community-maintained-starter-kits)
 - [良くある質問](#faqs)
 
 <a name="introduction"></a>
@@ -325,7 +325,7 @@ composer dev:ssr
 ```
 
 <a name="community-maintained-starter-kits"></a>
-### コミュニティがコミュニティが保守するスターターキット
+### コミュニティが保守するスターターキット
 
 Laravelインストーラを使用して新しいLaravelアプリケーションを作成する場合、Packagistで利用可能なコミュニティが保守しているスターターキットを`--using`フラグで指定できます。
 
