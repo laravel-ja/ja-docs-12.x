@@ -108,7 +108,7 @@ FrankenPHPで動くLaravelアプリケーションをコンテナ化する出発
 ```dockerfile
 FROM dunglas/frankenphp
 
-RUN install-php-extensions l
+RUN install-php-extensions \
     pcntl
     # ここに他のPHP拡張…
 
