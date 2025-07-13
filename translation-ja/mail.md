@@ -359,7 +359,10 @@ return new Envelope(
 また、`config/mail.php`設定ファイル内でグローバルな"reply_to"アドレスも定義できます。
 
 ```php
-'reply_to' => ['address' => 'example@example.com', 'name' => 'App Name'],
+'reply_to' => [
+    'address' => 'example@example.com',
+    'name' => 'App Name',
+],
 ```
 
 <a name="configuring-the-view"></a>
@@ -380,7 +383,7 @@ public function content(): Content
 ```
 
 > [!NOTE]
-> すべてのメールテンプレートを格納するために`resources/views/emails`ディレクトリを作成することを推奨します。ただし、`resources/views`ディレクトリ内ならば好きな場所へ自由に配置できます。
+> すべてのメールテンプレートを格納するために`resources/views/mail`ディレクトリを作成することを推奨します。ただし、`resources/views`ディレクトリ内ならば好きな場所へ自由に配置できます。
 
 <a name="plain-text-emails"></a>
 #### 平文テキストの電子メール
@@ -502,7 +505,7 @@ class OrderShipped extends Mailable
 }
 ```
 
-データが`with`メソッドに渡されると、ビューで自動的に利用できるようになるため、Bladeテンプレートの他のデータにアクセスするのと同じようにアクセスできます。
+データを`with`メソッドを使い渡すと、ビューで自動的に利用できるようになるため、Bladeテンプレートの他のデータにアクセスするのと同じようにアクセスできます。
 
 ```blade
 <div>
@@ -769,7 +772,7 @@ public function envelope(): Envelope
 }
 ```
 
-アプリケーションでMailgunドライバを使用している場合、[タグ](https://documentation.mailgun.com/docs/mailgun/user-manual/tracking-messages/#tagging)と[メタデータ](https://documentation.mailgun.com/docs/mailgun/user-manual/tracking-messages/#attaching-data-to-messages)の詳細は、Mailgunのドキュメントを参照してください。同様に、Postmarkのドキュメントも、[タグ](https://postmarkapp.com/blog/tags-support-for-smtp)と[メタデータ](https://postmarkapp.com/support/article/1125-custom-metadata-faq)のサポートについて、詳しい情報を得るために参照できます。
+アプリケーションでMailgunドライバを使用している場合、[タグ](https://documentation.mailgun.com/docs/mailgun/user-manual/tracking-messages/#tags)と[メタデータ](https://documentation.mailgun.com/docs/mailgun/user-manual/sending-messages/#attaching-metadata-to-messages)の詳細は、Mailgunのドキュメントを参照してください。同様に、Postmarkのドキュメントも、[タグ](https://postmarkapp.com/blog/tags-support-for-smtp)と[メタデータ](https://postmarkapp.com/support/article/1125-custom-metadata-faq)のサポートについて、詳しい情報を得るために参照できます。
 
 アプリケーションがAmazon SESを使用してメールを送信している場合、`metadata`メソッドを使用して、メッセージへ[SES 「タグ」](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html)を添付する必要があります。
 
@@ -1146,7 +1149,7 @@ Mail::to($request->user())->locale('es')->send(
 ```
 
 <a name="user-preferred-locales"></a>
-### ユーザー優先ロケール
+#### ユーザー優先ロケール
 
 場合によっては、アプリケーションは各ユーザーの優先ロケールを保存しています。１つ以上のモデルに`HasLocalePreference`コントラクトを実装することで、メールを送信するときにこの保存されたロケールを使用するようにLaravelに指示できます。
 
@@ -1456,7 +1459,7 @@ class LogMessage
 <a name="custom-transports"></a>
 ## カスタムトランスポート
 
-Laravelは様々なメールトランスポートを用意していますが、Laravelが予めサポートしていない他のサービスを使いメールを配信するため、独自のトランスポートを書きたい場合があり得ます。取り掛かるには、`Symfony\Component\Mailer\Transport\AbstractTransport`クラスを継承するクラスを定義します。次に、トランスポートで`doSend`と`__toString()`メソッドを実装します。
+Laravelは様々なメールトランスポートを用意していますが、Laravelが予めサポートしていない他のサービスを使いメールを配信するため、独自のトランスポートを書きたい場合があり得ます。取り掛かるには、`Symfony\Component\Mailer\Transport\AbstractTransport`クラスを継承するクラスを定義します。次に、トランスポートで`doSend`と`__toString`メソッドを実装します。
 
 ```php
 use MailchimpTransactional\ApiClient;
@@ -1508,6 +1511,7 @@ class MailchimpTransport extends AbstractTransport
 ```php
 use App\Mail\MailchimpTransport;
 use Illuminate\Support\Facades\Mail;
+use MailchimpTransactional\ApiClient;
 
 /**
  * 全アプリケーションサービスの初期起動処理
@@ -1515,7 +1519,11 @@ use Illuminate\Support\Facades\Mail;
 public function boot(): void
 {
     Mail::extend('mailchimp', function (array $config = []) {
-        return new MailchimpTransport(/* ... */);
+        $client = new ApiClient;
+
+        $client->setApiKey($config['key']);
+
+        return new MailchimpTransport($client);
     });
 }
 ```
@@ -1525,6 +1533,7 @@ public function boot(): void
 ```php
 'mailchimp' => [
     'transport' => 'mailchimp',
+    'key' => env('MAILCHIMP_API_KEY'),
     // ...
 ],
 ```

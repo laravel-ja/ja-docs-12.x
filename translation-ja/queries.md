@@ -875,6 +875,24 @@ $patients = DB::table('patients')
     ->get();
 ```
 
+**whereValueBetween／whereValueNotBetween／orWhereValueBetween／orWhereValueNotBetween**
+
+`whereValueBetween`メソッドは、指定値が同じテーブル行の同じ型の、２つの列の値の間にあるかどうかを検証します。
+
+```php
+$patients = DB::table('products')
+    ->whereValueBetween(100, ['min_price', 'max_price'])
+    ->get();
+```
+
+`whereValueNotBetween`メソッドは、値が同じテーブル行の２つの列の値外にあるかを検証します。
+
+```php
+$patients = DB::table('products')
+    ->whereValueNotBetween(100, ['min_price', 'max_price'])
+    ->get();
+```
+
 **whereNull／whereNotNull／orWhereNull／orWhereNotNull**
 
 `whereNull`メソッドは、指定したカラムの値が`NULL`である条件を加えます。

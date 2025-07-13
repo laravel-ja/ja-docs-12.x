@@ -207,7 +207,7 @@ echo __('messages.welcome', ['name' => 'dayle']);
 <a name="object-replacement-formatting"></a>
 #### オブジェクト置換フォーマット
 
-翻訳用のプレースホルダーとしてオブジェクトを指定する場合、 オブジェクトの`__toString`メソッドを呼び出します。`__toString`](https://www.php.net/manual/ja/language.oop5.magic.php#object.tostring)メソッドは、PHP組み込みの「マジックメソッド」の一種です。しかし、サードパーティのライブラリに含まれるクラスとやり取りする場合など、指定するクラスの`__toString`メソッドを制御できないこともあります。
+翻訳用のプレースホルダーとしてオブジェクトを指定する場合、 オブジェクトの`__toString`メソッドを呼び出します。[__toString](https://www.php.net/manual/ja/language.oop5.magic.php#object.tostring)メソッドは、PHP組み込みの「マジックメソッド」の一種です。しかし、サードパーティのライブラリに含まれるクラスとやり取りする場合など、指定するクラスの`__toString`メソッドを制御できないこともあります。
 
 このような場合のため、Laravelでは特定タイプのオブジェクトに対する、カスタムフォーマットハンドラを登録できます。これを行うには、トランスレータの`stringable`メソッドを呼び出す必要があります。`stringable`メソッドは、フォーマットに対応するオブジェクトタイプをタイプヒントする必要があります。通常、`stringable`メソッドはアプリケーションの`AppServiceProvider`クラスの、`boot`メソッド内で呼び出します。
 

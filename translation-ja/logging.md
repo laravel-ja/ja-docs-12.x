@@ -529,7 +529,7 @@ Laravel Pail（ペール：バケツ、手杓）は、Laravelアプリケーシ�
 ### インストール
 
 > [!WARNING]
-> Laravel Pailには、[PHP8.2以上](https://php.net/releases/)と[PCNTL](https://www.php.net/manual/en/book.pcntl.php)拡張が必要です。
+> Laravel Pailには、[PCNTL](https://www.php.net/manual/en/book.pcntl.php)拡張が必要です。
 
 使用開始するには、Composerパッケージマネージャを使い、プロジェクトにPailをインストールしてください。
 

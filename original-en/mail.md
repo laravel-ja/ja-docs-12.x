@@ -359,7 +359,10 @@ However, if your application uses the same "from" address for all of its emails,
 In addition, you may define a global "reply_to" address within your `config/mail.php` configuration file:
 
 ```php
-'reply_to' => ['address' => 'example@example.com', 'name' => 'App Name'],
+'reply_to' => [
+    'address' => 'example@example.com',
+    'name' => 'App Name',
+],
 ```
 
 <a name="configuring-the-view"></a>
@@ -380,7 +383,7 @@ public function content(): Content
 ```
 
 > [!NOTE]
-> You may wish to create a `resources/views/emails` directory to house all of your email templates; however, you are free to place them wherever you wish within your `resources/views` directory.
+> You may wish to create a `resources/views/mail` directory to house all of your email templates; however, you are free to place them wherever you wish within your `resources/views` directory.
 
 <a name="plain-text-emails"></a>
 #### Plain Text Emails
@@ -502,7 +505,7 @@ class OrderShipped extends Mailable
 }
 ```
 
-Once the data has been passed to the `with` method, it will automatically be available in your view, so you may access it like you would access any other data in your Blade templates:
+Once the data has been passed via the `with` parameter, it will automatically be available in your view, so you may access it like you would access any other data in your Blade templates:
 
 ```blade
 <div>
@@ -769,7 +772,7 @@ public function envelope(): Envelope
 }
 ```
 
-If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/docs/mailgun/user-manual/tracking-messages/#tagging) and [metadata](https://documentation.mailgun.com/docs/mailgun/user-manual/tracking-messages/#attaching-data-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq).
+If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/docs/mailgun/user-manual/tracking-messages/#tags) and [metadata](https://documentation.mailgun.com/docs/mailgun/user-manual/sending-messages/#attaching-metadata-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq).
 
 If your application is using Amazon SES to send emails, you should use the `metadata` method to attach [SES "tags"](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html) to the message.
 
@@ -1146,7 +1149,7 @@ Mail::to($request->user())->locale('es')->send(
 ```
 
 <a name="user-preferred-locales"></a>
-### User Preferred Locales
+#### User Preferred Locales
 
 Sometimes, applications store each user's preferred locale. By implementing the `HasLocalePreference` contract on one or more of your models, you may instruct Laravel to use this stored locale when sending mail:
 
@@ -1456,7 +1459,7 @@ class LogMessage
 <a name="custom-transports"></a>
 ## Custom Transports
 
-Laravel includes a variety of mail transports; however, you may wish to write your own transports to deliver email via other services that Laravel does not support out of the box. To get started, define a class that extends the `Symfony\Component\Mailer\Transport\AbstractTransport` class. Then, implement the `doSend` and `__toString()` methods on your transport:
+Laravel includes a variety of mail transports; however, you may wish to write your own transports to deliver email via other services that Laravel does not support out of the box. To get started, define a class that extends the `Symfony\Component\Mailer\Transport\AbstractTransport` class. Then, implement the `doSend` and `__toString` methods on your transport:
 
 ```php
 use MailchimpTransactional\ApiClient;
@@ -1508,6 +1511,7 @@ Once you've defined your custom transport, you may register it via the `extend` 
 ```php
 use App\Mail\MailchimpTransport;
 use Illuminate\Support\Facades\Mail;
+use MailchimpTransactional\ApiClient;
 
 /**
  * Bootstrap any application services.
@@ -1515,7 +1519,11 @@ use Illuminate\Support\Facades\Mail;
 public function boot(): void
 {
     Mail::extend('mailchimp', function (array $config = []) {
-        return new MailchimpTransport(/* ... */);
+        $client = new ApiClient;
+
+        $client->setApiKey($config['key']);
+
+        return new MailchimpTransport($client);
     });
 }
 ```
@@ -1525,6 +1533,7 @@ Once your custom transport has been defined and registered, you may create a mai
 ```php
 'mailchimp' => [
     'transport' => 'mailchimp',
+    'key' => env('MAILCHIMP_API_KEY'),
     // ...
 ],
 ```
@@ -1570,7 +1579,7 @@ public function boot(): void
 }
 ```
 
-Once your transport has been registered, you may create a mailer definition within your application's config/mail.php configuration file that utilizes the new transport:
+Once your transport has been registered, you may create a mailer definition within your application's `config/mail.php` configuration file that utilizes the new transport:
 
 ```php
 'brevo' => [

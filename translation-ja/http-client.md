@@ -133,7 +133,7 @@ $response = Http::get('http://example.com/users', [
 Http::retry(3, 100)->withQueryParameters([
     'name' => 'Taylor',
     'page' => 1,
-])->get('http://example.com/users')
+])->get('http://example.com/users');
 ```
 
 <a name="sending-form-url-encoded-requests"></a>
