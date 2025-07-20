@@ -1346,6 +1346,12 @@ use Illuminate\Validation\Rule;
 
 フィールドが論理値として有効であることをバリデートします。受け入れられる入力は、`true`、`false`、`1`、`0`、`"1"`、`"0"`です。
 
+`strict` パラメータを使用すると、そのフィールドの値が`true`または`false`の場合のみ有効と判定できます。
+
+```php
+'foo' => 'boolean:strict'
+```
+
 <a name="rule-confirmed"></a>
 #### confirmed
 
@@ -1961,6 +1967,12 @@ Validator::make($data, [
 #### numeric
 
 フィールドは[数値](https://www.php.net/manual/ja/function.is-numeric.php)であることをバリデートします。
+
+`strict`パラメータを使用すると、フィールドの値が整数型または浮動小数点数型の場合のみ有効と判定できます。数値文字列は無効と判定します。
+
+```php
+'amount' => 'numeric:strict'
+```
 
 <a name="rule-present"></a>
 #### present

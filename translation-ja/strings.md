@@ -630,7 +630,7 @@ $result = Str::doesntStartWith('This is my name', 'That');
 指定可能な値の配列を渡す場合、`doesntStartWith`メソッドは、文字列が指定値のどれからも始まらない場合に`true`を返します。
 
 ```php
-$result = Str::doesntStartWith('This is my name', ['This', 'That', 'There']);
+$result = Str::doesntStartWith('This is my name', ['What', 'That', 'There']);
 
 // true
 ```
@@ -2317,7 +2317,7 @@ $result = Str::of('This is my name')->doesntStartWith('That');
 ```php
 use Illuminate\Support\Str;
 
-$result = Str::of('This is my name')->doesntStartWith(['This', 'That', 'There']);
+$result = Str::of('This is my name')->doesntStartWith(['What', 'That', 'There']);
 
 // true
 ```

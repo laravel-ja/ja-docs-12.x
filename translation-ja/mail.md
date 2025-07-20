@@ -87,7 +87,7 @@ composer require symfony/mailgun-mailer symfony/http-client
 ],
 ```
 
-米国の[Mailgunリージョン](https://documentation.mailgun.com/en/latest/api-intro.html#mailgun-regions)を使用していない場合は、`services`設定ファイルでリージョンのエンドポイントを定義できます。
+米国の[Mailgunリージョン](https://documentation.mailgun.com/docs/mailgun/api-reference/#mailgun-regions)を使用していない場合は、`services`設定ファイルでリージョンのエンドポイントを定義してください。
 
 ```php
 'mailgun' => [
@@ -253,6 +253,7 @@ MAILERSEND_API_KEY=your-api-key
             'mailgun',
             'sendmail',
         ],
+        'retry_after' => 60,
     ],
 
     // ...
@@ -278,6 +279,7 @@ MAILERSEND_API_KEY=your-api-key
             'ses',
             'postmark',
         ],
+        'retry_after' => 60,
     ],
 
     // ...
@@ -1180,9 +1182,7 @@ Mail::to($request->user())->send(new OrderShipped($order));
 <a name="testing-mailable-content"></a>
 ### Mailable内容のテスト
 
-Laravelは、Mailableの構造を調べる数多くのメソッドを提供しています。さらに、期待するコンテンツがMailableに含まれているかをテストするために便利なメソッドをいくらか用意しています。これらのメソッドは以下の通りです。`assertSeeInHtml`、`assertDontSeeInHtml`、`assertSeeInOrderInHtml`、`assertSeeInText`、`assertDontSeeInText`、`assertSeeInOrderInText`、`assertHasAttachment`、`assertHasAttachedData`、`assertHasAttachmentFromStorage`、`assertHasAttachmentFromStorageDisk`
-
-ご想像のとおり、"HTML"アサートは、MailableのHTMLバージョンに特定の文字列が含まれていることを宣言し、"text"アサートは、Mailableの平文テキストバージョンに特定の文字列が含まれていることを宣言します。
+Laravelは、Mailableの構造を調べる数多くのメソッドを提供しています。さらに、期待するコンテンツがMailableに含まれているかをテストするために便利なメソッドをいくらか用意しています。
 
 ```php tab=Pest
 use App\Mail\InvoicePaid;
@@ -1203,10 +1203,11 @@ test('mailable content', function () {
     $mailable->assertHasMetadata('key', 'value');
 
     $mailable->assertSeeInHtml($user->email);
-    $mailable->assertSeeInHtml('Invoice Paid');
+    $mailable->assertDontSeeInHtml('Invoice Not Paid');
     $mailable->assertSeeInOrderInHtml(['Invoice Paid', 'Thanks']);
 
     $mailable->assertSeeInText($user->email);
+    $mailable->assertDontSeeInText('Invoice Not Paid');
     $mailable->assertSeeInOrderInText(['Invoice Paid', 'Thanks']);
 
     $mailable->assertHasAttachment('/path/to/file');
@@ -1237,10 +1238,11 @@ public function test_mailable_content(): void
     $mailable->assertHasMetadata('key', 'value');
 
     $mailable->assertSeeInHtml($user->email);
-    $mailable->assertSeeInHtml('Invoice Paid');
+    $mailable->assertDontSeeInHtml('Invoice Not Paid');
     $mailable->assertSeeInOrderInHtml(['Invoice Paid', 'Thanks']);
 
     $mailable->assertSeeInText($user->email);
+    $mailable->assertDontSeeInText('Invoice Not Paid');
     $mailable->assertSeeInOrderInText(['Invoice Paid', 'Thanks']);
 
     $mailable->assertHasAttachment('/path/to/file');
@@ -1250,6 +1252,8 @@ public function test_mailable_content(): void
     $mailable->assertHasAttachmentFromStorageDisk('s3', '/path/to/file', 'name.pdf', ['mime' => 'application/pdf']);
 }
 ```
+
+ご想像のとおり、"HTML"アサートは、MailableのHTMLバージョンに特定の文字列が含まれていることを宣言し、"text"アサートは、Mailableの平文テキストバージョンに特定の文字列が含まれていることを宣言します。
 
 <a name="testing-mailable-sending"></a>
 ### Mailable送信のテスト
@@ -1462,6 +1466,10 @@ class LogMessage
 Laravelは様々なメールトランスポートを用意していますが、Laravelが予めサポートしていない他のサービスを使いメールを配信するため、独自のトランスポートを書きたい場合があり得ます。取り掛かるには、`Symfony\Component\Mailer\Transport\AbstractTransport`クラスを継承するクラスを定義します。次に、トランスポートで`doSend`と`__toString`メソッドを実装します。
 
 ```php
+<?php
+
+namespace App\Mail;
+
 use MailchimpTransactional\ApiClient;
 use Symfony\Component\Mailer\SentMessage;
 use Symfony\Component\Mailer\Transport\AbstractTransport;
@@ -1506,7 +1514,7 @@ class MailchimpTransport extends AbstractTransport
 }
 ```
 
-カスタムトランスポートを定義したら、`Mail`ファサードが提供する`extend`メソッドで登録します。一般的には、アプリケーションの`AppServiceProvider`サービスプロバイダの`boot`メソッド内で行います。`extend`メソッドへ渡されるクロージャへ、`$config`引数が渡されます。この引数には、アプリケーションの`config/mail.php`設定ファイルで定義してあるメーラーの設定配列が含まれています。
+カスタムトランスポートを定義したら、`Mail`ファサードが提供する`extend`メソッドで登録します。一般的には、アプリケーションの`AppServiceProvider`の`boot`メソッド内で行います。`extend`メソッドへ渡されるクロージャへ、`$config`引数が渡されます。この引数には、アプリケーションの`config/mail.php`設定ファイルで定義してあるメーラーの設定配列が含まれています。
 
 ```php
 use App\Mail\MailchimpTransport;
@@ -1551,7 +1559,7 @@ Sendinblueメーラーパッケージをインストールしたら、アプリ�
 
 ```php
 'brevo' => [
-    'key' => 'your-api-key',
+    'key' => env('BREVO_API_KEY'),
 ],
 ```
 

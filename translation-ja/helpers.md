@@ -655,7 +655,7 @@ $isList = Arr::isList(['product' => ['name' => 'Desk', 'price' => 100]]);
 <a name="method-array-join"></a>
 #### `Arr::join()` {.collection-method}
 
-`Arr::join`メソッドは、配列の要素を文字列として結合します。このメソッドに第２引数を使用し、配列の最後の要素前に挿入する文字列を指定できます。
+`Arr::join`メソッドは、配列の要素を文字列として結合します。このメソッドに第３引数を使用し、配列の最後の要素前に挿入する文字列を指定できます。
 
 ```php
 use Illuminate\Support\Arr;
@@ -1502,7 +1502,7 @@ data_forget($data, 'products.*.price');
 <a name="method-head"></a>
 #### `head()` {.collection-method}
 
-`head`関数は、配列の最初の要素を返します。
+`head`関数は、配列の最初の要素を返します。空配列の場合は、`false`を返します。
 
 ```php
 $array = [100, 200, 300];
@@ -1515,7 +1515,7 @@ $first = head($array);
 <a name="method-last"></a>
 #### `last()` {.collection-method}
 
-`last`関数は指定した配列の最後の要素を返します。
+`last`関数は指定した配列の最後の要素を返します。空配列の場合は、`false`を返します。
 
 ```php
 $array = [100, 200, 300];
@@ -2511,7 +2511,7 @@ event(new UserRegistered($user));
 `fake`関数は、コンテナから[Faker](https://github.com/FakerPHP/Faker)シングルトンを依存解決します。これは、モデルファクトリ、データベース初期値設定、テスト、プロトタイピングビューでフェイクデータを作成する場合に便利です。
 
 ```blade
-@for($i = 0; $i < 10; $i++)
+@for ($i = 0; $i < 10; $i++)
     <dl>
         <dt>Name</dt>
         <dd>{{ fake()->name() }}</dd>

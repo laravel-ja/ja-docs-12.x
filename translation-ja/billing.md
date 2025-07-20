@@ -1755,7 +1755,7 @@ Route::post('/user/subscribe', function (Request $request) {
 `trialUntil`メソッドを使用すると、無料トライアル期間をいつ終了するかを指定する`DateTime`インスタンスを渡せます。
 
 ```php
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 $user->newSubscription('default', 'price_monthly')
     ->trialUntil(Carbon::now()->addDays(10))

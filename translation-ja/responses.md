@@ -385,7 +385,7 @@ Route::get('/stream', function () {
 
 ```php
 Route::post('/chat', function () {
-    return response()->stream(function (): void {
+    return response()->stream(function (): Generator {
         $stream = OpenAI::client()->chat()->createStreamed(...);
 
         foreach ($stream as $response) {

@@ -2341,6 +2341,18 @@ $collection->all();
 // [1, 2, 3, 4, 5]
 ```
 
+コレクションの最後に追加する項目を複数指定することもできます。
+
+```php
+$collection = collect([1, 2, 3, 4]);
+
+$collection->push(5, 6, 7);
+
+$collection->all();
+
+// [1, 2, 3, 4, 5, 6, 7]
+```
+
 <a name="method-put"></a>
 #### `put()` {.collection-method}
 

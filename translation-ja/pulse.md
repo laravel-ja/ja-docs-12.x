@@ -486,6 +486,9 @@ Pulseはデフォルトの[Redis接続](/docs/{{version}}/redis#configuration)�
 PULSE_REDIS_CONNECTION=pulse
 ```
 
+> [!WARNING]
+> Redisインジェストドライバを使用する場合、Pulseのインストールは、常にRedisを使用するキューとは異なるRedis接続を使用する必要があります。
+
 Redisインジェストを使用する場合は、`pulse:work`コマンドを実行する必要があります。ストリームを監視し、RedisからPulseのデータベーステーブルへエントリを移動させるためにです。
 
 ```php

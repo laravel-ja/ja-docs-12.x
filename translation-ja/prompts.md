@@ -858,8 +858,8 @@ table(
 use function Laravel\Prompts\spin;
 
 $response = spin(
-    message: 'Fetching response...',
-    callback: fn () => Http::get('http://example.com')
+    callback: fn () => Http::get('http://example.com'),
+    message: 'Fetching response...'
 );
 ```
 

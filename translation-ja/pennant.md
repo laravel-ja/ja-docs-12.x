@@ -523,7 +523,7 @@ return Feature::for($user)->active('new-api')
 
 ```php
 use App\Models\Team;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Lottery;
 use Laravel\Pennant\Feature;
 
