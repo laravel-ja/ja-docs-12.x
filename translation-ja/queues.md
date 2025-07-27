@@ -2491,6 +2491,9 @@ test('orders can be shipped', function () {
     // クロージャがキューへ投入されることをアサート
     Queue::assertClosurePushed();
 
+    // クロージャが投入されないことをアサート
+    Queue::assertClosureNotPushed();
+
     // 投入されるジョブの合計数をアサート
     Queue::assertCount(3);
 });
@@ -2530,17 +2533,26 @@ class ExampleTest extends TestCase
         // クロージャがキューへ投入されることをアサート
         Queue::assertClosurePushed();
 
+        // クロージャが投入されないことをアサート
+        Queue::assertClosureNotPushed();
+
         // 投入されるジョブの合計数をアサート
         Queue::assertCount(3);
     }
 }
 ```
 
-指定する「真偽値テスト」にパスするジョブが、投入されたことをアサートするため、`assertPushed`または`assertNotPushed`メソッドへクロージャを渡せます。指定真偽値テストにパスするジョブが最低一つ投入された場合、そのアサートをパスします。
+指定する「真偽値テスト」にパスするジョブが、投入されたことをアサートするため、`assertPushed`、`assertNotPushed`、`assertClosurePushed`、`assertClosureNotPushed`メソッドへクロージャを渡せます。指定真偽値テストにパスするジョブが最低一つ投入された場合、そのアサートをパスします。
 
 ```php
+use Illuminate\Queue\CallQueuedClosure;
+
 Queue::assertPushed(function (ShipOrder $job) use ($order) {
     return $job->order->id === $order->id;
+});
+
+Queue::assertClosurePushed(function (CallQueuedClosure $job) {
+    return $job->name === 'validate-order';
 });
 ```
 

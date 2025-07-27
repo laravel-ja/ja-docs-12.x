@@ -22,6 +22,7 @@
 - [ターミナルのクリア](#clear)
 - [ターミナルの考察](#terminal-considerations)
 - [未サポートの環境とフォールバック](#fallbacks)
+- [テスト](#testing)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -1001,3 +1002,49 @@ TextPrompt::fallbackUsing(function (TextPrompt $prompt) use ($input, $output) {
 ```
 
 フォールバックは、プロンプトクラスごとに個別に設定する必要があります。クロージャはプロンプトクラスのインスタンスを受け取り、 プロンプトの適切な型を返す必要があります。
+
+<a name="testing"></a>
+## テスト
+
+Laravelは、コマンドが期待するプロンプトメッセージを表示するかをテストするための様々な方法を提供しています。
+
+```php tab=Pest
+test('report generation', function () {
+    $this->artisan('report:generate')
+        ->expectsPromptsInfo('Welcome to the application!')
+        ->expectsPromptsWarning('This action cannot be undone')
+        ->expectsPromptsError('Something went wrong')
+        ->expectsPromptsAlert('Important notice!')
+        ->expectsPromptsIntro('Starting process...')
+        ->expectsPromptsOutro('Process completed!')
+        ->expectsPromptsTable(
+            headers: ['Name', 'Email'],
+            rows: [
+                ['Taylor Otwell', 'taylor@example.com'],
+                ['Jason Beggs', 'jason@example.com'],
+            ]
+        )
+        ->assertExitCode(0);
+});
+```
+
+```php tab=PHPUnit
+public function test_report_generation(): void
+{
+    $this->artisan('report:generate')
+        ->expectsPromptsInfo('Welcome to the application!')
+        ->expectsPromptsWarning('This action cannot be undone')
+        ->expectsPromptsError('Something went wrong')
+        ->expectsPromptsAlert('Important notice!')
+        ->expectsPromptsIntro('Starting process...')
+        ->expectsPromptsOutro('Process completed!')
+        ->expectsPromptsTable(
+            headers: ['Name', 'Email'],
+            rows: [
+                ['Taylor Otwell', 'taylor@example.com'],
+                ['Jason Beggs', 'jason@example.com'],
+            ]
+        )
+        ->assertExitCode(0);
+}
+```

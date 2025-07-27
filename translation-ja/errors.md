@@ -203,6 +203,20 @@ class PodcastProcessingException extends Exception implements ShouldntReport
 }
 ```
 
+特定のタイプの例外をいつ無視するかをさらに制御する必要がある場合は、`dontReportWhen`メソッドへクロージャを指定してください。
+
+```php
+use App\Exceptions\InvalidOrderException;
+use Throwable;
+
+->withExceptions(function (Exceptions $exceptions) {
+    $exceptions->dontReportWhen(function (Throwable $e) {
+        return $e instanceof PodcastProcessingException &&
+               $e->reason() === 'Subscription expired';
+    });
+})
+```
+
 Laravelは内部的に、あらかじめいくつかのタイプのエラーを無視しています。例えば、404 HTTPエラーや無効なCSRFトークンによって生成された419 HTTPレスポンスから生じる例外などです。Laravelが指定しているタイプの例外を無視しないように指示したい場合は、アプリケーションの`bootstrap/app.php`ファイルで、`stopIgnoring`例外メソッドを使用してください。
 
 ```php

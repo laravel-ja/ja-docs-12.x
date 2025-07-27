@@ -254,7 +254,7 @@ $this->assertNotSoftDeleted($user);
 <a name="assert-model-exists"></a>
 #### assertModelExists
 
-指定モデルがデータベースに存在することをアサートします。
+Assert that a given model or collection of models exist in the database:
 
 ```php
 use App\Models\User;
@@ -267,7 +267,7 @@ $this->assertModelExists($user);
 <a name="assert-model-missing"></a>
 #### assertModelMissing
 
-指定モデルがデータベースに存在しないことをアサートします。
+Assert that a given model or collection of models do not exist in the database:
 
 ```php
 use App\Models\User;

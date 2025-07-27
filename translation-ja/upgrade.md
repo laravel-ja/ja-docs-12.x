@@ -30,6 +30,7 @@
 - [並列処理結果のインデックスマッピング](#concurrency-result-index-mapping)
 - [コンテナクラスの依存解決](#container-class-dependency-resolution)
 - [ImageバリデーションからSVGを除外](#image-validation)
+- [ローカルファイルデスクのデフォルトルートパス](#local-filesystem-disk-default-root-path)
 - [複数スキーマのデータベース調査](#multi-schema-database-inspecting)
 - [リクエストのネストした配列のマージ](#nested-array-request-merging)
 
@@ -221,11 +222,23 @@ $request->mergeIfMissing([
 ]);
 ```
 
+<a name="storage"></a>
+### Storage
+
+<a name="local-filesystem-disk-default-root-path"></a>
+#### ローカルファイルデスクのデフォルトルートパス
+
+**影響の可能性： 低い**
+
+アプリケーションがファイルシステム設定で明示的に`local`ディスクを定義していない場合、Laravelはローカルディスクのルートをデフォルトで`storage/app/private`にするようになりました。以前のリリースでは、デフォルトは`storage/app`でした。そのため、`Storage::disk('local')`を呼び出すと、特に設定しない限り`storage/app/private`から読み込み、`storage/app/private`へ書き込みます。以前の動作に戻すには、手作業で`local`ディスクを定義し、希望するルートパスを設定します。
+
 <a name="validation"></a>
 ### バリデーション
 
 <a name="image-validation"></a>
 #### ImageバリデーションからSVGを除外
+
+**影響の可能性： 低い**
 
 `image`バリデーションルールは、デフォルトでSVG画像を許可しなくなりました。もし、`image`ルールでSVGを許可したい場合は、明示的に許可する必要があります。
 

@@ -36,7 +36,6 @@
 - [SMS通知](#sms-notifications)
     - [事前要件](#sms-prerequisites)
     - [SMS通知のフォーマット](#formatting-sms-notifications)
-    - [ユニコードコンテンツ](#unicode-content)
     - [発信元電話番号のカスタマイズ](#customizing-the-from-number)
     - [クライアントリファレンスの追加](#adding-a-client-reference)
     - [SMS通知のルート指定](#routing-sms-notifications)
@@ -695,7 +694,7 @@ public function toMail(object $notifiable): MailMessage
 }
 ```
 
-Mailgunドライバを使用しているアプリケーションの場合は、[タグ](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1)と[メタデータ](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages)の詳細は、Mailgunのドキュメントを参照してください。同様に、Postmarkのドキュメントの[タグ](https://postmarkapp.com/blog/tags-support-for-smtp)と[メタデータ](https://postmarkapp.com/support/article/1125-custom-metadata-faq)で、サポートに関するより詳しい情報を得られます。
+Mailgunドライバを使用しているアプリケーションの場合は、[タグ](https://documentation.mailgun.com/docs/mailgun/user-manual/tracking-messages/#tags)と[メタデータ](https://documentation.mailgun.com/docs/mailgun/user-manual/sending-messages/#attaching-metadata-to-messages)の詳細は、Mailgunのドキュメントを参照してください。同様に、Postmarkのドキュメントの[タグ](https://postmarkapp.com/blog/tags-support-for-smtp)と[メタデータ](https://postmarkapp.com/support/article/1125-custom-metadata-faq)で、サポートに関するより詳しい情報を得られます。
 
 アプリケーションでAmazon SESを使用してメール送信する場合、`metadata`メソッドを使用して、メッセージへ[SESのタグ](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html)を添付する必要があります。
 
@@ -988,6 +987,16 @@ foreach ($user->notifications as $notification) {
 $user = App\Models\User::find(1);
 
 foreach ($user->unreadNotifications as $notification) {
+    echo $notification->type;
+}
+```
+
+"read"通知のみを取得したい場合は、`readNotifications`リレーションシップを使用します。
+
+```php
+$user = App\Models\User::find(1);
+
+foreach ($user->readNotifications as $notification) {
     echo $notification->type;
 }
 ```
@@ -1361,7 +1370,6 @@ composer require laravel/slack-notification-channel
 ```php
 use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
 use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
-use Illuminate\Notifications\Slack\BlockKit\Composites\ConfirmObject;
 use Illuminate\Notifications\Slack\SlackMessage;
 
 /**
@@ -1604,7 +1612,7 @@ Notification::locale('es')->send(
 ```
 
 <a name="user-preferred-locales"></a>
-### ユーザー希望のローケル
+#### ユーザー希望のローケル
 
 ユーザーの希望するローケルをアプリケーションで保存しておくことは良くあります。notifiableモデルで`HasLocalePreference`契約を実装すると、通知送信時にこの保存してあるローケルを使用するように、Laravelへ指示できます。
 

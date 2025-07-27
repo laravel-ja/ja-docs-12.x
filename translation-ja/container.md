@@ -178,6 +178,22 @@ $this->app->singletonIf(Transistor::class, function (Application $app) {
 });
 ```
 
+あるいは、インターフェイスやクラスを`#[Singleton]`属性でマークして、コンテナに対し１回だけ依存解決するように指示することもできます。
+
+```php
+<?php
+
+namespace App\Services;
+
+use Illuminate\Container\Attributes\Singleton;
+
+#[Singleton]
+class Transistor
+{
+    // ...
+}
+```
+
 <a name="binding-scoped"></a>
 #### スコープ付きシングルトンの結合
 
@@ -199,6 +215,22 @@ $this->app->scoped(Transistor::class, function (Application $app) {
 $this->app->scopedIf(Transistor::class, function (Application $app) {
     return new Transistor($app->make(PodcastParser::class));
 });
+```
+
+あるいは、インターフェイスやクラスを`#[Scoped]`属性でマークして、コンテナに対しLaravelのリクエスト／ジョブライフサイクル内で１回だけ依存解決されることを示すこともできます。
+
+```php
+<?php
+
+namespace App\Services;
+
+use Illuminate\Container\Attributes\Scoped;
+
+#[Scoped]
+class Transistor
+{
+    // ...
+}
 ```
 
 <a name="binding-instances"></a>

@@ -11,6 +11,8 @@
 - [キュー投入するイベントリスナ](#queued-event-listeners)
     - [キューの手作業操作](#manually-interacting-with-the-queue)
     - [キュー投入するイベントリスナとデータベーストランザクション](#queued-event-listeners-and-database-transactions)
+    - [キュー投入リスナミドルウェア](#queued-listener-middleware)
+    - [暗号化キュー投入リスナ](#encrypted-queued-listeners)
     - [失敗したジョブの処理](#handling-failed-jobs)
 - [イベント発行](#dispatching-events)
     - [データベーストランザクション後のイベント発行](#dispatching-events-after-database-transactions)
@@ -455,6 +457,62 @@ class SendShipmentNotification implements ShouldQueueAfterCommit
 > [!NOTE]
 > こうした問題の回避方法の詳細は、[キュー投入されるジョブとデータベーストランザクション](/docs/{{version}}/queues#jobs-and-database-transactions)に関するドキュメントを確認してください。
 
+<a name="queued-listener-middleware"></a>
+### キュー投入リスナミドルウェア
+
+キューリスナは[ジョブミドルウェア](/docs/{{version}}/queues#job-middleware)を利用することもできます。ジョブミドルウェアは、キューリスナの実行へカスタムロジックをラップすることを可能にし、リスナ自身の定型コードを減らします。ジョブミドルウェアを作成した後、リスナの`middleware`メソッドからジョブミドルウェアを返すことで、リスナへアタッチします。
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use App\Jobs\Middleware\RateLimited;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    /**
+     * イベントの処理
+     */
+    public function handle(OrderShipped $event): void
+    {
+        // イベントを処理する…
+    }
+
+    /**
+     * リスナが通過するミドルウェアを取得
+     *
+     * @return array<int, object>
+     */
+    public function middleware(OrderShipped $event): array
+    {
+        return [new RateLimited];
+    }
+}
+```
+
+<a name="encrypted-queued-listeners"></a>
+#### 暗号化キュー投入リスナ
+
+Laravelでは[暗号化](/docs/{{version}}/encryption)により、キュー投入するリスナのデータのプライバシーと整合性を確保できます。使い始めるには、リスナクラスへ`ShouldBeEncrypted`インターフェイスを追加するだけです。このインターフェイスをクラスに追加すると、Laravelはリスナをキューへ投入する前に自動的に暗号化します。
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue, ShouldBeEncrypted
+{
+    // ...
+}
+```
+
 <a name="handling-failed-jobs"></a>
 ### 失敗したジョブの処理
 
@@ -540,7 +598,7 @@ public function retryUntil(): DateTime
 <a name="specifying-queued-listener-backoff"></a>
 #### キュー投入済みリスナの再試行待ち秒数指定
 
-例外が発生したリスナを再試行する前に、Laravelが何秒待つかを設定したい場合は、リスナクラスへ`backoff`プロパティを定義してください。
+例外が発生したリスナを再試行する前に、Laravelが何秒待つかを設定したい場合は、リスナクラスへ`$backoff`プロパティを定義してください。
 
 ```php
 /**
@@ -557,7 +615,7 @@ public $backoff = 3;
 /**
  * キュー投入したリスナを再試行するまで待つ秒数を計算
  */
-public function backoff(): int
+public function backoff(OrderShipped $event): int
 {
     return 3;
 }
@@ -571,9 +629,98 @@ public function backoff(): int
  *
  * @return list<int>
  */
-public function backoff(): array
+public function backoff(OrderShipped $event): array
 {
     return [1, 5, 10];
+}
+```
+
+<a name="specifying-queued-listener-max-exceptions"></a>
+#### キュー投入リスナの最大例外の指定
+
+キューへ投入するリスナが何度も試行される可能性があり、（直接、`release`メソッドによって解放されるのとは対照的に）指定の未処理例外数により再試行がトリガーされた場合に失敗するように指定したい場合があるでしょう。これを実現するには、リスナクラスに`$maxExceptions`プロパティを定義します。
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    use InteractsWithQueue;
+
+    /**
+     * キュー投入するリスナの試行回数
+     *
+     * @var int
+     */
+    public $tries = 25;
+
+    /**
+     * 失敗する前までに許容する未処理の例外の最大数。
+     *
+     * @var int
+     */
+    public $maxExceptions = 3;
+
+    /**
+     * イベントの処理
+     */
+    public function handle(OrderShipped $event): void
+    {
+        // イベントを処理する…
+    }
+}
+```
+
+この例で、リスナを最大２５回再試行します。しかし、リスナにより３回、未処理の例外が投げられるとこのリスナは失敗します。
+
+<a name="specifying-queued-listener-timeout"></a>
+#### キュー投入リスナのタイムアウトの指定
+
+多くの場合、キューに投入するリスナにかかると予想される時間は大体わかっているものです。このため、Laravelでは「タイムアウト」値を指定できます。リスナがタイムアウト値で指定した秒数を超えて処理されている場合、そのリスナを処理するワーカはエラーで終了します。リスナクラスに`$timeout`プロパティを定義することにより、リスナが実行できる最大秒数を定義します。
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    /**
+     * リスナがタイムアウトするまでに実行できる秒数
+     *
+     * @var int
+     */
+    public $timeout = 120;
+}
+```
+
+リスナをタイムアウト時に失敗したとマークしたい場合は、リスナクラスへ`$failOnTimeout`プロパティを定義します。
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class SendShipmentNotification implements ShouldQueue
+{
+    /**
+     * リスナをタイムアウト時に失敗とマークすることを指定
+     *
+     * @var bool
+     */
+    public $failOnTimeout = true;
 }
 ```
 

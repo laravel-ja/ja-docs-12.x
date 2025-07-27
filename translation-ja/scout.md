@@ -536,6 +536,12 @@ Scoutを既存のプロジェクトにインストールする場合は、イン
 php artisan scout:import "App\Models\Post"
 ```
 
+`scout:queue`コマンドは[キュー投入ジョブ](/docs/{{version}}/queues)を使用して既存レコードを全てインポートするために使用します。
+
+```shell
+php artisan scout:queue "App\Models\Post" --chunk=500
+```
+
 `flush`コマンドは、検索インデックスからモデルの全レコードを削除するために使用します。
 
 ```shell

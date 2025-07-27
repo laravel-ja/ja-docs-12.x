@@ -36,7 +36,6 @@
 - [SMS Notifications](#sms-notifications)
     - [Prerequisites](#sms-prerequisites)
     - [Formatting SMS Notifications](#formatting-sms-notifications)
-    - [Unicode Content](#unicode-content)
     - [Customizing the "From" Number](#customizing-the-from-number)
     - [Adding a Client Reference](#adding-a-client-reference)
     - [Routing SMS Notifications](#routing-sms-notifications)
@@ -695,7 +694,7 @@ public function toMail(object $notifiable): MailMessage
 }
 ```
 
-If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/en/latest/user_manual.html#tagging-1) and [metadata](https://documentation.mailgun.com/en/latest/user_manual.html#attaching-data-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq).
+If your application is using the Mailgun driver, you may consult Mailgun's documentation for more information on [tags](https://documentation.mailgun.com/docs/mailgun/user-manual/tracking-messages/#tags) and [metadata](https://documentation.mailgun.com/docs/mailgun/user-manual/sending-messages/#attaching-metadata-to-messages). Likewise, the Postmark documentation may also be consulted for more information on their support for [tags](https://postmarkapp.com/blog/tags-support-for-smtp) and [metadata](https://postmarkapp.com/support/article/1125-custom-metadata-faq).
 
 If your application is using Amazon SES to send emails, you should use the `metadata` method to attach [SES "tags"](https://docs.aws.amazon.com/ses/latest/APIReference/API_MessageTag.html) to the message.
 
@@ -988,6 +987,16 @@ If you want to retrieve only the "unread" notifications, you may use the `unread
 $user = App\Models\User::find(1);
 
 foreach ($user->unreadNotifications as $notification) {
+    echo $notification->type;
+}
+```
+
+If you want to retrieve only the "read" notifications, you may use the `readNotifications` relationship:
+
+```php
+$user = App\Models\User::find(1);
+
+foreach ($user->readNotifications as $notification) {
     echo $notification->type;
 }
 ```
@@ -1361,7 +1370,6 @@ If a notification supports being sent as a Slack message, you should define a `t
 ```php
 use Illuminate\Notifications\Slack\BlockKit\Blocks\ContextBlock;
 use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
-use Illuminate\Notifications\Slack\BlockKit\Composites\ConfirmObject;
 use Illuminate\Notifications\Slack\SlackMessage;
 
 /**
@@ -1604,7 +1612,7 @@ Notification::locale('es')->send(
 ```
 
 <a name="user-preferred-locales"></a>
-### User Preferred Locales
+#### User Preferred Locales
 
 Sometimes, applications store each user's preferred locale. By implementing the `HasLocalePreference` contract on your notifiable model, you may instruct Laravel to use this stored locale when sending a notification:
 

@@ -6,8 +6,8 @@
 - [サービスプロバイダ](#service-providers)
 - [リソース](#resources)
     - [設定](#configuration)
-    - [マイグレーション](#migrations)
     - [ルート](#routes)
+    - [マイグレーション](#migrations)
     - [言語ファイル](#language-files)
     - [ビュー](#views)
     - [ビューコンポーネント](#view-components)
@@ -123,7 +123,7 @@ $value = config('courier.option');
 
 ```php
 /**
- * 全アプリケーションサービスの登録
+ * 全パッケージサービスの登録
  */
 public function register(): void
 {
