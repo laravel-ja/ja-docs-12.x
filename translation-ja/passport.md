@@ -969,7 +969,7 @@ Route::get('/orders', function (Request $request) {
 ```php
 Route::get('/orders', function (Request $request) {
     // アクセストークンは有効で、クライアントはリソースの所有者であり、"servers:read"と"servers:create"の両スコープを持っている
-})->middleware(EnsureClientIsResourceOwner::using('servers:read', 'servers:create');
+})->middleware(EnsureClientIsResourceOwner::using('servers:read', 'servers:create'));
 ```
 
 <a name="retrieving-tokens"></a>
@@ -1194,7 +1194,7 @@ use Laravel\Passport\Http\Middleware\CheckToken;
 
 Route::get('/orders', function () {
     // アクセストークンは"orders:read"と"orders:create"両方のスコープを持つ
-})->middleware(['auth:api', CheckToken::using('orders:read', 'orders:create');
+})->middleware(['auth:api', CheckToken::using('orders:read', 'orders:create')]);
 ```
 
 <a name="check-for-any-scopes"></a>
@@ -1207,7 +1207,7 @@ use Laravel\Passport\Http\Middleware\CheckTokenForAnyScope;
 
 Route::get('/orders', function () {
     // アクセストークンは"orders:read"か"orders:create"スコープのどれかを持つ
-})->middleware(['auth:api', CheckTokenForAnyScope::using('orders:read', 'orders:create');
+})->middleware(['auth:api', CheckTokenForAnyScope::using('orders:read', 'orders:create')]);
 ```
 
 <a name="checking-scopes-on-a-token-instance"></a>

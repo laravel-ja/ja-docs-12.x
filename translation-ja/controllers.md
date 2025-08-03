@@ -196,6 +196,15 @@ Route::resources([
 ]);
 ```
 
+`softDeletableResources`メソッドは、`withTrashed`メソッドを使用する多くのリソースコントローラを登録します。
+
+```php
+Route::softDeletableResources([
+    'photos' => PhotoController::class,
+    'posts' => PostController::class,
+]);
+```
+
 <a name="actions-handled-by-resource-controller"></a>
 #### リソースコントローラが処理するアクション
 

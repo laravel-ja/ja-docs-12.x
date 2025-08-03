@@ -696,6 +696,10 @@ Laravelは、JSONカラム型をサポートしているデータベースでは
 $users = DB::table('users')
     ->where('preferences->dining->meal', 'salad')
     ->get();
+
+$users = DB::table('users')
+    ->whereIn('preferences->dining->meal', ['pasta', 'salad', 'sandwiches'])
+    ->get();
 ```
 
 `whereJsonContains`メソッドと`whereJsonDoesntContain`メソッドを使用すると、JSON配列をクエリできます。

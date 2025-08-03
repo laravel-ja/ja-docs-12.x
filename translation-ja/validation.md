@@ -1042,6 +1042,7 @@ The credit card number field is required when payment type is credit card.
 [配列](#rule-array)
 [範囲](#rule-between)
 [内包](#rule-contains)
+[非内包](#rule-doesnt-contain)
 [一意](#rule-distinct)
 [他のフィールド値](#rule-in-array)
 [キーを内包](#rule-in-array-keys)
@@ -1373,6 +1374,24 @@ Validator::make($data, [
         'required',
         'array',
         Rule::contains(['admin', 'editor']),
+    ],
+]);
+```
+
+<a name="rule-doesnt-contain"></a>
+#### doesnt_contain:_foo_,_bar_,...
+
+フィールドが、指定パラメータ値を含まない配列であることをバリデートします。このルールではしばしば配列を`implode`する必要があるため、`Rule::doesntContain`メソッドを使用すると、ルールを簡潔に構築できます。
+
+```php
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+
+Validator::make($data, [
+    'roles' => [
+        'required',
+        'array',
+        Rule::doesntContain(['admin', 'editor']),
     ],
 ]);
 ```

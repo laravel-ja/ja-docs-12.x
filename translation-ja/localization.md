@@ -90,7 +90,17 @@ if (App::isLocale('en')) {
 <a name="pluralization-language"></a>
 ### 言語の複数形
 
+<style>
+.code-list-no-flex-break code {
+    display: contents !important;
+}
+</style>
+
+<div class="code-list-no-flex-break">
+
 Laravelの「複数形化機能（Pluralizer）」は、Eloquentやフレームワークの他の部分で単数形の文字列を複数形の文字列に変換するために使用していますが、英語以外の言語を使用するように指示できます。これは、アプリケーションのサービスプロバイダの`boot`メソッドの中で`useLanguage`メソッドを呼び出して、実現します。現在サポートしている言語は、フランス語（`french`）、ノルウェー語ーブークモール（`norwegian-bokmal`）、ポルトガル語（`portuguese`）、スペイン語（`spanish`）、トルコ語（`turkish`）です。
+
+</div>
 
 ```php
 use Illuminate\Support\Pluralizer;
