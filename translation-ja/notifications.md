@@ -1655,20 +1655,23 @@ test('orders can be shipped', function () {
 
     // 注文発送の実行…
 
-    // 通知されないことをアサート
+    // 通知しないことをアサート
     Notification::assertNothingSent();
 
-    // 一つの通知が送信されることをアサート
+    // 一つの通知を送信することをアサート
     Notification::assertSentTo(
         [$user], OrderShipped::class
     );
 
-    // 一つの通知が送信されないことをアサート
+    // 一つの通知を送信しないことをアサート
     Notification::assertNotSentTo(
         [$user], AnotherNotification::class
     );
 
-    // 指定した数の通知が送信されることをアサート
+    // 一つの通知を２回送信することをアサート
+    Notification::assertSentTimes(WeeklyReminder::class, 2);
+
+    // 指定した数の通知を送信することをアサート
     Notification::assertCount(3);
 });
 ```
@@ -1690,20 +1693,23 @@ class ExampleTest extends TestCase
 
         // 注文発送の実行…
 
-        // 通知されないことをアサート
+        // 通知しないことをアサート
         Notification::assertNothingSent();
 
-        // 一つの通知が送信されることをアサート
+        // 一つの通知を送信することをアサート
         Notification::assertSentTo(
             [$user], OrderShipped::class
         );
 
-        // 一つの通知が送信されないことをアサート
+        // 一つの通知を送信しないことをアサート
         Notification::assertNotSentTo(
             [$user], AnotherNotification::class
         );
 
-        // 指定した数の通知が送信されることをアサート
+        // 一つの通知を２回送信することをアサート
+        Notification::assertSentTimes(WeeklyReminder::class, 2);
+
+        // 指定した数の通知を送信することをアサート
         Notification::assertCount(3);
     }
 }

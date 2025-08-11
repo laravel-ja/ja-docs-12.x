@@ -1178,7 +1178,7 @@ use Illuminate\Validation\Rule;
 ],
 ```
 
-The `afterToday` and `todayOrAfter` methods may be used to fluently express the date must be after today or or today or after, respectively:
+The `afterToday` and `todayOrAfter` methods may be used to fluently express the date and must be after today, or today or after, respectively:
 
 ```php
 'start_date' => [
@@ -1312,7 +1312,7 @@ use Illuminate\Validation\Rule;
 ],
 ```
 
-The `beforeToday` and `todayOrBefore` methods may be used to fluently express the date must be before today or or today or before, respectively:
+The `beforeToday` and `todayOrBefore` methods may be used to fluently express the date and must be before today, or today or before, respectively:
 
 ```php
 'start_date' => [
@@ -1823,6 +1823,12 @@ The field under validation must be an array having at least one of the given _va
 #### integer
 
 The field under validation must be an integer.
+
+You may use the `strict` parameter to only consider the field valid if its type is `integer`. Strings with integer values will be considered invalid:
+
+```php
+'age' => 'integer:strict'
+```
 
 > [!WARNING]
 > This validation rule does not verify that the input is of the "integer" variable type, only that the input is of a type accepted by PHP's `FILTER_VALIDATE_INT` rule. If you need to validate the input as being a number please use this rule in combination with [the `numeric` validation rule](#rule-numeric).

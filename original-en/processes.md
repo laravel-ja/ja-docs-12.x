@@ -53,7 +53,7 @@ $result->errorOutput();
 <a name="throwing-exceptions"></a>
 #### Throwing Exceptions
 
-If you have a process result and would like to throw an instance of `Illuminate\Process\Exceptions\ProcessFailedException` if the exit code is greater than zero (thus indicating failure), you may use the `throw` and `throwIf` methods. If the process did not fail, the process result instance will be returned:
+If you have a process result and would like to throw an instance of `Illuminate\Process\Exceptions\ProcessFailedException` if the exit code is greater than zero (thus indicating failure), you may use the `throw` and `throwIf` methods. If the process did not fail, the `ProcessResult` instance will be returned:
 
 ```php
 $result = Process::run('ls -la')->throw();
@@ -219,7 +219,7 @@ Laravel also allows you to assign string keys to each process within a pipeline 
 $result = Process::pipe(function (Pipe $pipe) {
     $pipe->as('first')->command('cat example.txt');
     $pipe->as('second')->command('grep -i "laravel"');
-})->start(function (string $type, string $output, string $key) {
+}, function (string $type, string $output, string $key) {
     // ...
 });
 ```
@@ -239,7 +239,7 @@ while ($process->running()) {
 $result = $process->wait();
 ```
 
-As you may have noticed, you may invoke the `wait` method to wait until the process is finished executing and retrieve the process result instance:
+As you may have noticed, you may invoke the `wait` method to wait until the process is finished executing and retrieve the `ProcessResult` instance:
 
 ```php
 $process = Process::timeout(120)->start('bash import.sh');
@@ -345,7 +345,7 @@ while ($pool->running()->isNotEmpty()) {
 $results = $pool->wait();
 ```
 
-As you can see, you may wait for all of the pool processes to finish executing and resolve their results via the `wait` method. The `wait` method returns an array accessible object that allows you to access the process result instance of each process in the pool by its key:
+As you can see, you may wait for all of the pool processes to finish executing and resolve their results via the `wait` method. The `wait` method returns an array accessible object that allows you to access the `ProcessResult` instance of each process in the pool by its key:
 
 ```php
 $results = $pool->wait();
@@ -425,8 +425,8 @@ When testing this route, we can instruct Laravel to return a fake, successful pr
 ```php tab=Pest
 <?php
 
-use Illuminate\Process\PendingProcess;
 use Illuminate\Contracts\Process\ProcessResult;
+use Illuminate\Process\PendingProcess;
 use Illuminate\Support\Facades\Process;
 
 test('process is invoked', function () {
@@ -450,8 +450,8 @@ test('process is invoked', function () {
 
 namespace Tests\Feature;
 
-use Illuminate\Process\PendingProcess;
 use Illuminate\Contracts\Process\ProcessResult;
+use Illuminate\Process\PendingProcess;
 use Illuminate\Support\Facades\Process;
 use Tests\TestCase;
 
@@ -623,7 +623,7 @@ use Illuminate\Support\Facades\Process;
 Process::assertRanTimes('ls -la', times: 3);
 ```
 
-The `assertRanTimes` method also accepts a closure, which will receive an instance of a process and a process result, allowing you to inspect the process' configured options. If this closure returns `true` and the process was invoked the specified number of times, the assertion will "pass":
+The `assertRanTimes` method also accepts a closure, which will receive an instance of `PendingProcess` and `ProcessResult`, allowing you to inspect the process' configured options. If this closure returns `true` and the process was invoked the specified number of times, the assertion will "pass":
 
 ```php
 Process::assertRanTimes(function (PendingProcess $process, ProcessResult $result) {

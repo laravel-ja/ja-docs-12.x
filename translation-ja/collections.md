@@ -128,6 +128,7 @@ $translated = $collection->toLocale('es');
 [diffAssocUsing](#method-diffassocusing)
 [diffKeys](#method-diffkeys)
 [doesntContain](#method-doesntcontain)
+[doesntContainStrict](#method-doesntcontainstrict)
 [dot](#method-dot)
 [dump](#method-dump)
 [duplicates](#method-duplicates)
@@ -842,6 +843,11 @@ $collection->doesntContain('product', 'Bookcase');
 ```
 
 `doesntContain`メソッドは、項目の値をチェックする際、「緩く」比較します。つまり、整数値を持つ文字列は同じ値の整数値と等しいとみなします。
+
+<a name="method-doesntcontainstrict"></a>
+#### `doesntContainStrict()` {.collection-method}
+
+このメソッドは[doesntContain](#method-doesntcontain)メソッドと同じ使用法です。しかし、すべての値を「厳密」に比較します。
 
 <a name="method-dot"></a>
 #### `dot()` {.collection-method}

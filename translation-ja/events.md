@@ -16,6 +16,7 @@
     - [失敗したジョブの処理](#handling-failed-jobs)
 - [イベント発行](#dispatching-events)
     - [データベーストランザクション後のイベント発行](#dispatching-events-after-database-transactions)
+    - [遅延イベント](#deferring-events)
 - [イベントサブスクライバ](#event-subscribers)
     - [イベントサブスクライバの記述](#writing-event-subscribers)
     - [イベントサブスクライバの登録](#registering-event-subscribers)
@@ -799,6 +800,26 @@ class OrderShipped implements ShouldDispatchAfterCommit
 }
 ```
 
+<a name="deferring-events"></a>
+### 遅延イベント
+
+遅延イベントを使用すると、モデルイベントの送信とイベントリスナの実行を、特定のコードブロックが完了するまで遅延できます。これは、イベントリスナが起動される前に、関連するすべてのレコードが作成済みであることを保証する必要がある場合、特に役立ちます。
+
+イベントを遅延するには、`Event::defer()`メソッドへクロージャを指定します。
+
+```php
+use App\Models\User;
+use Illuminate\Support\Facades\Event;
+
+Event::defer(function () {
+    $user = User::create(['name' => 'Victoria Otwell']);
+
+    $user->posts()->create(['title' => 'My first post!']);
+});
+```
+
+クロージャ内で発行したすべてのイベントは、クロージャを実行した後にディスパッチします。これにより、イベントリスナは遅延実行中に作成した関連するすべてのレコードへアクセスできるようになります。クロージャ内で例外が発生した場合、遅延イベントをディスパッチしません。
+
 <a name="event-subscribers"></a>
 ## イベントサブスクライバ
 
@@ -935,6 +956,9 @@ test('orders can be shipped', function () {
     // 一つのイベントを２回ディスパッチするのをアサート
     Event::assertDispatched(OrderShipped::class, 2);
 
+    // 一つのイベントを１回ディスパッチするのをアサート
+    Event::assertDispatchedOnce(OrderShipped::class);
+
     // あるイベントをディスパッチしないことをアサート
     Event::assertNotDispatched(OrderFailedToShip::class);
 
@@ -969,6 +993,9 @@ class ExampleTest extends TestCase
 
         // 一つのイベントを２回ディスパッチするのをアサート
         Event::assertDispatched(OrderShipped::class, 2);
+
+        // 一つのイベントを１回ディスパッチするのをアサート
+        Event::assertDispatchedOnce(OrderShipped::class);
 
         // あるイベントをディスパッチしないことをアサート
         Event::assertNotDispatched(OrderFailedToShip::class);

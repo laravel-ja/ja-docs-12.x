@@ -686,6 +686,14 @@ $table->double('amount');
 $table->enum('difficulty', ['easy', 'hard']);
 ```
 
+もちろん、手作業で許可する値の配列を定義する代わりに、`Enum::cases()`メソッドを使用することもできます。
+
+```php
+use App\Enums\Difficulty;
+
+$table->enum('difficulty', Difficulty::cases());
+```
+
 <a name="column-method-float"></a>
 #### `float()` {.collection-method}
 

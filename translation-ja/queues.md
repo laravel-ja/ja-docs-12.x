@@ -112,9 +112,10 @@ php artisan migrate
 > [!WARNING]
 > `redis`キュードライバでは、`serializer`と`compression` Redisオプションをサポートしていません。
 
-**Redisクラスタ**
+<a name="redis-cluster"></a>
+##### Redisクラスタ
 
-Redisキュー接続でRedisクラスタを使用する場合、キュー名に[キーハッシュタグ](https://redis.io/docs/reference/cluster-spec/#hash-tags)を含める必要があります。これは、特定のキューのすべてのRedisキーが同じハッシュスロットに配置されるようにするために必要です。
+Redisキュー接続で[Redisクラスタ](https://redis.io/docs/latest/operate/rs/databases/durability-ha/clustering)を使用する場合、キュー名に[キーハッシュタグ](https://redis.io/docs/latest/develop/using-commands/keyspace/#hashtags)を含める必要があります。これは、特定のキューのすべてのRedisキーが同じハッシュスロットに配置されるようにするために必要です。
 
 ```php
 'redis' => [
@@ -127,7 +128,8 @@ Redisキュー接続でRedisクラスタを使用する場合、キュー名に[
 ],
 ```
 
-**ブロッキング**
+<a name="blocking"></a>
+##### ブロッキング
 
 Redisキューを使用する場合は、`block_for`設定オプションを使用して、ワーカループを反復処理し、Redisデータベースを再ポーリングする前に、ドライバがジョブが使用可能になるまで待機する時間を指定します。
 
@@ -256,7 +258,7 @@ public function __construct(
 }
 ```
 
-PHPのコンストラクタ・プロパティ・プロモーションを使用していて、あるEloquentモデルでリレーションをシリアライズしないことを指定したい場合は、`WithoutRelations`属性を使用します：
+[PHPのコンストラクタ・プロパティ・プロモーション](https://www.php.net/manual/ja/language.oop5.decon.php#language.oop5.decon.constructor.promotion)を使用していて、あるEloquentモデルでリレーションをシリアライズしないことを指定したい場合は、`WithoutRelations`属性を使用します：
 
 ```php
 use Illuminate\Queue\Attributes\WithoutRelations;
@@ -268,6 +270,34 @@ public function __construct(
     #[WithoutRelations]
     public Podcast $podcast,
 ) {}
+```
+
+使いやすくするため、すべてのモデルをリレーション無しでシリアライズしたい場合は、各モデルに属性を適用する代わりに、クラス全体に`WithoutRelations`属性を適用できます。
+
+```php
+<?php
+
+namespace App\Jobs;
+
+use App\Models\DistributionPlatform;
+use App\Models\Podcast;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\Attributes\WithoutRelations;
+
+#[WithoutRelations]
+class ProcessPodcast implements ShouldQueue
+{
+    use Queueable;
+
+    /**
+     * 新ジョブインスタンスの生成
+     */
+    public function __construct(
+        public Podcast $podcast,
+        public DistributionPlatform $platform,
+    ) {}
+}
 ```
 
 ジョブが単一モデルの代わりに、Eloquentモデルのコレクションまたは配列を受け取った場合、そのコレクション内のモデルでは、ジョブがデシリアライズされて実行されるときにそれらのリレーションは復元されません。これは、大量のモデルを扱うジョブで過剰なリソース使用を防ぐためです。
@@ -299,7 +329,8 @@ class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
 ```php
 <?php
 
-use App\Models\Product;
+namespace App\Jobs;
+
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 
@@ -308,7 +339,7 @@ class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
     /**
      * 製品インスタンス
      *
-     * @var \App\Product
+     * @var \App\Models\Product
      */
     public $product;
 
@@ -342,7 +373,6 @@ class UpdateSearchIndex implements ShouldQueue, ShouldBeUnique
 ```php
 <?php
 
-use App\Models\Product;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
 
@@ -355,7 +385,7 @@ class UpdateSearchIndex implements ShouldQueue, ShouldBeUniqueUntilProcessing
 <a name="unique-job-locks"></a>
 #### 一意なジョブロック
 
-`ShouldBeUnique`ジョブがディスパッチされると、裏でLaravelは`uniqueId`キーを使用して[ロック](/docs/{{version}}/cache#atomic-locks)を取得しようとします。ロックが取得されていない場合、ジョブはディスパッチされません。このロックは、ジョブが処理を完了するか、再試行にすべて失敗すると解放されます。Laravelはデフォルトのキャッシュドライバを使用してこのロックを取得するのがデフォルト動作です。ただし、ロックを取得するために別のドライバを使用する場合は、使用するキャッシュドライバを返す`uniqueVia`メソッドを定義します。
+`ShouldBeUnique`ジョブがディスパッチされると、裏でLaravelは`uniqueId`キーを使用して[ロック](/docs/{{version}}/cache#atomic-locks)を取得しようとします。ロックを既に取得済みの場合、ジョブはディスパッチされません。このロックは、ジョブが処理を完了するか、再試行にすべて失敗すると解放されます。Laravelはデフォルトのキャッシュドライバを使用してこのロックを取得するのがデフォルト動作です。ただし、ロックを取得するために別のドライバを使用する場合は、使用するキャッシュドライバを返す`uniqueVia`メソッドを定義します。
 
 ```php
 use Illuminate\Contracts\Cache\Repository;
@@ -703,7 +733,7 @@ public function middleware(): array
 }
 ```
 
-内部的には、このミドルウェアはLaravelのキャッシュシステムを使用してレート制限を実装し、ジョブのクラス名をキャッシュ「キー」として利用します。ジョブにミドルウェアを添付するときに`by`メソッドを呼び出し、このキーを上書きできます。これは、同じサードパーティのサービスと対話するジョブが複数のジョブを持っている場合に役立ち、それらに共通のスロットル「バケット」を共有できます。
+内部的には、このミドルウェアはLaravelのキャッシュシステムを使用してレート制限を実装し、ジョブのクラス名をキャッシュ「キー」として利用します。ジョブにミドルウェアを添付するときに`by`メソッドを呼び出し、このキーを上書きできます。これは、複数のジョブが同じサードパーティのサービスとやり取りする場合に便利で、共通のスロットル「バケット」を共有させることで、確実に単一の共有制限を守らせられます。
 
 ```php
 use Illuminate\Queue\Middleware\ThrottlesExceptions;
@@ -855,7 +885,7 @@ ProcessPodcast::dispatchIf($accountActive, $podcast);
 ProcessPodcast::dispatchUnless($accountSuspended, $podcast);
 ```
 
-新しいLaravelアプリケーションでは、`sync`ドライバがデフォルトのキュードライバです。このドライバは現在のリクエストをフォアグラウンドで同期的にジョブを実行し、たいていのローカル開発時では便利です。もし、バックグラウンド処理のために実際にキューを開始したい場合は、アプリケーションの`config/queue.php`設定ファイル内で、別のキュードライバを指定してください。
+新しいLaravelアプリケーションでは、`database`ドライバがデフォルトのキュードライバです。アプリケーションの`config/queue.php`設定ファイル内で、別のキュードライバを指定できます。
 
 <a name="delayed-dispatching"></a>
 ### ディスパッチの遅延
@@ -1285,10 +1315,14 @@ public function retryUntil(): DateTime
 
 namespace App\Jobs;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Facades\Redis;
 
 class ProcessPodcast implements ShouldQueue
 {
+    use Queueable;
+
     /**ジョブを試行する回数を決定
      *
      *
@@ -1351,7 +1385,7 @@ class ProcessPodcast implements ShouldQueue
 }
 ```
 
-ソケットや送信HTTP接続などのＩ／Ｏブロッキングプロセスが、指定するタイムアウトを尊重しない場合があります。したがって、これらの機能を使用するときは、常にAPIを使用してタイムアウトを指定するようにしてください。たとえば、Guzzleを使用する場合は、常に接続を指定し、タイムアウト値をリクエストする必要があります。
+ソケットや送信HTTP接続などのＩ／Ｏブロッキングプロセスが、指定するタイムアウトを尊重しない場合があります。したがって、これらの機能を使用するときは、常にAPIを使用してタイムアウトを指定するようにしてください。たとえば、[Guzzle](https://docs.guzzlephp.org)を使用する場合は、常に接続を指定し、タイムアウト値をリクエストする必要があります。
 
 > [!WARNING]
 > ジョブのタイムアウトを指定するには、[PCNTL](https://www.php.net/manual/en/book.pcntl.php) PHP拡張モジュールをインストールする必要があります。加えて、ジョブの"timeout"の値は、常に["retry after"](#job-expiration)値よりも小さい必要があります。そうしない場合、ジョブの実行が終了する前に再試行したり、タイムアウトしたりする可能性があります。
@@ -1442,13 +1476,12 @@ use App\Models\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\FailOnException;
 use Illuminate\Support\Facades\Http;
 
 class SyncChatHistory implements ShouldQueue
 {
-    use InteractsWithQueue;
+    use Queueable;
 
     public $tries = 3;
 
@@ -1570,7 +1603,7 @@ return $batch->id;
 <a name="naming-batches"></a>
 #### 名前付きバッチ
 
-LaravelHorizo​​nやLaravelTelescopeなどの一部のツールは、バッチに名前が付けられている場合、バッチのよりユーザーフレンドリーなデバッグ情報を提供します。バッチに任意の名前を割り当てるには、バッチを定義するときに`name`メソッドを呼び出すことができます。
+[LaravelHorizo​​n](/docs/{{version}}/horizon)や[LaravelTelescope](/docs/{{version}}/telescope)などの一部のツールは、バッチに名前が付けられている場合、バッチのよりユーザーフレンドリーなデバッグ情報を提供します。バッチに任意の名前を割り当てるには、バッチを定義するときに`name`メソッドを呼び出すことができます。
 
 ```php
 $batch = Bus::batch([

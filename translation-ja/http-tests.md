@@ -258,7 +258,13 @@ class ExampleTest extends TestCase
 `actingAs`メソッドの２番目の引数としてガード名を渡すことにより、特定のユーザーを認証するために使用するガードを指定することもできます。`actingAs`メソッドに指定したガードは、テストの間、デフォルトのガードにもなります。
 
 ```php
-$this->actingAs($user, 'web')
+$this->actingAs($user, 'web');
+```
+
+リクエストが認証されていないことを保証したい場合は、`actingAsGuest`メソッドを使用してください。
+
+```php
+$this->actingAsGuest();
 ```
 
 <a name="debugging-responses"></a>

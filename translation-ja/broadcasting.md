@@ -69,7 +69,7 @@ Laravelはデフォルトで、３つのサーバサイド・ブロードキャ�
 php artisan install:broadcasting
 ```
 
-`install:broadcasting`コマンドを実行すると、どのイベントブロードキャストサービスを使用するかを尋ねるプロンプトが表示されます。さらに、`config/broadcasting.php`設定ファイルと`routes/channels.php`ファイルが作成され、アプリケーションのブロードキャスト認可ルートとコールバックを登録してください。
+`install:broadcasting`コマンドは、使用したいイベントブロードキャストサービスを選択するように促します。さらに、`config/broadcasting.php`設定ファイルと`routes/channels.php`ファイルを作成します。これらのファイルでアプリケーションのブロードキャスト認可ルートとコールバックを登録してください。
 
 Laravelはいくつかのブロードキャストドライバをあらかじめサポートしています。 [Laravel Reverb](/docs/{{version}}/reverb)、[Pusher Channels](https://pusher.com/channels)、[Ably](https://ably.com)、ローカル開発とデバッグ用の`log` ドライバです。さらに、テスト中にブロードキャストを完全に 無効にできる、`null`ドライバも用意しています。これらの各ドライバの設定例は、`config/broadcasting.php`設定ファイルにあります。
 

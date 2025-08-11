@@ -53,7 +53,7 @@ $result->errorOutput();
 <a name="throwing-exceptions"></a>
 #### 例外を投げる
 
-プロセス結果が出て、終了コードが０より大きい（つまり失敗を表している）場合に、`Illuminate\Process\Exceptions\ProcessFailedException`のインスタンスを投げたい場合は、`throw`と`throwIf`メソッドを使用してください。プロセスが失敗しなかった場合、プロセス結果のインスタンスを返します。
+プロセス結果が出て、終了コードが０より大きい（つまり失敗を表している）場合に、`Illuminate\Process\Exceptions\ProcessFailedException`のインスタンスを投げたい場合は、`throw`と`throwIf`メソッドを使用してください。プロセスが失敗しなかった場合、`ProcessResult`インスタンスを返します。
 
 ```php
 $result = Process::run('ls -la')->throw();
@@ -219,7 +219,7 @@ Laravelでは、パイプライン内の各プロセスに、`as`メソッドで
 $result = Process::pipe(function (Pipe $pipe) {
     $pipe->as('first')->command('cat example.txt');
     $pipe->as('second')->command('grep -i "laravel"');
-})->start(function (string $type, string $output, string $key) {
+}, function (string $type, string $output, string $key) {
     // …
 });
 ```
@@ -239,7 +239,7 @@ while ($process->running()) {
 $result = $process->wait();
 ```
 
-お気づきでしょうが、`wait`メソッドを呼び出し、プロセスの実行終了を待ち、プロセスの実行結果インスタンスを取得できます。
+お気づきでしょうが、`wait`メソッドを呼び出し、プロセスの実行終了を待ち、`ProcessResult`インスタンスを取得できます。
 
 ```php
 $process = Process::timeout(120)->start('bash import.sh');
@@ -345,7 +345,7 @@ while ($pool->running()->isNotEmpty()) {
 $results = $pool->wait();
 ```
 
-ご覧のように、プール内のすべてのプロセスの実行が終了するのを待ち、その結果を`wait`メソッドで取得できます。`wait`メソッドは、プール内の各プロセスのプロセス結果のインスタンスへキーでアクセスできる、配列アクセス可能なオブジェクトを返します。
+ご覧のように、プール内のすべてのプロセスの実行が終了するのを待ち、その結果を`wait`メソッドで取得できます。`wait`メソッドは、プール内の各プロセスの`ProcessResult`インスタンスへキーでアクセスできる、配列アクセス可能なオブジェクトを返します。
 
 ```php
 $results = $pool->wait();
@@ -425,8 +425,8 @@ Route::get('/import', function () {
 ```php tab=Pest
 <?php
 
-use Illuminate\Process\PendingProcess;
 use Illuminate\Contracts\Process\ProcessResult;
+use Illuminate\Process\PendingProcess;
 use Illuminate\Support\Facades\Process;
 
 test('process is invoked', function () {
@@ -450,8 +450,8 @@ test('process is invoked', function () {
 
 namespace Tests\Feature;
 
-use Illuminate\Process\PendingProcess;
 use Illuminate\Contracts\Process\ProcessResult;
+use Illuminate\Process\PendingProcess;
 use Illuminate\Support\Facades\Process;
 use Tests\TestCase;
 
@@ -623,7 +623,7 @@ use Illuminate\Support\Facades\Process;
 Process::assertRanTimes('ls -la', times: 3);
 ```
 
-`assertRanTimes`メソッドも、クロージャを引数に取り、プロセスのインスタンスとプロセス結果を受け取りますので、プロセスの設定オプションを調べられます。このクロージャが、`true` を返し、プロセスが指定した回数だけ起動された場合、アサーションは「パス」となります。
+`assertRanTimes`メソッドも、クロージャを引数に取り、`PendingProcess`と`ProcessResult`のインスタンスを受け取りますので、プロセスの設定オプションを調べられます。このクロージャが、`true`を返し、プロセスが指定した回数だけ起動された場合、アサーションは「パス」となります。
 
 ```php
 Process::assertRanTimes(function (PendingProcess $process, ProcessResult $result) {

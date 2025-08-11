@@ -46,6 +46,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Arr::crossJoin](#method-array-crossjoin)
 [Arr::divide](#method-array-divide)
 [Arr::dot](#method-array-dot)
+[Arr::every](#method-array-every)
 [Arr::except](#method-array-except)
 [Arr::exists](#method-array-exists)
 [Arr::first](#method-array-first)
@@ -79,6 +80,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Arr::set](#method-array-set)
 [Arr::shuffle](#method-array-shuffle)
 [Arr::sole](#method-array-sole)
+[Arr::some](#method-array-some)
 [Arr::sort](#method-array-sort)
 [Arr::sortDesc](#method-array-sort-desc)
 [Arr::sortRecursive](#method-array-sort-recursive)
@@ -152,6 +154,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [route](#method-route)
 [secure_asset](#method-secure-asset)
 [secure_url](#method-secure-url)
+[to_action](#method-to-action)
 [to_route](#method-to-route)
 [uri](#method-uri)
 [url](#method-url)
@@ -386,6 +389,25 @@ $array = ['products' => ['desk' => ['price' => 100]]];
 $flattened = Arr::dot($array);
 
 // ['products.desk.price' => 100]
+```
+
+<a name="method-array-every"></a>
+#### `Arr::every()` {.collection-method}
+
+`Arr::every`メソッドは、配列内のすべての値が指定した真偽テストにパスすることを保証します。
+
+```php
+use Illuminate\Support\Arr;
+
+$array = [1, 2, 3];
+
+Arr::every($array, fn ($i) => $i > 0);
+
+// true
+
+Arr::every($array, fn ($i) => $i > 2);
+
+// false
 ```
 
 <a name="method-array-except"></a>
@@ -1060,6 +1082,21 @@ $array = ['Desk', 'Table', 'Chair'];
 $value = Arr::sole($array, fn (string $value) => $value === 'Desk');
 
 // 'Desk'
+```
+
+<a name="method-array-some"></a>
+#### `Arr::some()` {.collection-method}
+
+`Arr::some`メソッドは、配列内の値のうち最低１つが指定した真偽テストに合格することを保証します。
+
+```php
+use Illuminate\Support\Arr;
+
+$array = [1, 2, 3];
+
+Arr::some($array, fn ($i) => $i > 2);
+
+// true
 ```
 
 <a name="method-array-sort"></a>
@@ -2098,6 +2135,28 @@ $url = secure_asset('img/photo.jpg');
 $url = secure_url('user/profile');
 
 $url = secure_url('user/profile', [1]);
+```
+
+<a name="method-to-action"></a>
+#### `to_action()` {.collection-method}
+
+`to_action`関数は、指定したコントローラアクションに対する[リダイレクトHTTPレスポンス](/docs/{{version}}/responses#redirects)を生成します。
+
+```php
+use App\Http\Controllers\UserController;
+
+return to_action([UserController::class, 'show'], ['user' => 1]);
+```
+
+必要に応じ、リダイレクトに割り当てるHTTPステータスコードと、追加のレスポンスヘッダを、`to_action`メソッドの３番目と４番目の引数として渡せます。
+
+```php
+return to_action(
+    [UserController::class, 'show'],
+    ['user' => 1],
+    302,
+    ['X-Framework' => 'Laravel']
+);
 ```
 
 <a name="method-to-route"></a>
@@ -3165,6 +3224,9 @@ Route::post('/orders', function (Request $request) {
 defer(fn () => Metrics::reportOrder($order))->always();
 ```
 
+> [!WARNING]
+> **swoole** PHP拡張機能をインストールしている場合、Laravelの`defer`関数がSwooleのグローバルな`defer`関数と衝突し、ウェブサーバエラーが発生する可能性があります。Laravelの`defer`ヘルパ関数を名前空間を明示的に指定して呼び出すようにしてください：`use function Illuminate\Support\defer;`
+
 <a name="cancelling-deferred-functions"></a>
 #### 遅延関数のキャンセル
 
@@ -3307,6 +3369,19 @@ $user = Pipeline::send($user)
         GenerateProfilePhoto::class,
         ActivateSubscription::class,
         SendWelcomeEmail::class,
+    ])
+    ->thenReturn();
+```
+
+`withinTransaction`メソッドをパイプラインに対して呼び出すことにより、パイプラインのすべてのステップを単一のデータベーストランザクション内へ自動的にラップします。
+
+```php
+$user = Pipeline::send($user)
+    ->withinTransaction()
+    ->through([
+        ProcessOrder::class,
+        TransferFunds::class,
+        UpdateInventory::class,
     ])
     ->thenReturn();
 ```

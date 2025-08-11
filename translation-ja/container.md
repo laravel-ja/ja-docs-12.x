@@ -178,6 +178,9 @@ $this->app->singletonIf(Transistor::class, function (Application $app) {
 });
 ```
 
+<a name="singleton-attribute"></a>
+#### シングルトン属性
+
 あるいは、インターフェイスやクラスを`#[Singleton]`属性でマークして、コンテナに対し１回だけ依存解決するように指示することもできます。
 
 ```php
@@ -216,6 +219,9 @@ $this->app->scopedIf(Transistor::class, function (Application $app) {
     return new Transistor($app->make(PodcastParser::class));
 });
 ```
+
+<a name="scoped-attribute"></a>
+#### スコープ付き属性
 
 あるいは、インターフェイスやクラスを`#[Scoped]`属性でマークして、コンテナに対しLaravelのリクエスト／ジョブライフサイクル内で１回だけ依存解決されることを示すこともできます。
 
@@ -270,6 +276,45 @@ use App\Contracts\EventPusher;
 public function __construct(
     protected EventPusher $pusher,
 ) {}
+```
+
+<a name="bind-attribute"></a>
+#### 結合属性
+
+Laravelは、利便性をより高めるため、`Bind`属性も提供しています。この属性を任意のインターフェイスに適用すると、そのインターフェイスが要求されたときに、自動的に注入すべき実装をLaravelへ指定できます。`Bind`属性を使用する場合、アプリケーションのサービスプロバイダで追加のサービス登録を行う必要はありません。
+
+さらに、インターフェイスに複数の`Bind`属性を設定することにより、特定の環境セットに対して注入する異なる実装を設定できます。
+
+```php
+<?php
+
+namespace App\Contracts;
+
+use App\Services\FakeEventPusher;
+use App\Services\RedisEventPusher;
+use Illuminate\Container\Attributes\Bind;
+
+#[Bind(RedisEventPusher::class)]
+#[Bind(FakeEventPusher::class, environments: ['local', 'testing'])]
+interface EventPusher
+{
+    // ...
+}
+```
+
+さらに、[シングルトン](#singleton-attribute)と[スコープ付き](#scoped-attribute)属性を使用することにより、コンテナの結合を一度だけ依存解決するか、リクエスト／ジョブライフサイクルごとに一度解決するかを指定できます。
+
+```php
+use App\Services\RedisEventPusher;
+use Illuminate\Container\Attributes\Bind;
+use Illuminate\Container\Attributes\Singleton;
+
+#[Bind(RedisEventPusher::class)]
+#[Singleton]
+interface EventPusher
+{
+    // ...
+}
 ```
 
 <a name="contextual-binding"></a>

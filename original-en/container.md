@@ -178,6 +178,9 @@ $this->app->singletonIf(Transistor::class, function (Application $app) {
 });
 ```
 
+<a name="singleton-attribute"></a>
+#### Singleton Attribute
+
 Alternatively, you may mark an interface or class with the `#[Singleton]` attribute to indicate to the container that it should be resolved one time:
 
 ```php
@@ -216,6 +219,9 @@ $this->app->scopedIf(Transistor::class, function (Application $app) {
     return new Transistor($app->make(PodcastParser::class));
 });
 ```
+
+<a name="scoped-attribute"></a>
+#### Scoped Attribute
 
 Alternatively, you may mark an interface or class with the `#[Scoped]` attribute to indicate to the container that it should be resolved one time within a given Laravel request / job lifecycle:
 
@@ -270,6 +276,45 @@ use App\Contracts\EventPusher;
 public function __construct(
     protected EventPusher $pusher,
 ) {}
+```
+
+<a name="bind-attribute"></a>
+#### Bind Attribute
+
+Laravel also provides a `Bind` attribute for added convenience. You can apply this attribute to any interface to tell Laravel which implementation should be automatically injected whenever that interface is requested. When using the `Bind` attribute, there is no need to perform any additional service registration in your application's service providers.
+
+In addition, multiple `Bind` attributes may be placed on an interface in order to configure a different implementation that should be injected for a given set of environments:
+
+```php
+<?php
+
+namespace App\Contracts;
+
+use App\Services\FakeEventPusher;
+use App\Services\RedisEventPusher;
+use Illuminate\Container\Attributes\Bind;
+
+#[Bind(RedisEventPusher::class)]
+#[Bind(FakeEventPusher::class, environments: ['local', 'testing'])]
+interface EventPusher
+{
+    // ...
+}
+```
+
+Furthermore, [Singleton](#singleton-attribute) and [Scoped](#scoped-attribute) attributes may be applied to indicate if the container bindings should be resolved once or once per request / job lifecycle:
+
+```php
+use App\Services\RedisEventPusher;
+use Illuminate\Container\Attributes\Bind;
+use Illuminate\Container\Attributes\Singleton;
+
+#[Bind(RedisEventPusher::class)]
+#[Singleton]
+interface EventPusher
+{
+    // ...
+}
 ```
 
 <a name="contextual-binding"></a>

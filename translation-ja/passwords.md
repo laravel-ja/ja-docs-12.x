@@ -29,7 +29,7 @@
 <div class="content-list" markdown="1">
 
 - `database` - パスワードリセットデータをリレーショナルデータベースに保存する
-- `cache` - password reset data is stored in one of your cache-based stores.パスワードリセットデータをキャッシュベースの保存域の１つに保存する
+- `cache` - パスワードリセットデータをキャッシュベースの保存域の１つに保存する
 
 </div>
 
@@ -217,7 +217,7 @@ Schedule::command('auth:clear-resets')->everyFifteenMinutes();
 <a name="reset-link-customization"></a>
 #### リセットリンクのカスタマイズ
 
-`ResetPassword`通知クラスが提供する`createUrlUsing`メソッドを使用して、パスワードリセットリンクのURLをカスタマイズできます。このメソッドは、通知を受け取るユーザーインスタンスとパスワードリセットリンクトークンを受け取るクロージャを引数に取ります。通常、このメソッドは`App\Providers\AppServiceProvider`サービスプロバイダの`boot`メソッドから呼び出します。
+`ResetPassword`通知クラスが提供する`createUrlUsing`メソッドを使用して、パスワードリセットリンクのURLをカスタマイズできます。このメソッドは、通知を受け取るユーザーインスタンスとパスワードリセットリンクトークンを受け取るクロージャを引数に取ります。通常、このメソッドはアプリケーションの`AppServiceProvider`の`boot`メソッドから呼び出します。
 
 ```php
 use App\Models\User;

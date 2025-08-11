@@ -12,6 +12,7 @@
     - [ファイル変更の監視](#watching-for-file-changes)
     - [ワーカ数の指定](#specifying-the-worker-count)
     - [最大リクエスト数の指定](#specifying-the-max-request-count)
+    - [最大実行秒数の指定](#specifying-the-max-execution-time)
     - [ワーカのリロード](#reloading-the-workers)
     - [サーバの停止](#stopping-the-server)
 - [依存注入とOctane](#dependency-injection-and-octane)
@@ -135,6 +136,17 @@ services:
 `--log-level`オプションを`php artisan octane:start`コマンドへ明示的に渡した場合、OctaneはFrankenPHPのネイティブなロガーを使用し、別の設定をしない限り、構造化されたJSONログを生成します。
 
 FrankenPHPをDockerで実行するための詳細は、[FrankenPHP公式ドキュメント](https://frankenphp.dev/docs/docker/)を参照してください。
+
+<a name="frankenphp-caddyfile"></a>
+#### カスタムCaddyfile設定
+
+FrankenPHPを使用する際、Octaneを起動する際に`--caddyfile`オプションを使用してカスタムCaddyfileを指定できます。
+
+```shell
+php artisan octane:start --server=frankenphp --caddyfile=/path/to/your/Caddyfile
+```
+
+これにより、FrankenPHPのデフォルト設定を超えてカスタマイズが可能になります。例えば、カスタムミドルウェアの追加、高度なルーティングの設定、カスタムディレクティブの構成などが可能です。Caddyfileの構文や設定オプションに関する詳細情報は、[公式Caddyドキュメント](https://caddyserver.com/docs/caddyfile)をご覧ください。
 
 <a name="roadrunner"></a>
 ### RoadRunner
@@ -359,6 +371,20 @@ php artisan octane:start --workers=4 --task-workers=6
 ```shell
 php artisan octane:start --max-requests=250
 ```
+
+<a name="specifying-the-max-execution-time"></a>
+### 最大実行秒数の指定
+
+Laravel Octaneはデフォルトで、アプリケーションの`config/octane.php`設定ファイル内の`max_execution_time`オプションを使用して、着信リクエストに対する最大実行時間を３０秒に設定しています。
+
+```php
+'max_execution_time' => 30,
+```
+
+この設定は、受診リクエストが実行を継続できる最大秒数を定義します。この値を`0`に設定すると、実行時間制限を完全に無効化します。この設定オプションは、ファイルアップロード、データ処理、または外部サービスへのAPI呼び出しなど、長時間実行されるリクエストを処理するアプリケーションにおいて特に有用です。
+
+> [!WARNING]
+> `max_execution_time`設定を変更するときは、変更を反映するため、Octaneサーバを再起動する必要があります。
 
 <a name="reloading-the-workers"></a>
 ### ワーカのリロード

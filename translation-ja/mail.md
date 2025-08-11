@@ -1276,10 +1276,10 @@ test('orders can be shipped', function () {
     // Mailableを送らないことをアサート
     Mail::assertNothingSent();
 
-    // Mailableを一つ送信したことをアサート
+    // Mailableを送信したことをアサート
     Mail::assertSent(OrderShipped::class);
 
-    // Mailableを一つ２回送信したことをアサート
+    // Mailableを２回送信したことをアサート
     Mail::assertSent(OrderShipped::class, 2);
 
     // Mailableをメールアドレスへ送信したことをアサート
@@ -1288,8 +1288,11 @@ test('orders can be shipped', function () {
     // Mailableを複数のメールアドレスへ送信したことをアサート
     Mail::assertSent(OrderShipped::class, ['example@laravel.com', '...']);
 
-    // あるMailableを送信しないことをアサート
+    // Mailableを送信しないことをアサート
     Mail::assertNotSent(AnotherMailable::class);
+
+    // Mailableを２回送信したことをアサート
+    Mail::assertSentTimes(OrderShipped::class, 2);
 
     // Mailableを合計３回送信することをアサート
     Mail::assertSentCount(3);
@@ -1316,10 +1319,10 @@ class ExampleTest extends TestCase
         // Mailableを送らないことをアサート
         Mail::assertNothingSent();
 
-        // Mailableを一つ送信したことをアサート
+        // Mailableを送信したことをアサート
         Mail::assertSent(OrderShipped::class);
 
-        // Mailableを一つ２回送信したことをアサート
+        // Mailableを２回送信したことをアサート
         Mail::assertSent(OrderShipped::class, 2);
 
         // Mailableをメールアドレスへ送信したことをアサート
@@ -1330,6 +1333,9 @@ class ExampleTest extends TestCase
 
         // あるMailableを送信しないことをアサート
         Mail::assertNotSent(AnotherMailable::class);
+
+        // Mailableを２回送信したことをアサート
+        Mail::assertSentTimes(OrderShipped::class, 2);
 
         // Mailableを合計３回送信することをアサート
         Mail::assertSentCount(3);
