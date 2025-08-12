@@ -876,7 +876,7 @@ $user->name = 'Jack';
 $user->name; // Jack
 
 $user->getOriginal('name'); // John
-$user->getOriginal(); // ｑ配列か元の属性
+$user->getOriginal(); // 配列か元の属性
 ```
 
 `getChanges`メソッドは、モデルが最後に保存されたときに変更された属性を含む配列を返します。一方、`getPrevious`メソッドは、モデルを最後に保存する前の元の属性値を含む配列を返します。
