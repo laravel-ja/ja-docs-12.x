@@ -3,9 +3,15 @@
 - [イントロダクション](#introduction)
 - [インストール](#installation)
     - [設定](#configuration)
-    - [バランス戦略](#balancing-strategies)
     - [ダッシュボードの認可](#dashboard-authorization)
+    - [最大ジョブ試行回数](#max-job-attempts)
+    - [ジョブタイムアウト](#job-timeout)
+    - [ジョブ待機時間](#job-backoff)
     - [非表示のジョブ](#silenced-jobs)
+- [バランス戦略](#balancing-strategies)
+    - [自動バランス](#auto-balancing)
+    - [単純バランス](#simple-balancing)
+    - [バランス戦略なし](#no-balancing)
 - [Horizonのアップグレード](#upgrading-horizon)
 - [Horizonの実行](#running-horizon)
     - [Horizonのデプロイ](#deploying-horizon)
@@ -123,41 +129,6 @@ Horizo​​nのデフォルトの設定ファイルでわかるように。各�
 
 Horizo​​nのデフォルト設定ファイル内に、`defaults`設定オプションがあります。この設定オプションにアプリケーションの[スーパーバイザ](#supervisors)のデフォルト値を指定します。スーパーバイザのデフォルト設定値は、各環境のスーパーバイザの設定にマージされるため、スーパーバイザを定義するときに不必要な繰り返しを回避できます。
 
-<a name="balancing-strategies"></a>
-### バランス戦略
-
-Laravelのデフォルトのキューシステムとは異なり、Horizo​​nでは３つのワーカバランス戦略(`simple`、`auto`、`false`)から選択できます。`simple`戦略は、受信ジョブをワーカプロセス間で均等に分割します。
-
-    'balance' => 'simple',
-
-設定ファイルのデフォルトである`auto`戦略は、キューの現在のワークロードに基づいて、キューごとのワーカプロセスの数を調整します。たとえば、`render`キューが空のときに`notifications`キューに1,000の保留中のジョブがある場合、Horizo​​nはキューが空になるまで`notifications`キューにさらに多くのワーカを割り当てます。
-
-`auto`戦略を使用する場合、`minProcesses`と`maxProcesses`設定オプションを定義し、Horizonがスケールアップ／スケールダウンするキューの最小プロセス数とワーカプロセスの最大数を制御できます。
-
-```php
-'environments' => [
-    'production' => [
-        'supervisor-1' => [
-            'connection' => 'redis',
-            'queue' => ['default'],
-            'balance' => 'auto',
-            'autoScalingStrategy' => 'time',
-            'minProcesses' => 1,
-            'maxProcesses' => 10,
-            'balanceMaxShift' => 1,
-            'balanceCooldown' => 3,
-            'tries' => 3,
-        ],
-    ],
-],
-```
-
-`autoScalingStrategy`設定値は、Horizonがキューをクリアするのにかかる総時間（`time`戦略）、またはキュー上のジョブの総数（`size`戦略）に基づいて、より多くのワーカプロセスをキューに割り当てるかを決めます。
-
-`balanceMaxShift`と`balanceCooldown`の設定値は、Horizo​​nがワーカの需要を満たすためにどれだけ迅速にスケーリングするかを決定します。上記の例では、３秒ごとに最大１つの新しいプロセスが作成または破棄されます。アプリケーションのニーズに基づいて、必要に応じてこれらの値を自由に調整できます。
-
-`balance`オプションを`false`に設定している場合、デフォルトのLaravel動作が使用され、設定にリストされている順序でキューを処理します。
-
 <a name="dashboard-authorization"></a>
 ### ダッシュボードの認可
 
@@ -184,6 +155,82 @@ protected function gate(): void
 
 Laravelは、認証したユーザーをゲートクロージャへ自動的に依存注入することを忘れないでください。アプリケーションがIP制限など別の方法でHorizonセキュリティを提供している場合、Horizonユーザーは「ログイン」する必要がない場合があります。したがって、Laravelの認証を必要としないようにするため、上記の`function (User $user)`クロージャの引数を`function (User $user = null)`に変更する必要があるでしょう。
 
+<a name="max-job-attempts"></a>
+### 最大ジョブ試行回数
+
+> [!NOTE]
+> これらのオプションを調整する前に、Laravelのデフォルトの[キューサービス](/docs/{{version}}/queues#max-job-attempts-and-timeout)と「試行回数」の概念に確実に精通してください。
+
+ジョブがスーパーバイザの構成内で利用できる最大試行回数を定義します。
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            'tries' => 10,
+        ],ｑ
+    ],
+],
+```
+
+> [!NOTE]
+> このオプションは、Artisanコマンドでキューを処理するときの`--tries` オプションと類似しています。
+
+`tries`オプションの調整は、`WithoutOverlapping`や`RateLimited`などのミドルウェアを使用する際に不可欠です。これらのミドルウェアは試行回数を消費するからです。これに対応するため、`tries`の設定値をスーパーバイザーレベルで調整するか、ジョブクラスで`$tries`プロパティを定義することで対応します。
+
+`tries`オプションを設定しない場合、Horizonはデフォルトで１回だけ試行します。ただし、ジョブクラスで`$tries`を定義している場合は、その設定をHorizonの設定よりも優先します。
+
+`tries`か`$tries`を0に設定すると、試行が無制限になります。これは、試行回数が不明な場合に最適です。失敗を無限に繰り返すのを防ぐため、ジョブクラスに`$maxExceptions`プロパティを設定し、許可する例外の数を制限できます。
+
+<a name="job-timeout"></a>
+### ジョブタイムアウト
+
+同様に、スーパーバイザレベルで`timeout`値を設定できます。この値は、ワーカプロセスがジョブを実行できる秒数を指定し、その時間が経過すると強制的に終了します。終了後、ジョブはキュー設定に従い再試行するか、失敗としてマークします。
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...¨
+            'timeout' => 60,
+        ],
+    ],
+],
+```
+
+> [!WARNING]
+> `timeout`の値は、常に`config/queue.php`設定ファイルで定義した`retry_after`の値よりも、数秒短く設定する必要があります。そうしないと、ジョブが２回処理される可能性があります。
+
+<a name="job-backoff"></a>
+### ジョブ待機時間
+
+`backoff`値をスーパーバイザレベルで定義することで、Horizonが未処理の例外が発生したジョブを再試行する前に、待機する時間を指定できます。
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            'backoff' => 10,
+        ],
+    ],
+],
+```
+
+「指数関数的」に待機時間を設定するには、`backoff`値に配列を使用します。以下の例では、最初の再試行の遅延は１秒、２回目の再試行は５秒、３回目の再試行は１０、それ以降の再試行で試行回数が残っていれば毎回１０秒ずつ遅延します。
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            'backoff' => [1, 5, 10],
+        ],
+    ],
+],
+```
+
 <a name="silenced-jobs"></a>
 ### 非表示のジョブ
 
@@ -207,6 +254,174 @@ class ProcessPodcast implements ShouldQueue, Silenced
     // ...
 }
 ```
+
+<a name="balancing-strategies"></a>
+## バランス戦略
+
+各スーパーバイザーは、１つ以上のキューを処理できますが、Laravelのデフォルトのキューシステムとは異なり、Horizonでは３つのワーカバランス戦略を選択できます。`auto`、`simple`、`false`です。
+
+<a name="auto-balancing"></a>
+### 自動バランス
+
+`auto`戦略（デフォルトの戦略）は、キューの現在の負荷に基づいて、各キューごとのワーカプロセスの数を調整します。例えば、`notifications`キューに1,000件の未処理ジョブがあり、一方で`default`キューが空の場合、Horizonは`notifications`キューへ追加のワーカを割り当て、キューが空になるまで継続します。
+
+`auto`戦略を採用する場合、`minProcesses`と`maxProcesses`設定オプションを構成することもできます。
+
+<div class="content-list" markdown="1">
+
+- `minProcesses`は、各キューあたりのワーカプロセスの最小数を定義します。この値は1以上でなければなりません。
+- `maxProcesses`は、Horizonがすべてのキューに渡りスケールアップできるワーカプロセスの最大総数を定義します。この値は通常、キューの数に`minProcesses`の値を乗じた値よりも大きくする必要があります。スーパーバイザがプロセスを起動しないようにするには、この値を0に設定してください。
+
+</div>
+
+例えば、各キューごとに最低１つのプロセスを維持し、合計で１０個のワーカプロセスまでスケールアップするようにHorizonを構成してみましょう。
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            'connection' => 'redis',
+            'queue' => ['default', 'notifications'],
+            'balance' => 'auto',
+            'autoScalingStrategy' => 'time',
+            'minProcesses' => 1,
+            'maxProcesses' => 10,
+            'balanceMaxShift' => 1,
+            'balanceCooldown' => 3,
+        ],
+    ],
+],
+```
+
+`autoScalingStrategy`設定オプションは、Horizonがキューに追加のワーカプロセスを割り当てる方法を決定します。２つの戦略から選択できます。
+
+<div class="content-list" markdown="1">
+
+- `time`戦略は、キューをクリアするのにかかる総推定時間に基づいてワーカを割り当てます。
+- `size`戦略は、キュー内のジョブ総数に基づいてワーカを割り当てます。
+
+</div>
+
+`balanceMaxShift`および`balanceCooldown`の設定値は、Horizonがワーカの需要に対応するためにスケールする速度を決定します。上記の例では、毎秒3秒ごとに最大１つの新しいプロセスを作成または破棄します。アプリケーションの要件に応じ、これらの値を必要に合わせて自由に調整してください。
+
+<a name="auto-queue-priorities"></a>
+#### キューの優先順位と自動バランス調整
+
+`auto`バランス戦略を使用する場合、Horizonはキュー間の厳格な優先順位を強制しません。スーパーバイザの構成におけるキューの順序は、ワーカプロセスの割り当て方法に影響を与えません。代わりに、Horizonは選択された`autoScalingStrategy`に基づいて、キューの負荷に応じてワーカプロセスを動的に割り当てます。
+
+例えば、以下の構成では、リストの最初に表示されているにもかかわらず、highキューをdefaultキューよりも優先しません。
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            'queue' => ['high', 'default'],
+            'minProcesses' => 1,
+            'maxProcesses' => 10,
+        ],
+    ],
+],
+```
+
+キュー間の相対的な優先順位を強制する必要がある場合は、複数のスーパーバイザを定義し、処理リソースを明示的に割り当てる必要があります。
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            'queue' => ['default'],
+            'minProcesses' => 1,
+            'maxProcesses' => 10,
+        ],
+        'supervisor-2' => [
+            // ...
+            'queue' => ['images'],
+            'minProcesses' => 1,
+            'maxProcesses' => 1,
+        ],
+    ],
+],
+```
+
+この例では、デフォルトの`queue`は最大１０プロセスまでスケールアップ可能ですが、`images`キューは１プロセスに制限しています。この構成により、キューが独立してスケールできるようになります。
+
+> [!NOTE]
+> リソースを大量に消費するジョブを実行するときは、`maxProcesses`値を制限した専用のキューに割り当てるのが最善の策です。そうしないと、これらのジョブが過剰なCPUリソースを消費し、システムを過負荷状態に陥らせる可能性があります。
+
+<a name="simple-balancing"></a>
+### 単純バランス
+
+`simple`戦略は、指定したキューにワーカプロセスを均等に分散します。この戦略では、Horizonはワーカプロセスの数を自動的にスケールしません。代わりに、固定数のプロセスを使用します。
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            'queue' => ['default', 'notifications'],
+            'balance' => 'simple',
+            'processes' => 10,
+        ],
+    ],
+],
+```
+
+上記の例では、Horizonは合計１０を均等に分割し、両キューに５つのプロセスを割り当てます。
+
+各キューに割り当てるワーカプロセスの数を個別に制御したい場合は、複数のスーパーバイザを定義できます。
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            'queue' => ['default'],
+            'balance' => 'simple',
+            'processes' => 10,
+        ],
+        'supervisor-notifications' => [
+            // ...
+            'queue' => ['notifications'],
+            'balance' => 'simple',
+            'processes' => 2,
+        ],
+    ],
+],
+```
+
+この設定により、Horizonは`default`キューに１０プロセス、`notifications`キューに２プロセスを割り当てます。
+
+<a name="no-balancing"></a>
+### バランス戦略なし
+
+`balance`オプションを`false`に設定している場合、Horizonはキューをリスト順序通りに厳密に処理します。これはLaravelのデフォルトのキューシステムに類似しています。ただし、ジョブが蓄積し始めた場合、ワーカプロセスの数をスケールアップします。
+
+```php
+'environments' => [
+    'production' => [
+        'supervisor-1' => [
+            // ...
+            'queue' => ['default', 'notifications'],
+            'balance' => false,
+            'minProcesses' => 1,
+            'maxProcesses' => 10,
+        ],
+    ],
+],
+```
+
+上記の例では、`default`キューのジョブは常に`notifications`キューのジョブよりも優先されます。例えば、`default`キューに 1,000 件のジョブがあり、`notifications`キューに 10 件しかない場合、Horizon は`notifications`キューのジョブを処理する前に、`default`キューのすべてのジョブを完全に処理します。
+
+Horizonのワーカプロセスのスケーリング機能を制御するため、`minProcesses`と`maxProcesses`オプションを使用できます。
+
+<div class="content-list" markdown="1">
+
+- `minProcesses` は、総ワーカプロセスの最小数を定義します。この値は１以上でなければなりません。
+- `maxProcesses` は、Horizon がスケールアップできる総ワーカプロセスの最大数を定義します。
+
+</div>
 
 <a name="upgrading-horizon"></a>
 ## Horizonのアップグレード

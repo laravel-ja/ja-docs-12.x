@@ -820,6 +820,19 @@ Event::defer(function () {
 
 クロージャ内で発行したすべてのイベントは、クロージャを実行した後にディスパッチします。これにより、イベントリスナは遅延実行中に作成した関連するすべてのレコードへアクセスできるようになります。クロージャ内で例外が発生した場合、遅延イベントをディスパッチしません。
 
+特定のイベントのみ遅延させるには、`defer`メソッドの第２引数にイベントの配列を指定します。
+
+```php
+use App\Models\User;
+use Illuminate\Support\Facades\Event;
+
+Event::defer(function () {
+    $user = User::create(['name' => 'Victoria Otwell']);
+
+    $user->posts()->create(['title' => 'My first post!']);
+}, ['eloquent.created: '.User::class]);
+```
+
 <a name="event-subscribers"></a>
 ## イベントサブスクライバ
 

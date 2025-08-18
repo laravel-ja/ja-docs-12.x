@@ -133,6 +133,9 @@ $result = Process::forever()
 Process::forever()->tty()->run('vim');
 ```
 
+> [!WARNING]
+> WindowsではTTYモードをサポートしていません。
+
 <a name="process-output"></a>
 ### プロセス出力
 

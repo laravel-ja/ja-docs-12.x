@@ -433,7 +433,7 @@ Route::get('/profile', function () {
 <a name="a-note-on-fastcgi"></a>
 #### FastCGIに関する注記
 
-PHPFastCGIとApacheを使用してLaravelアプリケーションを提供している場合、HTTP基本認証は正しく機能しない可能性があります。これらの問題を修正するために、アプリケーションの`.htaccess`ファイルに次の行を追加できます。
+[PHPFastCGI](https://www.php.net/manual/ja/install.fpm.php)とApacheを使用してLaravelアプリケーションを提供している場合、HTTP基本認証は正しく機能しない可能性があります。これらの問題を修正するために、アプリケーションの`.htaccess`ファイルに次の行を追加できます。
 
 ```apache
 RewriteCond %{HTTP:Authorization} ^(.+)$

@@ -451,7 +451,7 @@ Route::put('/post/{id}', function (string $id) {
 <a name="terminable-middleware"></a>
 ## 終了処理ミドルウェア
 
-HTTPレスポンスがブラウザに送信された後、ミドルウェアが何らかの作業を行う必要がある場合があります。ミドルウェアで`terminate`メソッドを定義し、WebサーバがFastCGIを使用している場合、レスポンスがブラウザに送信された後、`terminate`メソッドが自動的に呼び出されます。
+HTTPレスポンスがブラウザに送信された後、ミドルウェアが何らかの作業を行う必要がある場合があります。ミドルウェアで`terminate`メソッドを定義し、Webサーバが[FastCGI](https://www.php.net/manual/ja/install.fpm.php)を使用している場合、レスポンスがブラウザに送信された後、`terminate`メソッドが自動的に呼び出されます。
 
 ```php
 <?php

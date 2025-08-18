@@ -278,11 +278,9 @@ $this->actingAsGuest();
 test('basic test', function () {
     $response = $this->get('/');
 
-    $response->dumpHeaders();
-
-    $response->dumpSession();
-
     $response->dump();
+    $response->dumpHeaders();
+    $response->dumpSession();
 });
 ```
 
@@ -302,11 +300,9 @@ class ExampleTest extends TestCase
     {
         $response = $this->get('/');
 
-        $response->dumpHeaders();
-
-        $response->dumpSession();
-
         $response->dump();
+        $response->dumpHeaders();
+        $response->dumpSession();
     }
 }
 ```

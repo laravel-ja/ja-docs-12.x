@@ -607,6 +607,8 @@ public function middleware(): array
 }
 ```
 
+重複するジョブをキューに戻す操作は、そのジョブの総試行回数を増加させます。ジョブクラスにおける`tries`と`maxExceptions`プロパティを適切に調整することをおすすめします。例えば、`tries`プロパティをデフォルトの1のままにすると、重複するジョブが後で再試行されることを防ぐことができます。
+
 同じタイプの重複するジョブはすべてキューに戻されます。リリースしたジョブが再試行するまでに経過する必要のある秒数を指定することもできます。
 
 ```php
@@ -821,7 +823,7 @@ use Illuminate\Queue\Middleware\Skip;
 public function middleware(): array
 {
     return [
-        Skip::when($someCondition),
+        Skip::when($condition),
     ];
 }
 ```
@@ -933,7 +935,7 @@ ProcessPodcast::dispatch($podcast)->withoutDelay();
 <a name="dispatching-after-the-response-is-sent-to-browser"></a>
 #### レスポンスがブラウザに送信された後のディスパッチ
 
-別の方法として、`dispatchAfterResponse`メソッドは、WebサーバでFastCGIを使っている場合、HTTPレスポンスがユーザーのブラウザへ送信されるまでジョブのディスパッチを遅らせます。これにより、キュー投入したジョブがまだ実行されている場合でも、ユーザーはアプリケーションの使用を開始できます。これは通常、電子メールの送信など、約１秒かかるジョブにのみ使用する必要があります。これは現在のHTTPリクエスト内で処理されるため、この方法でディスパッチされたジョブを処理するためにキューワーカを実行する必要はありません。
+別の方法として、`dispatchAfterResponse`メソッドは、Webサーバで[FastCGI](https://www.php.net/manual/ja/install.fpm.php)を使っている場合、HTTPレスポンスがユーザーのブラウザへ送信されるまでジョブのディスパッチを遅らせます。これにより、キュー投入したジョブがまだ実行されている場合でも、ユーザーはアプリケーションの使用を開始できます。これは通常、電子メールの送信など、約１秒かかるジョブにのみ使用する必要があります。これは現在のHTTPリクエスト内で処理されるため、この方法でディスパッチされたジョブを処理するためにキューワーカを実行する必要はありません。
 
 ```php
 use App\Jobs\SendNotification;
@@ -941,7 +943,7 @@ use App\Jobs\SendNotification;
 SendNotification::dispatchAfterResponse();
 ```
 
-クロージャを「ディスパッチ`dispatch`」し、`afterResponse`メソッドを`dispatch`ヘルパにチェーンしても、HTTPレスポンスがブラウザに送信された後にクロージャを実行できます。
+クロージャを「ディスパッチ`dispatch`」し、`afterResponse`メソッドを[`dispatch`ヘルパ](/docs/{{version}}/helpers#method-dispatch)へチェーンしても、HTTPレスポンスがブラウザに送信された後にクロージャを実行できます。
 
 ```php
 use App\Mail\WelcomeMessage;
@@ -1243,7 +1245,26 @@ class ProcessPodcast implements ShouldQueue
 <a name="max-attempts"></a>
 #### 最大試行回数
 
-キュー投入したジョブの１つでエラーが発生した場合、そのジョブが無期限に再試行し続けることを普通は望まないでしょう。したがって、Laravelは、ジョブを試行できる回数または期間を指定するさまざまな方法を提供しています。
+ジョブ試行はLaravelのキューシステムの核心的な概念であり、多くの高度な機能を支えています。最初は複雑に思えるかもしれませんが、デフォルトの設定を変更する前に、その仕組みを理解することが重要です。
+
+ジョブをディスパッチするとキューへ追加されます。その後、ワーカがそれを取得し、実行を試みます。これがジョブ実行の試みです。
+
+ただし、試行が行われたからといって、必ずしもジョブの`handle`メソッドが実行されたとは限りません。試行は、以下のいくつかの方法で「消費」される可能性があります：
+
+<div class="content-list" markdown="1">
+
+- ジョブ実行中に未処理の例外が発生した。
+- ジョブが`$this->release()`の仕様により、キューへ戻された。
+- `WithoutOverlapping`や`RateLimited`などのミドルウェアがロックを取得できず、ジョブを解放した。
+- ジョブがタイムアウトした。
+- ジョブの`handle`メソッドが実行され、例外を投げずに完了した。
+
+</div>
+
+ジョブを無限に繰り返し実行し続けることは、あなたも望まないと思います。そのため、Laravelはジョブを実行する回数や実行時間を指定するさまざまな方法を提供しています。
+
+> [!NOTE]
+> Laravelはデフォルトで、ジョブを１回のみ実行します。ジョブで`WithoutOverlapping`や`RateLimited`のようなミドルウェアを使用している場合、または手作業でジョブをリリースしている場合、`tries`オプションを使用して許可される試行回数を増やす必要があります。
 
 ジョブを試行できる最大回数を指定する１つの方法は、Artisanコマンドラインの`--tries`スイッチを使用することです。これは、処理中のジョブへ試行回数を指定しない限り、ワーカが処理するすべてのジョブに適用します。
 
@@ -1403,6 +1424,9 @@ class ProcessPodcast implements ShouldQueue
  */
 public $failOnTimeout = true;
 ```
+
+> [!NOTE]
+> ジョブがタイムアウトするとデフォルトで、試行を１回分消費し、キューへ戻します。（再試行が許可されている場合。）ただし、ジョブをタイムアウト時に失敗するように設定した場合は、試行回数の設定値に関わらず再試行しません。
 
 <a name="error-handling"></a>
 ### エラー処理
@@ -2057,7 +2081,7 @@ php artisan queue:work --force
 <a name="resource-considerations"></a>
 #### リソースに関する検討事項
 
-デーモンキューワーカは、各ジョブを処理する前にフレームワークを「再起動」しません。したがって、各ジョブが完了した後、重いリソースを解放する必要があります。たとえば、GDライブラリを使用して画像操作を行っている場合は、画像の処理が完了したら、`imagedestroy`を使用してメモリを解放する必要があります。
+デーモンキューワーカは、各ジョブを処理する前にフレームワークを「再起動」しません。したがって、各ジョブが完了した後、重いリソースを解放する必要があります。たとえば、[GDライブラリ](https://www.php.net/manual/ja/book.image.php)を使用して画像操作を行っている場合は、画像の処理が完了したら、`imagedestroy`を使用してメモリを解放する必要があります。
 
 <a name="queue-priorities"></a>
 ### キューの優先度
@@ -2281,6 +2305,18 @@ class ProcessPodcast implements ShouldQueue
 
 > [!WARNING]
 > `failed`メソッドを呼び出す前に、ジョブが新しくインスタンス化されます。したがって、`handle`メソッド内で発生した可能性があるクラスプロパティの変更は失われます。
+
+失敗したジョブとは、必ずしも処理していない例外が発生したジョブに限りません。ジョブは、許可した試行回数をすべて消費した場合も失敗と見なします。以下のいずれかの方法で消費される可能性があります。
+
+<div class="content-list" markdown="1">
+
+- ジョブがタイムアウトした。
+- ジョブの実行中に未処理の例外が発生した。
+- ジョブが手作業またはミドルウェアによりキューに戻された。
+
+</div>
+
+最終的な試行がジョブの実行中に発生した例外により失敗した場合、その例外はジョブのfaildメソッドへ渡されます。ただし、ジョブが許可した試行回数の最大値に達したために失敗した場合、`$exception`は`Illuminate\Queue\MaxAttemptsExceededException`のインスタンスになります。同様に、設定されたタイムアウトを超過したためジョブが失敗した場合、`$exception`は`Illuminate\Queue\TimeoutExceededException`のインスタンスになります。
 
 <a name="retrying-failed-jobs"></a>
 ### 失敗したジョブの再試行
