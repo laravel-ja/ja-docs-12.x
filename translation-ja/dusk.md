@@ -53,6 +53,9 @@
 <a name="introduction"></a>
 ## イントロダクション
 
+> [!WARNING]
+> [Pest 4](https://pestphp.com/)には、Laravel Dusk と比較して大幅なパフォーマンスと使いやすさの向上が実現された自動化されたブラウザテスト機能が追加されました。新規プロジェクトでは、ブラウザテストにPestを使用することをおすすめします。
+
 [Laravel Dusk](https://github.com/laravel/dusk)は、表現力豊かで使いやすいブラウザ自動化およびテストAPIを提供します。デフォルトではDuskを使用するために、ローカルコンピュータへJDKやSeleniumをインストールする必要はありません。代わりに、Duskはスタンドアロンの[ChromeDriver](https://sites.google.com/chromium.org/driver)を使用します。ただし、他のSelenium互換ドライバも自由に利用できます。
 
 <a name="installation"></a>
@@ -163,7 +166,7 @@ php artisan dusk:make LoginTest
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 
-uses(DatabaseMigrations::class);
+pest()->use(DatabaseMigrations::class);
 
 //
 ```
@@ -199,7 +202,7 @@ class ExampleTest extends DuskTestCase
 use Illuminate\Foundation\Testing\DatabaseTruncation;
 use Laravel\Dusk\Browser;
 
-uses(DatabaseTruncation::class);
+pest()->use(DatabaseTruncation::class);
 
 //
 ```
@@ -357,7 +360,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 
-uses(DatabaseMigrations::class);
+pest()->use(DatabaseMigrations::class);
 
 test('basic example', function () {
     $user = User::factory()->create([
@@ -2474,7 +2477,7 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Laravel\Dusk\Browser;
 use Tests\Browser\Components\DatePicker;
 
-uses(DatabaseMigrations::class);
+pest()->use(DatabaseMigrations::class);
 
 test('basic example', function () {
     $this->browse(function (Browser $browser) {

@@ -131,19 +131,23 @@ class User extends Model
 <a name="temporarily-modifying-attribute-visibility"></a>
 #### 属性の可視性を一時的に変更
 
-特定のモデルインスタンスで通常は非表示になっている属性を表示したい場合は、`makeVisible`メソッドを使用します。`makeVisible`メソッドはモデルインスタンスを返します:
+特定のモデルインスタンスで通常は非表示になっている属性を表示したい場合は、`makeVisible`や`mergeVisible`メソッドを使用します。`makeVisible`メソッドはモデルインスタンスを返します:
 
 ```php
 return $user->makeVisible('attribute')->toArray();
+
+return $user->mergeVisible(['name', 'email'])->toArray();
 ```
 
-同様に、通常表示される一部の属性を非表示にする場合は、`makeHidden`メソッドを使用します。
+同様に、通常表示される属性を非表示にしたい場合は、`makeHidden`または`mergeHidden`メソッドを使用します。
 
 ```php
 return $user->makeHidden('attribute')->toArray();
+
+return $user->mergeHidden(['name', 'email'])->toArray();
 ```
 
-一時的にすべてのvisible属性やhidden属性を上書きしたい場合は、`setVisible`メソッドや`setHidden`メソッドが使用できます。
+一時的にすべてのvisible属性やhidden属性を上書きしたい場合は、`setVisible`または`setHidden`メソッドが使用できます。
 
 ```php
 return $user->setVisible(['id', 'name'])->toArray();
@@ -203,10 +207,12 @@ class User extends Model
 <a name="appending-at-run-time"></a>
 #### 実行時の追加
 
-実行時に、`append`メソッドを使用して追加の属性を追加するようにモデルインスタンスに指示できます。または、`setAppends`メソッドを使用して、特定のモデルインスタンスに追加されたプロパティの配列全体をオーバーライドすることもできます。
+実行時に、`append`や`mergeAppends`メソッドを使用して追加の属性を追加するようにモデルインスタンスへ指示できます。または、`setAppends`メソッドを使用して、特定のモデルインスタンスに追加されたプロパティの配列全体をオーバーライドすることもできます。
 
 ```php
 return $user->append('is_admin')->toArray();
+
+return $user->mergeAppends(['is_admin', 'status'])->toArray();
 
 return $user->setAppends(['is_admin'])->toArray();
 ```

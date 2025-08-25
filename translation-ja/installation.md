@@ -13,6 +13,8 @@
     - [macOSでのHerd](#herd-on-macos)
     - [WindowsでのHerd](#herd-on-windows)
 - [IDEサポート](#ide-support)
+- [LaravelとAI](#laravel-and-ai)
+    - [Laravel Boostのインストール](#installing-laravel-boost)
 - [次のステップ](#next-steps)
     - [Laravelフルスタックフレームワーク](#laravel-the-fullstack-framework)
     - [Laravel APIバックエンド](#laravel-the-api-backend)
@@ -210,6 +212,37 @@ Laravelアプリケーションを開発する際に、どのコードエディ�
 JetBrainsの[PhpStorm](https://www.jetbrains.com/phpstorm/laravel/)と[Laravel Ideaプラグイン](https://laravel-idea.com/)の組み合わせは、Laravel Pint、Larastan、Pestを含むLaravelとそのエコシステムを幅広くサポートします。フレームワークのサポートは、Bladeテンプレート、Eloquentモデル、ルート、ビュー、翻訳、コンポーネントのスマートなオートコンプリート、Laravelプロジェクト全体の強力なコード生成とナビゲーションをカバーしています。
 
 クラウドベースの開発体験をお求めの方には、[Firebase Studio](https://firebase.studio/)がブラウザで直接Laravelをビルドするための即時アクセスを提供します。セットアップ不要のFirebase Studioは、どのデバイスからでも簡単にLaravelアプリケーションを構築できます。
+
+<a name="laravel-and-ai"></a>
+## LaravelとAI
+
+[Laravel Boost](https://github.com/laravel/boost)は、AIコーディングエージェントとLaravelアプリケーションの間のギャップを埋める強力なツールです。Boostは、AIエージェントにLaravel専用のコンテキスト、ツール、ガイドラインを提供し、Laravelの規約に従ったより正確でバージョン固有のコードを生成できるようにします。
+
+LaravelアプリケーションにBoostをインストールすると、AIエージェントは１５種類を超える専門ツールにアクセスできるようになります。これには、使用しているパッケージを特定する機能、データベースのクエリ実行、Laravelドキュメントの検索、ブラウザログの読み取り、テストの生成、およびTinker経由でのコード実行が含まれます。
+
+さらに、BoostはAIエージェントに、インストールしたパッケージのバージョンに限定したベクトル化済みのLaravelエコシステムドキュメントの17,000件を超えるアクセスを提供します。これにより、エージェントはプロジェクトが使用するバージョンへ正確に合わせた具体的なガイドラインを提供できます。
+
+Boostには、Laravelが管理するAIガイドラインも含まれており、エージェントがフレームワークの規約に従い、適切なテストを記述し、Laravelコードを生成する際の一般的な落とし穴を回避するのに役立ちます。
+
+<a name="installing-laravel-boost"></a>
+### Laravel Boostのインストール
+
+Boostは、PHP8.1以降で実行しているLaravel10、11、12アプリケーションにインストール可能です。開始するには、Boostを開発依存関係としてインストールしてください。
+
+```shell
+composer require laravel/boost --dev
+```
+
+インストール後、インタラクティブインストーラを実行してください。
+
+```shell
+php artisan boost:install
+```
+
+インストーラは、IDEとAIエージェントを自動検出します。これにより、プロジェクトに適切な機能を選択して利用できます。Boostは既存のプロジェクトの規約を尊重し、デフォルトで特定のスタイルルールを強制しません。
+
+> [!NOTE]
+> Boostについて詳しく知りたい場合は、[Laravel BoostのGitHubリポジトリ](https://github.com/laravel/boost)をご覧ください。
 
 <a name="next-steps"></a>
 ## 次のステップ

@@ -65,7 +65,7 @@ Laravelキューは異なったキューバックエンド間に統一したキ�
 Laravelのキュー設定オプションは、アプリケーションの`config/queue.php`設定ファイルへ保存します。このファイルには、データベース、[Amazon SQS](https://aws.amazon.com/sqs/), [Redis](https://redis.io), [Beanstalkd](https://beanstalkd.github.io/)ドライバを含む、フレームワークが用意しているキュードライバの各接続設定が含まれています。また、キューに投入されたジョブを破棄する `null` キュードライバも含まれています。
 
 > [!NOTE]
-> Laravelは、Redisを利用したキュー用の美しいダッシュボードと設定システムであるHorizo​​nも提供しています。詳細は、完全な[Horizo​​nドキュメント](/docs/{{version}}/horizon)を確認してください。
+> Laravel Horizo​​nは、Redisを利用したキュー用の美しいダッシュボードと設定システムです。詳細は、完全な[Horizo​​nドキュメント](/docs/{{version}}/horizon)を確認してください。
 
 <a name="connections-vs-queues"></a>
 ### 接続 対 キュー
@@ -450,9 +450,7 @@ public function handle(): void
 }
 ```
 
-このコードは有効ですが、`handle`メソッドの実装は、Redisのレート制限ロジックが散らかっているため、ノイズが多くなります。さらに、このレート制限ロジックは、レート制限する他のジョブでも重複。
-
-handleメソッドでレート制限を行う代わりに、レート制限を処理するジョブミドルウェアを定義できます。Laravelにはジョブミドルウェアのデフォルトの場所が存在ないため、アプリケーションのどこにでもジョブミドルウェアを配置できます。この例では、ミドルウェアを`app/Jobs/Middleware`ディレクトリに配置します。
+このコードは有効ですが、`handle`メソッドの実装は、Redisのレート制限ロジックが散らかっているため、ノイズが多くなります。さらに、このレート制限ロジックは、レート制限する他のジョブごとに複製する必要があります。handleメソッドでレート制限を行う代わりに、レート制限を処理するジョブミドルウェアを定義できます。
 
 ```php
 <?php
@@ -1671,7 +1669,7 @@ Bus::batch([
         new SendPodcastReleaseNotification(2),
     ],
 ])->then(function (Batch $batch) {
-    // ...
+    // 全てのジョブが失敗なしに完了
 })->dispatch();
 ```
 
@@ -1800,7 +1798,9 @@ Route::get('/batch/{batchId}', function (string $batchId) {
 public function handle(): void
 {
     if ($this->user->exceedsImportLimit()) {
-        return $this->batch()->cancel();
+        $this->batch()->cancel();
+
+        return;
     }
 
     if ($this->batch()->cancelled()) {
@@ -1844,7 +1844,7 @@ $batch = Bus::batch([
 <a name="retrying-failed-batch-jobs"></a>
 #### 失敗したバッチジョブの再試行
 
-便利なように、Laravelは`queue:retry-batch` Artisanコマンドを用意しており、特定のバッチで失敗したすべてのジョブを簡単に再試行できます。`queue:retry-batch`コマンドは、失敗したジョブを再試行する必要があるバッチのUUIDを引数に取ります。
+便利なように、Laravelは`queue:retry-batch` Artisanコマンドを用意しており、特定のバッチで失敗したすべてのジョブを簡単に再試行できます。このコマンドは、失敗したジョブを再試行する必要があるバッチのUUIDを引数に取ります。
 
 ```shell
 php artisan queue:retry-batch 32dbc76c-4f82-4749-b610-a639fe0099b5
@@ -2316,7 +2316,7 @@ class ProcessPodcast implements ShouldQueue
 
 </div>
 
-最終的な試行がジョブの実行中に発生した例外により失敗した場合、その例外はジョブのfaildメソッドへ渡されます。ただし、ジョブが許可した試行回数の最大値に達したために失敗した場合、`$exception`は`Illuminate\Queue\MaxAttemptsExceededException`のインスタンスになります。同様に、設定されたタイムアウトを超過したためジョブが失敗した場合、`$exception`は`Illuminate\Queue\TimeoutExceededException`のインスタンスになります。
+最終的な試行がジョブの実行中に発生した例外により失敗した場合、その例外をジョブの`failded`メソッドへ渡します。ただし、ジョブが許可した試行回数の最大値に達したために失敗した場合、`$exception`は`Illuminate\Queue\MaxAttemptsExceededException`のインスタンスになります。同様に、設定されたタイムアウトを超過したためジョブが失敗した場合、`$exception`は`Illuminate\Queue\TimeoutExceededException`のインスタンスになります。
 
 <a name="retrying-failed-jobs"></a>
 ### 失敗したジョブの再試行
@@ -2536,7 +2536,6 @@ public function boot(): void
 <?php
 
 use App\Jobs\AnotherJob;
-use App\Jobs\FinalJob;
 use App\Jobs\ShipOrder;
 use Illuminate\Support\Facades\Queue;
 
@@ -2574,7 +2573,6 @@ test('orders can be shipped', function () {
 namespace Tests\Feature;
 
 use App\Jobs\AnotherJob;
-use App\Jobs\FinalJob;
 use App\Jobs\ShipOrder;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;

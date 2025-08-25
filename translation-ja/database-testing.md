@@ -21,7 +21,7 @@
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(RefreshDatabase::class);
+pest()->use(RefreshDatabase::class);
 
 test('basic example', function () {
     $response = $this->get('/');
@@ -98,7 +98,7 @@ use Database\Seeders\OrderStatusSeeder;
 use Database\Seeders\TransactionStatusSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-uses(RefreshDatabase::class);
+pest()->use(RefreshDatabase::class);
 
 test('orders can be created', function () {
     // DatabaseSeederを実行

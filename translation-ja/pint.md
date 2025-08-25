@@ -41,6 +41,12 @@ Pintを並列モード（試験中）で実行してパフォーマンスを向�
 ./vendor/bin/pint --parallel
 ```
 
+並列モードでは、`--max-processes`オプションを使用して実行するプロセスの最大数を指定することもできます。このオプションが指定されていない場合、Pint はマシン上で利用可能なすべてのコアを使用します。
+
+```shell
+./vendor/bin/pint --parallel --max-processes=4
+```
+
 また、特定のファイルやディレクトリに対してPintを実行することもできます。
 
 ```shell

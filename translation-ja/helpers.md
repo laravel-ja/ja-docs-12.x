@@ -73,6 +73,7 @@ Laravelはさまざまな、グローバル「ヘルパ」PHP関数を用意し�
 [Arr::prepend](#method-array-prepend)
 [Arr::prependKeysWith](#method-array-prependkeyswith)
 [Arr::pull](#method-array-pull)
+[Arr::push](#method-array-push)
 [Arr::query](#method-array-query)
 [Arr::random](#method-array-random)
 [Arr::reject](#method-array-reject)
@@ -957,6 +958,21 @@ $name = Arr::pull($array, 'name');
 use Illuminate\Support\Arr;
 
 $value = Arr::pull($array, $key, $default);
+```
+
+<a name="method-array-push"></a>
+#### `Arr::push()` {.collection-method}
+
+`Arr::push`メソッドは、ドット表記を使用して配列へアイテムを追加します。指定したキーに配列が存在しない場合は、その配列を作成します。
+
+```php
+use Illuminate\Support\Arr;
+
+$array = [];
+
+Arr::push($array, 'office.furniture', 'Desk');
+
+// $array: ['office' => ['furniture' => 'Desk']]
 ```
 
 <a name="method-array-query"></a>

@@ -893,7 +893,7 @@ RateLimiter::for('global', function (Request $request) {
 RateLimiter::for('uploads', function (Request $request) {
     return $request->user()->vipCustomer()
         ? Limit::none()
-        : Limit::perMinute(100);
+        : Limit::perHour(10);
 });
 ```
 
