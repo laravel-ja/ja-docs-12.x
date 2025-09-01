@@ -823,6 +823,24 @@ Http::get('https://github.com/laravel/framework');
 Http::get('https://laravel.com');
 ```
 
+特定のリクエストの実行を許可しながら、ほとんどの迷子のリクエストを防止したい場合があるでしょう。これを実現するには、`allowStrayRequests`メソッドへURLパターンの配列を渡します。指定したパターンのどれかに一致するリクエストは許可され、それ以外のリクエストでは例外を投げ続けます。
+
+```php
+use Illuminate\Support\Facades\Http;
+
+Http::preventStrayRequests();
+
+Http::allowStrayRequests([
+    'http://127.0.0.1:5000/*',
+]);
+
+// このリクエストは実行される
+Http::get('http://127.0.0.1:5000/generate');
+
+// 例外が投げられる
+Http::get('https://laravel.com');
+```
+
 <a name="events"></a>
 ## イベント
 

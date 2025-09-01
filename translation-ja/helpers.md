@@ -972,7 +972,7 @@ $array = [];
 
 Arr::push($array, 'office.furniture', 'Desk');
 
-// $array: ['office' => ['furniture' => 'Desk']]
+// $array: ['office' => ['furniture' => ['Desk']]]
 ```
 
 <a name="method-array-query"></a>
@@ -3241,7 +3241,7 @@ defer(fn () => Metrics::reportOrder($order))->always();
 ```
 
 > [!WARNING]
-> **swoole** PHP拡張機能をインストールしている場合、Laravelの`defer`関数がSwooleのグローバルな`defer`関数と衝突し、ウェブサーバエラーが発生する可能性があります。Laravelの`defer`ヘルパ関数を名前空間を明示的に指定して呼び出すようにしてください：`use function Illuminate\Support\defer;`
+> [Swoole PHP拡張機能](https://www.php.net/manual/en/book.swoole.php)をインストールしている場合、Laravelの`defer`関数がSwooleのグローバルな`defer`関数と衝突し、ウェブサーバエラーが発生する可能性があります。Laravelの`defer`ヘルパ関数を名前空間を明示的に指定して呼び出すようにしてください：`use function Illuminate\Support\defer;`
 
 <a name="cancelling-deferred-functions"></a>
 #### 遅延関数のキャンセル

@@ -62,7 +62,7 @@ Webアプリケーションの構築中に、アップロードされたCSVフ�
 
 Laravelキューは異なったキューバックエンド間に統一したキューのAPIを提供します。[Amazon SQS](https://aws.amazon.com/sqs/)、[Redis](https://redis.io)、もしくはリレーショナルデータベースでさえ使えます。
 
-Laravelのキュー設定オプションは、アプリケーションの`config/queue.php`設定ファイルへ保存します。このファイルには、データベース、[Amazon SQS](https://aws.amazon.com/sqs/), [Redis](https://redis.io), [Beanstalkd](https://beanstalkd.github.io/)ドライバを含む、フレームワークが用意しているキュードライバの各接続設定が含まれています。また、キューに投入されたジョブを破棄する `null` キュードライバも含まれています。
+Laravelのキュー設定オプションは、アプリケーションの`config/queue.php`設定ファイルへ保存します。このファイルには、データベース、[Amazon SQS](https://aws.amazon.com/sqs/), [Redis](https://redis.io), [Beanstalkd](https://beanstalkd.github.io/)ドライバ、およびジョブを即時実行する同期ドライバ（開発時やテスト時に使用）を含む、フレームワークが用意しているキュードライバの各接続設定が含まれています。また、キューに投入されたジョブを破棄する`null`キュードライバも含まれています。
 
 > [!NOTE]
 > Laravel Horizo​​nは、Redisを利用したキュー用の美しいダッシュボードと設定システムです。詳細は、完全な[Horizo​​nドキュメント](/docs/{{version}}/horizon)を確認してください。
@@ -1945,7 +1945,9 @@ DynamoDBのテーブルに`ttl`属性を定義した場合、Laravelにバッチ
 ジョブクラスをキューにディスパッチする代わりに、クロージャをディスパッチすることもできます。これは、現在のリクエストサイクルの外で実行する必要がある迅速で単純なタスクに最適です。クロージャをキューにディスパッチする場合、クロージャのコードコンテンツは暗号で署名されているため、転送中に変更することはできません。
 
 ```php
-$podcast = App\Podcast::find(1);
+use App\Models\Podcast;
+
+$podcast = Podcast::find(1);
 
 dispatch(function () use ($podcast) {
     $podcast->publish();
@@ -2366,6 +2368,12 @@ php artisan queue:forget 91401d2c-0784-4f43-824c-34f94a33c24d
 php artisan queue:flush
 ```
 
+`queue:flush`コマンドは、失敗したジョブの記録をキューからすべて削除します。失敗したジョブがどれほど古いものであっても削除します。`--hours` オプションを使用すると、特定の時間以上前に失敗したジョブのみ削除できます。
+
+```shell
+php artisan queue:flush --hours=48
+```
+
 <a name="ignoring-missing-models"></a>
 ### 見つからないモデルの無視
 
@@ -2758,7 +2766,7 @@ Bus::fake();
 // ...
 
 Bus::assertBatched(function (PendingBatch $batch) {
-    return $batch->name == 'import-csv' &&
+    return $batch->name == 'Import CSV' &&
            $batch->jobs->count() === 10;
 });
 ```
@@ -2794,7 +2802,7 @@ $this->assertEmpty($batch->added);
 
 時には、キュー投入したジョブが[それ自身をキューに戻す](#manually-releasing-a-job)ことをテストする必要が起きるかもしれません。あるいは、ジョブが自分自身を削除したことをテストする必要があるかもしれません。ジョブをインスタンス化して`withFakeQueueInteractions`メソッドを呼び出すことで、これらのキューとのやりとりをテストできます。
 
-ジョブのキュー操作をFakeしたら、ジョブに対して `handle`メソッドを呼び出してください。ジョブを呼び出した後は、`assertReleased`、`assertDeleted`、`assertNotDeleted`、`assertFailed`、`assertFailedWith`、`assertNotFailed`メソッドを使用して、ジョブのキュー操作に対してアサートを行えます。
+ジョブのキュー操作をFakeしたら、ジョブに対して`handle`メソッドを呼び出してください。ジョブを呼び出した後は、ジョブのキュー操作を検証するために、様々なアサーションメソッドが利用できます。
 
 ```php
 use App\Exceptions\CorruptedAudioException;

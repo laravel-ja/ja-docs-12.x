@@ -230,6 +230,7 @@ For the majority of the remaining collection documentation, we'll discuss each m
 [times](#method-times)
 [toArray](#method-toarray)
 [toJson](#method-tojson)
+[toPrettyJson](#method-to-pretty-json)
 [transform](#method-transform)
 [undot](#method-undot)
 [union](#method-union)
@@ -3333,6 +3334,17 @@ $collection->toJson();
 // '{"name":"Desk", "price":200}'
 ```
 
+<a name="method-to-pretty-json"></a>
+#### `toPrettyJson()` {.collection-method}
+
+The `toPrettyJson` method converts the collection into a formatted JSON string using the `JSON_PRETTY_PRINT` option:
+
+```php
+$collection = collect(['name' => 'Desk', 'price' => 200]);
+
+$collection->toPrettyJson();
+```
+
 <a name="method-transform"></a>
 #### `transform()` {.collection-method}
 
@@ -4315,4 +4327,30 @@ $users->take(5)->all();
 // First 5 users come from the collection's cache...
 // The rest are hydrated from the database...
 $users->take(20)->all();
+```
+
+<a name="method-with-heartbeat"></a>
+#### `withHeartbeat()` {.collection-method}
+
+The `withHeartbeat` method allows you to execute a callback at regular time intervals while a lazy collection is being enumerated. This is particularly useful for long-running operations that require periodic maintenance tasks, such as extending locks or sending progress updates:
+
+```php
+use Carbon\CarbonInterval;
+use Illuminate\Support\Facades\Cache;
+
+$lock = Cache::lock('generate-reports', seconds: 60 * 5);
+
+if ($lock->get()) {
+    try {
+        Report::where('status', 'pending')
+            ->lazy()
+            ->withHeartbeat(
+                CarbonInterval::minutes(4),
+                fn () => $lock->extend(CarbonInterval::minutes(5))
+            )
+            ->each(fn ($report) => $report->process());
+    } finally {
+        $lock->release();
+    }
+}
 ```

@@ -2127,7 +2127,7 @@ $books = Book::withOnly('genre')->get();
 
 ```php
 use App\Models\User;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 
 $users = User::with(['posts' => function (Builder $query) {
     $query->where('title', 'like', '%code%');

@@ -230,6 +230,7 @@ $translated = $collection->toLocale('es');
 [times](#method-times)
 [toArray](#method-toarray)
 [toJson](#method-tojson)
+[toPrettyJson](#method-to-pretty-json)
 [transform](#method-transform)
 [undot](#method-undot)
 [union](#method-union)
@@ -3333,6 +3334,17 @@ $collection->toJson();
 // '{"name":"Desk", "price":200}'
 ```
 
+<a name="method-to-pretty-json"></a>
+#### `toPrettyJson()` {.collection-method}
+
+`toPrettyJson`メソッドは、`JSON_PRETTY_PRINT`オプションを使用して、コレクションをフォーマット済みのJSON文字列へ変換します。
+
+```php
+$collection = collect(['name' => 'Desk', 'price' => 200]);
+
+$collection->toPrettyJson();
+```
+
 <a name="method-transform"></a>
 #### `transform()` {.collection-method}
 
@@ -4315,4 +4327,30 @@ $users->take(5)->all();
 // 最初の５ユーザーはコレクションのキャッシュから取得
 // 残りはデータベースからハイドレイトされる
 $users->take(20)->all();
+```
+
+<a name="method-with-heartbeat"></a>
+#### `withHeartbeat()` {.collection-method}
+
+`withHeartbeat`メソッドを使用すると、レイジーコレクションの列挙中に定期的な間隔でコールバックを実行できます。これは、ロックの延長や進捗更新の送信など、定期的なメンテナンスタスクを必要とする長時間実行される操作で特に有用です。
+
+```php
+use Carbon\CarbonInterval;
+use Illuminate\Support\Facades\Cache;
+
+$lock = Cache::lock('generate-reports', seconds: 60 * 5);
+
+if ($lock->get()) {
+    try {
+        Report::where('status', 'pending')
+            ->lazy()
+            ->withHeartbeat(
+                CarbonInterval::minutes(4),
+                fn () => $lock->extend(CarbonInterval::minutes(5))
+            )
+            ->each(fn ($report) => $report->process());
+    } finally {
+        $lock->release();
+    }
+}
 ```
