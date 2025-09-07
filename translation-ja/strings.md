@@ -1191,6 +1191,16 @@ $singular = Str::plural('child', 1);
 // child
 ```
 
+`prependCount`引数を指定すると、複数形化済み文字列の前に整形した`$count`を接頭辞として付加できます。
+
+```php
+use Illuminate\Support\Str;
+
+$label = Str::plural('car', 1000, prependCount: true);
+
+// 1,000 cars
+```
+
 <a name="method-str-plural-studly"></a>
 #### `Str::pluralStudly()` {.collection-method}
 
@@ -2981,7 +2991,7 @@ $plural = Str::of('child')->plural();
 // children
 ```
 
-整数をこのメソッドの第２引数に指定することで、文字列の単数形と複数形を切り替えて取得できます。
+整数をこのメソッドの引数に指定することで、文字列の単数形と複数形を切り替えて取得できます。
 
 ```php
 use Illuminate\Support\Str;
@@ -2993,6 +3003,16 @@ $plural = Str::of('child')->plural(2);
 $plural = Str::of('child')->plural(1);
 
 // child
+```
+
+`prependCount`引数を指定すると、複数形化済み文字列の前に整形した`$count`を接頭辞として付加できます。
+
+```php
+use Illuminate\Support\Str;
+
+$label = Str::of('car')->plural(1000, prependCount: true);
+
+// 1,000 cars
 ```
 
 <a name="method-fluent-str-position"></a>

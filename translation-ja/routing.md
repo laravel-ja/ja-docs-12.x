@@ -968,7 +968,7 @@ Route::middleware(['throttle:uploads'])->group(function () {
 `throttle`ミドルウェアはデフォルトで、`Illuminate\Routing\Middleware\ThrottleRequests`クラスへマッピングします。しかし、アプリケーションのキャッシュドライバとしてRedisを使う場合は、レート制限を管理するためにRedisを使うようにLaravelへ指示したいかもしれません。それには、アプリケーションの`bootstrap/app.php`ファイルで`throttleWithRedis`メソッドを使用します。このメソッドは`throttle`ミドルウェアを`Illuminate\Routing\Middleware\ThrottleRequestsWithRedis`ミドルウェアクラスへマッピングします
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->throttleWithRedis();
     // ...
 })

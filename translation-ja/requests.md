@@ -675,7 +675,7 @@ Laravelはデフォルトで、アプリケーションのグローバルミド�
 use Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull;
 use Illuminate\Foundation\Http\Middleware\TrimStrings;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->remove([
         ConvertEmptyStringsToNull::class,
         TrimStrings::class,
@@ -686,7 +686,7 @@ use Illuminate\Foundation\Http\Middleware\TrimStrings;
 アプリケーションへのリクエストのサブセットに対して、文字列のトリミングと空文字列の変換を無効にしたい場合は、アプリケーションの`bootstrap/app.php`ファイル内で`trimStrings`と`convertEmptyStringsToNull`ミドルウェアメソッドを使用してください。どちらのメソッドもクロージャの配列を引数に取ります。クロージャは`true`または`false`を返し、入力の正規化をスキップするかを決めます。
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->convertEmptyStringsToNull(except: [
         fn (Request $request) => $request->is('admin/*'),
     ]);
@@ -780,7 +780,7 @@ TLS/SSL証明書を末端とするロードバランサーの背後でアプリ�
 これを解決するには、Laravelアプリケーションが用意している`Illuminate\Http\Middleware\TrustProxies`ミドルウェアを有効にして、アプリケーションが信頼するロードバランサーやプロキシを手早くカスタマイズしてください。信頼するプロキシは、アプリケーションの`bootstrap/app.php`ファイルで`trustProxies`ミドルウェアメソッドを使用し指定します。
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->trustProxies(at: [
         '192.168.1.1',
         '10.0.0.0/8',
@@ -791,7 +791,7 @@ TLS/SSL証明書を末端とするロードバランサーの背後でアプリ�
 信頼するプロキシを設定することに加え、信頼すべきプロキシヘッダを設定することもできます。
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->trustProxies(headers: Request::HEADER_X_FORWARDED_FOR |
         Request::HEADER_X_FORWARDED_HOST |
         Request::HEADER_X_FORWARDED_PORT |
@@ -810,7 +810,7 @@ TLS/SSL証明書を末端とするロードバランサーの背後でアプリ�
 Amazon AWSまたは別の「クラウド」ロードバランサープロバイダを使用している場合、実際のバランサーのIPアドレスがわからない場合があります。この場合、`*`を使用してすべてのプロキシを信頼できます。
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->trustProxies(at: '*');
 })
 ```
@@ -825,7 +825,7 @@ Amazon AWSまたは別の「クラウド」ロードバランサープロバイ�
 `TrustHosts`ミドルウェアを有効にするには、アプリケーションの`bootstrap/app.php`ファイルで、`trustHosts`ミドルウェアメソッドを呼び出す必要がある。このメソッドの`at`引数を使用して、アプリケーションが応答すべきホスト名を指定します。他の`Host`ヘッダを持つリクエストは拒否します。
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->trustHosts(at: ['laravel.test']);
 })
 ```
@@ -833,7 +833,7 @@ Amazon AWSまたは別の「クラウド」ロードバランサープロバイ�
 デフォルトでは、アプリケーションのURLのサブドメインからのリクエストも自動的に信頼されます。この動作を無効にしたい場合は、`subdomains`引数を使います。
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->trustHosts(at: ['laravel.test'], subdomains: false);
 })
 ```
@@ -841,7 +841,7 @@ Amazon AWSまたは別の「クラウド」ロードバランサープロバイ�
 信頼できるホストを決定するため、アプリケーションの設定ファイルやデータベースにアクセスする必要がある場合は、`at`引数へクロージャを指定できます
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->trustHosts(at: fn () => config('app.trusted_hosts'));
 })
 ```

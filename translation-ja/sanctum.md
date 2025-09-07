@@ -166,7 +166,7 @@ if ($user->tokenCant('server:update')) {
 use Laravel\Sanctum\Http\Middleware\CheckAbilities;
 use Laravel\Sanctum\Http\Middleware\CheckForAnyAbility;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->alias([
         'abilities' => CheckAbilities::class,
         'ability' => CheckForAnyAbility::class,
@@ -291,7 +291,7 @@ Sanctumは、Laravelを利用したAPIと通信する必要があるシングル
 次に、SPAからのリクエストはLaravelのセッションCookieを使って認証し、サードパーティやモバイルアプリケーションからのリクエストはAPIトークンを使って認証するようにLaravelへ指示します。これは、アプリケーションの`bootstrap/app.php`ファイルで`statefulApi`ミドルウェアメソッドを呼び出し、簡単に実現できます。
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->statefulApi();
 })
 ```

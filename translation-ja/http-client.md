@@ -400,7 +400,7 @@ return Http::post(/* ... */)->throw(function (Response $response, RequestExcepti
 ```php
 use Illuminate\Foundation\Configuration\Exceptions;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     // リクエストの例外メッセージを240文字に切り詰める
     $exceptions->truncateRequestExceptionsAt(240);
 

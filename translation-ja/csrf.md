@@ -77,7 +77,7 @@ LaravelをAPIバックエンドとして利用するSPAを構築している場�
 通常、この種のルートは、`routes/web.php`ファイル内のすべてのルートにLaravelが適用する、`web`ミドルウェアグループの外側に配置します。しかし、アプリケーションの`bootstrap/app.php`ファイル内の`validateCsrfTokens`メソッドでURIを指定し、特定のルートを除外することもできます。
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->validateCsrfTokens(except: [
         'stripe/*',
         'http://example.com/foo/bar',

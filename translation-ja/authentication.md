@@ -194,7 +194,7 @@ Route::get('/flights', function () {
 ```php
 use Illuminate\Http\Request;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->redirectGuestsTo('/login');
 
     // クロージャを使用
@@ -210,7 +210,7 @@ use Illuminate\Http\Request;
 ```php
 use Illuminate\Http\Request;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->redirectUsersTo('/panel');
 
     // クロージャを使用する場合

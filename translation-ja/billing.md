@@ -1921,7 +1921,7 @@ php artisan cashier:webhook --disabled
 Stripe WebフックはLaravelの[CSRF保護](/docs/{{version}}/csrf)をバイパスする必要があるため、Laravelが受信するStripe WebフックのCSRFトークンを検証させない必要があります。そのため、アプリケーションの`bootstrap/app.php`ファイルで、CSRF保護から`stripe/*`を除外する必要があります。
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->validateCsrfTokens(except: [
         'stripe/*',
     ]);

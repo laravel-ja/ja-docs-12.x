@@ -20,6 +20,7 @@
     - [ジョブチェーン](#job-chaining)
     - [キューと接続のカスタマイズ](#customizing-the-queue-and-connection)
     - [最大試行回数／タイムアウト値の指定](#max-job-attempts-and-timeout)
+    - [SQS FIFOと公平キュー](#sqs-fifo-and-fair-queues)
     - [エラー処理](#error-handling)
 - [ジョブバッチ](#job-batching)
     - [Batchableジョブの定義](#defining-batchable-jobs)
@@ -1425,6 +1426,46 @@ public $failOnTimeout = true;
 
 > [!NOTE]
 > ジョブがタイムアウトするとデフォルトで、試行を１回分消費し、キューへ戻します。（再試行が許可されている場合。）ただし、ジョブをタイムアウト時に失敗するように設定した場合は、試行回数の設定値に関わらず再試行しません。
+
+<a name="sqs-fifo-and-fair-queues"></a>
+### SQS FIFOと公平キュー
+
+Laravelは[Amazon SQS FIFO（先入れ先出し）](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-fifo-queues.html)キューをサポートしており、メッセージの重複排除による正確な1回処理を保証しながら、送信された正確な順序でジョブを処理できます。
+
+FIFOキューは、並列処理可能なジョブを決定するためにメッセージグループIDを必要とします。同一グループIDを持つジョブは順次処理され、異なるグループIDを持つメッセージは並行して処理できます。
+
+Laravelは、ジョブをディスパッチする際にメッセージグループIDを指定するための、読み書きしやすい`onGroup`メソッドを提供しています。
+
+```php
+ProcessOrder::dispatch($order)
+    ->onGroup("customer-{$order->customer_id}");
+```
+
+SQS FIFOキューはメッセージの重複排除をサポートし、正確に1回処理を保証します。カスタム重複排除IDを提供するには、ジョブクラスに`deduplicationId`メソッドを実装してください。
+
+```php
+<?php
+
+namespace App\Jobs;
+
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Queue\Queueable;
+
+class ProcessSubscriptionRenewal implements ShouldQueue
+{
+    use Queueable;
+
+    // ...
+
+    /**
+     * ジョブの重複排除IDの取得
+     */
+    public function deduplicationId(): string
+    {
+        return "renewal-{$this->subscription->id}";
+    }
+}
+```
 
 <a name="error-handling"></a>
 ### エラー処理

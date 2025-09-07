@@ -216,7 +216,7 @@ Route::post('/unsubscribe/{user}', function (Request $request) {
 ```php
 use Illuminate\Routing\Exceptions\InvalidSignatureException;
 
-->withExceptions(function (Exceptions $exceptions) {
+->withExceptions(function (Exceptions $exceptions): void {
     $exceptions->render(function (InvalidSignatureException $e) {
         return response()->view('errors.link-expired', status: 403);
     });
@@ -328,7 +328,7 @@ class SetDefaultLocaleForUrls
 URLのデフォルト値を設定すると、Laravelの暗黙のモデル結合の処理と干渉することがあります。そのため、URLのデフォルト値を設定する[ミドルウェア](/docs/{{version}}/middleware#sorting-middleware)は、Laravel自身の`SubstituteBindings`ミドルウェアよりも先に実行されるように、[優先順位を付ける]必要があります。アプリケーションの`bootstrap/app.php`ファイルにある`priority`ミドルウェアメソッドを使用することで指定できます。
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->prependToPriorityList(
         before: \Illuminate\Routing\Middleware\SubstituteBindings::class,
         prepend: \App\Http\Middleware\SetDefaultLocaleForUrls::class,

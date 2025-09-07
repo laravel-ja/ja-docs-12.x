@@ -123,7 +123,7 @@ class AfterMiddleware
 ```php
 use App\Http\Middleware\EnsureTokenIsValid;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
      $middleware->append(EnsureTokenIsValid::class);
 })
 ```
@@ -136,7 +136,7 @@ use App\Http\Middleware\EnsureTokenIsValid;
 Laravelのグローバルミドルウェアスタックを手作業で管理したい場合は、`use`メソッドへLaravelのデフォルトのグローバルミドルウェアスタックを指定します。その後、必要に応じてデフォルトのミドルウェアスタックを調整してください。
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->use([
         \Illuminate\Foundation\Http\Middleware\InvokeDeferredCallbacks::class,
         // \Illuminate\Http\Middleware\TrustHosts::class,
@@ -213,7 +213,7 @@ Route::withoutMiddleware([EnsureTokenIsValid::class])->group(function () {
 use App\Http\Middleware\First;
 use App\Http\Middleware\Second;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->appendToGroup('group-name', [
         First::class,
         Second::class,
@@ -270,7 +270,7 @@ Laravelには定義済みの`web`ミドルウェアグループと`api`ミドル
 use App\Http\Middleware\EnsureTokenIsValid;
 use App\Http\Middleware\EnsureUserIsSubscribed;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->web(append: [
         EnsureUserIsSubscribed::class,
     ]);
@@ -306,7 +306,7 @@ $middleware->web(remove: [
 Laravelのデフォルトの`web`ミドルウェアグループと`api`ミドルウェアグループ内のすべてのミドルウェアを手作業で管理したい場合は、グループを完全に再定義してください。以下の例は、`web`ミドルウェアグループと`api`ミドルウェアグループをデフォルトのミドルウェアで定義し、必要に応じてカスタマイズできるようにしています。
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->group('web', [
         \Illuminate\Cookie\Middleware\EncryptCookies::class,
         \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
@@ -336,7 +336,7 @@ Laravelのデフォルトの`web`ミドルウェアグループと`api`ミドル
 ```php
 use App\Http\Middleware\EnsureUserIsSubscribed;
 
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->alias([
         'subscribed' => EnsureUserIsSubscribed::class
     ]);
@@ -378,7 +378,7 @@ Route::get('/profile', function () {
 まれに、ミドルウェアを特定の順番で実行する必要があるけれども、ルート指定時に順番を制御できないことがあります。このような状況では、アプリケーションの `bootstrap/app.php`ファイルで、`priority`メソッドを使用して、ミドルウェアの優先順位を指定してください。
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->priority([
         \Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests::class,
         \Illuminate\Cookie\Middleware\EncryptCookies::class,

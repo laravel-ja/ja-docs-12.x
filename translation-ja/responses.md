@@ -172,7 +172,7 @@ Cookie::expire('name');
 デフォルトではありがたいことに、`Illuminate\Cookie\Middleware\EncryptCookies`ミドルウェアのおかげで、Laravelが生成したすべてのクッキーは暗号化され、クライアントによって変更されたり読み取られたりしないように署名を付けます。アプリケーションが生成したクッキーのサブセットの暗号化を無効にしたい場合は、アプリケーションの`bootstrap/app.php`ファイルで、`encryptCookies`メソッドを使用してください。
 
 ```php
-->withMiddleware(function (Middleware $middleware) {
+->withMiddleware(function (Middleware $middleware): void {
     $middleware->encryptCookies(except: [
         'cookie_name',
     ]);
