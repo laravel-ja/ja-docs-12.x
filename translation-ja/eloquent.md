@@ -1473,7 +1473,7 @@ User::withoutGlobalScope(AncientScope::class)->get();
 User::withoutGlobalScope('ancient')->get();
 ```
 
-クエリのグローバルスコープのいくつか、またはすべてを削除したい場合は、`withoutGlobalScopes`メソッドを使用できます。
+クエリのグローバルスコープのいくつか、またはすべてを削除したい場合は、`withoutGlobalScopes`と`withoutGlobalScopesExcept`メソッドを使用できます。
 
 ```php
 // 全グローバルスコープを削除
@@ -1482,6 +1482,11 @@ User::withoutGlobalScopes()->get();
 // いくつかのグローバルスコープを削除
 User::withoutGlobalScopes([
     FirstScope::class, SecondScope::class
+])->get();
+
+// 指定したものを除いて、他全てのグローバルスコープを削除
+User::withoutGlobalScopesExcept([
+    SecondScope::class,
 ])->get();
 ```
 

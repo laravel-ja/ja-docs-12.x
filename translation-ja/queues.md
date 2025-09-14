@@ -307,7 +307,10 @@ class ProcessPodcast implements ShouldQueue
 ### 一意なジョブ
 
 > [!WARNING]
-> 一意なジョブには、[ロック](/docs/{{version}}/cache#atomic-locks)をサポートするキャッシュドライバが必要です。現在、`memcached`、`redis`、`dynamodb`、`database`、`file`、`array`キャッシュドライバはアトミックロックをサポートしています。また、一意なジョブの制約は、バッチ内のジョブには適用されません。
+> 一意なジョブには、[ロック](/docs/{{version}}/cache#atomic-locks)をサポートするキャッシュドライバが必要です。現在、`memcached`、`redis`、`dynamodb`、`database`、`file`、`array`キャッシュドライバはアトミックロックをサポートしています。
+
+> [!WARNING]
+> 一意なジョブの制約は、バッチ内のジョブには適用できません。
 
 特定のジョブの１つのインスタンスのみを確実にキューで常に存在させたい場合があります。これを行うには、ジョブクラスに`ShouldBeUnique`インターフェイスを実装します。このインターフェイスでは、クラスへ追加のメソッドを定義する必要はありません。
 
