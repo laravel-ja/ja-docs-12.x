@@ -9,6 +9,7 @@
     - [データの一時保存](#flash-data)
     - [データの削除](#deleting-data)
     - [セッションIDの再生成](#regenerating-the-session-id)
+- [セッションキャッシュ](#session-cache)
 - [セッションブロッキング](#session-blocking)
 - [カスタムセッションドライバの追加](#adding-custom-session-drivers)
     - [ドライバの実装](#implementing-the-driver)
@@ -276,6 +277,25 @@ $request->session()->regenerate();
 ```php
 $request->session()->invalidate();
 ```
+
+<a name="session-cache"></a>
+## セッションキャッシュ
+
+Laravelのセッションキャッシュは、個々のユーザーセッションでスコープしたデータをキャッシュする便利な方法を提供します。グローバルなアプリケーションキャッシュとは異なり、セッションキャッシュのデータはセッションごとに自動的に分離され、セッションが期限切れになったり破棄されたりするとクリーンアップします。セッションキャッシュは、`get`、`put`、`remember`、`forget`など、おなじみの[Laravelキャッシュメソッド](/docs/{{version}}/cache)をすべてサポートしますが、これらは現在のセッションにスコープされます。
+
+セッションキャッシュは、同じセッション内で複数のリクエストにまたがって保持したいが永続的に保存する必要のない、一時的なユーザー固有データの保存に最適です。これには、フォームデータ、一時的な計算結果、APIレスポンス、特定のユーザーのセッションに関連付けるべきその他の一時的なデータなどが含まれます。
+
+セッションキャッシュには、セッションオブジェクトの`cache`メソッドを通じてアクセスできます。
+
+```php
+$discount = $request->session()->cache()->get('discount');
+
+$request->session()->cache()->put(
+    'discount', 10, now()->addMinutes(5)
+);
+```
+
+Laravelのキャッシュメソッドに関する詳細情報は、[キャッシュのドキュメント](/docs/{{version}}/cache)を参照してください。
 
 <a name="session-blocking"></a>
 ## セッションブロッキング

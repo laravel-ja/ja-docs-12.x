@@ -10,6 +10,7 @@
     - [キャッシュからのアイテム削除](#removing-items-from-the-cache)
     - [キャッシュのメモ](#cache-memoization)
     - [キャッシュヘルパ](#the-cache-helper)
+- [キャッシュタグ](#cache-tags)
 - [アトミックロック](#atomic-locks)
     - [ロック管理](#managing-locks)
     - [プロセス間でのロック管理](#managing-locks-across-processes)
@@ -397,6 +398,42 @@ cache()->remember('users', $seconds, function () {
 
 > [!NOTE]
 > グローバルな`cache`関数の呼び出しをテストするときは、[ファサードをテストする](/docs/{{version}}/mocking#mocking-facades)のように`Cache::shouldReceive`メソッドを使用できます。
+
+<a name="cache-tags"></a>
+## キャッシュタグ
+
+> [!WARNING]
+> `file`、`dynamodb`、`database`キャッシュドライバを使用する場合、キャッシュタグはサポートしていません。
+
+<a name="storing-tagged-cache-items"></a>
+### タグ付きキャッシュ項目の保存
+
+キャッシュタグを使用すると、キャッシュ内の関連項目にタグを付け、特定のタグが割り当てられたすべてのキャッシュ値を一括で消去できます。タグ付きキャッシュには、タグ名順の配列を渡すことでアクセスできます。一例として、タグ付きキャッシュにアクセスして値を`put`してみましょう。
+
+    use Illuminate\Support\Facades\Cache;
+
+    Cache::tags(['people', 'artists'])->put('John', $john, $seconds);
+    Cache::tags(['people', 'authors'])->put('Anne', $anne, $seconds);
+
+<a name="accessing-tagged-cache-items"></a>
+### タグ付きキャッシュ項目のアクセス
+
+タグ経由で保存した項目は、値の保存に使用したタグを指定せずにアクセスすることはできません。タグ付きキャッシュ項目を取得するには、`tags`メソッドに同じ順序のタグリストを渡した後、取得したいキーで`get`メソッドを呼び出します。
+
+    $john = Cache::tags(['people', 'artists'])->get('John');
+
+    $anne = Cache::tags(['people', 'authors'])->get('Anne');
+
+<a name="removing-tagged-cache-items"></a>
+### タグ付きキャッシュ項目の削除
+
+タグまたはタグのリストが割り当てられたすべての項目を消去できます。たとえば、次のコードは `people`、`authors`、またはその両方のタグが付いたすべてのキャッシュを削除します。したがって、`Anne`と`John`の両方をキャッシュから削除します。
+
+    Cache::tags(['people', 'authors'])->flush();
+
+上記と比べ、以下のコードでは`authors`タグが付いたキャッシュ値のみを削除するため、`Anne`は削除されますが、`John`は削除されません。
+
+    Cache::tags('authors')->flush();
 
 <a name="atomic-locks"></a>
 ## アトミックロック

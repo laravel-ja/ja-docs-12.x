@@ -3745,25 +3745,25 @@ $filtered->all();
 */
 ```
 
-`where`メソッドはアイテム値の確認を「緩く」比較します。つまり、同じ値の文字列と整数値は、同値と判断します。「厳格」な比較でフィルタリングしたい場合は、[whereStrict](#method-wherestrict)メソッドを使ってください。
+`where`メソッドはアイテム値の確認を「緩く」比較します。つまり、同じ値の文字列と整数値は、同値と判断します。「厳格」な比較でフィルタリングしたい場合は、[whereStrict](#method-wherestrict)メソッドを使ってください。もしくは、`null`値をフィルタリングする[whereNull](#method-wherenull)か、[whereNotNull](#method-wherenotnull)メソッドを使用します。
 
 第２引数に比較演算子をオプションとして渡すこともできます。サポートしている演算子は、'==='、'!=='、'!='、'=='、'='、'<>'、'>'、'<'、'>='、'<='です。
 
 ```php
 $collection = collect([
-    ['name' => 'Jim', 'deleted_at' => '2019-01-01 00:00:00'],
-    ['name' => 'Sally', 'deleted_at' => '2019-01-02 00:00:00'],
-    ['name' => 'Sue', 'deleted_at' => null],
+    ['name' => 'Jim', 'platform' => 'Mac'],
+    ['name' => 'Sally', 'platform' => 'Mac'],
+    ['name' => 'Sue', 'platform' => 'Linux'],
 ]);
 
-$filtered = $collection->where('deleted_at', '!=', null);
+$filtered = $collection->where('platform', '!=', 'Linux');
 
 $filtered->all();
 
 /*
     [
-        ['name' => 'Jim', 'deleted_at' => '2019-01-01 00:00:00'],
-        ['name' => 'Sally', 'deleted_at' => '2019-01-02 00:00:00'],
+        ['name' => 'Jim', 'platform' => 'Mac'],
+        ['name' => 'Sally', 'platform' => 'Mac'],
     ]
 */
 ```
@@ -3922,6 +3922,8 @@ $collection = collect([
     ['name' => 'Desk'],
     ['name' => null],
     ['name' => 'Bookcase'],
+    ['name' => 0],
+    ['name' => ''],
 ]);
 
 $filtered = $collection->whereNotNull('name');
@@ -3932,6 +3934,8 @@ $filtered->all();
     [
         ['name' => 'Desk'],
         ['name' => 'Bookcase'],
+        ['name' => 0],
+        ['name' => ''],
     ]
 */
 ```
@@ -3946,6 +3950,8 @@ $collection = collect([
     ['name' => 'Desk'],
     ['name' => null],
     ['name' => 'Bookcase'],
+    ['name' => 0],
+    ['name' => ''],
 ]);
 
 $filtered = $collection->whereNull('name');

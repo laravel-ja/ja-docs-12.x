@@ -319,12 +319,14 @@ $users = User::factory()
     ->create();
 ```
 
-シーケンスクロージャ内では，クロージャへ注入されるシーケンスインスタンスの`$index`または`$count`プロパティにアクセスできます。`$index`プロパティには、これまでに行われたシーケンスの反復回数が格納され、`$count`プロパティには、シーケンスが起動された合計回数が格納されます。
+シーケンスクロージャ内では，クロージャへ注入されるシーケンスインスタンスの`$index`プロパティにアクセスできます。`$index`プロパティには、これまでに行われたシーケンスの反復回数が格納されます。
 
 ```php
 $users = User::factory()
     ->count(10)
-    ->sequence(fn (Sequence $sequence) => ['name' => 'Name '.$sequence->index])
+    ->state(new Sequence(
+        fn (Sequence $sequence) => ['name' => 'Name '.$sequence->index],
+    ))
     ->create();
 ```
 
