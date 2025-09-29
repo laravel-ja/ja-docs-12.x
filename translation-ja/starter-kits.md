@@ -10,6 +10,7 @@
     - [React](#react-customization)
     - [Vue](#vue-customization)
     - [Livewire](#livewire-customization)
+- [2要素認証](#two-factor-authentication)
 - [WorkOS AuthKit認証](#workos)
 - [Inertia SSR](#inertia-ssr)
 - [コミュニティが保守するスターターキット](#community-maintained-starter-kits)
@@ -267,6 +268,20 @@ Livewireスターターキットに含まれている、ログインページや
 <x-layouts.auth.split>
     {{ $slot }}
 </x-layouts.auth.split>
+```
+
+<a name="two-factor-authentication"></a>
+## 2要素認証
+
+すべてのスターターキットには、[Laravel Fortify](/docs/{{version}}/fortify#two-factor-authentication)による組み込みの２要素認証（2FA）が含まれており、ユーザーアカウントへ追加のセキュリティ層を提供します。ユーザーは、認証アプリをサポートする任意のタイムベースワンタイムパスワード（TOTP）を使用してアカウントを保護できます。
+
+二要素認証はデフォルトで有効化しており、[Fortify](/docs/{{version}}/fortify#two-factor-authentication)が提供しているすべてのオプションをサポートします。
+
+```php
+Features::twoFactorAuthentication([
+    'confirm' => true,
+    'confirmPassword' => true,
+]);
 ```
 
 <a name="workos"></a>

@@ -1,6 +1,6 @@
 # Laravel MCP
 
-- [はじめに](#introduction)
+- [イントロダクション](#introduction)
 - [インストール](#installation)
     - [ルートの公開](#publishing-routes)
 - [サーバの作成](#creating-servers)
@@ -34,18 +34,18 @@
     - [Sanctum](#sanctum)
 - [認可](#authorization)
 - [サーバのテスト](#testing-servers)
-    - [MCP Inspector](#mcp-inspector)
+    - [MCPインスペクタ](#mcp-inspector)
     - [ユニットテスト](#unit-tests)
 
 <a name="introduction"></a>
-## はじめに
+## イントロダクション
 
-[Laravel MCP](https://github.com/laravel/mcp)は、[Model Context Protocol](https://modelcontextprotocol.io/docs/getting-started/intro)を介してAIクライアントがLaravelアプリケーションと対話するための、シンプルでエレガントな方法を提供します。アプリケーションとのAIによる対話を可能にするサーバ、ツール、リソース、プロンプトを定義するための、表現力豊かで流れるようなインターフェイスを提供します。
+[Laravel MCP](https://github.com/laravel/mcp)は、[Model Context Protocol](https://modelcontextprotocol.io/docs/getting-started/intro)を介してAIクライアントがLaravelアプリケーションと対話するための、シンプルでエレガントな方法を提供します。アプリケーションとのAIによる対話を可能にするサーバ、ツール、リソース、プロンプトを定義するための、表現力豊かで読み書きしやすいインターフェイスを提供します。
 
 <a name="installation"></a>
 ## インストール
 
-始めるには、Composerパッケージマネージャを使い、プロジェクトにLaravel MCPをインストールしてください:
+使い始めるには、Composerパッケージマネージャを使い、プロジェクトへLaravel MCPをインストールしてください。
 
 ```shell
 composer require laravel/mcp
@@ -54,7 +54,7 @@ composer require laravel/mcp
 <a name="publishing-routes"></a>
 ### ルートの公開
 
-Laravel MCPをインストールした後、`vendor:publish` Artisanコマンドを実行して、MCPサーバを定義する`routes/ai.php`ファイルを公開してください:
+Laravel MCPをインストールした後、`vendor:publish` Artisanコマンドを実行して、MCPサーバを定義する`routes/ai.php`ファイルを公開してください。
 
 ```shell
 php artisan vendor:publish --tag=ai-routes
@@ -65,13 +65,13 @@ php artisan vendor:publish --tag=ai-routes
 <a name="creating-servers"></a>
 ## サーバの作成
 
-`make:mcp-server` Artisanコマンドを使用してMCPサーバを作成できます。サーバは、ツール、リソース、プロンプトのようなMCP機能をAIクライアントに公開する中心的な通信ポイントとして機能します:
+`make:mcp-server` Artisanコマンドを使用してMCPサーバを作成できます。サーバは、ツール、リソース、プロンプトのようなMCP機能をAIクライアントに公開する中心的な通信ポイントとして機能します。
 
 ```shell
 php artisan make:mcp-server WeatherServer
 ```
 
-このコマンドは`app/Mcp/Servers`ディレクトリに新しいサーバクラスを作成します。生成されたサービスクラスは、Laravel MCPのベースである`Laravel\Mcp\Server`クラスを拡張し、ツール、リソース、プロンプトを登録するためのプロパティを提供します:
+このコマンドは`app/Mcp/Servers`ディレクトリに新しいサーバクラスを作成します。生成したサービスクラスは、Laravel MCPのベースである`Laravel\Mcp\Server`クラスを拡張し、ツール、リソース、プロンプトを登録するためのプロパティを提供しています。
 
 ```php
 <?php
@@ -162,7 +162,7 @@ use Laravel\Mcp\Facades\Mcp;
 Mcp::local('weather', WeatherServer::class);
 ```
 
-登録後は、通常、`mcp:start` Artisanコマンドを手作業で実行する必要はありません。代わりに、MCPクライアント(AIエージェント)を設定してサーバを起動するか、[MCP Inspector](#mcp-inspector)を使用してください。
+登録後は、通常、`mcp:start` Artisanコマンドを手作業で実行する必要はありません。代わりに、MCPクライアント(AIエージェント)を設定してサーバを起動するか、[MCPインスペクタ](#mcp-inspector)を使用してください。
 
 <a name="tools"></a>
 ## ツール
@@ -312,7 +312,8 @@ class CurrentWeatherTool extends Tool
                 ->description('The location to get the weather for.')
                 ->required(),
 
-            'units' => $schema->enum(['celsius', 'fahrenheit'])
+            'units' => $schema->array()
+                ->enum(['celsius', 'fahrenheit'])
                 ->description('The temperature units to use.')
                 ->default('celsius'),
         ];
@@ -1227,12 +1228,12 @@ public function handle(Request $request): Response
 <a name="testing-servers"></a>
 ## サーバのテスト
 
-組み込みの MCP Inspector を使用するか、ユニットテストを書くことで MCP サーバをテストできます。
+組み込みの MCPインスペクタ を使用するか、ユニットテストを書くことで MCP サーバをテストできます。
 
 <a name="mcp-inspector"></a>
-### MCP Inspector
+### MCPインスペクタ
 
-[MCP Inspector](https://modelcontextprotocol.io/docs/tools/inspector) は、MCP サーバをテストおよびデバッグするためのインタラクティブなツールです。これを使用してサーバに接続し、認証を確認し、ツール、リソース、プロンプトを試すことができます。
+[MCPインスペクタ](https://modelcontextprotocol.io/docs/tools/inspector) は、MCP サーバをテストおよびデバッグするためのインタラクティブなツールです。これを使用してサーバに接続し、認証を確認し、ツール、リソース、プロンプトを試すことができます。
 
 登録されたサーバに対してインスペクターを実行できます。
 

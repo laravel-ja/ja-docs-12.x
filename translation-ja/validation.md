@@ -2546,7 +2546,7 @@ $validator = Validator::make($request->all(), [
 <a name="error-message-indexes-and-positions"></a>
 ### エラーメッセージインデックスとポジション
 
-配列のバリデーションを行うとき、失敗した特定項目のインデックスや位置をアプリケーションのエラーメッセージから参照したいことがあります。これを行うには、[カスタムバリデーションメッセージ](#manual-customizing-the-error-messages)へ、`:index`（０始点）と`:position`（１始点）のプレースホルダを使ってください。
+配列のバリデーションを行うとき、失敗した特定項目のインデックスや位置をアプリケーションのエラーメッセージから参照したいことがあります。これを行うには、[カスタムバリデーションメッセージ](#manual-customizing-the-error-messages)へ、`:index`（０始点）、`:position`（１始点）、`:ordinal-position` (`1st`始点)のプレースホルダを使ってください。
 
 ```php
 use Illuminate\Support\Facades\Validator;
