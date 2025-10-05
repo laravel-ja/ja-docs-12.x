@@ -1697,3 +1697,22 @@ channel().notification((notification) => {
 ```
 
 この例では`broadcast`チャネル経由で`App\Models\User`インスタンスへ送信されたすべての通知をコールバックが受信しています。`App.Models.User.{id}`チャネルのチャネル認可コールバックは、アプリケーションの`routes/channels.php`ファイルに含まれます。
+
+<a name="stop-listening-for-notifications"></a>
+#### 通知のリッスン停止
+
+[チャンネルを離れずに](#leaving-a-channel)、通知のリッスンを停止したい場合は、`stopListeningForNotification`メソッドを使用します。
+
+```js
+const callback = (notification) => {
+    console.log(notification.type);
+}
+
+// リッスン開始
+Echo.private(`App.Models.User.${userId}`)
+    .notification(callback);
+
+// リッスン停止（同じコールバックが必要）
+Echo.private(`App.Models.User.${userId}`)
+    .stopListeningForNotification(callback);
+```

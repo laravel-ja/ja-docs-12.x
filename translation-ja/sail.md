@@ -36,7 +36,7 @@
 
 [Laravel Sail](https://github.com/laravel/sail)（セイル、帆、帆船）は、LaravelのデフォルトのDocker開発環境を操作するための軽量コマンドラインインターフェイスです。 Sailは、Dockerの経験がなくても、PHP、MySQL、Redisを使用してLaravelアプリケーションを構築するための優れた出発点を提供します。
 
-Sailの本質は、`docker-compose.yml`ファイルとプロジェクトのルートに保存されている`sail`スクリプトです。`sail`スクリプトは、`docker-compose.yml`ファイルで定義されたDockerコンテナを操作するための便利なメソッドをCLIで提供します。
+Sailの本質は、`compose.yaml`ファイルとプロジェクトのルートに保存されている`sail`スクリプトです。`sail`スクリプトは、`compose.yaml`ファイルで定義されたDockerコンテナを操作するための便利なメソッドをCLIで提供します。
 
 Laravel Sailは、macOS、Linux、Windows（[WSL2](https://docs.microsoft.com/en-us/windows/wsl/about)を使用）に対応しています。
 
@@ -54,7 +54,7 @@ Laravel Sailは、すべての新しいLaravelアプリケーションに自動�
 composer require laravel/sail --dev
 ```
 
-Sailをインストールしたら、`sail:install` Artisanコマンドを実行します。このコマンドはSailの`docker-compose.yml`ファイルをアプリケーションのルートに発行し、`.env`ファイル中でDockerサービスに接続するために必要な環境変数を変更します：
+Sailをインストールしたら、`sail:install` Artisanコマンドを実行します。このコマンドはSailの`compose.yaml`ファイルをアプリケーションのルートに発行し、`.env`ファイル中でDockerサービスに接続するために必要な環境変数を変更します：
 
 ```shell
 php artisan sail:install
@@ -126,9 +126,9 @@ sail up
 <a name="starting-and-stopping-sail"></a>
 ## Sailの開始と停止
 
-Laravel Sailの`docker-compose.yml`ファイルは、Laravelアプリケーションの構築を支援するために連携するさまざまなDockerコンテナを定義します。これらの各コンテナは、`docker-compose.yml`ファイルの`services`設定内のエントリです。`laravel.test`コンテナは、アプリケーションを提供するメインのアプリケーションコンテナです。
+Laravel Sailの`compose.yaml`ファイルは、Laravelアプリケーションの構築を支援するために連携するさまざまなDockerコンテナを定義します。これらの各コンテナは、`compose.yaml`ファイルの`services`設定内のエントリです。`laravel.test`コンテナは、アプリケーションを提供するメインのアプリケーションコンテナです。
 
-Sailを開始する前に、ローカルコンピューターで他のWebサーバまたはデータベースが実行されていないことを確認する必要があります。アプリケーションの`docker-compose.yml`ファイルで定義されているすべてのDockerコンテナを起動するには、`up`コマンドを実行する必要があります。
+Sailを開始する前に、ローカルコンピューターで他のWebサーバまたはデータベースが実行されていないことを確認する必要があります。アプリケーションの`compose.yaml`ファイルで定義されているすべてのDockerコンテナを起動するには、`up`コマンドを実行する必要があります。
 
 ```shell
 sail up
@@ -215,7 +215,7 @@ sail yarn
 <a name="mysql"></a>
 ### MySQL
 
-お気づきかもしれませんが、アプリケーションの`docker-compose.yml`ファイルには、MySQLコンテナのエントリが含まれています。このコンテナは[Dockerボリューム](https://docs.docker.com/storage/volumes/)を使用しているため、コンテナを停止して再起動しても、データベースに保存されているデータは保持されます。
+お気づきかもしれませんが、アプリケーションの`compose.yaml`ファイルには、MySQLコンテナのエントリが含まれています。このコンテナは[Dockerボリューム](https://docs.docker.com/storage/volumes/)を使用しているため、コンテナを停止して再起動しても、データベースに保存されているデータは保持されます。
 
 さらに、MySQLコンテナの初回起動時に、２つのデータベースが作成されます。最初のデータベースは、環境変数`DB_DATABASE`の値で命名され、ローカル開発用に使用するものです。もうひとつは、`testing`という名前のテスト専用データベースで、テストが開発データに干渉しないようにするためのものです。
 
@@ -226,7 +226,7 @@ sail yarn
 <a name="mongodb"></a>
 ### MongoDB
 
-Sailのインストール時に、[MongoDB](https://www.mongodb.com/)サービスのインストールを選択した場合、アプリケーションの`docker-compose.yml`ファイルに[MongoDB Atlas Local](https://www.mongodb.com/docs/atlas/cli/current/atlas-cli-local-cloud/)コンテナのエントリが含まれます。このコンテナはMongoDBドキュメントデータベースと[検索インデックス](https://www.mongodb.com/docs/atlas/atlas-search/)など、Atlas機能を提供します。このコンテナは[Dockerボリューム](https://docs.docker.com/storage/volumes/)を使うため、コンテナを停止したり再起動したりしても、データベースに保存したデータは保持されます。
+Sailのインストール時に、[MongoDB](https://www.mongodb.com/)サービスのインストールを選択した場合、アプリケーションの`compose.yaml`ファイルに[MongoDB Atlas Local](https://www.mongodb.com/docs/atlas/cli/current/atlas-cli-local-cloud/)コンテナのエントリが含まれます。このコンテナはMongoDBドキュメントデータベースと[検索インデックス](https://www.mongodb.com/docs/atlas/atlas-search/)など、Atlas機能を提供します。このコンテナは[Dockerボリューム](https://docs.docker.com/storage/volumes/)を使うため、コンテナを停止したり再起動したりしても、データベースに保存したデータは保持されます。
 
 コンテナを起動したら、アプリケーションの`.env`ファイルで、`MONGODB_URI`環境変数を`mongodb://mongodb:27017`に設定することで、アプリケーションからMongoDBインスタンスへ接続できるようになります。デフォルトで認証は無効になっていますが、`MONGODB_USERNAME`と`MONGODB_PASSWORD`環境変数を設定すれば、`mongodb`コンテナを起動する前に認証を有効にできます。次に、接続文字列に認証情報を追加してください。
 
@@ -243,28 +243,28 @@ MongoDBをアプリケーションとシームレスに統合するには、[Mon
 <a name="redis"></a>
 ### Redis
 
-アプリケーションの`docker-compose.yml`ファイルには、[Redis](https://redis.io)コンテナのエントリも含まれています。このコンテナは[Dockerボリューム](https://docs.docker.com/storage/volumes/)を使用しているため、コンテナを停止し再起動しても、Redisインスタンスに保存しているデータは保持されたままです。コンテナを起動したら、アプリケーションの`.env`ファイル内の`REDIS_HOST`環境変数を`redis`に設定することで、アプリケーション内のRedisインスタンスに接続できます。
+アプリケーションの`compose.yaml`ファイルには、[Redis](https://redis.io)コンテナのエントリも含まれています。このコンテナは[Dockerボリューム](https://docs.docker.com/storage/volumes/)を使用しているため、コンテナを停止し再起動しても、Redisインスタンスに保存しているデータは保持されたままです。コンテナを起動したら、アプリケーションの`.env`ファイル内の`REDIS_HOST`環境変数を`redis`に設定することで、アプリケーション内のRedisインスタンスに接続できます。
 
 ローカルマシンからアプリケーションのRedisデータベースに接続するには、[TablePlus](https://tableplus.com)などのグラフィカルデータベース管理アプリケーションを使用できます。デフォルトでは、Redisデータベースは`localhost`のポート6379でアクセスできます。
 
 <a name="valkey"></a>
 ### Valkey
 
-Sailのインストール時にValkeyサービスのインストールを選択した場合、アプリケーションの`docker-compose.yml`ファイルは、[Valkey](https://valkey.io/)のエントリを持ちます。このコンテナは[Docker volume](https://docs.docker.com/storage/volumes/)を使用するため、Valkeyインスタンスに保存したデータは、コンテナを停止したり再起動したりしても保持されたままです。アプリケーションの`.env`ファイルの`REDIS_HOST`環境変数を`valkey`へ設定することにより、アプリケーションからこのコンテナへ接続できます。
+Sailのインストール時にValkeyサービスのインストールを選択した場合、アプリケーションの`compose.yaml`ファイルは、[Valkey](https://valkey.io/)のエントリを持ちます。このコンテナは[Docker volume](https://docs.docker.com/storage/volumes/)を使用するため、Valkeyインスタンスに保存したデータは、コンテナを停止したり再起動したりしても保持されたままです。アプリケーションの`.env`ファイルの`REDIS_HOST`環境変数を`valkey`へ設定することにより、アプリケーションからこのコンテナへ接続できます。
 
 ローカルマシンからアプリケーションのValkeyデータベースへ接続するには、[TablePlus](https://tableplus.com)のようなグラフィカルなデータベース管理アプリケーションを使用します。Valkeyデータベースには、デフォルトで`localhost`の6379ポートからアクセスできます。
 
 <a name="meilisearch"></a>
 ### Meilisearch
 
-Sailのインストール時に[Meilisearch](https://www.meilisearch.com)サービスのインストールを選択した場合、アプリケーションの`docker-compose.yml`ファイルには[Laravel Scout](/docs/{{version}}/scout)と統合した、この強力な検索エンジンのエントリを用意してあります。コンテナを起動したら、`MEILISEARCH_HOST`環境変数を`http://meilisearch:7700`に設定し、アプリケーション内でMeilisearchインスタンスに接続できます。
+Sailのインストール時に[Meilisearch](https://www.meilisearch.com)サービスのインストールを選択した場合、アプリケーションの`compose.yaml`ファイルには[Laravel Scout](/docs/{{version}}/scout)と統合した、この強力な検索エンジンのエントリを用意してあります。コンテナを起動したら、`MEILISEARCH_HOST`環境変数を`http://meilisearch:7700`に設定し、アプリケーション内でMeilisearchインスタンスに接続できます。
 
 ローカルマシンから、Webブラウザの`http://localhost:7700`に移動して、MeilisearchのWebベース管理パネルへアクセスできます。
 
 <a name="typesense"></a>
 ### Typesense
 
-Sailインストール時に、[Typesense](https://typesense.org)サービスのインストールを選択した場合、これとネイティブに統合済みで、光のように速いオープンソース検索エンジンである[Laravel Scout](/docs/{{version}}/scout#typesense)のエントリが含まれます。コンテナを起動したら、以下の環境変数を設定することで、アプリケーション内からTypesenseインスタンスへ接続できます。
+Sailインストール時に、[Typesense](https://typesense.org)サービスのインストールを選択した場合、アプリケーションの`compose.yaml`ファイルには、ネイティブに統合済みで、光のように速いオープンソース検索エンジンである[Laravel Scout](/docs/{{version}}/scout#typesense)のエントリが含まれます。コンテナを起動したら、以下の環境変数を設定することで、アプリケーション内からTypesenseインスタンスへ接続できます。
 
 ```ini
 TYPESENSE_HOST=typesense
@@ -278,7 +278,7 @@ TYPESENSE_API_KEY=xyz
 <a name="file-storage"></a>
 ## ファイルストレージ
 
-本番環境でアプリケーションを実行する際に、Amazon S3を使用してファイルを保存する予定であれば、Sailをインストールする際に[MinIO](https://min.io)サービスをインストールするとよいでしょう。MinIOはS3互換のAPIを提供しており、本番のS3環境で「テスト」ストレージバケットを作成せずに、Laravelの`s3`ファイルストレージドライバを使ってローカルに開発するために使用できます。Sailのインストール時にMinIOのインストールを選択すると、アプリケーションの`docker-compose.yml`ファイルにMinIOの設定セクションが追加されます。
+本番環境でアプリケーションを実行する際に、Amazon S3を使用してファイルを保存する予定であれば、Sailをインストールする際に[MinIO](https://min.io)サービスをインストールするとよいでしょう。MinIOはS3互換のAPIを提供しており、本番のS3環境で「テスト」ストレージバケットを作成せずに、Laravelの`s3`ファイルストレージドライバを使ってローカルに開発するために使用できます。Sailのインストール時にMinIOのインストールを選択すると、アプリケーションの`compose.yaml`ファイルにMinIOの設定セクションが追加されます。
 
 アプリケーションのデフォルト`filesystems`設定ファイルには、`s3`ディスクのディスク設定がすでに含まれています。このディスクを使ってAmazon S3と連携するだけでなく、その構成を制御する関連環境変数を変更するだけで、MinIOなどのS3互換のファイルストレージサービスと連携することができます。例えば、MinIOを使用する場合、ファイルシステムの環境変数の設定は次のように定義します。
 
@@ -329,7 +329,7 @@ sail artisan test
 <a name="laravel-dusk"></a>
 ### Laravel Dusk
 
-[Laravel Dusk](/docs/{{version}}/dusk)は、表現力豊かで使いやすいブラウザ自動化およびテストのAPIを提供します。Sailのおかげで、Seleniumやその他のツールをローカルコンピューターにインストールしなくても、これらのテストを実行できます。使い始めるには、アプリケーションの`docker-compose.yml`ファイルでSeleniumサービスのコメントを解除します。
+[Laravel Dusk](/docs/{{version}}/dusk)は、表現力豊かで使いやすいブラウザ自動化およびテストのAPIを提供します。Sailのおかげで、Seleniumやその他のツールをローカルコンピューターにインストールしなくても、これらのテストを実行できます。使い始めるには、アプリケーションの`compose.yaml`ファイルでSeleniumサービスのコメントを解除します。
 
 ```yaml
 selenium:
@@ -342,7 +342,7 @@ selenium:
         - sail
 ```
 
-次に、アプリケーションの`docker-compose.yml`ファイルの`laravel.test`サービスに`selenium`の`depends_on`エントリがあることを確認します。
+次に、アプリケーションの`compose.yaml`ファイルの`laravel.test`サービスに`selenium`の`depends_on`エントリがあることを確認します。
 
 ```yaml
 depends_on:
@@ -376,7 +376,7 @@ selenium:
 <a name="previewing-emails"></a>
 ## メールのプレビュー
 
-Laravel Sailのデフォルトの`docker-compose.yml`ファイルは、[Mailpit](https://github.com/axllent/mailpit)のサービスエントリを含んでいます。Mailpitは、ローカル開発中にアプリケーションが送信したメールを傍受し、ブラウザでメールメッセージをプレビューできるように、便利なWebインタフェースを提供します。Sailを使用している場合、Mailpitのデフォルトのホストは、`mailpit`で、ポート1025経由で利用可能です。
+Laravel Sailのデフォルトの`compose.yaml`ファイルは、[Mailpit](https://github.com/axllent/mailpit)のサービスエントリを含んでいます。Mailpitは、ローカル開発中にアプリケーションが送信したメールを傍受し、ブラウザでメールメッセージをプレビューできるように、便利なWebインタフェースを提供します。Sailを使用している場合、Mailpitのデフォルトのホストは、`mailpit`で、ポート1025経由で利用可能です。
 
 ```ini
 MAIL_HOST=mailpit
@@ -406,7 +406,7 @@ sail tinker
 <a name="sail-php-versions"></a>
 ## PHPバージョン
 
-Sailは現在、PHP8.4、PHP8.3、PHP8.2、PHP8.1、PHP8.0を利用したアプリケーションの実行をサポートしています。SailのデフォルトPHPバージョンは8.4です。アプリケーションの実行に使用するPHPバージョンを変更するには、アプリケーションの`docker-compose.yml`ファイル内の`laravel.test`コンテナの`build`定義を更新してください。
+Sailは現在、PHP8.4、PHP8.3、PHP8.2、PHP8.1、PHP8.0を利用したアプリケーションの実行をサポートしています。SailのデフォルトPHPバージョンは8.4です。アプリケーションの実行に使用するPHPバージョンを変更するには、アプリケーションの`compose.yaml`ファイル内の`laravel.test`コンテナの`build`定義を更新してください。
 
 ```yaml
 # PHP 8.4
@@ -425,13 +425,13 @@ context: ./vendor/laravel/sail/runtimes/8.1
 context: ./vendor/laravel/sail/runtimes/8.0
 ```
 
-さらに、アプリケーションで使用するPHPのバージョンを反映するために、`image`名を更新することもできます。このオプションも、アプリケーションの`docker-compose.yml`ファイルで定義されています。
+さらに、アプリケーションで使用するPHPのバージョンを反映するために、`image`名を更新することもできます。このオプションも、アプリケーションの`compose.yaml`ファイルで定義されています。
 
 ```yaml
 image: sail-8.2/app
 ```
 
-アプリケーションの`docker-compose.yml`ファイルを更新した後、コンテナイメージを再構築する必要があります。
+アプリケーションの`compose.yaml`ファイルを更新した後、コンテナイメージを再構築する必要があります。
 
 ```shell
 sail build --no-cache
@@ -442,7 +442,7 @@ sail up
 <a name="sail-node-versions"></a>
 ## Nodeバージョン
 
-SailはデフォルトでNode22をインストールします。イメージをビルドする際にインストールするNodeバージョンを変更するには、アプリケーションの`docker-compose.yml`ファイル中の、`laravel.test`サービスの`build.args`定義を変更してください。
+SailはデフォルトでNode22をインストールします。イメージをビルドする際にインストールするNodeバージョンを変更するには、アプリケーションの`compose.yaml`ファイル中の、`laravel.test`サービスの`build.args`定義を変更してください。
 
 ```yaml
 build:
@@ -451,7 +451,7 @@ build:
         NODE_VERSION: '18'
 ```
 
-アプリケーションの`docker-compose.yml`ファイルを更新した後、コンテナイメージを再構築する必要があります。
+アプリケーションの`compose.yaml`ファイルを更新した後、コンテナイメージを再構築する必要があります。
 
 ```shell
 sail build --no-cache
@@ -511,7 +511,7 @@ sail build --no-cache
 
 内部的には `XDEBUG_CONFIG`環境変数を`client_host=host.docker.internal`として定義しているため、XdebugはMacとWindows（WSL2）で適切に設定されます。ローカルマシンがLinuxで、Docker20.10以降を使っている場合は、`host.docker.internal`が利用できるので、手作業で設定は不要です。
 
-20.10より古いバージョンのDockerでは、Linux上の`host.docker.internal`はサポートされていないため、手作業でホストIPを定義する必要があります。これを行うには、`docker-compose.yml`ファイルでカスタムネットワークを定義して、コンテナに静的IPを設定します。
+20.10より古いバージョンのDockerでは、Linux上の`host.docker.internal`はサポートされていないため、手作業でホストIPを定義する必要があります。これを行うには、`compose.yaml`ファイルでカスタムネットワークを定義して、コンテナに静的IPを設定します。
 
 ```yaml
 networks:
@@ -565,7 +565,7 @@ Sailは単なるDockerであるため、Sailに関するほぼすべてを自由
 sail artisan sail:publish
 ```
 
-このコマンドを実行すると、Laravel Sailが使用するDockerfileとその他の設定ファイルが、アプリケーションのルートディレクトリ内の`docker`ディレクトリに配置されます。Sailのインストールをカスタマイズした後、アプリケーションの `docker-compose.yml` ファイル内のアプリケーションコンテナのイメージ名を変更したいと思うことでしょう。それを行ったら、`build`コマンドを使用してアプリケーションのコンテナを再構築してください。アプリケーション・イメージに一意な名前を割り当てることは、Sailを使用して1台のマシンで複数のLaravelアプリケーションを開発する場合に特に重要です。
+このコマンドを実行すると、Laravel Sailが使用するDockerfileとその他の設定ファイルが、アプリケーションのルートディレクトリ内の`docker`ディレクトリに配置されます。Sailのインストールをカスタマイズした後、アプリケーションの `compose.yaml`ファイル内のアプリケーションコンテナのイメージ名を変更したいと思うことでしょう。これを修正したら、`build`コマンドを使用してアプリケーションのコンテナを再構築してください。アプリケーション・イメージに一意な名前を割り当てることは、Sailを使用して1台のマシンで複数のLaravelアプリケーションを開発する場合に特に重要です。
 
 ```shell
 sail build --no-cache

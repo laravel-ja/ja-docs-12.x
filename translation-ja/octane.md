@@ -258,6 +258,23 @@ php artisan octane:start
 
 Octaneはデフォルトで、ポート8000​​のサーバを起動するので、Webブラウザから`http://localhost:8000`で、アプリケーションへアクセスできます。
 
+<a name="keeping-octane-running-in-production"></a>
+#### 実行環境でのOctane継続実行
+
+Octaneアプリケーションを本番環境にデプロイする場合は、Octaneサーバが稼働し続けることを保証するため、Supervisorなどのプロセス監視ツールを使用する必要があります。Octane用のSupervisor設定ファイルのサンプルは以下のようになります。
+
+```ini
+[program:octane]
+process_name=%(program_name)s_%(process_num)02d
+command=php /home/forge/example.com/artisan octane:start --server=frankenphp --host=127.0.0.1 --port=8000
+autostart=true
+autorestart=true
+user=forge
+redirect_stderr=true
+stdout_logfile=/home/forge/example.com/storage/logs/octane.log
+stopwaitsecs=3600
+```
+
 <a name="serving-your-application-via-https"></a>
 ### HTTPSを使用するアプリケーションの提供
 

@@ -249,6 +249,7 @@ public function register(): void
 Telescopeでは、「タグ」でエントリを検索できます。多くの場合、タグは、Telescopeがエントリに自動的に追加するEloquentモデルクラス名または認証済みユーザーIDです。場合によっては、独自のカスタムタグをエントリに添付することもできます。これを実現するために、`Telescope::tag`メソッドが使用できます。`tag`メソッドはクロージャを引数に取り、タグの配列を返す必要があります。クロージャが返すタグは、Telescopeがエントリに自動的に添付するタグとマージされます。通常、`App\Providers\TelescopeServiceProvider`クラスの`register`メソッド内で`tag`メソッドを呼び出す必要があります。
 
 ```php
+use Laravel\Telescope\EntryType;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 
@@ -260,7 +261,7 @@ public function register(): void
     $this->hideSensitiveRequestDetails();
 
     Telescope::tag(function (IncomingEntry $entry) {
-        return $entry->type === 'request'
+        return $entry->type === EntryType::REQUEST
             ? ['status:'.$entry->content['response_status']]
             : [];
     });

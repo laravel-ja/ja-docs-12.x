@@ -22,7 +22,7 @@
     - [プロンプトの依存注入](#prompt-dependency-injection)
     - [条件付きプロンプト登録](#conditional-prompt-registration)
     - [プロンプトのレスポンス](#prompt-responses)
-- [リソース](#creating-resources)
+- [リソース](#resources)
     - [リソースの作成](#creating-resources)
     - [リソースURIとMIMEタイプ](#resource-uri-and-mime-type)
     - [リソースリクエスト](#resource-request)

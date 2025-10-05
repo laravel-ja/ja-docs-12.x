@@ -1470,6 +1470,67 @@ class ProcessSubscriptionRenewal implements ShouldQueue
 }
 ```
 
+<a name="fifo-listeners-mail-and-notifications"></a>
+#### FIFOリスナ／メール／通知
+
+FIFOキューを利用する際は、リスナ、メール、および通知についてもメッセージグループを定義する必要があります。あるいは、これらのオブジェクトのインスタンスをキュー投入して、非FIFOキューへディスパッチすることもできます。
+
+[キュー投入済みイベントリスナ](/docs/{{version}}/events#queued-event-listeners)のメッセージグループを定義するには、リスナ上に`messageGroup`メソッドを定義します。`deduplicationId`メソッドもオプションとして定義できます。
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\OrderShipped;
+
+class SendShipmentNotification
+{
+    // ...
+
+    /**
+     * ジョブのメッセージグループ取得
+     */
+    public function messageGroup(): string
+    {
+        return "shipments";
+    }
+
+    /**
+     * ジョブの重複IDを取得
+     */
+    public function deduplicationId(): string
+    {
+        return "shipment-notification-{$this->shipment->id}";
+    }
+}
+```
+
+FIFOキューへキュー投入する[メールメッセージ](/docs/{{version}}/mail)を送信する際は、`onGroup`メソッドを呼び出す必要があります。オプションとして`withDeduplicator`メソッドも呼び出します。
+
+```php
+use App\Mail\InvoicePaid;
+use Illuminate\Support\Facades\Mail;
+
+$invoicePaid = (new InvoicePaid($invoice))
+    ->onGroup('invoices')
+    ->withDeduplicator(fn () => 'invoices-'.$invoice->id);
+
+Mail::to($request->user())->send($invoicePaid);
+```
+
+FIFOキューへキュー投入する[通知](/docs/{{version}}/notifications)を送信する際は、`onGroup`メソッドを呼び出す必要があります。オプションとして`withDeduplicator`メソッドも呼びします。
+
+```php
+use App\Notifications\InvoicePaid;
+
+$invoicePaid = (new InvoicePaid($invoice))
+    ->onGroup('invoices')
+    ->withDeduplicator(fn () => 'invoices-'.$invoice->id);
+
+$user->notify($invoicePaid);
+```
+
 <a name="error-handling"></a>
 ### エラー処理
 
@@ -1563,10 +1624,10 @@ class SyncChatHistory implements ShouldQueue
      */
     public function handle(): void
     {
-        $user->authorize('sync-chat-history');
+        $this->user->authorize('sync-chat-history');
 
         $response = Http::throw()->get(
-            "https://chat.laravel.test/?user={$user->uuid}"
+            "https://chat.laravel.test/?user={$this->user->uuid}"
         );
 
         // ...
@@ -1883,6 +1944,16 @@ $batch = Bus::batch([
 ])->then(function (Batch $batch) {
     // すべてのジョブが正常に完了
 })->allowFailures()->dispatch();
+```
+
+`allowFailures`メソッドには、各ジョブの失敗時に実行するクロージャをオプションで指定できます。
+
+```php
+$batch = Bus::batch([
+    // ...
+])->allowFailures(function (Batch $batch, $exception) {
+    // 失敗したジョブを個別に処理…
+})->dispatch();
 ```
 
 <a name="retrying-failed-batch-jobs"></a>

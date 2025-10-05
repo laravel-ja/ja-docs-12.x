@@ -567,7 +567,6 @@ Route::get('/confirm-password', function () {
 ```php
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Redirect;
 
 Route::post('/confirm-password', function (Request $request) {
     if (! Hash::check($request->password, $request->user()->password)) {

@@ -11,6 +11,8 @@
     - [Guzzleミドルウェア](#guzzle-middleware)
     - [Guzzleオプション](#guzzle-options)
 - [同時リクエスト](#concurrent-requests)
+    - [リクエストのポーリング](#request-pooling)
+    - [リクエストのバッチ](#request-batching)
 - [マクロ](#macros)
 - [テスト](#testing)
     - [レスポンスのfake](#faking-responses)
@@ -500,6 +502,9 @@ public function boot(): void
 
 複数のHTTPリクエストを同時に実行したい場合があります。言い換えれば、複数のリクエストを順番に発行するのではなく、同時にディスパッチしたい状況です。これにより、低速なHTTP APIを操作する際のパフォーマンスが大幅に向上します。
 
+<a name="request-pooling"></a>
+### リクエストのポーリング
+
 さいわいに、`pool`メソッドを使い、これを実現できます。`pool`メソッドは、`Illuminate\Http\Client\Pool`インスタンスを受け取るクロージャを引数に取り、簡単にリクエストプールにリクエストを追加してディスパッチできます。
 
 ```php
@@ -550,6 +555,71 @@ $responses = Http::pool(fn (Pool $pool) => [
     $pool->withHeaders($headers)->get('http://laravel.test/test'),
     $pool->withHeaders($headers)->get('http://laravel.test/test'),
 ]);
+```
+
+<a name="request-batching"></a>
+### リクエストのバッチ
+
+Laravelで同時リクエストを処理するもう一つの方法は、`batch`メソッドを使用することです。`pool`メソッドと同様に、`Illuminate\Http\Client\Batch`インスタンスを受け取るクロージャを引数に取り、リクエストをディスパッチ用のリクエストプールへ簡単に追加できます。さらに、完了コールバックを定義することも可能です。
+
+```php
+use Illuminate\Http\Client\Batch;
+use Illuminate\Http\Client\RequestException;
+use Illuminate\Http\Client\Response;
+use Illuminate\Support\Facades\Http;
+
+$responses = Http::batch(fn (Batch $batch) => [
+    $batch->get('http://localhost/first'),
+    $batch->get('http://localhost/second'),
+    $batch->get('http://localhost/third'),
+])->before(function (Batch $batch) {
+    // バッチは生成済みだが、まだどのリクエストも初期化されていない
+})->progress(function (Batch $batch, int|string $key, Response $response) {
+    // 個別のリクエストが成功裏に完了した
+})->then(function (Batch $batch, array $results) {
+    // すべてのリクエストが成功裏に完了した
+})->catch(function (Batch $batch, int|string $key, Response|RequestException $response) {
+    // 最初にバッチリクエストの失敗を認識した
+})->finally(function (Batch $batch, array $results) {
+    // バッチの実行を終了した
+})->send();
+```
+
+`pool`メソッドと同様に、`as`メソッドを使用してリクエストに名前をつけられます。
+
+```php
+$responses = Http::batch(fn (Batch $batch) => [
+    $batch->as('first')->get('http://localhost/first'),
+    $batch->as('second')->get('http://localhost/second'),
+    $batch->as('third')->get('http://localhost/third'),
+])->send();
+```
+
+`send`メソッドを呼び出して`batch`を開始した後は、新しいリクエストを追加できません。追加しようとすると、`Illuminate\Http\Client\BatchInProgressException`例外をなげます。
+
+<a name="inspecting-batches"></a>
+#### バッチの調査
+
+バッチ完了コールバックへ渡す、`Illuminate\Http\Client\Batch`インスタンスには、特定のバッチのリクエストを操作したり検査したりするのに役立つ様々なプロパティとメソッドを用意しています。
+
+```php
+// このバッチに結びつけられたリクエスト数
+$batch->totalRequests;
+
+// まだ処理されていないリクエスト数
+$batch->pendingRequests;
+
+// 失敗したリクエスト数
+$batch->failedRequests;
+
+// これまでに処理したリクエスト数
+$batch->processedRequests();
+
+// バッチの実行を完了したかを示す
+$batch->finished();
+
+// バッチで失敗したリクエストがあったかを示す
+$batch->hasFailures();
 ```
 
 <a name="macros"></a>

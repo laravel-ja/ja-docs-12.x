@@ -505,7 +505,7 @@ $user = User::factory()
 ```php
 $roles = Role::factory()->count(3)->create();
 
-$user = User::factory()
+$users = User::factory()
     ->count(3)
     ->hasAttached($roles, ['active' => true])
     ->create();
@@ -555,7 +555,7 @@ $comments = Comment::factory()->count(3)->for(
 use App\Models\Tag;
 use App\Models\Video;
 
-$videos = Video::factory()
+$video = Video::factory()
     ->hasAttached(
         Tag::factory()->count(3),
         ['public' => true]
@@ -566,7 +566,7 @@ $videos = Video::factory()
 もちろん、`has`マジックメソッドを使用して、ポリモーフィックな「多対多」リレーションを作成することもできます。
 
 ```php
-$videos = Video::factory()
+$video = Video::factory()
     ->hasTags(3, ['public' => true])
     ->create();
 ```

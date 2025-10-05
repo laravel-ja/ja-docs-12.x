@@ -945,6 +945,29 @@ RateLimiter::for('uploads', function (Request $request) {
 });
 ```
 
+<a name="response-base-rate-limiting"></a>
+#### レスポンスベースのレート制限
+
+Laravelでは受信リクエストのレート制限に加え、`after`メソッドを使用してレスポンスに基づくレート制限も可能です。これは、バリデーションエラー、404レスポンス、その他の指定HTTPステータスコードなど、特定のレスポンスのみをレート制限の対象としてカウントしたい場合に有用です。
+
+`after`メソッドはレスポンスを受け取るクロージャを引数に取り、レスポンスをレート制限にカウントすべき場合は`true`を、無視すべき場合は`false`を返す必要があります。これは特に、連続した404レスポンスを制限することで列挙攻撃を防ぐ場合や、成功した操作のみをスロットルすべきエンドポイントにおいて、バリデーションに失敗したリクエストの再試行をユーザーに許可しつつレート制限を消費させない場合に有用です。
+
+```php
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\RateLimiter;
+use Symfony\Component\HttpFoundation\Response;
+
+RateLimiter::for('resource-not-found', function (Request $request) {
+    return Limit::perMinute(10)
+        ->by($request->user()?->id ?: $request->ip())
+        ->after(function (Response $response) {
+            // Only count 404 responses toward the rate limit to prevent enumeration...
+            return $response->status() === 404;
+        });
+});
+```
+
 <a name="attaching-rate-limiters-to-routes"></a>
 ### ルートへのレート制限指定
 
