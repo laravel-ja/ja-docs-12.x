@@ -275,6 +275,94 @@ public function viaQueues(): array
 }
 ```
 
+<a name="customizing-queued-notification-job-properties"></a>
+#### キュー投入通知ジョブのプロパティ
+
+通知クラスにプロパティを定義することで、基盤となるキュー投入ジョブの動作をカスタマイズできます。これらのプロパティは、通知を送信するキュー投入ジョブへ継承されます。
+
+```php
+<?php
+
+namespace App\Notifications;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Notification;
+
+class InvoicePaid extends Notification implements ShouldQueue
+{
+    use Queueable;
+
+    /**
+     * 通知を試行する回数
+     *
+     * @var int
+     */
+    public $tries = 5;
+
+    /**
+     * 通知をタイムアウトするまでの秒数
+     *
+     * @var int
+     */
+    public $timeout = 120;
+
+    /**
+     * 失敗するまでに許容する未処理例外の最大数
+     *
+     * @var int
+     */
+    public $maxExceptions = 3;
+
+    // ...
+}
+```
+
+キューに格納した通知データのプライバシーと完全性を[暗号化](/docs/{{version}}/encryption)により確保したい場合は、通知クラスに`ShouldBeEncrypted`インターフェイスを追加してください。
+
+```php
+<?php
+
+namespace App\Notifications;
+
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeEncrypted;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Notification;
+
+class InvoicePaid extends Notification implements ShouldQueue, ShouldBeEncrypted
+{
+    use Queueable;
+
+    // ...
+}
+```
+
+通知クラスにこれらのプロパティを直接定義する方法に加え、キュー投入通知ジョブのバックオフ戦略と再試行タイムアウトを指定するために、`backoff`と`retryUntil`メソッドを定義することもできます。
+
+```php
+use DateTime;
+
+/**
+ * 通知の再試行まで待機する秒数を計算
+ */
+public function backoff(): int
+{
+    return 3;
+}
+
+/**
+ * 通知がタイムアウトする時間を決定
+ */
+public function retryUntil(): DateTime
+{
+    return now()->addMinutes(5);
+}
+```
+
+> [!NOTE]
+> これらのジョブのプロパティとメソッドの詳細は、[キュー投入ジョブ](/docs/{{version}}/queues#max-job-attempts-and-timeout)に関するドキュメントをご確認ください。
+
 <a name="queued-notification-middleware"></a>
 #### キュー投入する通知
 

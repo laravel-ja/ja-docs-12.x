@@ -330,7 +330,7 @@ Precognitionでフォームの入力のサブセットをバリデートして�
     id="avatar"
     type="file"
     onChange={(e) => {
-        form.setData('avatar', e.target.value);
+        form.setData('avatar', e.target.files[0]);
 
         form.forgetError('avatar');
     }}
