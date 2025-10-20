@@ -612,7 +612,7 @@ public function stripeName(): string|null
 }
 ```
 
-同様に、`stripeEmail`、`stripePhone`、`stripeAddress`、`stripePreferredLocales`メソッドをオーバーライドできます。これらのメソッドは、[Stripe顧客オブジェクトの更新](https://stripe.com/docs/api/customers/update)の際に、対応する顧客パラメータへ情報を同期します。顧客情報の同期プロセスを完全にコントロールしたい場合は、`syncStripeCustomerDetails`メソッドをオーバーライドできます。
+同様に、`stripeEmail`、`stripePhone`（最大20文字）、`stripeAddress`、`stripePreferredLocales`メソッドをオーバーライドできます。これらのメソッドは、[Stripe顧客オブジェクトの更新](https://stripe.com/docs/api/customers/update)の際に、対応する顧客パラメータへ情報を同期します。顧客情報の同期プロセスを完全にコントロールしたい場合は、`syncStripeCustomerDetails`メソッドをオーバーライドできます。
 
 <a name="billing-portal"></a>
 ### 請求ポータル

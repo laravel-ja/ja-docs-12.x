@@ -48,7 +48,7 @@ Laravelのメールサービスは、アプリケーションの`config/mail.php
 <a name="driver-prerequisites"></a>
 ### ドライバ／トランスポートの前提条件
 
-Mailgun、Postmark、Resend、MailerSendなどのAPIベースドライバは、SMTPサーバを経由してメールを送信するよりもシンプルで高速です。可能であれば、こうしたドライバのいずれかを使用することをお勧めします。
+Mailgun、Postmark、ResendなどのAPIベースドライバは、SMTPサーバを経由してメールを送信するよりもシンプルで高速です。可能であれば、こうしたドライバのいずれかを使用することをお勧めします。
 
 <a name="mailgun-driver"></a>
 #### Mailgunドライバ
@@ -207,35 +207,6 @@ Laravelがメール送信時に、AWS SDKの`SendEmail`メソッドへ渡す、[
     ],
 ],
 ```
-
-<a name="mailersend-driver"></a>
-#### MailerSendドライバ
-
-トランザクションメールとSMSサービスの[MailerSend](https://www.mailersend.com/)は、Laravel用の独自APIベースのメールドライバを保守しています。ドライバを含むパッケージは、Composerパッケージマネージャ経由でインストールできます。
-
-```shell
-composer require mailersend/laravel-driver
-```
-
-パッケージをインストールしたら、アプリケーションの`.env`ファイルへ`MAILERSEND_API_KEY`環境変数を追加します。さらに、`MAIL_MAILER`環境変数を`mailersend`と定義する必要があります。
-
-```ini
-MAIL_MAILER=mailersend
-MAIL_FROM_ADDRESS=app@yourdomain.com
-MAIL_FROM_NAME="App Name"
-
-MAILERSEND_API_KEY=your-api-key
-```
-
-最後に、アプリケーションの`config/mail.php`設定ファイルの、`mailers`配列へMailerSendを追加します。
-
-```php
-'mailersend' => [
-    'transport' => 'mailersend',
-],
-```
-
-ホストしたテンプレートの使用方法など、MailerSendの詳細は、[MailerSendドライバのドキュメント](https://github.com/mailersend/mailersend-laravel-driver#usage)を参照してください。
 
 <a name="failover-configuration"></a>
 ### フェイルオーバー設定

@@ -71,7 +71,7 @@ class Post extends Model
 <a name="queueing"></a>
 ### キュー投入
 
-Scoutを使用するのに厳密には必須ではありませんが、ライブラリを使用する前に[キュードライバ](/docs/{{version}}/queues)の設定を考慮すべきです。キューワーカを実行することで、Scoutはモデル情報を検索インデックスに同期する全ての操作をキューに投入し、アプリケーションのWebインターフェイスのレスポンス時間を大幅に改善できます。
+`database`または`collection`以外のエンジンを使用する場合、ライブラリを使用する前に[キュードライバ](/docs/{{version}}/queues)の設定を考慮すべきです。キューワーカを実行することで、Scoutはモデル情報を検索インデックスに同期する全ての操作をキューに投入し、アプリケーションのWebインターフェイスのレスポンス時間を大幅に改善できます。
 
 キュードライバを設定したら、`config/scout.php`設定ファイルの`queue`オプションの値を`true`へ設定してください。
 
@@ -427,7 +427,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Engines\Engine;
-use Laravel\Scout\EngineManager;
+use Laravel\Scout\Scout;
 use Laravel\Scout\Searchable;
 
 class User extends Model
@@ -439,7 +439,7 @@ class User extends Model
      */
     public function searchableUsing(): Engine
     {
-        return app(EngineManager::class)->engine('meilisearch');
+        return Scout::engine('meilisearch');
     }
 }
 ```
@@ -464,7 +464,7 @@ SCOUT_IDENTIFY=true
 > [!WARNING]
 > 現在、データベースエンジンは、MySQLとPostgreSQLをサポートしています。
 
-中規模のデータベースとやり取りするしたり、作業負荷が軽いアプリケーションでは、Scoutの「データベース」エンジンで始めるのが便利でしょう。データベースエンジンは、既存のデータベースから結果をフィルタリングする際に、「where like」句と全文インデックスを使用して、クエリの検索結果を決定します。
+`database`エンジンはLaravel Scoutを始める最も速い方法であり、既存データベースから結果をフィルタリングする際、MySQL／PostgreSQLの全文索引と"where like"句を使用して、クエリに該当する検索結果を決定します。
 
 データベースエンジンを使うには、`SCOUT_DRIVER`環境変数の値を`database`に設定するか、アプリケーションの`scout`設定ファイルに直接`database`ドライバを指定してください。
 
@@ -522,7 +522,7 @@ SCOUT_DRIVER=collection
 
 一見すると、「データベース」エンジンと「コレクション」エンジンはかなり似ています。どちらも、あなたのデータベースと直接やりとりして、検索結果を取得します。しかし、コレクションエンジンはフルテキストインデックスや`LIKE`句を利用して一致レコードを探し出しません。その代わりに、可能性があるすべてのレコードを取得し、Laravelの`Str::is`ヘルパを使い、モデルの属性値内に検索文字列が存在しているか判断します。
 
-コレクションエンジンは、Laravelがサポートする（SQLiteやSQL Serverを含む）すべてのリレーショナルデータベースで動作するため、最も使いやすい検索エンジンですが、Scoutのデータベースエンジンに比べると効率は落ちます。
+コレクションエンジンは、Laravelがサポートする（SQLiteやSQL Serverを含む）すべてのリレーショナルデータベースで動作するため、最も移植性の高い検索エンジンですが、Scoutのデータベースエンジンに比べると大幅に効率は落ちます。
 
 <a name="indexing"></a>
 ## インデックス

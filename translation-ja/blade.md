@@ -640,6 +640,20 @@ Bladeの`@include`ディレクティブを使用すると、別のビュー内�
 @endPushOnce
 ```
 
+２つの別々のBladeテンプレートから重複コンテンツをプッシュする場合、コンテンツが一度だけレンダされるように、`@pushOnce`ディレクティブの２番目の引数として一意の識別子を提供する必要があります。
+
+```blade
+<!-- pie-chart.blade.php -->
+@pushOnce('scripts', 'chart.js')
+    <script src="/chart.js"></script>
+@endPushOnce
+
+<!-- line-chart.blade.php -->
+@pushOnce('scripts', 'chart.js')
+    <script src="/chart.js"></script>
+@endPushOnce
+```
+
 <a name="raw-php"></a>
 ### 生PHP
 
@@ -719,14 +733,6 @@ php artisan make:component Forms/Input
 ```
 
 上記のコマンドは、`app/View/Components/Forms`ディレクトリに`Input`コンポーネントを作成し、ビューは`resources/views/components/forms`ディレクトリに配置します。
-
-匿名コンポーネント(Bladeテンプレートのみでクラスを持たないコンポーネント)を作成したい場合は、`make:component`コマンドを実行するとき、`--view`フラグを使用します。
-
-```shell
-php artisan make:component forms.input --view
-```
-
-上記のコマンドは、`resources/views/components/forms/input.blade.php`へBladeファイルを作成します。このファイルは`<x-forms.input />`により、コンポーネントとしてレンダできます。
 
 <a name="manually-registering-package-components"></a>
 #### パッケージコンポーネントの手作業登録
@@ -1215,6 +1221,7 @@ class Alert extends Component
 
 - `data`
 - `render`
+- `resolve`
 - `resolveView`
 - `shouldRender`
 - `view`
@@ -1452,6 +1459,14 @@ Bladeは、コンポーネント名のパスカルケースを使い、コンポ
 ```blade
 <x-inputs.button/>
 ```
+
+Artisanで匿名コンポーネントを作成するには、`make:component`コマンドを実行する際に`--view`フラグを使用します。
+
+```shell
+php artisan make:component forms.input --view
+```
+
+上記コマンドは、`resources/views/components/forms/input.blade.php`にBladeファイルを作成します。このファイルは `<x-forms.input />`を使い、コンポーネントとしてレンダできます。
 
 <a name="anonymous-index-components"></a>
 ### 匿名インデックスコンポーネント

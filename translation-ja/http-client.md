@@ -564,6 +564,7 @@ Laravelで同時リクエストを処理するもう一つの方法は、`batch`
 
 ```php
 use Illuminate\Http\Client\Batch;
+use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
@@ -578,7 +579,7 @@ $responses = Http::batch(fn (Batch $batch) => [
     // 個別のリクエストが成功裏に完了した
 })->then(function (Batch $batch, array $results) {
     // すべてのリクエストが成功裏に完了した
-})->catch(function (Batch $batch, int|string $key, Response|RequestException $response) {
+})->catch(function (Batch $batch, int|string $key, Response|RequestException|ConnectionException $response) {
     // 最初にバッチリクエストの失敗を認識した
 })->finally(function (Batch $batch, array $results) {
     // バッチの実行を終了した
@@ -620,6 +621,23 @@ $batch->finished();
 
 // バッチで失敗したリクエストがあったかを示す
 $batch->hasFailures();
+```
+<a name="deferring-batches"></a>
+#### 遅延バッチ
+
+`defer`メソッドを呼び出すばあい、リクエストのバッチを即座に実行しません。その代わりに、Laravelは現在のアプリケーションリクエストのHTTPレスポンスがユーザーへ送信した後にバッチを実行します。これにより、アプリケーションの高速性と応答性が維持できます。
+
+```php
+use Illuminate\Http\Client\Batch;
+use Illuminate\Support\Facades\Http;
+
+$responses = Http::batch(fn (Batch $batch) => [
+    $batch->get('http://localhost/first'),
+    $batch->get('http://localhost/second'),
+    $batch->get('http://localhost/third'),
+])->then(function (Batch $batch, array $results) {
+    // すべてのリクエストが成功裏に完了した
+})->defer();
 ```
 
 <a name="macros"></a>

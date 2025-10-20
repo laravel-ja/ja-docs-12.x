@@ -21,6 +21,7 @@
     - [キューと接続のカスタマイズ](#customizing-the-queue-and-connection)
     - [最大試行回数／タイムアウト値の指定](#max-job-attempts-and-timeout)
     - [SQS FIFOと公平キュー](#sqs-fifo-and-fair-queues)
+    - [キューのフェイルオーバー](#queue-failover)
     - [エラー処理](#error-handling)
 - [ジョブバッチ](#job-batching)
     - [Batchableジョブの定義](#defining-batchable-jobs)
@@ -1530,6 +1531,31 @@ $invoicePaid = (new InvoicePaid($invoice))
 
 $user->notify($invoicePaid);
 ```
+
+<a name="queue-failover"></a>
+### キューのフェイルオーバー
+
+`failover`キュードライバは、キューへのジョブ投入時に自動フェイルオーバー機能を提供します。プライマリキュー接続が何らかの理由で失敗した場合、Laravelは自動的にリスト内の次に設定してある接続へジョブの投入を試みます。これは、キューの信頼性が極めて重要な本番環境において高可用性を確保するために特に有用です。
+
+フェイルオーバーキュー接続を設定するには、`failover`ドライバを指定し、試行する接続名の配列を順番に指定します。Laravelはデフォルトで、アプリケーションの`config/queue.php`設定ファイルにフェイルオーバー設定の例を用意しています。
+
+```php
+'failover' => [
+    'driver' => 'failover',
+    'connections' => [
+        'database',
+        'sync',
+    ],
+],
+```
+
+`failover`ドライバを使用する接続を設定したら、アプリケーションの`.env`ファイルでフェイルオーバー接続をデフォルトのキュー接続として設定してください。
+
+```ini
+QUEUE_CONNECTION=failover
+```
+
+キュー接続操作が失敗しフェイルオーバーが起動すると、Laravelは`Illuminate\Queue\Events\QueueFailedOver`イベントをディスパッチします。これにより、キュー接続の失敗を報告またはログに記録できます。
 
 <a name="error-handling"></a>
 ### エラー処理

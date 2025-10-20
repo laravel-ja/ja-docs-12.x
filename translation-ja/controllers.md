@@ -129,7 +129,7 @@ namespace App\Http\Controllers;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 
-class UserController extends Controller implements HasMiddleware
+class UserController implements HasMiddleware
 {
     /**
      * コントローラへ指定するミドルウェアを取得
