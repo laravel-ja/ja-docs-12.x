@@ -14,6 +14,7 @@
 - [アトミックロック](#atomic-locks)
     - [ロック管理](#managing-locks)
     - [プロセス間でのロック管理](#managing-locks-across-processes)
+- [キャッシュフェイルオーバ](#cache-failover)
 - [カスタムキャッシュドライバの追加](#adding-custom-cache-drivers)
     - [ドライバの作成](#writing-the-driver)
     - [ドライバの登録](#registering-the-driver)
@@ -528,6 +529,31 @@ Cache::restoreLock('processing', $this->owner)->release();
 ```php
 Cache::lock('processing')->forceRelease();
 ```
+
+<a name="cache-failover"></a>
+## キャッシュフェイルオーバ
+
+`failover`キャッシュドライバは、キャッシュとのやり取り時に自動フェイルオーバー機能を提供します。プライマリキャッシュストアが何らかの理由で障害を起こした場合、Laravelは自動的にリスト内で次に設定してあるストアの使用を試みます。これは、キャッシュの信頼性が極めて重要な本番環境において高可用性を確保するために特に有用です。
+
+フェイルオーバーキャッシュストアを設定するには、`failover`ドライバを指定し、順に試行するストア名の配列を指定します。Laravelはデフォルトでアプリケーションの`config/cache.php`設定ファイルに、フェイルオーバー設定の例を含んでいます。
+
+```php
+'failover' => [
+    'driver' => 'failover',
+    'stores' => [
+        'database',
+        'array',
+    ],
+],
+```
+
+`failover`ドライバを使用するストアを一度設定し終えたら、アプリケーションの`.env`ファイルでフェイルオーバースストアをデフォルトのキャッシュストアとして設定することをお勧めします。
+
+```ini
+CACHE_STORE=failover
+```
+
+キャッシュストア操作が失敗しフェイルオーバーがアクティブになると、Laravelは`Illuminate\Cache\Events\CacheFailedOver`イベントを発行します。これにより、キャッシュストアの失敗を報告またはログに記録できます。
 
 <a name="adding-custom-cache-drivers"></a>
 ## カスタムキャッシュドライバの追加

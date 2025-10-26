@@ -161,7 +161,7 @@ public function shouldRun(): bool
 php artisan migrate
 ```
 
-これまでどのマイグレーションが実行されているかを確認したい場合は、`migrate:status` Artisanコマンドを使用してください。
+既に実行済みのマイグレーションと未処理のマイグレーションを確認したい場合は、`migrate:status` Artisanコマンドを使用します。
 
 ```shell移行
 php artisan migrate:status
@@ -552,6 +552,7 @@ Schema::table('users', function (Blueprint $table) {
 
 </div>
 
+<a name="relationship-method-list"></a>
 #### リレーション型
 
 <div class="collection-method-list" markdown="1">

@@ -95,13 +95,26 @@ php artisan make:factory PostFactory
 
 ファクトリを定義したら、モデルのファクトリインスタンスをインスタンス化するために、`Illuminate\Database\Eloquent\Factories\HasFactory`トレイトが、モデルへ提供しているstaticな`factory`メソッドが使用できます。
 
-`HasFactory`トレイトの`factory`メソッドは規約に基づいて、その トレイトが割り当てられているモデルに適したファクトリを決定します。具体的には、`Database\Factories`名前空間の中でモデル名と一致するクラス名を持ち、サフィックスが`Factory`であるファクトリを探します。この規約を特定のアプリケーションやファクトリで適用しない場合は、モデルの`newFactory`メソッドを上書きし、モデルと対応するファクトリのインスタンスを直接返してください。
+`HasFactory`トレイトの`factory`メソッドは規約に基づいて、その トレイトが割り当てられているモデルに適したファクトリを決定します。具体的には、`Database\Factories`名前空間の中でモデル名と一致するクラス名を持ち、サフィックスが`Factory`であるファクトリを探します。これらの規約を特定のアプリケーションやファクトリに適用しない場合は、モデルのファクトリを手作業で指定するための`UseFactory`属性をモデルへ追加してください。
+
+```php
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
+use Database\Factories\Administration\FlightFactory;
+
+#[UseFactory(FlightFactory::class)]
+class Flight extends Model
+{
+    // …
+}
+```
+
+もしくは、モデルの`newFactory`メソッドを上書きして、モデルの対応するファクトリのインスタンスを直接返すこともできます。
 
 ```php
 use Database\Factories\Administration\FlightFactory;
 
 /**
- * モデルの新しいファクトリインスタンスの生成
+ * モデルに対応する新しいファクトリインスタンスの生成
  */
 protected static function newFactory()
 {
@@ -118,7 +131,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 class FlightFactory extends Factory
 {
     /**
-     * モデルに対応するファクトリ名
+     * ファクトリに対応するモデルの名前
      *
      * @var class-string<\Illuminate\Database\Eloquent\Model>
      */

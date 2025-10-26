@@ -2127,9 +2127,8 @@ $books = Book::withOnly('genre')->get();
 
 ```php
 use App\Models\User;
-use Illuminate\Database\Eloquent\Builder;
 
-$users = User::with(['posts' => function (Builder $query) {
+$users = User::with(['posts' => function ($query) {
     $query->where('title', 'like', '%code%');
 }])->get();
 ```
@@ -2137,7 +2136,7 @@ $users = User::with(['posts' => function (Builder $query) {
 この例では、Eloquentは、投稿の`title`カラムに`code`という単語を含んでいる投稿のみをEagerロードします。他の[クエリビルダ](/docs/{{version}}/queryies)メソッドを呼び出して、Eagerロード操作をさらにカスタマイズすることもできます。
 
 ```php
-$users = User::with(['posts' => function (Builder $query) {
+$users = User::with(['posts' => function ($query) {
     $query->orderBy('created_at', 'desc');
 }])->get();
 ```
@@ -2195,7 +2194,7 @@ if ($condition) {
 Eagerロードクエリにクエリ制約を追加設定する必要がある場合は、ロードしたいリレーションをキーにした配列を渡します。配列の値は、クエリインスタンスを引数に受けるクロージャインスタンスの必要があります。
 
 ```php
-$author->load(['books' => function (Builder $query) {
+$author->load(['books' => function ($query) {
     $query->orderBy('published_date', 'asc');
 }]);
 ```

@@ -41,14 +41,14 @@ Fortifyは独自のユーザーインターフェイスを提供しません。�
 
 **Laravelの認証機能を使用するために、Fortifyを使う必要はありません。** [認証](/docs/{{version}}/authentication)、[パスワードリセット](/docs/{{version}}/passwords)、および[メール検証](/docs/{{version}}/verification)のドキュメントにしたがい、Laravelの認証サービスをいつでも自前で操作できます。
 
-Laravelが初めての方は、Laravel Fortifyを使用する前に、[アプリケーションスターターキット](/docs/{{version}}/starter-kits)を調べると良いでしょう。私たちのスターターキットは、[Tailwind CSS](https://tailwindcss.com)で構築されたユーザーインターフェイスを含む、アプリケーションの認証のスカフォールドを提供します。これにより、Laravel Fortifyにこれらの機能を実装させる前に、Laravelの認証機能を勉強し、使いこなせるようになります。
+Laravelを初めて使用する場合は、[アプリケーションスターターキット](/docs/{{version}}/starter-kits)の活用をご検討ください。Laravelのアプリケーションスターターキットは内部でFortifyを利用し、[Tailwind CSS](https://tailwindcss.com)で構築したユーザーインターフェイスを含む認証機能の骨組みを提供します。これにより、Laravelの認証機能を学び、使いこなすのに役立ちます。
 
 Laravel Fortifyは、基本的にアプリケーションスターターキットのルートとコントローラを利用し、ユーザーインターフェイスを含まないパッケージとして提供します。これにより、特定のフロントエンドの考え方に縛られることなく、アプリケーションの認証レイヤーのバックエンド実装を素早くスカフォールドできます。
 
 <a name="when-should-i-use-fortify"></a>
 ### いつFortifyを使用すべきか？
 
-Laravel Fortifyをいつ使用するのが適切か疑問に思われるかもしれません。まず、Laravelの[アプリケーションスターターキット](/docs/{{version}}/starter-kits)で説明している、いくつかの手段を使用している場合、Laravelのすべてのアプリケーションスターターキットはあらかじめ完全な認証実装を提供しているため、Laravel Fortifyをインストールする必要はありません。 。
+Laravel Fortifyをいつ使用するのが適切か疑問に思われるかもしれません。まず、Laravelの[アプリケーションスターターキット](/docs/{{version}}/starter-kits)で説明している、いくつかの手段を使用している場合、LaravelのすべてのアプリケーションスターターキットはFortifyを使い、あらかじめ完全な認証実装を提供しているため、Laravel Fortifyをインストールする必要はありません。 。
 
 アプリケーションスターターキットを使用しておらず、アプリケーションに認証機能が必要な場合は、アプリケーションの認証機能を自分で実装するか、Laravel Fortifyを使用してこうした機能のバックエンド実装を提供するか、２つのオプションがあります。
 

@@ -120,7 +120,7 @@ Laravelは[PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/
  */
 public function bind($abstract, $concrete = null, $shared = false)
 {
-    // ...
+    // …
 }
 ```
 
@@ -132,7 +132,7 @@ public function bind($abstract, $concrete = null, $shared = false)
  */
 public function handle(AudioProcessor $processor): void
 {
-    //
+    // …
 }
 ```
 
@@ -140,7 +140,7 @@ public function handle(AudioProcessor $processor): void
 
 ```php
 /**
- * Get the attachments for the message.
+ * メッセージの添付を取得
  *
  * @return array<int, \Illuminate\Mail\Mailables\Attachment>
  */

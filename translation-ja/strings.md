@@ -1163,7 +1163,7 @@ $password = Str::password(12);
 <a name="method-str-plural"></a>
 #### `Str::plural()` {.collection-method}
 
-`Str::plural`メソッドは、単数形の単語文字列を複数形に変換します。この関数は、[Laravelの複数形化機能により、どんな言語も](/docs/{{version}}/localization#pluralization-language)サポートしています。
+`Str::plural`メソッドは、単数形の単語文字列を複数形に変換します。この関数は、[Laravelの複数形化機能がサポートする全言語](/docs/{{version}}/localization#pluralization-language)をサポートしています。
 
 ```php
 use Illuminate\Support\Str;
@@ -1204,7 +1204,7 @@ $label = Str::plural('car', 1000, prependCount: true);
 <a name="method-str-plural-studly"></a>
 #### `Str::pluralStudly()` {.collection-method}
 
-`Str::pluralStudly`メソッドは、アッパーキャメルケースでフォーマットされた文字列の単語を複数形に変換します。この関数は、[Laravelの複数形化機能により、どんな言語も](/docs/{{version}}/localization#pluralization-language)サポートしています。
+`Str::pluralStudly`メソッドは、アッパーキャメルケースでフォーマットされた文字列の単数形の単語を複数形に変換します。この関数は、[Laravelの複数形化機能がサポートする全言語](/docs/{{version}}/localization#pluralization-language)をサポートしています。
 
 ```php
 use Illuminate\Support\Str;
@@ -2977,7 +2977,7 @@ $closure = Str::of('foo')->pipe(function (Stringable $str) {
 <a name="method-fluent-str-plural"></a>
 #### `plural` {.collection-method}
 
-`plural`メソッドは、単数形の単語文字列を複数形に変換します。この関数は、[Laravelの複数形化機能により、どんな言語も](/docs/{{version}}/localization#pluralization-language)サポートしています。
+`plural`メソッドは、単数形の単語文字列を複数形に変換します。この関数は、[Laravelの複数形化機能がサポートする全言語](/docs/{{version}}/localization#pluralization-language)をサポートしています。
 
 ```php
 use Illuminate\Support\Str;
@@ -3210,7 +3210,7 @@ $collection = Str::of('filename.jpg')->scan('%[^.].%s');
 <a name="method-fluent-str-singular"></a>
 #### `singular` {.collection-method}
 
-`singular`メソッドは、単語を単数形に変換します。この関数は、[Laravelの複数形化機能により、どんな言語も](/docs/{{version}}/localization#pluralization-language)サポートしています。
+`singular`メソッドは、単語を単数形に変換します。この関数は、[Laravelの複数形化機能がサポートする全言語](/docs/{{version}}/localization#pluralization-language)をサポートしています。
 
 ```php
 use Illuminate\Support\Str;

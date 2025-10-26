@@ -935,28 +935,6 @@ ProcessPodcast::dispatch($podcast)->withoutDelay();
 > [!WARNING]
 > Amazon SQSキューサービスの最大遅延時間は１５分です。
 
-<a name="dispatching-after-the-response-is-sent-to-browser"></a>
-#### レスポンスがブラウザに送信された後のディスパッチ
-
-別の方法として、`dispatchAfterResponse`メソッドは、Webサーバで[FastCGI](https://www.php.net/manual/ja/install.fpm.php)を使っている場合、HTTPレスポンスがユーザーのブラウザへ送信されるまでジョブのディスパッチを遅らせます。これにより、キュー投入したジョブがまだ実行されている場合でも、ユーザーはアプリケーションの使用を開始できます。これは通常、電子メールの送信など、約１秒かかるジョブにのみ使用する必要があります。これは現在のHTTPリクエスト内で処理されるため、この方法でディスパッチされたジョブを処理するためにキューワーカを実行する必要はありません。
-
-```php
-use App\Jobs\SendNotification;
-
-SendNotification::dispatchAfterResponse();
-```
-
-クロージャを「ディスパッチ`dispatch`」し、`afterResponse`メソッドを[`dispatch`ヘルパ](/docs/{{version}}/helpers#method-dispatch)へチェーンしても、HTTPレスポンスがブラウザに送信された後にクロージャを実行できます。
-
-```php
-use App\Mail\WelcomeMessage;
-use Illuminate\Support\Facades\Mail;
-
-dispatch(function () {
-    Mail::to('taylor@example.com')->send(new WelcomeMessage);
-})->afterResponse();
-```
-
 <a name="synchronous-dispatching"></a>
 ### 同期ディスパッチ
 
@@ -981,7 +959,7 @@ class PodcastController extends Controller
     {
         $podcast = Podcast::create(/* ... */);
 
-        // Create podcast...
+        // ポッドキャストの生成…
 
         ProcessPodcast::dispatchSync($podcast);
 
@@ -989,6 +967,17 @@ class PodcastController extends Controller
     }
 }
 ```
+
+<a name="deferred-dispatching"></a>
+#### 遅延ディスパッチ
+
+遅延同期ディスパッチを使用すると、現在のプロセス中に処理するジョブをディスパッチできますが、HTTPレスポンスをユーザーへ送信した後になります。これにより、ユーザーのアプリケーション体験を遅延させることなく、「キュー投入した」ジョブを同期的に処理できます。同期ジョブの実行を遅延させるには、そのジョブを`deferred`接続へディスパッチします。
+
+```php
+RecordDelivery::dispatch($order)->onConnection('deferred');
+```
+
+`deferred`接続は、デフォルトの[フェイルオーバーキュー](#queue-failover)としても機能します。
 
 <a name="jobs-and-database-transactions"></a>
 ### ジョブとデータベーストランザクション
@@ -1483,8 +1472,6 @@ FIFOキューを利用する際は、リスナ、メール、および通知に�
 
 namespace App\Listeners;
 
-use App\Events\OrderShipped;
-
 class SendShipmentNotification
 {
     // ...
@@ -1494,7 +1481,7 @@ class SendShipmentNotification
      */
     public function messageGroup(): string
     {
-        return "shipments";
+        return 'shipments';
     }
 
     /**
@@ -1543,6 +1530,7 @@ $user->notify($invoicePaid);
 'failover' => [
     'driver' => 'failover',
     'connections' => [
+        'redis',
         'database',
         'sync',
     ],
@@ -1555,7 +1543,20 @@ $user->notify($invoicePaid);
 QUEUE_CONNECTION=failover
 ```
 
+次に、フェイルオーバー接続リスト内の各接続に対して、少なくとも1つのワーカを開始します。
+
+```bash
+php artisan queue:work redis
+php artisan queue:work database
+```
+
+> [!NOTE]
+> `sync`または`deferred`キュードライバを使用する接続については、ワーカを実行する必要はありません。これらのドライバは現在の PHPプロセス内でジョブを処理するためです。
+
 キュー接続操作が失敗しフェイルオーバーが起動すると、Laravelは`Illuminate\Queue\Events\QueueFailedOver`イベントをディスパッチします。これにより、キュー接続の失敗を報告またはログに記録できます。
+
+> [!TIP]
+> Laravel Horizonを使用する場合、Horizonが管理するのはRedisキューのみであることに注意してください。フェイルオーバーリストに`database`が含まれている場合は、Horizonと並行して通常の`php artisan queue:work database`プロセスを実行する必要があります。
 
 <a name="error-handling"></a>
 ### エラー処理

@@ -1119,16 +1119,16 @@ return Response::error('Unable to fetch weather data for the specified location.
 <a name="authentication"></a>
 ## 認証
 
-ルートの場合と同様に、ミドルウェアを使用してWeb MCPサーバを認証できます。これにより、ユーザーはサーバの機能を使用する前に認証が必要になります。
+ルートと同様に、ミドルウェアを使用してWeb MCPサーバを認証できます。MCPサーバに認証を追加すると、ユーザーはサーバの機能を利用する前に認証を行う必要があります。
 
-MCPサーバへのアクセスを認証するには2つの方法があります。1つは[Laravel Sanctum](/docs/{{version}}/sanctum)によるシンプルなトークンベースの認証、または`Authorization` HTTPヘッダを介して渡されるその他の任意のAPIトークンによる認証です。もう1つは、[Laravel Passport](/docs/{{version}}/passport)を使用したOAuthによる認証です。
+MCPサーバへのアクセス認証には２つの方法があります：[Laravel Sanctum](/docs/{{version}}/sanctum)によるシンプルなトークンベース認証、または`Authorization` HTTPヘッダ経由で渡す任意のトークンによる認証です。あるいは、[Laravel Passport](/docs/{{version}}/passport)を使用したOAuthによる認証も可能です。
 
 <a name="oauth"></a>
 ### OAuth 2.1
 
-WebベースのMCPサーバを保護する最も堅牢な方法は、[Laravel Passport](/docs/{{version}}/passport)を介したOAuthを使用することです。
+WebベースのMCPサーバを保護する最も堅牢な方法は、[Laravel Passport](/docs/{{version}}/passport)を使用したOAuthです。
 
-MCPサーバをOAuth経由で認証する場合、`routes/ai.php`ファイルで`Mcp::oauthRoutes`メソッドを呼び出し、必要なOAuth2ディスカバリおよびクライアント登録ルートを登録します。次に、`routes/ai.php`ファイル内の`Mcp::web`ルートにPassportの`auth:api`ミドルウェアを適用します：
+OAuth経由でMCPサーバを認証する場合、`routes/ai.php`ファイルで`Mcp::oauthRoutes`メソッドを呼び出し、必要なOAuth2ディスカバリおよびクライアント登録ルートを登録します。次に、`routes/ai.php`ファイル内の`Mcp::web`ルートにPassportの`auth:api`ミドルウェアを適用します。
 
 ```php
 use App\Mcp\Servers\WeatherExample;
@@ -1142,7 +1142,7 @@ Mcp::web('/mcp/weather', WeatherExample::class)
 
 #### 新規Passportインストール
 
-アプリケーションでまだLaravel Passportを使用していない場合は、まずPassportの[インストールとデプロイの手順](/docs/{{version}}/passport#installation)に従ってください。次に進む前に、`OAuthenticatable`モデル、新しい認証ガード、およびPassportキーが必要です。
+アプリケーションでまだLaravel Passportを使用していない場合は、まずPassportの[インストールとデプロイガイド](/docs/{{version}}/passport#installation)に従ってPassportを追加してください。次に進む前に、`OAuthenticatable`モデル、新しい認証ガード、およびPassportキーを用意しておく必要があります。
 
 次に、Laravel MCPが提供するPassport認可ビューを公開する必要があります：
 
@@ -1177,7 +1177,7 @@ public function boot(): void
 
 アプリケーションがすでに Laravel Passport を使用している場合、Laravel MCP は既存の Passport インストール内でシームレスに動作するはずですが、OAuth は主に基盤となる認証可能なモデルへの変換レイヤーとして使用されるため、カスタムスコープは現在サポートされていません。
 
-Laravel MCP は、上記で説明した `Mcp::oauthRoutes()` メソッドを介して、単一の `mcp:use` スコープを追加、アドバタイズ、および使用します。
+Laravel MCP は、上記で説明した `Mcp::oauthRoutes` メソッドを介して、単一の `mcp:use` スコープを追加、アドバタイズ、および使用します。
 
 #### Passport vs. Sanctum
 
