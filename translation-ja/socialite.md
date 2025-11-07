@@ -61,7 +61,7 @@ Socialiteを使用する前に、アプリケーションが利用するOAuthプ
 OAuthプロバイダを使ってユーザーを認証するには、OAuthプロバイダへユーザーをリダイレクトするルートと、認証後にプロバイダからのコールバックを受け取るルートの２つが必要になります。以下のルート例では、両方のルートを実装しています。
 
 ```php
-use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Socialite;
 
 Route::get('/auth/redirect', function () {
     return Socialite::driver('github')->redirect();
@@ -84,7 +84,7 @@ OAuthプロバイダからユーザーを取得したら、そのユーザーが
 ```php
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Socialite;
 
 Route::get('/auth/callback', function () {
     $githubUser = Socialite::driver('github')->user();
@@ -113,7 +113,7 @@ Route::get('/auth/callback', function () {
 ユーザーをリダイレクトする前に、`scopes`メソッドを使用し、認証リクエストに含めるべき「スコープ」を指定できます。このメソッドは、以前に指定したすべてのスコープを、指定したスコープとマージします。
 
 ```php
-use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Socialite;
 
 return Socialite::driver('github')
     ->scopes(['read:user', 'public_repo'])
@@ -165,7 +165,7 @@ $user = Socialite::driver('slack')->asBotUser()->user();
 多くのOAuthプロバイダがリダイレクトリクエスト中で、その他にもオプションパラメータをサポートしています。リクエストにオプションパラメータを含めるには、`with`メソッドを呼び出し、連想配列を渡します。
 
 ```php
-use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Socialite;
 
 return Socialite::driver('google')
     ->with(['hd' => 'example.com'])
@@ -183,7 +183,7 @@ return Socialite::driver('google')
 認証につかうOAuthプロバイダが、OAuth1.0とOAuth2.0のどちらをサポートしているかにより、このオブジェクトで利用できるプロパティやメソッドが異なります。
 
 ```php
-use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Socialite;
 
 Route::get('/auth/callback', function () {
     $user = Socialite::driver('github')->user();
@@ -212,7 +212,7 @@ Route::get('/auth/callback', function () {
 ユーザーの有効なアクセストークンを既に持っている場合は、Socialiteの`userFromToken`メソッドを使用してユーザーの詳細を取得できます。
 
 ```php
-use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Socialite;
 
 $user = Socialite::driver('github')->userFromToken($token);
 ```
@@ -225,7 +225,7 @@ iOSアプリケーションでFacebook限定ログインを使用している場
 `stateless`メソッドを使用すると、セッション状態の確認を無効にできます。これは、クッキーベースのセッションを利用しないステートレスAPIに、ソーシャル認証を追加する場合に有用です。
 
 ```php
-use Laravel\Socialite\Facades\Socialite;
+use Laravel\Socialite\Socialite;
 
 return Socialite::driver('google')->stateless()->user();
 ```

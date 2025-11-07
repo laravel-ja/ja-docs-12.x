@@ -98,6 +98,30 @@ return User::findOrFail($id)->toResource();
 
 `toResource`メソッドを呼び出すと、モデルの名前に一致し、オプションでモデルの名前空間に最も近い`Http\Resources`名前空間内の`Resource`という接尾辞が付いたリソースをLaravelは探します。
 
+リソースクラスがこの命名規則に従わない場合、もしくは別の名前空間にある場合は、`UseResource`属性を使用してモデルのデフォルトリソースを指定してください。
+
+```php
+<?php
+
+namespace App\Models;
+
+use App\Http\Resources\CustomUserResource;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\UseResource;
+
+#[UseResource(CustomUserResource::class)]
+class User extends Model
+{
+    // ...
+}
+```
+
+あるいは、`toResource`メソッドへリソースクラスを渡して指定してください。
+
+```php
+return User::findOrFail($id)->toResource(CustomUserResource::class);
+```
+
 <a name="resource-collections"></a>
 ### リソースコレクション
 
@@ -119,6 +143,30 @@ return User::all()->toResourceCollection();
 ```
 
 `toResourceCollection`メソッドを呼び出すと、モデルの名前空間に最も近い`Http\Resources`名前空間内で、モデルの名前に一致し、接尾辞が`Collection`であるリソースコレクションをLaravelは探します。
+
+リソースコレクションクラスがこの命名規則に従わない場合、もしくは別の名前空間にある場合は、`UseResourceCollection`属性を使用してモデルのデフォルトリソースコレクションを指定してください。
+
+```php
+<?php
+
+namespace App\Models;
+
+use App\Http\Resources\CustomUserCollection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\UseResourceCollection;
+
+#[UseResourceCollection(CustomUserCollection::class)]
+class User extends Model
+{
+    // ...
+}
+```
+
+あるいは、`toResourceCollection`メソッドにリソースコレクションクラスを渡し、そのクラスを指定してください。
+
+```php
+return User::all()->toResourceCollection(CustomUserCollection::class);
+```
 
 <a name="custom-resource-collections"></a>
 #### カスタムリソースコレクション

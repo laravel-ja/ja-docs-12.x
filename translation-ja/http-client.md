@@ -537,6 +537,14 @@ $responses = Http::pool(fn (Pool $pool) => [
 return $responses['first']->ok();
 ```
 
+リクエストプールの最大同時実行数は、`pool`メソッドへ`concurrency`引数を指定し制御できます。この値は、リクエストプールの処理中に同時送信するHTTPリクエストの最大数を決定します：
+
+```php
+$responses = Http::pool(fn (Pool $pool) => [
+    // ...
+], concurrency: 5);
+```
+
 <a name="customizing-concurrent-requests"></a>
 #### 現在のリクエストのカスタマイズ
 
@@ -597,6 +605,14 @@ $responses = Http::batch(fn (Batch $batch) => [
 ```
 
 `send`メソッドを呼び出して`batch`を開始した後は、新しいリクエストを追加できません。追加しようとすると、`Illuminate\Http\Client\BatchInProgressException`例外をなげます。
+
+リクエストバッチの最大同時実行数は、`concurrency`メソッドで制御します。この値は、リクエストバッチの処理中に同時送信するHTTPリクエストの最大数を決定します。
+
+```php
+$responses = Http::batch(fn (Batch $batch) => [
+    // ...
+])->concurrency(5)->send();
+```
 
 <a name="inspecting-batches"></a>
 #### バッチの調査

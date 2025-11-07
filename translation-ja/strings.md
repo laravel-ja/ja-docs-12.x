@@ -111,6 +111,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [Str::rtrim](#method-str-rtrim)
 [Str::ucfirst](#method-str-ucfirst)
 [Str::ucsplit](#method-str-ucsplit)
+[Str::ucwords](#method-str-ucwords)
 [Str::upper](#method-str-upper)
 [Str::ulid](#method-str-ulid)
 [Str::unwrap](#method-str-unwrap)
@@ -151,6 +152,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [decrypt](#method-fluent-str-decrypt)
 [deduplicate](#method-fluent-str-deduplicate)
 [dirname](#method-fluent-str-dirname)
+[doesntContain](#method-fluent-str-doesnt-contain)
 [doesntEndWith](#method-fluent-str-doesnt-end-with)
 [doesntStartWith](#method-fluent-str-doesnt-start-with)
 [encrypt](#method-fluent-str-encrypt)
@@ -224,6 +226,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [rtrim](#method-fluent-str-rtrim)
 [ucfirst](#method-fluent-str-ucfirst)
 [ucsplit](#method-fluent-str-ucsplit)
+[ucwords](#method-fluent-str-ucwords)
 [unwrap](#method-fluent-str-unwrap)
 [upper](#method-fluent-str-upper)
 [when](#method-fluent-str-when)
@@ -549,7 +552,7 @@ $doesntContain = Str::doesntContain('This is name', 'my');
 ```php
 use Illuminate\Support\Str;
 
-$doesntContain = Str::doesntContain('This is name', ['my', 'foo']);
+$doesntContain = Str::doesntContain('This is name', ['my', 'framework']);
 
 // true
 ```
@@ -1736,6 +1739,19 @@ $segments = Str::ucsplit('FooBar');
 // [0 => 'Foo', 1 => 'Bar']
 ```
 
+<a name="method-str-ucwords"></a>
+#### `Str::ucwords()` {.collection-method}
+
+`Str::ucwords`メソッドは、指定した文字列内の各単語の最初の文字を大文字に変換します。
+
+```php
+use Illuminate\Support\Str;
+
+$string = Str::ucwords('laravel framework');
+
+// Laravel Framework
+```
+
 <a name="method-str-upper"></a>
 #### `Str::upper()` {.collection-method}
 
@@ -2294,6 +2310,39 @@ use Illuminate\Support\Str;
 $string = Str::of('/foo/bar/baz')->dirname(2);
 
 // '/foo'
+```
+
+<a name="method-fluent-str-doesnt-contain"></a>
+#### `doesntContain()` {.collection-method}
+
+`doesntContain`メソッドは、指定し文字列が指定値を含まないことを判定します。このメソッドは[contains](#method-fluent-str-contains)メソッドの逆動作です。このメソッドはデフォルトで、大文字小文字を区別します。
+
+```php
+use Illuminate\Support\Str;
+
+$doesntContain = Str::of('This is name')->doesntContain('my');
+
+// true
+```
+
+また、配列の値を渡すことで、指定した文字列に配列内の値が含まれていないことを判定することもできます。
+
+```php
+use Illuminate\Support\Str;
+
+$doesntContain = Str::of('This is name')->doesntContain(['my', 'framework']);
+
+// true
+```
+
+`ignoreCase`引数を`true`に設定し、大文字小文字の区別を無効にできます。
+
+```php
+use Illuminate\Support\Str;
+
+$doesntContain = Str::of('This is my name')->doesntContain('MY', ignoreCase: true);
+
+// true
 ```
 
 <a name="method-fluent-str-doesnt-end-with"></a>
@@ -3306,6 +3355,16 @@ $result = Str::of('This is my name')->startsWith('This');
 // true
 ```
 
+また、配列の値を渡し、指定した文字列が配列内のいずれかの値で始まることを判定することもできます。
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->startsWith(['This', 'That']);
+
+// true
+```
+
 <a name="method-fluent-str-strip-tags"></a>
 #### `stripTags` {.collection-method}
 
@@ -3568,6 +3627,19 @@ use Illuminate\Support\Str;
 $string = Str::of('Foo Bar')->ucsplit();
 
 // collect(['Foo ', 'Bar'])
+```
+
+<a name="method-fluent-str-ucwords"></a>
+#### `ucwords` {.collection-method}
+
+`ucwords`メソッドは、指定した文字列内の各単語の最初の文字を大文字へ変換します。
+
+```php
+use Illuminate\Support\Str;
+
+$string = Str::of('laravel framework')->ucwords();
+
+// Laravel Framework
 ```
 
 <a name="method-fluent-str-unwrap"></a>

@@ -67,7 +67,7 @@ php artisan sail:install
 ```
 
 > [!WARNING]
-> Linux用のDocker Desktopを使用している場合は、`docker context use default`コマンドを実行して、`default` Dockerコンテキストを使用する必要があります。
+> Linux用のDocker Desktopを使用している場合は、`docker context use default`コマンドを実行して、`default` Dockerコンテキストを使用する必要があります。コンテナ内でファイルのアクセス権限エラーが発生した場合は、さらに`SUPERVISOR_PHP_USER`環境変数を`root`へ設定する必要があるでしょう。
 
 <a name="adding-additional-services"></a>
 #### サービスの追加

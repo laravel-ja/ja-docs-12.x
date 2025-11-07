@@ -81,10 +81,12 @@ $names = User::all()->reject(function (User $user) {
 [makeHidden](#method-makeHidden)
 [only](#method-only)
 [partition](#method-partition)
+[setAppends](#method-setAppends)
 [setVisible](#method-setVisible)
 [setHidden](#method-setHidden)
 [toQuery](#method-toquery)
 [unique](#method-unique)
+[withoutAppends](#method-withoutAppends)
 
 </div>
 
@@ -251,6 +253,15 @@ dump($partition[0]::class); // Illuminate\Database\Eloquent\Collection
 dump($partition[1]::class); // Illuminate\Database\Eloquent\Collection
 ```
 
+<a name="method-setAppends"></a>
+#### `setAppends($attributes)` {.collection-method}
+
+`setAppends`メソッドは、コレクション内の各モデルに対して、すべての[追加属性](/docs/{{version}}/eloquent-serialization#appending-values-to-json)を一時的に上書きします。
+
+```php
+$users = $users->setAppends(['is_admin']);
+```
+
 <a name="method-setVisible"></a>
 #### `setVisible($attributes)` {.collection-method}
 
@@ -291,6 +302,15 @@ $users->toQuery()->update([
 
 ```php
 $users = $users->unique();
+```
+
+<a name="method-withoutAppends"></a>
+#### `withoutAppends($attributes)` {.collection-method}
+
+`withoutAppends`メソッドは、コレクション内の各モデルから一時的に、すべての[追加属性](/docs/{{version}}/eloquent-serialization#appending-values-to-json)を削除します。
+
+```php
+$users = $users->withoutAppends();
 ```
 
 <a name="custom-collections"></a>

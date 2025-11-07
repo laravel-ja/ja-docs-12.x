@@ -111,6 +111,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [Str::rtrim](#method-str-rtrim)
 [Str::ucfirst](#method-str-ucfirst)
 [Str::ucsplit](#method-str-ucsplit)
+[Str::ucwords](#method-str-ucwords)
 [Str::upper](#method-str-upper)
 [Str::ulid](#method-str-ulid)
 [Str::unwrap](#method-str-unwrap)
@@ -151,6 +152,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [decrypt](#method-fluent-str-decrypt)
 [deduplicate](#method-fluent-str-deduplicate)
 [dirname](#method-fluent-str-dirname)
+[doesntContain](#method-fluent-str-doesnt-contain)
 [doesntEndWith](#method-fluent-str-doesnt-end-with)
 [doesntStartWith](#method-fluent-str-doesnt-start-with)
 [encrypt](#method-fluent-str-encrypt)
@@ -224,6 +226,7 @@ Laravel includes a variety of functions for manipulating string values. Many of 
 [rtrim](#method-fluent-str-rtrim)
 [ucfirst](#method-fluent-str-ucfirst)
 [ucsplit](#method-fluent-str-ucsplit)
+[ucwords](#method-fluent-str-ucwords)
 [unwrap](#method-fluent-str-unwrap)
 [upper](#method-fluent-str-upper)
 [when](#method-fluent-str-when)
@@ -549,7 +552,7 @@ You may also pass an array of values to determine if the given string doesn't co
 ```php
 use Illuminate\Support\Str;
 
-$doesntContain = Str::doesntContain('This is name', ['my', 'foo']);
+$doesntContain = Str::doesntContain('This is name', ['my', 'framework']);
 
 // true
 ```
@@ -1736,6 +1739,19 @@ $segments = Str::ucsplit('FooBar');
 // [0 => 'Foo', 1 => 'Bar']
 ```
 
+<a name="method-str-ucwords"></a>
+#### `Str::ucwords()` {.collection-method}
+
+The `Str::ucwords` method converts the first character of each word in the given string to uppercase:
+
+```php
+use Illuminate\Support\Str;
+
+$string = Str::ucwords('laravel framework');
+
+// Laravel Framework
+```
+
 <a name="method-str-upper"></a>
 #### `Str::upper()` {.collection-method}
 
@@ -2294,6 +2310,39 @@ use Illuminate\Support\Str;
 $string = Str::of('/foo/bar/baz')->dirname(2);
 
 // '/foo'
+```
+
+<a name="method-fluent-str-doesnt-contain"></a>
+#### `doesntContain()` {.collection-method}
+
+The `doesntContain` method determines if the given string does not contain the given value. This method is the inverse of the [contains](#method-fluent-str-contains) method. By default, this method is case sensitive:
+
+```php
+use Illuminate\Support\Str;
+
+$doesntContain = Str::of('This is name')->doesntContain('my');
+
+// true
+```
+
+You may also pass an array of values to determine if the given string does not contain any of the values in the array:
+
+```php
+use Illuminate\Support\Str;
+
+$doesntContain = Str::of('This is name')->doesntContain(['my', 'framework']);
+
+// true
+```
+
+You may disable case sensitivity by setting the `ignoreCase` argument to `true`:
+
+```php
+use Illuminate\Support\Str;
+
+$doesntContain = Str::of('This is my name')->doesntContain('MY', ignoreCase: true);
+
+// true
 ```
 
 <a name="method-fluent-str-doesnt-end-with"></a>
@@ -3306,6 +3355,16 @@ $result = Str::of('This is my name')->startsWith('This');
 // true
 ```
 
+You may also pass an array of values to determine if the given string starts with any of the values in the array:
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::of('This is my name')->startsWith(['This', 'That']);
+
+// true
+```
+
 <a name="method-fluent-str-strip-tags"></a>
 #### `stripTags` {.collection-method}
 
@@ -3568,6 +3627,19 @@ use Illuminate\Support\Str;
 $string = Str::of('Foo Bar')->ucsplit();
 
 // collect(['Foo ', 'Bar'])
+```
+
+<a name="method-fluent-str-ucwords"></a>
+#### `ucwords` {.collection-method}
+
+The `ucwords` method converts the first character of each word in the given string to uppercase:
+
+```php
+use Illuminate\Support\Str;
+
+$string = Str::of('laravel framework')->ucwords();
+
+// Laravel Framework
 ```
 
 <a name="method-fluent-str-unwrap"></a>

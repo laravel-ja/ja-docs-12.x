@@ -111,7 +111,7 @@ composer require symfony/postmark-mailer symfony/http-client
 
 ```php
 'postmark' => [
-    'token' => env('POSTMARK_TOKEN'),
+    'key' => env('POSTMARK_API_TOKEN'),
 ],
 ```
 
@@ -142,7 +142,7 @@ composer require resend/resend-php
 
 ```php
 'resend' => [
-    'key' => env('RESEND_KEY'),
+    'key' => env('RESEND_API_KEY'),
 ],
 ```
 

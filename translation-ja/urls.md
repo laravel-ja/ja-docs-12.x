@@ -74,7 +74,22 @@ echo url()->current();
 
 // クエリ文字列を含んだ現在のURL
 echo url()->full();
+```
 
+これらの各メソッドは、`URL`[ファサード](/docs/{{version}}/facades)経由でもアクセス可能です。
+
+```php
+use Illuminate\Support\Facades\URL;
+
+echo URL::current();
+```
+
+<a name="accessing-the-previous-url"></a>
+#### 以前のURLへのアクセス
+
+ユーザーが訪れた以前のURLを知ることは、時に有用です。以前のURLには、`url`ヘルパの`previous`と`previousPath`メソッドでアクセスできます。
+
+```php
 // 直前のリクエストの完全なURL
 echo url()->previous();
 
@@ -82,12 +97,22 @@ echo url()->previous();
 echo url()->previousPath();
 ```
 
-こうしたメソッドには、`URL`[ファサード](/docs/{{version}}/facades)を使用してもアクセスできます。
+あるいは、[セッション](/docs/{{version}}/session) を通じて、以前のURLへ[読み書きしやすい(fluent)URI](#fluent-uri-objects)インスタンスとしてもアクセスできます。
 
 ```php
-use Illuminate\Support\Facades\URL;
+use Illuminate\Http\Request;
 
-echo URL::current();
+Route::post('/users', function (Request $request) {
+    $previousUri = $request->session()->previousUri();
+
+    // ...
+});
+```
+
+セッションを介して、以前にアクセスしたURLのルート名を取得することも可能です。
+
+```php
+$previousRoute = $request->session()->previousRoute();
 ```
 
 <a name="urls-for-named-routes"></a>
@@ -243,7 +268,7 @@ $url = action([UserController::class, 'profile'], ['id' => 1]);
 <a name="fluent-uri-objects"></a>
 ## Fluent URIオブジェクト
 
-Laravelの`Uri`クラスは、オブジェクトを介してURIを作成・操作するための便利で流暢（Fluent）なインターフェイスを提供します。このクラスは、基盤のLeague URIパッケージが提供する機能をラップし、Laravelのルーティングシステムとシームレスに統合しています。
+Laravelの`Uri`クラスは、オブジェクトを介してURIを作成・操作するための便利で読み書きしやすい（Fluent）インターフェイスを提供します。このクラスは、基盤のLeague URIパッケージが提供する機能をラップし、Laravelのルーティングシステムとシームレスに統合しています。
 
 静的メソッドを使い、`Uri`インスタンスを簡単に作成できます。
 
@@ -265,6 +290,9 @@ $uri = Uri::action(InvokableController::class);
 
 // 現在のリクエストからURIインスタンスを生成
 $uri = $request->uri();
+
+// 以前のリクエストからURIインスタンスを生成
+$uri = $request->session()->previousUri();
 ```
 
 URIインスタンスを生成したら、スラスラと変更できます。

@@ -979,6 +979,12 @@ RecordDelivery::dispatch($order)->onConnection('deferred');
 
 `deferred`接続は、デフォルトの[フェイルオーバーキュー](#queue-failover)としても機能します。
 
+同様に、`background`接続は、HTTPレスポンスをユーザーへ送信した後にジョブを処理します。ただし、ジョブは別途起動されたPHPプロセス内で処理されるため、PHP-FPM／アプリケーションワーカは別の受信HTTPリクエストを処理するために利用可能です。
+
+```php
+RecordDelivery::dispatch($order)->onConnection('background');
+```
+
 <a name="jobs-and-database-transactions"></a>
 ### ジョブとデータベーストランザクション
 
@@ -1551,7 +1557,7 @@ php artisan queue:work database
 ```
 
 > [!NOTE]
-> `sync`または`deferred`キュードライバを使用する接続については、ワーカを実行する必要はありません。これらのドライバは現在の PHPプロセス内でジョブを処理するためです。
+> `sync`、`background`、`deferred`のキュードライバを使用する接続では、ワーカを実行する必要はありません。これらのドライバは現在のPHPプロセス内でジョブを処理するからです。
 
 キュー接続操作が失敗しフェイルオーバーが起動すると、Laravelは`Illuminate\Queue\Events\QueueFailedOver`イベントをディスパッチします。これにより、キュー接続の失敗を報告またはログに記録できます。
 

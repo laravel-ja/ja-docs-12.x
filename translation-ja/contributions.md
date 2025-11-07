@@ -28,6 +28,7 @@ LaravelのソースコードはGitHubで管理され、各Laravelプロジェク
 
 - [Laravelアプリケーション](https://github.com/laravel/laravel)
 - [Laravelアートワーク](https://github.com/laravel/art)
+- [Laravel Boost](https://github.com/laravel/boost)
 - [Laravelドキュメント](https://github.com/laravel/docs)
 - [Laravel Dusk](https://github.com/laravel/dusk)
 - [Laravel Cashier Stripe](https://github.com/laravel/cashier)

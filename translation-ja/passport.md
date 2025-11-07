@@ -848,6 +848,7 @@ namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Passport\Bridge\Client;
 use Laravel\Passport\Contracts\OAuthenticatable;
 use Laravel\Passport\HasApiTokens;
 
@@ -858,7 +859,7 @@ class User extends Authenticatable implements OAuthenticatable
     /**
      * 指定ユーザー名に対応するユーザーインスタンスを検索
      */
-    public function findForPassport(string $username): User
+    public function findForPassport(string $username, Client $client): User
     {
         return $this->where('username', $username)->first();
     }

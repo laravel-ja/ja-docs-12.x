@@ -851,7 +851,7 @@ use Illuminate\Support\Facades\RateLimiter;
 /**
  * アプリケーションの全サービスの初期起動処理
  */
-protected function boot(): void
+public function boot(): void
 {
     RateLimiter::for('api', function (Request $request) {
         return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
@@ -869,7 +869,7 @@ use Illuminate\Support\Facades\RateLimiter;
 /**
  * アプリケーションの全サービスの初期起動処理
  */
-protected function boot(): void
+public function boot(): void
 {
     RateLimiter::for('global', function (Request $request) {
         return Limit::perMinute(1000);
