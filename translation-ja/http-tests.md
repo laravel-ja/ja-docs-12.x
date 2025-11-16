@@ -12,6 +12,7 @@
 - [ファイルアップロードのテスト](#testing-file-uploads)
 - [ビューのテスト](#testing-views)
     - [Bladeとコンポーネントのレンダ](#rendering-blade-and-components)
+- [ルートのキャッシュ](#caching-routes)
 - [利用可能なアサート](#available-assertions)
     - [レスポンスのアサート](#response-assertions)
     - [認証のアサート](#authentication-assertions)
@@ -936,6 +937,51 @@ $view->assertSee('Taylor');
 $view = $this->component(Profile::class, ['name' => 'Taylor']);
 
 $view->assertSee('Taylor');
+```
+
+<a name="caching-routes"></a>
+## ルートのキャッシュ
+
+テストを実行する前に、Laravelはアプリケーションの新しいインスタンスを起動し、定義済みのルートをすべて収集します。アプリケーションに多くのルートファイルがある場合、テストケースに`Illuminate\Foundation\Testing\WithCachedRoutes`トレイトを追加することをお勧めします。このトレイトを使用するテストでは、ルートは一度構築後メモリに保存するため、ルート収集プロセスをテストスイート内のすべてのテストに対して一度だけ実行します。
+
+```php tab=Pest
+<?php
+
+use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Testing\WithCachedRoutes;
+
+pest()->use(WithCachedRoutes::class);
+
+test('basic example', function () {
+    $this->get(action([UserController::class, 'index']));
+
+    // …
+});
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use App\Http\Controllers\UserController;
+use Illuminate\Foundation\Testing\WithCachedRoutes;
+use Tests\TestCase;
+
+class BasicTest extends TestCase
+{
+    use WithCachedRoutes;
+
+    /**
+     * 基本的な機能テストの例
+     */
+    public function test_basic_example(): void
+    {
+        $response = $this->get(action([UserController::class, 'index']));
+
+        // …
+    }
+}
 ```
 
 <a name="available-assertions"></a>

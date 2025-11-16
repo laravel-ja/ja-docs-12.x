@@ -777,7 +777,15 @@ class ServerCreated implements ShouldBroadcast, ShouldDispatchAfterCommit
 
 プライベートチャンネルでは、現在認証済みのユーザーが、実際にチャンネルをリッスンできることを認証する必要があります。これは、チャンネル名を指定してLaravelアプリケーションにHTTPリクエストを行い、ユーザーがそのチャンネルをリッスンできるかどうかをアプリケーション側が判断することで実現します。[Laravel Echo](#client-side-installation)を使用すると、プライベートチャンネルのサブスクリプションを承認するHTTPリクエストが自動的に行われます。
 
-ブロードキャストを有効になると、Laravelは認証リクエストを処理するため、`/broadcasting/auth`ルートを自動的に登録します。`/broadcasting/auth`ルートは自動的に、`web`ミドルウェアグループへ配置します
+ブロードキャストをインストールすると、Laravelは認証リクエストを処理するために`/broadcasting/auth`ルートを自動的に登録しようと試みます。Laravelがこれらのルートを自動登録できない場合、アプリケーションの`/bootstrap/app.php`ファイルへ手作業で登録してください。
+
+```php
+->withRouting(
+    web: __DIR__.'/../routes/web.php',
+    channels: __DIR__.'/../routes/channels.php',
+    health: '/up',
+)
+```
 
 <a name="defining-authorization-callbacks"></a>
 ### 認可コールバックの定義

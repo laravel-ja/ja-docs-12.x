@@ -7,6 +7,7 @@
     - [テストを並列で実行](#running-tests-in-parallel)
     - [テストカバレージのレポート](#reporting-test-coverage)
     - [テストのプロファイル](#profiling-tests)
+- [設定のキャッシュ](#caching-configuration)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -220,4 +221,35 @@ Artisanテストランナは、アプリケーションの最も遅いテスト�
 
 ```shell
 php artisan test --profile
+```
+
+<a name="configuration-caching"></a>
+## 設定のキャッシュ
+
+テストを実行する際、Laravelは個々のテストメソッドごとにアプリケーションを起動します。キャッシュした設定ファイルがない場合、アプリケーション内の各設定ファイルをテスト開始時に読み込む必要が起こります。設定を一度構築し、単一の実行内の全テストで再利用するには、`Illuminate\Foundation\Testing\WithCachedConfig`トレイトを使用してください。
+
+```php tab=Pest
+<?php
+
+use Illuminate\Foundation\Testing\WithCachedConfig;
+
+pest()->use(WithCachedConfig::class);
+
+// ...
+```
+
+```php tab=PHPUnit
+<?php
+
+namespace Tests\Feature;
+
+use Illuminate\Foundation\Testing\WithCachedConfig;
+use Tests\TestCase;
+
+class ConfigTest extends TestCase
+{
+    use WithCachedConfig;
+
+    // ...
+}
 ```

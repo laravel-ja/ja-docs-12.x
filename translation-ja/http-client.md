@@ -397,17 +397,17 @@ return Http::post(/* ... */)->throw(function (Response $response, RequestExcepti
 })->json();
 ```
 
-`RequestException`のメッセージはログに記録したり、報告したりするとき、デフォルトで120文字に切り詰めます。この動作をカスタマイズ、もしくは無効にするには、`bootstrap/app.php`ファイルでアプリケーションの例外処理動作を設定するときに、`truncateRequestExceptionsAt`メソッドと`dontTruncateRequestExceptions`メソッドを利用してください。
+`RequestException`メッセージは、ログ記録または報告時にデフォルトで１２０文字に切り詰められます。この動作をカスタマイズまたは無効化するには、`bootstrap/app.php`ファイルでアプリケーションの登録済み動作を設定する際に、`truncateAt`および`dontTruncate`メソッドを利用してください。
 
 ```php
-use Illuminate\Foundation\Configuration\Exceptions;
+use Illuminate\Http\Client\RequestException;
 
-->withExceptions(function (Exceptions $exceptions): void {
+->registered(function (): void {
     // リクエストの例外メッセージを240文字に切り詰める
-    $exceptions->truncateRequestExceptionsAt(240);
+    RequestException::truncateAt(240);
 
     // リクエストの例外メッセージの切り詰めを無効にする
-    $exceptions->dontTruncateRequestExceptions();
+    RequestException::dontTruncate();
 })
 ```
 
