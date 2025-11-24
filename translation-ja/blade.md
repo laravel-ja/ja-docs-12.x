@@ -1855,6 +1855,16 @@ Bladeを使用すると、別のビューまたはレイアウトのどこか別
 @endprepend
 ```
 
+`@hasstack`ディレクティブは、スタックが空かを判断するために使用します。
+
+```blade
+@hasstack('list')
+    <ul>
+        @stack('list')
+    </ul>
+@endif
+```
+
 <a name="service-injection"></a>
 ## サービス注入
 

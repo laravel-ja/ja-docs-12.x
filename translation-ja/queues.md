@@ -890,7 +890,7 @@ ProcessPodcast::dispatchIf($accountActive, $podcast);
 ProcessPodcast::dispatchUnless($accountSuspended, $podcast);
 ```
 
-新しいLaravelアプリケーションでは、`database`ドライバがデフォルトのキュードライバです。アプリケーションの`config/queue.php`設定ファイル内で、別のキュードライバを指定できます。
+新しいLaravelアプリケーションでは、`database`接続をデフォルトキューとして定義しています。アプリケーションの`.env`ファイルで、`QUEUE_CONNECTION`環境変数を変更し、デフォルトキュー接続を他へ指定します。
 
 <a name="delayed-dispatching"></a>
 ### ディスパッチの遅延

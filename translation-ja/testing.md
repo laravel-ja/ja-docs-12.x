@@ -7,7 +7,7 @@
     - [テストを並列で実行](#running-tests-in-parallel)
     - [テストカバレージのレポート](#reporting-test-coverage)
     - [テストのプロファイル](#profiling-tests)
-- [設定のキャッシュ](#caching-configuration)
+- [設定のキャッシュ](#configuration-caching)
 
 <a name="introduction"></a>
 ## イントロダクション

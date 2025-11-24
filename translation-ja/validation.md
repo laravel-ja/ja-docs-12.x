@@ -1075,6 +1075,7 @@ The credit card number field is required when payment type is credit card.
 
 [範囲](#rule-between)
 [寸法](#rule-dimensions)
+[エンコード](#rule-encoding)
 [拡張子](#rule-extensions)
 [ファイル](#rule-file)
 [イメージ](#rule-image)
@@ -1574,6 +1575,24 @@ $request->validate([
 
 > [!WARNING]
 > `dns`および`spoof`バリデータには、PHPの`intl`拡張が必要です。
+
+<a name="rule-encoding"></a>
+#### エンコード:*エンコードタイプ*
+
+フィールドが指定文字エンコードと一致することをバリデートします。このルールはPHPの`mb_check_encoding`関数を使用して、指定ファイルや文字列値のエンコードをバリデートします。使いやすくするため、`encoding`ルールはLaravelのFluentファイルルールビルダを使用して構築できます。
+
+```php
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rules\File;
+
+Validator::validate($input, [
+    'attachment' => [
+        'required',
+        File::types(['csv'])
+            ->encoding('utf-8'),
+    ],
+]);
+```
 
 <a name="rule-ends-with"></a>
 #### ends_with:_foo_,_bar_,...

@@ -16,7 +16,7 @@
 <a name="introduction"></a>
 ## イントロダクション
 
-Laravel Precognition（プリコグニション：予知）により、将来のHTTPリクエストの結果を予測できます。Precognitionの主な使用例の１つは、アプリケーションのバックエンドのバリデーションルールを複製せずとも、フロントエンドのJavaScriptアプリケーションの「ライブ」バリデーションを提供する能力です。Precognitionは、LaravelのInertiaベースの[スターターキット](/docs/{{version}}/starter-kits)と特に相性がよいです。
+Laravel Precognition（プリコグニション：予知）により、将来のHTTPリクエストの結果を予測できます。Precognitionの主な使用例の１つは、アプリケーションのバックエンドのバリデーションルールを複製せずとも、フロントエンドのJavaScriptアプリケーションの「ライブ」バリデーションを提供する能力です。
 
 Laravelが「事前認識型リクエスト」を受け取ると、ルートのミドルウェアをすべて実行し、[フォームリクエスト](/docs/{{version}}/validation#form-request-validation)のバリデーションを含む、ルートのコントローラの依存解決を行いますが、実際にはルートのコントローラメソッドを実行しません。
 

@@ -29,6 +29,7 @@
     - [リソースの依存注入](#resource-dependency-injection)
     - [条件付きリソース登録](#conditional-resource-registration)
     - [リソースのレスポンス](#resource-responses)
+- [メタデータ](#metadata)
 - [認証](#authentication)
     - [OAuth 2.1](#oauth)
     - [Sanctum](#sanctum)
@@ -1114,6 +1115,63 @@ class WeatherGuidelinesResource extends Resource
 
 ```php
 return Response::error('Unable to fetch weather data for the specified location.');
+```
+
+<a name="metadata"></a>
+## メタデータ
+
+Laravel MCPは、特定のMCPクライアントや統合で必要となる[MCP仕様](https://modelcontextprotocol.io/specification/2025-06-18/basic#meta)で定義されている`_meta`フィールドもサポートしています。メタデータは、ツール、リソース、プロンプトといった全てのMCPプリミティブ、およびそれらのレスポンスに適用できます。
+
+個々のレスポンスコンテンツにメタデータを添付するには、`withMeta`メソッドを使用します。
+
+```php
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+
+/**
+ * ツールリクエストの処理
+ */
+public function handle(Request $request): Response
+{
+    return Response::text('The weather is sunny.')
+        ->withMeta(['source' => 'weather-api', 'cached' => true]);
+}
+```
+
+レスポンスエンベロープ全体に適用する結果レベルのメタデータは、レスポンスを`Response::make`でラップし、返ってきたレスポンスファクトリインスタンスで`withMeta`を呼び出します。
+
+```php
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\ResponseFactory;
+
+/**
+ * ツールリクエストの処理
+ */
+public function handle(Request $request): ResponseFactory
+{
+    return Response::make(
+        Response::text('The weather is sunny.')
+    )->withMeta(['request_id' => '12345']);
+}
+```
+
+ツール、リソース、またはプロンプト自体にメタデータを添付するには、クラスへ`$meta`プロパティを定義します。
+
+```php
+use Laravel\Mcp\Server\Tool;
+
+class CurrentWeatherTool extends Tool
+{
+    protected string $description = 'Fetches the current weather forecast.';
+
+    protected ?array $meta = [
+        'version' => '2.0',
+        'author' => 'Weather Team',
+    ];
+
+    // ...
+}
 ```
 
 <a name="authentication"></a>

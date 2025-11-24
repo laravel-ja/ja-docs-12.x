@@ -139,46 +139,47 @@ Schedule::exec('node /home/forge/script.js')->daily();
 
 <div class="overflow-auto">
 
-| メソッド                           | 説明                                   |
-| ---------------------------------- | -------------------------------------- |
+| メソッド                             | 説明                            |
+| ---------------------------------- | ------------------------------ |
 | `->cron('* * * * *');`             | カスタムcronスケジュールでタスクを実行 |
-| `->everySecond();`                 | 毎秒タスク実行                         |
-| `->everyTwoSeconds();`             | ２秒毎にタスク実行                     |
-| `->everyFiveSeconds();`            | ５秒毎にタスク実行                     |
-| `->everyTenSeconds();`             | １０秒ごとにタスク実行                 |
-| `->everyFifteenSeconds();`         | １５秒毎にタスク実行                   |
-| `->everyTwentySeconds();`          | ２０秒ごとにタスク実行                 |
-| `->everyThirtySeconds();`          | ３０秒ごとにタスク実行                 |
-| `->everyMinute();`                 | 毎分タスク実行                         |
-| `->everyTwoMinutes();`             | ２分毎にタスク実行                     |
-| `->everyThreeMinutes();`           | ３分毎にタスク実行                     |
-| `->everyFourMinutes();`            | ４分毎にタスク実行                     |
-| `->everyFiveMinutes();`            | ５分毎にタスク実行                     |
-| `->everyTenMinutes();`             | １０分毎にタスク実行                   |
-| `->everyFifteenMinutes();`         | １５分毎にタスク実行                   |
-| `->everyThirtyMinutes();`          | ３０分毎にタスク実行                   |
-| `->hourly();`                      | 毎時タスク実行                         |
+| `->everySecond();`                 | 毎秒タスク実行                    |
+| `->everyTwoSeconds();`             | ２秒毎にタスク実行                 |
+| `->everyFiveSeconds();`            | ５秒毎にタスク実行                 |
+| `->everyTenSeconds();`             | １０秒ごとにタスク実行              |
+| `->everyFifteenSeconds();`         | １５秒毎にタスク実行                |
+| `->everyTwentySeconds();`          | ２０秒ごとにタスク実行              |
+| `->everyThirtySeconds();`          | ３０秒ごとにタスク実行              |
+| `->everyMinute();`                 | 毎分タスク実行                    |
+| `->everyTwoMinutes();`             | ２分毎にタスク実行                 |
+| `->everyThreeMinutes();`           | ３分毎にタスク実行                 |
+| `->everyFourMinutes();`            | ４分毎にタスク実行                 |
+| `->everyFiveMinutes();`            | ５分毎にタスク実行                 |
+| `->everyTenMinutes();`             | １０分毎にタスク実行                |
+| `->everyFifteenMinutes();`         | １５分毎にタスク実行                |
+| `->everyThirtyMinutes();`          | ３０分毎にタスク実行                |
+| `->hourly();`                      | 毎時タスク実行                    |
 | `->hourlyAt(17);`                  | １時間ごと、毎時１７分にタスク実行     |
-| `->everyOddHour($minutes = 0);`    | 奇数時間ごとにタスク実行               |
-| `->everyTwoHours($minutes = 0);`   | ２時間毎にタスク実行                   |
-| `->everyThreeHours($minutes = 0);` | ３時間毎にタスク実行                   |
-| `->everyFourHours($minutes = 0);`  | ４時間毎にタスク実行                   |
-| `->everySixHours($minutes = 0);`   | ６時間毎にタスク実行                   |
-| `->daily();`                       | 毎日深夜１２時に実行                   |
-| `->dailyAt('13:00');`              | 毎日13:00に実行                        |
-| `->twiceDaily(1, 13);`             | 毎日1:00と13:00に実行                  |
-| `->twiceDailyAt(1, 13, 15);`       | 毎日1:15と13:15に実行                  |
-| `->weekly();`                      | 毎週日曜日の00:00にタスク実行          |
-| `->weeklyOn(1, '8:00');`           | 毎週月曜日の8:00に実行                 |
-| `->monthly();`                     | 毎月１日の00:00にタスク実行            |
-| `->monthlyOn(4, '15:00');`         | 毎月4日の15:00に実行                   |
-| `->twiceMonthly(1, 16, '13:00');`  | 毎月１日と１６日の13:00にタスク実行    |
-| `->lastDayOfMonth('15:00');`       | 毎月最終日の15:00に実行                |
-| `->quarterly();`                   | 四半期の初日の00:00にタスク実行        |
-| `->quarterlyOn(4, '14:00');`       | 四半期の４日の14:00に実行              |
-| `->yearly();`                      | 毎年１月１日の00:00にタスク実行        |
-| `->yearlyOn(6, 1, '17:00');`       | 毎年６月１日の17:00にタスク実行        |
-| `->timezone('America/New_York');`  | タスクのタイムゾーンを設定             |
+| `->everyOddHour($minutes = 0);`    | 奇数時間ごとにタスク実行             |
+| `->everyTwoHours($minutes = 0);`   | ２時間毎にタスク実行                |
+| `->everyThreeHours($minutes = 0);` | ３時間毎にタスク実行                |
+| `->everyFourHours($minutes = 0);`  | ４時間毎にタスク実行                |
+| `->everySixHours($minutes = 0);`   | ６時間毎にタスク実行                |
+| `->daily();`                       | 毎日深夜１２時に実行                |
+| `->dailyAt('13:00');`              | 毎日13:00に実行                  |
+| `->twiceDaily(1, 13);`             | 毎日1:00と13:00に実行             |
+| `->twiceDailyAt(1, 13, 15);`       | 毎日1:15と13:15に実行             |
+| `->daysOfMonth([1, 10, 20]);`      | 毎月の指定日にタスク実行             |
+| `->weekly();`                      | 毎週日曜日の00:00にタスク実行        |
+| `->weeklyOn(1, '8:00');`           | 毎週月曜日の8:00に実行             |
+| `->monthly();`                     | 毎月１日の00:00にタスク実行         |
+| `->monthlyOn(4, '15:00');`         | 毎月4日の15:00に実行              |
+| `->twiceMonthly(1, 16, '13:00');`  | 毎月１日と１６日の13:00にタスク実行   |
+| `->lastDayOfMonth('15:00');`       | 毎月最終日の15:00に実行            |
+| `->quarterly();`                   | 四半期の初日の00:00にタスク実行      |
+| `->quarterlyOn(4, '14:00');`       | 四半期の４日の14:00に実行           |
+| `->yearly();`                      | 毎年１月１日の00:00にタスク実行      |
+| `->yearlyOn(6, 1, '17:00');`       | 毎年６月１日の17:00にタスク実行      |
+| `->timezone('America/New_York');`  | タスクのタイムゾーンを設定           |
 
 </div>
 
