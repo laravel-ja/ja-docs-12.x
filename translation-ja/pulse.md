@@ -650,31 +650,24 @@ class TopSellers extends Card
 <a name="custom-card-styling-tailwind"></a>
 #### Tailwind CSS
 
-Tailwind CSSを使用する場合は、不要なCSSを読み込んだり、PulseのTailwindクラスと競合しないように、専用のTailwind設定ファイルを作成する必要があります。
-
-```js
-export default {
-    darkMode: 'class',
-    important: '#top-sellers',
-    content: [
-        './resources/views/livewire/pulse/top-sellers.blade.php',
-    ],
-    corePlugins: {
-        preflight: false,
-    },
-};
-```
-
-それから、CSSエントリーポイントに設定ファイルを指定します。
+Tailwind CSSを使用する際は、専用のCSSエントリポイントを作成する必要があります。以下の例では、Pulseによりあらかじめ組み込まれているTailwindの[Preflight](https://tailwindcss.com/docs/preflight)ベーススタイルを除外し、PulseのTailwindクラスとの競合を避けるためCSSセレクタを使用してTailwindをスコープ化しています。
 
 ```css
-@config "../../tailwind.top-sellers.config.js";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/theme.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+@source "./../../views/livewire/pulse/top-sellers.blade.php";
+
+@theme {
+  /* ... */
+}
+
+#top-sellers {
+  @import "tailwindcss/utilities.css" source(none);
+}
 ```
 
-また、カードのビューに、Tailwindの[importantセレクタ戦略](https://tailwindcss.com/docs/configuration#selector-strategy)へ渡したセレクタにマッチする`id`属性または`class`属性を含める必要があります。
+また、カードビューに`id`または`class`属性を追加し、エントリポイントのCSSセレクタと一致させる必要があります：
 
 ```blade
 <x-pulse::card id="top-sellers" :cols="$cols" :rows="$rows" class="$class">

@@ -10,7 +10,11 @@
     - [React](#react-customization)
     - [Vue](#vue-customization)
     - [Livewire](#livewire-customization)
-- [2要素認証](#two-factor-authentication)
+- [認証](#authentication)
+    - [機能の有効化と無効化](#enabling-and-disabling-features)
+    - [ユーザー生成とパスワードリセットのカスタマイズ](#customizing-actions)
+    - [2要素認証](#two-factor-authentication)
+    - [レート制限](#rate-limiting)
 - [WorkOS AuthKit認証](#workos)
 - [Inertia SSR](#inertia-ssr)
 - [コミュニティが保守するスターターキット](#community-maintained-starter-kits)
@@ -270,18 +274,106 @@ Livewireスターターキットに含まれている、ログインページや
 </x-layouts.auth.split>
 ```
 
-<a name="two-factor-authentication"></a>
-## 2要素認証
+<a name="authentication"></a>
+## 認証
 
-すべてのスターターキットには、[Laravel Fortify](/docs/{{version}}/fortify#two-factor-authentication)による組み込みの２要素認証（2FA）が含まれており、ユーザーアカウントへ追加のセキュリティ層を提供します。ユーザーは、認証アプリをサポートする任意のタイムベースワンタイムパスワード（TOTP）を使用してアカウントを保護できます。
+すべてのスターターキットは、認証処理に[Laravel Fortify](/docs/{{version}}/fortify)を使用しています。Fortifyは、ログイン、登録、パスワードリセット、メール認証などのためのルート、コントローラ、ロジックを提供します。
 
-二要素認証はデフォルトで有効化しており、[Fortify](/docs/{{version}}/fortify#two-factor-authentication)が提供しているすべてのオプションをサポートします。
+Fortifyは、アプリケーションの`config/fortify.php`設定ファイルで有効化してある機能に基づき、以下の認証ルートを自動的に登録します。
+
+| ルート                              | メソッド   | 説明                                 |
+| ---------------------------------- | ------   | ----------------------------------- |
+| `/login`                           | `GET`    | ログインフォーム表示                     |
+| `/login`                           | `POST`   | ユーザー認証                           |
+| `/logout`                          | `POST`   | ユーザーログアウト                       |
+| `/register`                        | `GET`    | 登録フォーム表示                        |
+| `/register`                        | `POST`   | 新しいユーザー登録                       |
+| `/forgot-password`                 | `GET`    | パスワードリクエスト要求フォーム表示         |
+| `/forgot-password`                 | `POST`   | パスワードリセットリンク送信               |
+| `/reset-password/{token}`          | `GET`    | パスワードリセットフォーム表示              |
+| `/reset-password`                  | `POST`   | パスワード更新                          |
+| `/email/verify`                    | `GET`    | メール認証通知の表示                     |
+| `/email/verify/{id}/{hash}`        | `GET`    | メールアドレス確認                       |
+| `/email/verification-notification` | `POST`   | 確認メール送信                          |
+| `/user/confirm-password`           | `GET`    | パスワード確認フォーム表示                 |
+| `/user/confirm-password`           | `POST`   | パスワード確認                          |
+| `/two-factor-challenge`            | `GET`    | ２要素挑戦フォーム表示                    |
+| `/two-factor-challenge`            | `POST`   | ２要素コード確認                        |
+
+`php artisan route:list` Artisanコマンドを使用すると、アプリケーション内のすべてのルートを表示できます。
+
+<a name="enabling-and-disabling-features"></a>
+### 機能の有効化と無効化
+
+アプリケーションの `config/fortify.php` 設定ファイルで、有効にするFortify機能を制御できます。
 
 ```php
-Features::twoFactorAuthentication([
-    'confirm' => true,
-    'confirmPassword' => true,
-]);
+use Laravel\Fortify\Features;
+
+'features' => [
+    Features::registration(),
+    Features::resetPasswords(),
+    Features::emailVerification(),
+    Features::twoFactorAuthentication([
+        'confirm' => true,
+        'confirmPassword' => true,
+    ]),
+],
+```
+
+機能を無効化したい場合は、`features`配列から該当する機能エントリをコメントアウトするか削除してください。例えば、登録の公開を無効化するには`Features::registration()`を削除します。
+
+<a name="customizing-actions"></a>
+### ユーザー生成とパスワードリセットのカスタマイズ
+
+ユーザーが登録またはパスワードをリセットすると、Fortifyはアプリケーションの`app/Actions/Fortify`ディレクトリにあるアクションクラスを呼び出します：
+
+| ファイル                        | 説明                                   |
+| ----------------------------- | ------------------------------------- |
+| `CreateNewUser.php`           | 新しいユーザーの確認と登録                  |
+| `ResetUserPassword.php`       | ユーザーパスワードの確認と登録               |
+| `PasswordValidationRules.php` | パスワード確認ルールの定義                  |
+
+たとえば、アプリケーションの登録ロジックをカスタマイズするには、`CreateNewUser`アクションを編集する必要があります:
+
+```php
+public function create(array $input): User
+{
+    Validator::make($input, [
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'email', 'max:255', 'unique:users'],
+        'phone' => ['required', 'string', 'max:20'], // [tl! add]
+        'password' => $this->passwordRules(),
+    ])->validate();
+
+    return User::create([
+        'name' => $input['name'],
+        'email' => $input['email'],
+        'phone' => $input['phone'], // [tl! add]
+        'password' => Hash::make($input['password']),
+    ]);
+}
+```
+
+<a name="two-factor-authentication"></a>
+### 2要素認証
+
+スターターキットには組み込みの２要素認証（2FA）が含まれており、ユーザーは任意のTOTP互換認証アプリを使用してアカウントを保護できます。2FAは、アプリケーションの`config/fortify.php`設定ファイル内の`Features::twoFactorAuthentication()`によってデフォルトで有効化されています。
+
+`confirm` オプションは、2FA が完全に有効になる前にユーザーがコードを確認することを要求します。一方、`confirmPassword`は、2FAの有効化または無効化前にパスワードの確認を要求します。詳細については、[Fortify の二要素認証ドキュメント](/docs/{{version}}/fortify#two-factor-authentication)を参照してください。
+
+<a name="rate-limiting"></a>
+### レート制限
+
+レート制限は、認証エンドポイントへのブルートフォース攻撃や繰り返しのログイン試行による過負荷を防止します。アプリケーションの`FortifyServiceProvider`でFortifyのレート制限動作をカスタマイズできます。
+
+```php
+use Illuminate\Support\Facades\RateLimiter;
+use Illuminate\Cache\RateLimiting\Limit;
+
+RateLimiter::for('login', function ($request) {
+    return Limit::perMinute(5)->by($request->email.$request->ip());
+});
 ```
 
 <a name="workos"></a>

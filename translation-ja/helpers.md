@@ -4,7 +4,7 @@
 - [使用可能なメソッド](#available-methods)
 - [その他のユーティリティ](#other-utilities)
     - [ベンチマーク](#benchmarking)
-    - [日付](#dates)
+    - [日付と時間](#dates)
     - [遅延関数](#deferred-functions)
     - [抽選](#lottery)
     - [パイプライン](#pipeline)
@@ -3194,7 +3194,7 @@ Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
 ```
 
 <a name="dates"></a>
-### 日付
+### 日付と時間
 
 Laravelは、強力な日付と時間の操作ライブラリである[Carbon](https://carbon.nesbot.com/docs/)を含んでいます。新しい`Carbon`インスタンスを作成するには、`now`関数を呼び出してください。この関数はLaravelアプリケーション内でグローバルに利用可能です。
 
@@ -3210,7 +3210,32 @@ use Illuminate\Support\Carbon;
 $now = Carbon::now();
 ```
 
+Laravelは`Carbon`インスタンスを`plus`および`minus`メソッドで拡張しており、インスタンスの日時を簡単に操作できるようになっています。
+
+```php
+return now()->plus(minutes: 5);
+return now()->plus(hours: 8);
+return now()->plus(weeks: 4);
+
+return now()->minus(minutes: 5);
+return now()->minus(hours: 8);
+return now()->minus(weeks: 4);
+```
+
 Carbonの概要や特徴については、[Carbon公式ドキュメント](https://carbon.nesbot.com/docs/)を参照してください。
+
+<a name="interval-functions"></a>
+#### インターバル関数
+
+LaravelはPHPの[DateInterval](https://www.php.net/manual/en/class.dateinterval.php)クラスを拡張した`CarbonInterval`インスタンスを返す、`seconds`、`minutes`、`hours`、`days`、`years`関数も提供しています。これらの関数は、LaravelがDateIntervalインスタンスを受け付けるあらゆる場所で使用できます。
+
+```php
+use Illuminate\Support\Facades\Cache;
+
+use function Illuminate\Support\{minutes};
+
+Cache::put('metrics', $metrics, minutes(10));
+```
 
 <a name="deferred-functions"></a>
 ### 遅延関数

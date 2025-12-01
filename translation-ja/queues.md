@@ -39,6 +39,7 @@
     - [キューの優先度](#queue-priorities)
     - [キューワーカと開発](#queue-workers-and-deployment)
     - [ジョブの有効期限とタイムアウト](#job-expirations-and-timeouts)
+    - [キューワーカの停止と再開](#pausing-and-resuming-queue-workers)
 - [Supervisor設定](#supervisor-configuration)
 - [失敗したジョブの処理](#dealing-with-failed-jobs)
     - [ジョブ失敗の後片付け](#cleaning-up-after-failed-jobs)
@@ -1561,7 +1562,7 @@ php artisan queue:work database
 
 キュー接続操作が失敗しフェイルオーバーが起動すると、Laravelは`Illuminate\Queue\Events\QueueFailedOver`イベントをディスパッチします。これにより、キュー接続の失敗を報告またはログに記録できます。
 
-> [!TIP]
+> [!NOTE]
 > Laravel Horizonを使用する場合、Horizonが管理するのはRedisキューのみであることに注意してください。フェイルオーバーリストに`database`が含まれている場合は、Horizonと並行して通常の`php artisan queue:work database`プロセスを実行する必要があります。
 
 <a name="error-handling"></a>
@@ -2290,6 +2291,27 @@ php artisan queue:work --timeout=60
 
 > [!WARNING]
 > `--timeout`値は、常に`retry_after`設定値より少なくとも数秒短くする必要があります。これにより、フリーズしたジョブを処理しているワーカは、ジョブが再試行される前に常に終了します。`--timeout`オプションが`retry_after`設定値よりも長い場合、ジョブは２回処理される可能性があります。
+
+<a name="pausing-and-resuming-queue-workers"></a>
+### キューワーカの停止と再開
+
+キューワーカを完全に停止させることなく、一時的に新しいジョブの処理を停止させる必要がある場合があります。例えば、システムメンテナンス中にジョブの処理を一時停止したい場合などです。Laravelはキューワーカを一時停止および再開するために、`queue:pause`と`queue:continue` Artisanコマンドを提供しています。
+
+特定のキューを一時停止する場合は、キュー接続名とキュー名を指定してください。
+
+```shell
+php artisan queue:pause database:default
+```
+
+この例で、`database`はキュー接続名であり、`default`はキュー名です。キューを一時停止すると、そのキューの処理中のジョブを実行しているワーカは現在のジョブを完了まで処理し続けますが、キューを再開するまで新しいジョブを取得しません。
+
+一時停止中のキューでジョブの処理を再開するには、`queue:continue`コマンドを使用します。
+
+```shell
+php artisan queue:continue database:default
+```
+
+キューを再開すると、ワーカは即座にそのキューからの新しいジョブの処理を開始します。キューの一時停止はワーカプロセス自体を停止させるものではなく、指定されたキューからの新しいジョブの処理のみを停止させることに注意してください。
 
 <a name="supervisor-configuration"></a>
 ## Supervisor設定
