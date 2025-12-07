@@ -11,6 +11,7 @@
     - [イベントのキャッシュ](#caching-events)
     - [ルートのキャッシュ](#optimizing-route-loading)
     - [ビューのキャッシュ](#optimizing-view-loading)
+- [サービスのリロード](#reloading-services)
 - [デバッグモード](#debug-mode)
 - [ヘルスルート](#the-health-route)
 - [Laravel CloudやForgeを使用するデプロイ](#deploying-with-cloud-or-forge)
@@ -167,6 +168,20 @@ php artisan view:cache
 ```
 
 このコマンドは全Bladeビューを事前にコンパイルし、要求ごとにコンパイルしなくて済むため、ビューを返すリクエストすべてでパフォーマンスが向上します。
+
+<a name="reloading-services"></a>
+## サービスのリロード
+
+> [!NOTE]
+> [Laravel Cloud](https://cloud.laravel.com)へのデプロイ時には、`reload`コマンドを使用する必要はありません。すべてのサービスの正常な再読み込みは自動的に処理されます。
+
+アプリケーションの新バージョンをデプロイした後、キューワーカ、Laravel Reverb、Laravel Octaneなどの長時間実行されるサービスは、新しいコードを使用するために再読み込み/再起動する必要があります。Laravelは、これらのサービスを終了させる単一の`reload` Artisanコマンドを提供しています：
+
+```shell
+php artisan reload
+```
+
+[Laravel Cloud](https://cloud.laravel.com)を使用していない場合は、再起動可能なプロセスが終了した際にそれを検知し、自動的に再起動できるプロセス監視ツールを手作業で設定する必要があります。
 
 <a name="debug-mode"></a>
 ## デバッグモード

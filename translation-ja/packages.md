@@ -14,6 +14,7 @@
     - ["About" Artisanコマンド](#about-artisan-command)
 - [コマンド](#commands)
     - [Optimizeコマンド](#optimize-commands)
+    - [Reloadコマンド](#reload-commands)
 - [リソース公開アセット](#public-assets)
 - [ファイルグループのリソース公開](#publishing-file-groups)
 
@@ -386,6 +387,23 @@ public function boot(): void
             optimize: 'package:optimize',
             clear: 'package:clear-optimizations',
         );
+    }
+}
+```
+
+<a name="reload-commands"></a>
+### Reloadコマンド
+
+Laravelの[reloadコマンド](/docs/{{version}}/deployment#reloading-services)は、実行中のサービスをすべて終了させることで、システムプロセスモニタによる自動再起動を可能にします。`reloads`メソッドを使用すると、`reload`コマンド実行時に呼び出すべきパッケージ独自のArtisanコマンドを登録できます。
+
+```php
+/**
+ * 全パッケージサービスの初期起動処理
+ */
+public function boot(): void
+{
+    if ($this->app->runningInConsole()) {
+        $this->reloads('package:reload');
     }
 }
 ```

@@ -213,7 +213,7 @@ Eloquentは、それぞれのモデルがその主キーとして役立つこと
 
 Eloquentモデルの主キーへ、自動増分整数を使用する代わりに、UUIDが使用できます。UUIDは36文字の英数字で構成される一意な識別子です。
 
-モデルで自動インクリメントの整数キーの代わりにUUIDキーを使用したい場合は、そのモデルで`Illuminate\Database\Eloquent\Concerns\HasUuids`トレイトを使用します。もちろん、モデルへ[UUIDの主キーカラム](/docs/{{version}}/migrations#column-method-uuid)を確実に持たせてください。
+モデルで自動増分の整数キーの代わりにUUIDキーを使用したい場合は、そのモデルで`Illuminate\Database\Eloquent\Concerns\HasUuids`トレイトを使用します。もちろん、モデルへ[UUIDの主キーカラム](/docs/{{version}}/migrations#column-method-uuid)を確実に持たせてください。
 
 ```php
 use Illuminate\Database\Eloquent\Concerns\HasUuids;

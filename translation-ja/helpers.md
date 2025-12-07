@@ -3227,7 +3227,7 @@ Carbonの概要や特徴については、[Carbon公式ドキュメント](https
 <a name="interval-functions"></a>
 #### インターバル関数
 
-LaravelはPHPの[DateInterval](https://www.php.net/manual/en/class.dateinterval.php)クラスを拡張した`CarbonInterval`インスタンスを返す、`seconds`、`minutes`、`hours`、`days`、`years`関数も提供しています。これらの関数は、LaravelがDateIntervalインスタンスを受け付けるあらゆる場所で使用できます。
+LaravelはPHPの[DateInterval](https://www.php.net/manual/en/class.dateinterval.php)クラスを拡張した`CarbonInterval`インスタンスを返す、`milliseconds`、`seconds`、`minutes`、`hours`、`days`、`weeks`、`months`、`years`関数も提供しています。これらの関数は、LaravelがDateIntervalインスタンスを受け付けるあらゆる場所で使用できます。
 
 ```php
 use Illuminate\Support\Facades\Cache;

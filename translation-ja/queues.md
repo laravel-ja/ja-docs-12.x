@@ -1529,7 +1529,7 @@ $user->notify($invoicePaid);
 <a name="queue-failover"></a>
 ### キューのフェイルオーバー
 
-`failover`キュードライバは、キューへのジョブ投入時に自動フェイルオーバー機能を提供します。プライマリキュー接続が何らかの理由で失敗した場合、Laravelは自動的にリスト内の次に設定してある接続へジョブの投入を試みます。これは、キューの信頼性が極めて重要な本番環境において高可用性を確保するために特に有用です。
+`failover`キュードライバは、キューへのジョブ投入時に自動フェイルオーバー機能を提供します。`failover`設定のプライマリキュー接続が何らかの理由で失敗した場合、Laravelは自動的にリスト内の次に設定してある接続へジョブの投入を試みます。これは、キューの信頼性が極めて重要な本番環境において高可用性を確保するために特に有用です。
 
 フェイルオーバーキュー接続を設定するには、`failover`ドライバを指定し、試行する接続名の配列を順番に指定します。Laravelはデフォルトで、アプリケーションの`config/queue.php`設定ファイルにフェイルオーバー設定の例を用意しています。
 
@@ -1544,7 +1544,7 @@ $user->notify($invoicePaid);
 ],
 ```
 
-`failover`ドライバを使用する接続を設定したら、アプリケーションの`.env`ファイルでフェイルオーバー接続をデフォルトのキュー接続として設定してください。
+`failover` ドライバを使用する接続を設定したら、フェイルオーバー機能を利用するために、アプリケーションの `.env` ファイルでフェイルオーバー接続をデフォルトのキュー接続として設定する必要があります:
 
 ```ini
 QUEUE_CONNECTION=failover
@@ -2312,6 +2312,43 @@ php artisan queue:continue database:default
 ```
 
 キューを再開すると、ワーカは即座にそのキューからの新しいジョブの処理を開始します。キューの一時停止はワーカプロセス自体を停止させるものではなく、指定されたキューからの新しいジョブの処理のみを停止させることに注意してください。
+
+<a name="worker-restart-and-pause-signals"></a>
+#### ワーカ再起動と一時停止シグナル
+
+キューワーカはデフォルトで、各ジョブ反復ごとにキャッシュドライバをポーリングし、再起動および一時停止シグナルを監視します。このポーリングは`queue:restart`および`queue:pause`コマンドへの応答に不可欠ですが、わずかなパフォーマンスオーバーヘッドを伴います。
+
+パフォーマンスを最適化する必要があり、これらの中断機能が必要ない場合は、`Queue`ファサードの`withoutInterruptionPolling`メソッドを呼び出すことで、このポーリングをグローバルに無効にできます。これは通常、`AppServiceProvider`の`boot`メソッド内で実行します。
+
+```php
+use Illuminate\Support\Facades\Queue;
+
+/**
+ * 全アプリケーションサービスの初期起動処理
+ */
+public function boot(): void
+{
+    Queue::withoutInterruptionPolling();
+}
+```
+
+あるいは、`Illuminate\Queue\Worker`クラスへ`$restartable`か`$pausable`静的プロパティを設定し、再起動またはポーリングの一時停止を個別に無効化してください。
+
+```php
+use Illuminate\Queue\Worker;
+
+/**
+ * 全アプリケーションサービスの初期起動処理
+ */
+public function boot(): void
+{
+    Worker::$restartable = false;
+    Worker::$pausable = false;
+}
+```
+
+> [!WARNING]
+> 割り込みポーリングを無効化している場合、ワーカは`queue:restart`や`queue:pause`コマンドへ（無効化している機能に応じて）応答しません。
 
 <a name="supervisor-configuration"></a>
 ## Supervisor設定

@@ -161,7 +161,7 @@ JavaScript変数を初期化するために、配列をJSONとしてレンダリ
 </script>
 ```
 
-自分で`json_encode`を呼び出す代わりに、`Illuminate\Support\Js::from`メソッドディレクティブが使えます。`from`メソッドは、PHPの`json_encode`関数と同じ引数を受け入れますが、取得結果のJSONはHTMLクオートの中へ含められるよう適切にエスケープされていることを保証します。`from`メソッドは、与えたオブジェクトや配列を有効なJavaScriptオブジェクトに変換する`JSON.parse` JavaScript文を文字列として返します。
+自分で`json_encode`を呼び出す代わりに、`Illuminate\Support\Js::from`メソッドが使えます。`from`メソッドは、PHPの`json_encode`関数と同じ引数を受け入れますが、取得結果のJSONはHTMLクオートの中へ含められるよう適切にエスケープされていることを保証します。`from`メソッドは、与えたオブジェクトや配列を有効なJavaScriptオブジェクトに変換する`JSON.parse` JavaScript文を文字列として返します。
 
 ```blade
 <script>
@@ -1576,7 +1576,7 @@ public function boot(): void
 }
 ```
 
-上記の例のように、コンポーネントパスへプレフィックスを指定せず登録した場合、対応するプレフィックスを指定していないBladeコンポーネントと同様にレンダします。例えば、上記で登録したパスに`panel.blade.php`コンポーネントが存在する場合、以下のようにレンダされるでしょう。
+上記の例のように、コンポーネントパスへプレフィックスを指定せず登録した場合、対応するプレフィックスを指定していないBladeコンポーネントと同様にレンダします。例えば、上記で登録したパスに`panel.blade.php`コンポーネントが存在する場合、以下のようにレンダします。
 
 ```blade
 <x-panel />
@@ -1588,7 +1588,7 @@ public function boot(): void
 Blade::anonymousComponentPath(__DIR__.'/../components', 'dashboard');
 ```
 
-プレフィックスを指定すると、その「名前空間」内のコンポーネントは、コンポーネントがレンダされるとき、そのコンポーネントの名前空間にプレフィックスを付けレンダされます。
+プレフィックスを指定すると、その「名前空間」内のコンポーネントは、コンポーネントをレンダするとき、そのコンポーネントの名前空間へプレフィックスを付けレンダします。
 
 ```blade
 <x-dashboard::panel />

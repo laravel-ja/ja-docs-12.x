@@ -37,7 +37,7 @@ Horizo​​nを使用する場合、すべてのキューワーカ設定は単�
 ## インストール
 
 > [!WARNING]
-> Laravel Horizo​​nは、[Redis](https://redis.io)を使用してキューを使用する必要があります。したがって、アプリケーションの`config/queue.php`設定ファイルでキュー接続が`redis`に設定されていることを確認する必要があります。
+> Laravel Horizo​​nは、[Redis](https://redis.io)を使用してキューを使用する必要があります。したがって、アプリケーションの`config/queue.php`設定ファイルでキュー接続が`redis`に設定されていることを確認する必要があります。現時点でHorizonは、Redis Clusterと互換性がありません。
 
 Composerパッケージマネージャを使用して、Horizo​​nをプロジェクトにインストールします。
 

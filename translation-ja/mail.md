@@ -231,10 +231,10 @@ Laravelがメール送信時に、AWS SDKの`SendEmail`メソッドへ渡す、[
 ],
 ```
 
-フェイルオーバーメーラーを定義したら、アプリケーションの`mail`設定ファイル内の`default`設定キーの値に、その名前を指定して、このメーラーをアプリケーションが使用するデフォルトメーラーとして設定する必要があります。
+`failover`トランスポートを使用するメーラーを設定したら、フェイルオーバー機能を利用するために、アプリケーションの`.env`ファイルでフェイルオーバーメーラーをデフォルトのメーラーとして設定する必要があります:
 
-```php
-'default' => env('MAIL_MAILER', 'failover'),
+```ini
+MAIL_MAILER=failover
 ```
 
 <a name="round-robin-configuration"></a>

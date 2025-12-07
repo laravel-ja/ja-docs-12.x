@@ -10,6 +10,7 @@
 - [ツール](#tools)
     - [ツールの作成](#creating-tools)
     - [ツールの入力スキーマ](#tool-input-schemas)
+    - [ツールの出力スキーマ](#tool-output-schemas)
     - [ツール引数のバリデーション](#validating-tool-arguments)
     - [ツールの依存注入](#tool-dependency-injection)
     - [ツールのアノテーション](#tool-annotations)
@@ -24,9 +25,11 @@
     - [プロンプトのレスポンス](#prompt-responses)
 - [リソース](#resources)
     - [リソースの作成](#creating-resources)
+    - [リソーステンプレート](#resource-templates)
     - [リソースURIとMIMEタイプ](#resource-uri-and-mime-type)
     - [リソースリクエスト](#resource-request)
     - [リソースの依存注入](#resource-dependency-injection)
+    - [リソースアノテーション](#resource-annotations)
     - [条件付きリソース登録](#conditional-resource-registration)
     - [リソースのレスポンス](#resource-responses)
 - [メタデータ](#metadata)
@@ -175,7 +178,7 @@ Mcp::local('weather', WeatherServer::class);
 
 namespace App\Mcp\Tools;
 
-use Illuminate\JsonSchema\JsonSchema;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
 use Laravel\Mcp\Server\Tool;
@@ -202,7 +205,7 @@ class CurrentWeatherTool extends Tool
     /**
      * ツールの入力スキーマの取得
      *
-     * @return array<string, \Illuminate\JsonSchema\JsonSchema>
+     * @return array<string, \Illuminate\JsonSchema\Type\Type>
      */
     public function schema(JsonSchema $schema): array
     {
@@ -289,14 +292,14 @@ class CurrentWeatherTool extends Tool
 <a name="tool-input-schemas"></a>
 ### ツールの入力スキーマ
 
-ツールは入力スキーマを定義して、AIクライアントから受け入れる引数を指定できます。Laravelの`Illuminate\JsonSchema\JsonSchema`ビルダを使用して、ツールの入力要件を定義してください:
+ツールは入力スキーマを定義して、AIクライアントから受け入れる引数を指定できます。Laravelの`Illuminate\Contracts\JsonSchema\JsonSchema`ビルダを使用して、ツールの入力要件を定義してください:
 
 ```php
 <?php
 
 namespace App\Mcp\Tools;
 
-use Illuminate\JsonSchema\JsonSchema;
+use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Server\Tool;
 
 class CurrentWeatherTool extends Tool
@@ -304,7 +307,7 @@ class CurrentWeatherTool extends Tool
     /**
      * ツールの入力スキーマの取得
      *
-     * @return array<string, JsonSchema>
+     * @return array<string, \Illuminate\JsonSchema\Types\Type>
      */
     public function schema(JsonSchema $schema): array
     {
@@ -317,6 +320,45 @@ class CurrentWeatherTool extends Tool
                 ->enum(['celsius', 'fahrenheit'])
                 ->description('The temperature units to use.')
                 ->default('celsius'),
+        ];
+    }
+}
+```
+
+<a name="tool-output-schemas"></a>
+### ツールの出力スキーマ
+
+ツールは[出力スキーマ](https://modelcontextprotocol.io/specification/2025-06-18/server/tools#output-schema)を定義して、レスポンスの構造を指定できます。これにより、解析可能なツール結果を必要とするAIクライアントとの連携が向上します。`outputSchema`メソッドを使用してツールの出力構造を定義してください：
+
+```php
+<?php
+
+namespace App\Mcp\Tools;
+
+use Illuminate\Contracts\JsonSchema\JsonSchema;
+use Laravel\Mcp\Server\Tool;
+
+class CurrentWeatherTool extends Tool
+{
+    /**
+     * Get the tool's output schema.
+     *
+     * @return array<string, \Illuminate\JsonSchema\Types\Type>
+     */
+    public function outputSchema(JsonSchema $schema): array
+    {
+        return [
+            'temperature' => $schema->number()
+                ->description('Temperature in Celsius')
+                ->required(),
+
+            'conditions' => $schema->string()
+                ->description('Weather conditions')
+                ->required(),
+
+            'humidity' => $schema->integer()
+                ->description('Humidity percentage')
+                ->required(),
         ];
     }
 }
@@ -530,6 +572,30 @@ public function handle(Request $request): array
         Response::text('**Detailed Forecast**\n- Morning: 65°F\n- Afternoon: 78°F\n- Evening: 70°F')
     ];
 }
+```
+
+<a name="structured-responses"></a>
+#### 構造化レスポンス
+
+ツールは`structured`メソッドを使用して、[構造化コンテンツ](https://modelcontextprotocol.io/specification/2025-06-18/server/tools#structured-content)を返すことができます。これにより、AIクライアント向けの解析可能なデータを提供しつつ、JSONエンコードされたテキスト表現との下位互換性を維持します。
+
+```php
+return Response::structured([
+    'temperature' => 22.5,
+    'conditions' => 'Partly cloudy',
+    'humidity' => 65,
+]);
+```
+
+構造化コンテンツと共にカスタムテキストを提供する必要がある場合は、レスポンスファクトリの`withStructuredContent`メソッドを使用してください。
+
+```php
+return Response::make(
+    Response::text('Weather is 22.5°C and sunny')
+)->withStructuredContent([
+    'temperature' => 22.5,
+    'conditions' => 'Sunny',
+]);
 ```
 
 <a name="streaming-responses"></a>
@@ -920,6 +986,115 @@ class WeatherGuidelinesResource extends Resource
 > [!NOTE]
 > 説明はリソースのメタデータの重要な部分であり、AIモデルがリソースをいつ、どのように効果的に使用するかを理解するのに役立ちます。
 
+<a name="resource-templates"></a>
+### リソーステンプレート
+
+[リソーステンプレート](https://modelcontextprotocol.io/specification/2025-06-18/server/resources#resource-templates)を使用すると、変数を含むURIパターンにマッチする動的なリソースをサーバで公開できます。各リソースに対して静的なURIを定義する代わりに、テンプレートパターンに基づいて複数のURIを処理する単一のリソースを作成できます。
+
+<a name="creating-resource-templates"></a>
+#### リソーステンプレートの作成
+
+リソーステンプレートを作成するには、リソースクラスで`HasUriTemplate`インターフェイスを実装し、`UriTemplate`インスタンスを返す`uriTemplate`メソッドを定義します。
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Contracts\HasUriTemplate;
+use Laravel\Mcp\Server\Resource;
+use Laravel\Mcp\Support\UriTemplate;
+
+class UserFileResource extends Resource implements HasUriTemplate
+{
+    /**
+     * リソースの説明
+     */
+    protected string $description = 'Access user files by ID';
+
+    /**
+     * リソースのMIMEタイプ
+     */
+    protected string $mimeType = 'text/plain';
+
+    /**
+     * このリソースのためにURIテンプレートを取得
+     */
+    public function uriTemplate(): UriTemplate
+    {
+        return new UriTemplate('file://users/{userId}/files/{fileId}');
+    }
+
+    /**
+     * リソースリクエストの処理
+     */
+    public function handle(Request $request): Response
+    {
+        $userId = $request->get('userId');
+        $fileId = $request->get('fileId');
+
+        // ファイルコンテンツの取得とリターン
+
+        return Response::text($content);
+    }
+}
+```
+
+リソースが`HasUriTemplate`インターフェイスを実装すると、静的リソースではなくリソーステンプレートとして登録します。これにより、AIクライアントはテンプレートパターンに一致するURIを使用してリソースをリクエストでき、URI内の変数を自動的に抽出し、リソースの`handle`メソッドで利用可能になります。
+
+<a name="uri-template-syntax"></a>
+#### URIテンプレート記法
+
+URIテンプレートは、波括弧で囲んだプレースホルダを使用して、URI内の可変セグメントを定義します。
+
+```php
+new UriTemplate('file://users/{userId}');
+new UriTemplate('file://users/{userId}/files/{fileId}');
+new UriTemplate('https://api.example.com/{version}/{resource}/{id}');
+```
+
+<a name="accessing-template-variables"></a>
+#### テンプレート変数へのアクセス
+
+URIがリソーステンプレートに一致すると、抽出した変数が自動的にリクエストへマージされ、`get`メソッドを使用してアクセスできます。
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use Laravel\Mcp\Request;
+use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Contracts\HasUriTemplate;
+use Laravel\Mcp\Server\Resource;
+use Laravel\Mcp\Support\UriTemplate;
+
+class UserProfileResource extends Resource implements HasUriTemplate
+{
+    public function uriTemplate(): UriTemplate
+    {
+        return new UriTemplate('file://users/{userId}/profile');
+    }
+
+    public function handle(Request $request): Response
+    {
+        // 抽出済み変数へのアクセス
+        $userId = $request->get('userId');
+
+        // 必要であれば、完全なURIの取得
+        $uri = $request->uri();
+
+        // ユーザープロファイルの取得
+
+        return Response::text("Profile for user {$userId}");
+    }
+}
+```
+
+`Request`オブジェクトは、抽出した変数とリクエストされた元のURIの両方を提供し、リソースリクエストを処理するための完全なコンテキストを提供します。
+
 <a name="resource-uri-and-mime-type"></a>
 ### リソースURIとMIMEタイプ
 
@@ -1029,6 +1204,39 @@ class WeatherGuidelinesResource extends Resource
     }
 }
 ```
+
+<a name="resource-annotations"></a>
+### リソースアノテーション
+
+リソースに[アノテーション](https://modelcontextprotocol.io/specification/2025-06-18/schema#resourceannotations)を追加することで、AIクライアントに追加のメタデータを提供できます。アノテーションは属性を使用してリソースへ追加します。
+
+```php
+<?php
+
+namespace App\Mcp\Resources;
+
+use Laravel\Mcp\Enums\Role;
+use Laravel\Mcp\Server\Annotations\Audience;
+use Laravel\Mcp\Server\Annotations\LastModified;
+use Laravel\Mcp\Server\Annotations\Priority;
+use Laravel\Mcp\Server\Resource;
+
+#[Audience(Role::User)]
+#[LastModified('2025-01-12T15:00:58Z')]
+#[Priority(0.9)]
+class UserDashboardResource extends Resource
+{
+    //
+}
+```
+
+仕様な脳なアノテーション：
+
+| アノテーション       | タイプ          | 説明                                                                                              |
+| ---------------- | -------------- | ----------------------------------------------------------------------------------------------- |
+| `#[Audience]`    | ロールか配列  | 対象となるオーディエンス（Role::User、Role::Assistant、またはその両方）を指定します。                    |
+| `#[Priority]`    | float          | リソースの重要度を示す、0.0から1.0の範囲の数値。                          |
+| `#[LastModified]`| 文字列          | リソースの最終更新日時を示すISO 8601タイムスタンプ。                               |
 
 <a name="conditional-resource-registration"></a>
 ### 条件付きリソース登録
