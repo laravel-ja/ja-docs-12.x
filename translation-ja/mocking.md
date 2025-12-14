@@ -211,7 +211,7 @@ test('time can be manipulated', function () {
     $this->travel(-5)->hours();
 
     // 明確な時間へ移動
-    $this->travelTo(now()->subHours(6));
+    $this->travelTo(now()->minus(hours: 6));
 
     // 現在時刻へ戻る
     $this->travelBack();
@@ -234,7 +234,7 @@ public function test_time_can_be_manipulated(): void
     $this->travel(-5)->hours();
 
     // 明確な時間へ移動
-    $this->travelTo(now()->subHours(6));
+    $this->travelTo(now()->minus(hours: 6));
 
     // 現在時刻へ戻る
     $this->travelBack();
@@ -248,7 +248,7 @@ $this->travel(5)->days(function () {
     // ５日後の将来で、何かをテストする…
 });
 
-$this->travelTo(now()->subDays(10), function () {
+$this->travelTo(now()->mins(days: 10), function () {
     // 指定した時間で、何かをテストする…
 });
 ```

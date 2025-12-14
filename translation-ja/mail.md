@@ -977,7 +977,7 @@ Mail::to($request->user())
 Mail::to($request->user())
     ->cc($moreUsers)
     ->bcc($evenMoreUsers)
-    ->later(now()->addMinutes(10), new OrderShipped($order));
+    ->later(now()->plus(minutes: 10), new OrderShipped($order));
 ```
 
 <a name="pushing-to-specific-queues"></a>
@@ -1341,6 +1341,7 @@ Mail::assertSent(OrderShipped::class, function (OrderShipped $mail) use ($user) 
            $mail->hasReplyTo('...') &&
            $mail->hasFrom('...') &&
            $mail->hasSubject('...') &&
+           $mail->hasMetadata('order_id', $mail->order->id);
            $mail->usesMailer('ses');
 });
 ```

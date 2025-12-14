@@ -209,7 +209,7 @@ Herdの詳細は、[Windows向けHerdドキュメント](https://herd.laravel.co
 
 Laravelアプリケーションを開発する際に、どのコードエディタを使用するかは自由です。軽量で拡張性の高いエディタをお探しの場合、[VS Code](https://code.visualstudio.com)や[Cursor](https://cursor.com)と公式の[Laravel VS Code Extension](https://marketplace.visualstudio.com/items?itemName=laravel.vscode-laravel)を組み合わせで、シンタックスハイライト、スニペット、Artisanコマンドの統合、Eloquentモデル、ルート、ミドルウェア、アセット、設定、Inertia.jsのスマートオートコンプリートなどの機能により、優れたLaravelサポートを提供しています。
 
-Laravelの広範かつ堅牢なサポートについては、JetBrainsのIDEである[PhpStorm](https://www.jetbrains.com/phpstorm/laravel/?utm_source=laravel.com&utm_medium=link&utm_campaign=laravel-2025&utm_content=partner&ref=laravel-2025)をご覧ください。[Laravel Ideaプラグイン](https://laravel-idea.com/)により、Laravel Pint、Pest、Larastanなど、Laravelとそのエコシステムに対する正確なサポートを提供します。Laravel Ideaのフレームワークサポートは、Bladeテンプレート、Eloquentモデル、ルート、ビュー、翻訳、コンポーネントのスマートな自動補完に加え、強力なコード生成機能やLaravelプロジェクト全体でのナビゲーションを含んでいます。
+Laravelの包括的かつ堅牢なサポートを求めている方は、JetBrainsのIDEである[PhpStorm](https://www.jetbrains.com/phpstorm/laravel/?utm_source=laravel.com&utm_medium=link&utm_campaign=laravel-2025&utm_content=partner&ref=laravel-2025)をご覧ください。PhpStormの組み込みLaravelフレームワークサポートには、Bladeテンプレート、Eloquentモデル・ルート・ビュー・翻訳・コンポーネント向けのスマートな自動補完、強力なコード生成、並びにLaravelプロジェクト全体でのナビゲーションが含まれます。
 
 クラウドベースの開発体験をお求めの方には、[Firebase Studio](https://firebase.studio/)がブラウザで直接Laravelをビルドするための即時アクセスを提供します。セットアップ不要のFirebase Studioは、どのデバイスからでも簡単にLaravelアプリケーションを構築できます。
 

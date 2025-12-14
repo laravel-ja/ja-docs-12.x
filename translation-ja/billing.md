@@ -1704,7 +1704,7 @@ $user->subscription('default')->cancelNowAndInvoice();
 
 ```php
 $user->subscription('default')->cancelAt(
-    now()->addDays(10)
+    now()->plus(days: 10)
 );
 ```
 
@@ -1758,7 +1758,7 @@ Route::post('/user/subscribe', function (Request $request) {
 use Illuminate\Support\Carbon;
 
 $user->newSubscription('default', 'price_monthly')
-    ->trialUntil(Carbon::now()->addDays(10))
+    ->trialUntil(Carbon::now()->plus(days: 10))
     ->create($paymentMethod);
 ```
 
@@ -1807,7 +1807,7 @@ use App\Models\User;
 
 $user = User::create([
     // ...
-    'trial_ends_at' => now()->addDays(10),
+    'trial_ends_at' => now()->plus(days: 10),
 ]);
 ```
 
@@ -1858,12 +1858,12 @@ $subscription = User::find(1)->subscription('default');
 
 // 今から７日後にトライアル終了
 $subscription->extendTrial(
-    now()->addDays(7)
+    now()->plus(days: 7)
 );
 
 // トライアルに５日間追加
 $subscription->extendTrial(
-    $subscription->trial_ends_at->addDays(5)
+    $subscription->trial_ends_at->plus(days: 5)
 );
 ```
 

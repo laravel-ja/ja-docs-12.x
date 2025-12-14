@@ -348,7 +348,7 @@ $url = Storage::url('file.jpg');
 use Illuminate\Support\Facades\Storage;
 
 $url = Storage::temporaryUrl(
-    'file.jpg', now()->addMinutes(5)
+    'file.jpg', now()->plus(minutes: 5)
 );
 ```
 
@@ -374,7 +374,7 @@ $url = Storage::temporaryUrl(
 ```php
 $url = Storage::temporaryUrl(
     'file.jpg',
-    now()->addMinutes(5),
+    now()->plus(minutes: 5),
     [
         'ResponseContentType' => 'application/octet-stream',
         'ResponseContentDisposition' => 'attachment; filename=file2.jpg',
@@ -429,7 +429,7 @@ class AppServiceProvider extends ServiceProvider
 use Illuminate\Support\Facades\Storage;
 
 ['url' => $url, 'headers' => $headers] = Storage::temporaryUploadUrl(
-    'file.jpg', now()->addMinutes(5)
+    'file.jpg', now()->plus(minutes: 5)
 );
 ```
 

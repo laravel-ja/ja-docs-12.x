@@ -11,6 +11,7 @@
     - [Slack Botスコープ](#slack-bot-scopes)
     - [オプションのパラメータ](#optional-parameters)
 - [ユーザー詳細情報の取得](#retrieving-user-details)
+- [テスト](#testing)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -228,4 +229,67 @@ iOSアプリケーションでFacebook限定ログインを使用している場
 use Laravel\Socialite\Socialite;
 
 return Socialite::driver('google')->stateless()->user();
+```
+
+<a name="testing"></a>
+## テスト
+
+Laravel Socialiteは、実際にOAuthプロバイダへリクエストを送信せずに、OAuth認証フローをテストする便利な方法を提供します。`fake`メソッドを使用すると、OAuthプロバイダの動作を模擬し、返すべきユーザーデータを定義できます。
+
+<a name="faking-the-redirect"></a>
+#### リダイレクトのFake
+
+アプリケーションがユーザーをOAuthプロバイダへ正しくリダイレクトするかをテストするには、リダイレクト先ルートへのリクエストを送信する前に、`fake`メソッドを呼び出します。これにより、Socialiteは実際のOAuthプロバイダーへのリダイレクトではなく、偽の認証URLへのリダイレクトを返します：
+
+```php
+use Laravel\Socialite\Socialite;
+
+test('user is redirected to github', function () {
+    Socialite::fake('github');
+
+    $response = $this->get('/auth/github/redirect');
+
+    $response->assertRedirect();
+});
+```
+
+<a name="faking-the-callback"></a>
+#### コールバックのFake
+
+アプリケーションのコールバックルートをテストするには、`fake`メソッドを呼び出し、アプリケーションがプロバイダにユーザーの詳細を要求したときに返すべき`User`インスタンスを指定します。`User`インスタンスは`map`メソッドを使用して作成できます。
+
+```php
+use Laravel\Socialite\Socialite;
+use Laravel\Socialite\Two\User;
+
+test('user can login with github', function () {
+    Socialite::fake('github', (new User)->map([
+        'id' => 'github-123',
+        'name' => 'Jason Beggs',
+        'email' => 'jason@example.com',
+    ]));
+
+    $response = $this->get('/auth/github/callback');
+
+    $response->assertRedirect('/dashboard');
+
+    $this->assertDatabaseHas('users', [
+        'name' => 'Jason Beggs',
+        'email' => 'jason@example.com',
+        'github_id' => 'github-123',
+    ]);
+});
+```
+
+`User`インスタンスはデフォルトで、`token`プロパティも含んでいます。必要に応じて、`User`インスタンスに追加のプロパティを手作業で指定できます。
+
+```php
+$fakeUser = (new User)->map([
+    'id' => 'github-123',
+    'name' => 'Jason Beggs',
+    'email' => 'jason@example.com',
+])->setToken('fake-token')
+  ->setRefreshToken('fake-refresh-token')
+  ->setExpiresIn(3600)
+  ->setApprovedScopes(['read', 'write'])
 ```

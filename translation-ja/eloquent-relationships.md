@@ -1675,7 +1675,7 @@ $posts = Post::whereRelation('comments', 'is_approved', false)->get();
 
 ```php
 $posts = Post::whereRelation(
-    'comments', 'created_at', '>=', now()->subHour()
+    'comments', 'created_at', '>=', now()->minus(hours: 1)
 )->get();
 ```
 

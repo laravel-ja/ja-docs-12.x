@@ -188,7 +188,7 @@ return URL::signedRoute('unsubscribe', ['user' => 1], absolute: false);
 use Illuminate\Support\Facades\URL;
 
 return URL::temporarySignedRoute(
-    'unsubscribe', now()->addMinutes(30), ['user' => 1]
+    'unsubscribe', now()->plus(minutes: 30), ['user' => 1]
 );
 ```
 
@@ -284,7 +284,7 @@ $uri = Uri::of('https://example.com/path');
 $uri = Uri::to('/dashboard');
 $uri = Uri::route('users.show', ['user' => 1]);
 $uri = Uri::signedRoute('users.show', ['user' => 1]);
-$uri = Uri::temporarySignedRoute('user.index', now()->addMinutes(5));
+$uri = Uri::temporarySignedRoute('user.index', now()->plus(minutes: 5));
 $uri = Uri::action([UserController::class, 'index']);
 $uri = Uri::action(InvokableController::class);
 

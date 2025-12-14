@@ -291,7 +291,7 @@ Laravelのセッションキャッシュは、個々のユーザーセッショ�
 $discount = $request->session()->cache()->get('discount');
 
 $request->session()->cache()->put(
-    'discount', 10, now()->addMinutes(5)
+    'discount', 10, now()->plus(minutes: 5)
 );
 ```
 

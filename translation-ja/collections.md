@@ -4254,7 +4254,7 @@ LazyCollection::make(function () {
 
 ```php
 $lazyCollection = LazyCollection::times(INF)
-    ->takeUntilTimeout(now()->addMinute());
+    ->takeUntilTimeout(now()->plus(minutes: 1));
 
 $lazyCollection->each(function (int $number) {
     dump($number);

@@ -3,9 +3,7 @@
 - [イントロダクション](#introduction)
 - [ライブバリデーション](#live-validation)
     - [Vueの使用](#using-vue)
-    - [VueとInertiaの使用](#using-vue-and-inertia)
     - [Reactの使用](#using-react)
-    - [ReactとInertiaの使用](#using-react-and-inertia)
     - [AlpineとBladeの使用](#using-alpine)
     - [Axiosの設定](#configuring-axios)
 - [バリデーションルールのカスタマイズ](#customizing-validation-rules)
@@ -19,6 +17,9 @@
 Laravel Precognition（プリコグニション：予知）により、将来のHTTPリクエストの結果を予測できます。Precognitionの主な使用例の１つは、アプリケーションのバックエンドのバリデーションルールを複製せずとも、フロントエンドのJavaScriptアプリケーションの「ライブ」バリデーションを提供する能力です。
 
 Laravelが「事前認識型リクエスト」を受け取ると、ルートのミドルウェアをすべて実行し、[フォームリクエスト](/docs/{{version}}/validation#form-request-validation)のバリデーションを含む、ルートのコントローラの依存解決を行いますが、実際にはルートのコントローラメソッドを実行しません。
+
+> [!NOTE]
+> Inertia2.3以降には、Precognitionのサポートが組み込まれています。詳細は[Inertia Formsドキュメント](https://inertiajs.com/docs/v2/the-basics/forms)を参照してください。それ以前のInertiaバージョンは、Precognition0.xが必要です。
 
 <a name="live-validation"></a>
 ## ライブバリデーション
@@ -187,38 +188,6 @@ const submit = () => form.submit()
 </button>
 ```
 
-<a name="using-vue-and-inertia"></a>
-### VueとInertiaの使用
-
-> [!NOTE]
-> VueとInertiaを使ってLaravelアプリケーションを開発するとき、有利に開始したい場合は、[スターターキット](/docs/{{version}}/starter-kits)の一つを使うことを検討してください。Laravelのスターターキットは、新しいLaravelアプリケーションにバックエンドとフロントエンドの認証へスカフォールドを提供します。
-
-VueとInertiaと一緒にPrecognitionを使用する前に、より一般的な[VueでPrecognitionを使用する](#using-vue)ドキュメントを必ず確認してください。VueをInertiaで使用する場合、NPM経由でInertia互換のPrecognitionライブラリーをインストールする必要があります。
-
-```shell
-npm install laravel-precognition-vue-inertia
-```
-
-一度インストールしたら、Precognitionの`useForm`関数は、上で説明したバリデーション機能で強化した、Inertia[フォームヘルパ](https://inertiajs.com/forms#form-helper)を返します。
-
-フォームヘルパの`submit`メソッドが効率化され、HTTPメソッドやURLを指定する必要がなくなりました。その代わりに、Inertiaの[visitオプション](https://inertiajs.com/manual-visits)を最初で唯一の引数として渡してください。また、`submit`メソッドは、上記のVueの例で見られるように、Promiseを返すことはありません。代わりに、Inertiaがサポートしている[イベントコールバック](https://inertiajs.com/manual-visits#event-callbacks)を`submit`メソッドへ指定するvisitオプションに指定します。
-
-```vue
-<script setup>
-import { useForm } from 'laravel-precognition-vue-inertia';
-
-const form = useForm('post', '/users', {
-    name: '',
-    email: '',
-});
-
-const submit = () => form.submit({
-    preserveScroll: true,
-    onSuccess: () => form.reset(),
-});
-</script>
-```
-
 <a name="using-react"></a>
 ### Reactの使用
 
@@ -376,40 +345,6 @@ const submit = (e) => {
 <button disabled={form.processing}>
     Submit
 </button>
-```
-
-<a name="using-react-and-inertia"></a>
-### ReactとInertiaの使用
-
-> [!NOTE]
-> ReactとInertiaを使ってLaravelアプリケーションを開発するとき、有利に開始したい場合は、[スターターキット](/docs/{{version}}/starter-kits)の一つを使うことを検討してください。Laravelのスターターキットは、新しいLaravelアプリケーションにバックエンドとフロントエンドの認証へスカフォールドを提供します。
-
-ReactとInertiaと一緒にPrecognitionを使用する前に、より一般的な[VueでPrecognitionを使用する](#using-vue)ドキュメントを必ず確認してください。VueをInertiaで使用する場合、NPM経由でInertia互換のPrecognitionライブラリーをインストールする必要があります。
-
-```shell
-npm install laravel-precognition-react-inertia
-```
-
-一度インストールしたら、Precognitionの`useForm`関数は、上で説明したバリデーション機能で強化した、Inertia[フォームヘルパ](https://inertiajs.com/forms#form-helper)を返します。
-
-フォームヘルパの`submit`メソッドが効率化され、HTTPメソッドやURLを指定する必要がなくなりました。その代わりに、Inertiaの[visitオプション](https://inertiajs.com/manual-visits)を最初で唯一の引数として渡してください。また、`submit`メソッドは、上記のReactの例で見られるように、Promiseを返すことはありません。代わりに、Inertiaがサポートしている[イベントコールバック](https://inertiajs.com/manual-visits#event-callbacks)を`submit`メソッドへ指定するvisitオプションに指定します。
-
-```js
-import { useForm } from 'laravel-precognition-react-inertia';
-
-const form = useForm('post', '/users', {
-    name: '',
-    email: '',
-});
-
-const submit = (e) => {
-    e.preventDefault();
-
-    form.submit({
-        preserveScroll: true,
-        onSuccess: () => form.reset(),
-    });
-};
 ```
 
 <a name="using-alpine"></a>
@@ -615,9 +550,6 @@ window.axios.defaults.headers.common['Authorization'] = authToken;
 
 client.use(window.axios)
 ```
-
-> [!WARNING]
-> Inertia的なPrecognitionライブラリでは、設定したAxiosインスタンスのみをバリデーションリクエストに使用します。フォーム送信は常にInertiaが送信します。
 
 <a name="customizing-validation-rules"></a>
 ## バリデーションルールのカスタマイズ

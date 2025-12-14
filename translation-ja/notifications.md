@@ -179,7 +179,7 @@ $user->notify(new InvoicePaid($invoice));
 通知の配信を遅らせたい場合、`delay`メソッドを通知のインスタンスへチェーンしてください。
 
 ```php
-$delay = now()->addMinutes(10);
+$delay = now()->plus(minutes: 10);
 
 $user->notify((new InvoicePaid($invoice))->delay($delay));
 ```
@@ -188,8 +188,8 @@ $user->notify((new InvoicePaid($invoice))->delay($delay));
 
 ```php
 $user->notify((new InvoicePaid($invoice))->delay([
-    'mail' => now()->addMinutes(5),
-    'sms' => now()->addMinutes(10),
+    'mail' => now()->plus(minutes: 5),
+    'sms' => now()->plus(minutes: 10),
 ]));
 ```
 
@@ -204,8 +204,8 @@ $user->notify((new InvoicePaid($invoice))->delay([
 public function withDelay(object $notifiable): array
 {
     return [
-        'mail' => now()->addMinutes(5),
-        'sms' => now()->addMinutes(10),
+        'mail' => now()->plus(minutes: 5),
+        'sms' => now()->plus(minutes: 10),
     ];
 }
 ```
@@ -356,7 +356,7 @@ public function backoff(): int
  */
 public function retryUntil(): DateTime
 {
-    return now()->addMinutes(5);
+    return now()->plus(minutes: 5);
 }
 ```
 

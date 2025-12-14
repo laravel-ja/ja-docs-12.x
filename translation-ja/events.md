@@ -186,7 +186,7 @@ public function boot(): void
 ```php
 Event::listen(queueable(function (PodcastProcessed $event) {
     // ...
-})->onConnection('redis')->onQueue('podcasts')->delay(now()->addSeconds(10)));
+})->onConnection('redis')->onQueue('podcasts')->delay(now()->plus(seconds: 10)));
 ```
 
 キューに投入した匿名リスナの失敗を処理したい場合は、`queueable`リスナを定義するときに`catch`メソッドにクロージャを指定できます。このクロージャは、リスナの失敗の原因となったイベントインスタンスと`Throwable`インスタンスを受け取ります。
@@ -590,7 +590,7 @@ use DateTime;
  */
 public function retryUntil(): DateTime
 {
-    return now()->addMinutes(5);
+    return now()->plus(minutes: 5);
 }
 ```
 

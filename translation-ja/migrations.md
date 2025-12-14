@@ -140,7 +140,7 @@ public function up(): void
 マイグレーションがまだ有効になっていない機能をサポートするためのもので、まだ実行させたくない場合があります。この場合、マイグレーションに`shouldRun`メソッドを定義してください。`shouldRun`メソッドが`false`を返したら、そのマイグレーションをスキップします。
 
 ```php
-use App\Models\Flights;
+use App\Models\Flight;
 use Laravel\Pennant\Feature;
 
 /**
@@ -148,7 +148,7 @@ use Laravel\Pennant\Feature;
  */
 public function shouldRun(): bool
 {
-    return Feature::active(Flights::class);
+    return Feature::active(Flight::class);
 }
 ```
 
@@ -173,6 +173,7 @@ php artisan migrate:status
 php artisan migrate --pretend
 ```
 
+<a name="isolating-migration-execution"></a>
 #### マイグレーションの排他実行
 
 アプリケーションを複数のサーバに分散配置し、デプロイプロセスの一環としてマイグレーションを実行する場合、おそらく２つのサーバで同時にデータベースマイグレーションの実行は避けたいでしょう。これを避けるには、`migrate`コマンド実行時に、`isolated`オプションを使用してください。

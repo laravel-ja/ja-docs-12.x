@@ -250,7 +250,7 @@ $user->tokens()->where('id', $tokenId)->delete();
 
 ```php
 return $user->createToken(
-    'token-name', ['*'], now()->addWeek()
+    'token-name', ['*'], now()->plus(weeks: 1)
 )->plainTextToken;
 ```
 

@@ -204,7 +204,7 @@ if (Cache::has('key')) {
 
 ```php
 // Initialize the value if it does not exist...
-Cache::add('key', 0, now()->addHours(4));
+Cache::add('key', 0, now()->plus(hours: 4));
 
 // Increment or decrement the value...
 Cache::increment('key');
@@ -278,7 +278,7 @@ Cache::put('key', 'value');
 秒数を整数として渡す代わりに、キャッシュするアイテムの有効期限を表す`DateTime`インスタンスを渡すこともできます。
 
 ```php
-Cache::put('key', 'value', now()->addMinutes(10));
+Cache::put('key', 'value', now()->plus(minutes: 10));
 ```
 
 <a name="store-if-not-present"></a>
@@ -386,7 +386,7 @@ $value = cache('key');
 ```php
 cache(['key' => 'value'], $seconds);
 
-cache(['key' => 'value'], now()->addMinutes(10));
+cache(['key' => 'value'], now()->plus(minutes: 10));
 ```
 
 `cache`関数を引数なしで呼び出すと、`Illuminate\Contracts\Cache\Factory`実装のインスタンスが返され、他のキャッシュメソッドを呼び出せます。
