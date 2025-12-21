@@ -72,6 +72,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [Str::mask](#method-str-mask)
 [Str::match](#method-str-match)
 [Str::matchAll](#method-str-match-all)
+[Str::isMatch](#method-str-is-match)
 [Str::orderedUuid](#method-str-ordered-uuid)
 [Str::padBoth](#method-str-padboth)
 [Str::padLeft](#method-str-padleft)
@@ -1083,6 +1084,23 @@ $result = Str::matchAll('/f(\w*)/', 'bar fun bar fly');
 ```
 
 マッチしなかった場合は、空のコレクションを返します。
+
+<a name="method-str-is-match"></a>
+#### `Str::isMatch()` {.collection-method}
+
+`Str::isMatch`メソッドは、文字列が指定正規表現に一致する場合に、`true`を返します。
+
+```php
+use Illuminate\Support\Str;
+
+$result = Str::isMatch('/foo (.*)/', 'foo bar');
+
+// true
+
+$result = Str::isMatch('/foo (.*)/', 'laravel');
+
+// false
+```
 
 <a name="method-str-ordered-uuid"></a>
 #### `Str::orderedUuid()` {.collection-method}

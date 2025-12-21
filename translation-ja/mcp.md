@@ -494,6 +494,25 @@ class CurrentWeatherTool extends Tool
 | `#[IsIdempotent]` | boolean | 同じ引数で繰り返し呼び出しても追加の効果がないことを示します（読み取り専用でない場合）。 |
 | `#[IsOpenWorld]` | boolean | ツールが外部エンティティと対話する可能性があることを示します。 |
 
+アノテーション値は論理引数を使用して明示的に設定できます。
+
+```php
+use Laravel\Mcp\Server\Tools\Annotations\IsReadOnly;
+use Laravel\Mcp\Server\Tools\Annotations\IsDestructive;
+use Laravel\Mcp\Server\Tools\Annotations\IsOpenWorld;
+use Laravel\Mcp\Server\Tools\Annotations\IsIdempotent;
+use Laravel\Mcp\Server\Tool;
+
+#[IsReadOnly(true)]
+#[IsDestructive(false)]
+#[IsOpenWorld(false)]
+#[IsIdempotent(true)]
+class CurrentWeatherTool extends Tool
+{
+    //
+}
+```
+
 <a name="conditional-tool-registration"></a>
 ### 条件付きツール登録
 

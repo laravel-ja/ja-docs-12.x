@@ -79,6 +79,8 @@ $names = User::all()->reject(function (User $user) {
 [modelKeys](#method-modelKeys)
 [makeVisible](#method-makeVisible)
 [makeHidden](#method-makeHidden)
+[mergeVisible](#method-mergeVisible)
+[mergeHidden](#method-mergeHidden)
 [only](#method-only)
 [partition](#method-partition)
 [setAppends](#method-setAppends)
@@ -229,6 +231,24 @@ $users = $users->makeVisible(['address', 'phone_number']);
 
 ```php
 $users = $users->makeHidden(['address', 'phone_number']);
+```
+
+<a name="method-mergeVisible"></a>
+#### `mergeVisible($attributes)` {.collection-method}
+
+`mergeVisible`メソッドは、既存のvisibleを保持したまま、[追加の属性をvisibleにします](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json)。
+
+```php
+$users = $users->mergeVisible(['middle_name']);
+```
+
+<a name="method-mergeHidden"></a>
+#### `mergeHidden($attributes)` {.collection-method}
+
+`mergeHidden`メソッドは、既存のhidden属性を保持したまま、[追加の属性を非表示にします](/docs/{{version}}/eloquent-serialization#hiding-attributes-from-json)。
+
+```php
+$users = $users->mergeHidden(['last_login_at']);
 ```
 
 <a name="method-only"></a>

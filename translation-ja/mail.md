@@ -1323,6 +1323,12 @@ Mail::assertNothingQueued();
 Mail::assertQueuedCount(3);
 ```
 
+また、`assertOutgoingCount`メソッドを使用して、送信済みまたはキューに追加したメールの総数をアサートすることもできます。
+
+```php
+Mail::assertOutgoingCount(3);
+```
+
 クロージャを`assertSent`、`assertNotSent`、`assertQueued`、`assertNotQueued`メソッドへ渡すと、指定した「真理値テスト」にパスするMailableが送信されたことをアサートできます。指定した真理値テストにパスするMailableを少なくとも１つ送信した場合、アサーションをパスします。
 
 ```php

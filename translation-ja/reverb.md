@@ -18,6 +18,7 @@
     - [ポート](#ports)
     - [プロセス管理](#process-management)
     - [スケーリング](#scaling)
+- [イベント](#events)
 
 <a name="イントロダクション"></a>
 ## イントロダクション
@@ -316,3 +317,30 @@ REVERB_SCALING_ENABLED=true
 次に、すべてのReverbサーバが通信する専用の中央Redisサーバを用意します。Reverbは、[アプリケーション用に設定したデフォルトのRedis接続](/docs/{{version}}/redis#configuration)を使用して、すべてのReverbサーバへメッセージを公開します。
 
 一度、Reverbのスケーリングオプションを有効にし、Redisサーバを設定したら、Redisサーバと通信できる複数のサーバ上で`reverb:start`コマンドを呼び出すだけです。これらのReverbサーバは、入ってくるリクエストをサーバ間で均等に分散させるロードバランサーの後ろに設置すべきです。
+
+<a name="events"></a>
+## イベント
+
+Reverbは、ライフサイクルおよびメッセージ処理中に内部イベントを発行します。接続の管理時やメッセージの交換時にアクションを実行するために、これらのイベントを[監視できます](/docs/{{version}}/events)。
+
+以下のイベントがReverbによって発行されます。
+
+#### `Laravel\Reverb\Events\ChannelCreated`
+
+チャンネルを作成したときに送信します。これは通常、最初の接続が特定のチャンネルを購読したときに発生します。このイベントは、`Laravel\Reverb\Protocols\Pusher\Channel`インスタンスを受け取ります。
+
+#### `Laravel\Reverb\Events\ChannelRemoved`
+
+チャンネルを削除したときに送信します。これは通常、最後の接続がチャンネルの購読を解除したときに発生します。このイベントは、`Laravel\Reverb\Protocols\Pusher\Channel`のインスタンスを受け取ります。
+
+#### `Laravel\Reverb\Events\ConnectionPruned`
+
+サーバが古い接続を削除したときに送信します。このイベントは`Laravel\Reverb\Contracts\Connection`インスタンスを受け取ります。
+
+#### `Laravel\Reverb\Events\MessageReceived`
+
+クライアント接続からのメッセージを受信したときに送信します。このイベントは`Laravel\Reverb\Contracts\Connection`インスタンスと`$message`文字列をそのまま受け取ります。
+
+#### `Laravel\Reverb\Events\MessageSent`
+
+クライアント接続へメッセージを送信したときにディスパッチします。このイベントは`Laravel\Reverb\Contracts\Connection`インスタンスと`$message`文字列をそのまま受け取ります。
