@@ -213,25 +213,13 @@ composer require league/flysystem-read-only "^3.0"
 <a name="amazon-s3-compatible-filesystems"></a>
 ### Amazon S3互換ファイルシステム
 
-アプリケーションの`filesystems`設定ファイルには、デフォルトで`s3`のディスク設定がしてあります。このディスクを使用して[Amazon S3](https://aws.amazon.com/s3/)を操作するだけでなく、[MinIO](https://github.com/minio/minio)、[DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/)、[Vultr Object Storage](https://www.vultr.com/products/object-storage/)、[Cloudflare R2](https://www.cloudflare.com/developer-platform/products/r2/)、[Hetzner Cloud Storage](https://www.hetzner.com/storage/object-storage/)など、S3互換のファイルストレージサービスを操作することもできます。
+アプリケーションの`filesystems`設定ファイルには、デフォルトで`s3`のディスク設定がしてあります。このディスクを使用して[Amazon S3](https://aws.amazon.com/s3/)を操作するだけでなく、[RustFS](https://github.com/rustfs/rustfs)、[DigitalOcean Spaces](https://www.digitalocean.com/products/spaces/)、[Vultr Object Storage](https://www.vultr.com/products/object-storage/)、[Cloudflare R2](https://www.cloudflare.com/developer-platform/products/r2/)、[Hetzner Cloud Storage](https://www.hetzner.com/storage/object-storage/)など、S3互換のファイルストレージサービスを操作することもできます。
 
 通常、ディスクの認証情報を使用予定のサービス認証情報へ合わせて更新した後に、`endpoint`設定オプションの値を更新するだけで済みます。このオプションの値は通常、`AWS_ENDPOINT`環境変数で定義されています。
 
 ```php
-'endpoint' => env('AWS_ENDPOINT', 'https://minio:9000'),
+'endpoint' => env('AWS_ENDPOINT', 'https://rustfs:9000'),
 ```
-
-<a name="minio"></a>
-#### MinIO
-
-LaravelのFlysystemインテグレーションでMinIOを使用する際に、適切なURLを生成するには、`AWS_URL`環境変数を定義し、アプリケーションのローカルURLと一致させ、URLパスにバケット名を含める必要があります。
-
-```ini
-AWS_URL=http://localhost:9000/local
-```
-
-> [!WARNING]
-> `endpoint`がクライアントからアクセスできない場合、`temporaryUrl`メソッドを使って一時ストレージのURLを生成しても、MinIOを使用しているときには機能しないでしょう。
 
 <a name="obtaining-disk-instances"></a>
 ## ディスクインスタンスの取得

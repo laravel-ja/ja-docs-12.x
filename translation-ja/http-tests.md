@@ -1025,6 +1025,7 @@ Laravelの`Illuminate\Testing\TestResponse`クラスは、アプリケーショ�
 [assertFound](#assert-found)
 [assertGone](#assert-gone)
 [assertHeader](#assert-header)
+[assertHeaderContains](#assert-header-contains)
 [assertHeaderMissing](#assert-header-missing)
 [assertInternalServerError](#assert-internal-server-error)
 [assertJson](#assert-json)
@@ -1256,6 +1257,15 @@ $response->assertGone();
 
 ```php
 $response->assertHeader($headerName, $value = null);
+```
+
+<a name="assert-header-contains"></a>
+#### assertHeaderContains
+
+指定したヘッダが、指定部分文字列値を含むことを宣言します。
+
+```php
+$response->assertHeaderContains($headerName, $value);
 ```
 
 <a name="assert-header-missing"></a>

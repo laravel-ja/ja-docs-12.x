@@ -278,9 +278,9 @@ TYPESENSE_API_KEY=xyz
 <a name="file-storage"></a>
 ## ファイルストレージ
 
-本番環境でアプリケーションを実行する際に、Amazon S3を使用してファイルを保存する予定であれば、Sailをインストールする際に[MinIO](https://min.io)サービスをインストールするとよいでしょう。MinIOはS3互換のAPIを提供しており、本番のS3環境で「テスト」ストレージバケットを作成せずに、Laravelの`s3`ファイルストレージドライバを使ってローカルに開発するために使用できます。Sailのインストール時にMinIOのインストールを選択すると、アプリケーションの`compose.yaml`ファイルにMinIOの設定セクションが追加されます。
+本番環境でアプリケーションを実行する際に、Amazon S3を使用してファイルを保存する予定であれば、Sailをインストールする際に[RustFS](https://rustfs.com)サービスをインストールするとよいでしょう。RustFSはS3互換のAPIを提供しており、本番のS3環境で「テスト」ストレージバケットを作成せずに、Laravelの`s3`ファイルストレージドライバを使ってローカルに開発するために使用できます。Sailのインストール時にRustFSのインストールを選択すると、アプリケーションの`compose.yaml`ファイルにRustFSの設定セクションが追加されます。
 
-アプリケーションのデフォルト`filesystems`設定ファイルには、`s3`ディスクのディスク設定がすでに含まれています。このディスクを使ってAmazon S3と連携するだけでなく、その構成を制御する関連環境変数を変更するだけで、MinIOなどのS3互換のファイルストレージサービスと連携することができます。例えば、MinIOを使用する場合、ファイルシステムの環境変数の設定は次のように定義します。
+アプリケーションのデフォルト`filesystems`設定ファイルには、`s3`ディスクのディスク設定がすでに含まれています。このディスクを使ってAmazon S3と連携するだけでなく、その構成を制御する関連環境変数を変更するだけで、RustFSなどのS3互換のファイルストレージサービスと連携することができます。例えば、RustFSを使用する場合、ファイルシステムの環境変数の設定は次のように定義します。
 
 ```ini
 FILESYSTEM_DISK=s3
@@ -288,20 +288,9 @@ AWS_ACCESS_KEY_ID=sail
 AWS_SECRET_ACCESS_KEY=password
 AWS_DEFAULT_REGION=us-east-1
 AWS_BUCKET=local
-AWS_ENDPOINT=http://minio:9000
+AWS_ENDPOINT=http://rustfs:9000
 AWS_USE_PATH_STYLE_ENDPOINT=true
 ```
-
-LaravelのFlysystemインテグレーションで、MinIOを使用している場合、適切なURLを生成するには、`AWS_URL`環境変数を定義してアプリケーションのローカルURLと一致させ、URLパスにバケット名を含める必要があります:
-
-```ini
-AWS_URL=http://localhost:9000/local
-```
-
-`http://localhost:8900`のMinIOコンソールからバケットを作成できます。MinIOコンソールのデフォルトユーザー名は`sail`、パスワードは`password`です。
-
-> [!WARNING]
-> MinIOを使用している場合の、`temporaryUrl`メソッドによる一時保存用URL生成はサポートしていません。
 
 <a name="running-tests"></a>
 ## テスト実行
@@ -406,9 +395,12 @@ sail tinker
 <a name="sail-php-versions"></a>
 ## PHPバージョン
 
-Sailは現在、PHP8.4、PHP8.3、PHP8.2、PHP8.1、PHP8.0を利用したアプリケーションの実行をサポートしています。SailのデフォルトPHPバージョンは8.4です。アプリケーションの実行に使用するPHPバージョンを変更するには、アプリケーションの`compose.yaml`ファイル内の`laravel.test`コンテナの`build`定義を更新してください。
+Sailは現在、PHP8.5、8.4、8.3、8.2、8.1、8.0を利用したアプリケーションの実行をサポートしています。SailのデフォルトPHPバージョンは8.4です。アプリケーションの実行に使用するPHPバージョンを変更するには、アプリケーションの`compose.yaml`ファイル内の`laravel.test`コンテナの`build`定義を更新してください。
 
 ```yaml
+# PHP 8.5
+context: ./vendor/laravel/sail/runtimes/8.5
+
 # PHP 8.4
 context: ./vendor/laravel/sail/runtimes/8.4
 
