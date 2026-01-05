@@ -1146,7 +1146,7 @@ $table->ulidMorphs('taggable');
 
 `uuidMorphs`メソッドは、`{column}_id` `CHAR(36)`カラムと、`{column}_type` `VARCHAR`カラムを追加する便利なメソッドです。
 
-このメソッドは、UUID識別子を使用するポリモーフィックな[Eloquentリレーション](/docs/{{version}}/eloquent-relationships)に必要なカラムを定義するときに使用します。以下の例では、`taggable_id`カラムと`taggable_type`カラムが作成されます。
+このメソッドは、UUID識別子を使用する[ポリモーフィックEloquentリレーション](/docs/{{version}}/eloquent-relationships#polymorphic-relationships)に必要なカラムを定義するときに使用します。以下の例では、`taggable_id`カラムと`taggable_type`カラムが作成されます。
 
 ```php
 $table->uuidMorphs('taggable');

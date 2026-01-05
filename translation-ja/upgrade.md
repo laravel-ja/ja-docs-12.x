@@ -64,7 +64,7 @@
 
 **影響の可能性： 低い**
 
-[Carbon2.x](https://carbon.nesbot.com/docs/)のサポートを削除しました。すべてのLaravel 12アプリケーションは[Carbon 3.x](https://carbon.nesbot.com/docs/#api-carbon-3)を必須にしました。
+Carbon2.xのサポートを削除しました。すべてのLaravel 12アプリケーションは[Carbon 3.x](https://carbon.nesbot.com/guide/getting-started/migration.html)を必須にしました。
 
 <a name="updating-the-laravel-installer"></a>
 ### Laravelインストーラのアップデート

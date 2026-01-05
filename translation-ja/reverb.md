@@ -199,7 +199,7 @@ use Laravel\Reverb\Pulse\Recorders\ReverbMessages;
 WebSocketサーバは長時間稼動するため、Reverbがサーバで利用可能なリソースに対して最適な数の接続を効果的に処理できるように、サーバとホスティング環境を最適化する必要が起きる場合があります。
 
 > [!NOTE]
-> あなたのサイトを[Laravel Forge](https://forge.laravel.com)で管理している場合、"Application"パネルから直接Reverb用にサーバを自動的に最適化できます。Reverbの統合を有効にすることで、Forgeは必要な拡張機能のインストールや接続許可数の増加など、サーバを本番環境に対応させます。
+> [Laravel Cloud](https://cloud.laravel.com)は、Laravel Reverbクラスターを基盤とした完全管理型のWebSocketインフラを提供します。これにより、インフラ管理を必要とせずに、Reverb対応アプリケーションのスケーリングとリリースが可能になります。
 
 <a name="open-files"></a>
 ### ファイルオープン
