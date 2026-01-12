@@ -665,7 +665,7 @@ WHERE published = true AND (
 `whereNone`メソッドは、指定カラムのいずれもが指定制約に一致しないレコードを検索するために使用できます。
 
 ```php
-$posts = DB::table('albums')
+$albums = DB::table('albums')
     ->where('published', true)
     ->whereNone([
         'title',
@@ -823,7 +823,7 @@ $users = DB::table('users')
 ```php
 $activeUsers = DB::table('users')->select('id')->where('is_active', 1);
 
-$users = DB::table('comments')
+$comments = DB::table('comments')
     ->whereIn('user_id', $activeUsers)
     ->get();
 ```

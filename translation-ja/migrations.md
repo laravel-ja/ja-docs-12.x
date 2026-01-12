@@ -1216,7 +1216,9 @@ Schema::table('users', function (Blueprint $table) {
 | `->default($value)`                 | カラムの「デフォルト」値を指定                                                            |
 | `->first()`                         | テーブルの「最初の」カラムを配置（MariaDB／MySQL）                                                 |
 | `->from($integer)`                  | 自動増分フィールドの開始値を設定（MariaDB／MySQL／PostgreSQL）                                     |
+| `->instant()`                       | インスタント操作を使用してカラムを追加または変更（MySQL）                                   |
 | `->invisible()`                     | `SELECT *`クエリに対しカラムを「不可視」にする（MariaDB／MySQL）                                   |
+| `->lock($mode)`                     | カラム操作のロックモードを指定（MySQL）                                         |
 | `->nullable($value = true)`         | NULL値をカラムに保存可能に設定                                                            |
 | `->storedAs($expression)`           | storedカラムを生成（MariaDB／MySQL／PostgreSQL／SQLite）                                           |
 | `->unsigned()`                      | INTEGERカラムをUNSIGNEDとして設定（MariaDB／MySQL）                                                |
@@ -1271,6 +1273,36 @@ $table->after('password', function (Blueprint $table) {
     $table->string('address_line2');
     $table->string('city');
 });
+```
+
+<a name="instant-column-operations"></a>
+#### インスタントカラム操作
+
+MySQLを使用する場合、カラム定義に`instant`修飾子をチェーンすることで、MySQLの「インスタント」アルゴリズムを使用してカラムを追加または変更するよう指示できます。このアルゴリズムにより、特定のスキーマ変更をテーブルの完全な再構築なしで実行できるため、テーブルサイズに関係なく処理がほぼ瞬時に完了します。
+
+```php
+$table->string('name')->nullable()->instant();
+```
+
+インスタント操作によるカラム追加はテーブルの末尾への追加のみに限定されるため、`instant`修飾子は`after`や`first`修飾子と組み合わせられません。さらに、このアルゴリズムはすべてのカラムタイプや操作をサポートしているわけではありません。要求した操作が互換性のないものである場合、MySQLがエラーを発生させます。
+
+どの操作がインスタントカラム変更と互換性があるかを確認するには、[MySQLのドキュメント](https://dev.mysql.com/doc/refman/8.0/en/innodb-online-ddl-operations.html)を参照してください。
+
+<a name="ddl-locking"></a>
+#### DDLロック
+
+MySQLを使用する場合、カラム、インデックス、または外部キー定義に`lock`修飾子をチェーンすることで、スキーマ操作中のテーブルロックを制御できます。MySQLはいくつかのロックモードをサポートしています。`none`は並行読み取りと書き込みを許可し、`shared`は並行読み取りを許可しますが書き込みをブロックします。`exclusive`はすべての並行アクセスをブロックし、`default`はMySQLに最も適切なモードを選択させます。
+
+```php
+$table->string('name')->lock('none');
+
+$table->index('email')->lock('shared');
+```
+
+要求したロックモードが操作と互換性がない場合、MySQLがエラーを発生させます。`lock`修飾子を`instant`修飾子と組み合わせることで、スキーマ変更をさらに最適化できます。
+
+```php
+$table->string('name')->instant()->lock('none');
 ```
 
 <a name="modifying-columns"></a>
@@ -1403,6 +1435,17 @@ LaravelのスキーマビルダBlueprintクラスは、Laravelでサポートし
 | `$table->spatialIndex('location');`              | 空間インデックスを追加（SQLiteを除く）          |
 
 </div>
+
+<a name="online-index-creation"></a>
+#### オンラインインデックス作成
+
+デフォルトでは、大きなテーブルでのインデックス作成は、構築中にテーブルをロックし、読み取りや書き込みをブロックする可能性があります。PostgreSQLまたはSQL Serverを使用する場合、インデックス定義へ`online`メソッドをチェーンすることで、テーブルをロックせずにインデックスを作成できます。これにより、インデックス作成中もアプリケーションがデータの読み書きを継続できるようにします。
+
+```php
+$table->string('email')->unique()->online();
+```
+
+PostgreSQLを使用する場合、このメソッドはインデックス作成文へCONCURRENTLYオプションを追加します。SQL Serverを使用する場合、`WITH (online = on)`オプションを追加します。
 
 <a name="renaming-indexes"></a>
 ### インデックスのリネーム

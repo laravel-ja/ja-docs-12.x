@@ -5,6 +5,7 @@
 - ## 利用開始
     - [インストール](/docs/{{version}}/installation)
     - [設定](/docs/{{version}}/configuration)
+    - [AIエージェントによる開発](/docs/{{version}}/ai)
     - [ディレクトリ構造](/docs/{{version}}/structure)
     - [フロントエンド](/docs/{{version}}/frontend)
     - [スターターキット](/docs/{{version}}/starter-kits)

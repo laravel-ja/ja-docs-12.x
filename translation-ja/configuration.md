@@ -158,6 +158,32 @@ php artisan env:encrypt --key=3UVsEgGVK36XN82KKeyLFMhvosbZN1aF
 php artisan env:encrypt --env=staging
 ```
 
+<a name="readable-variable-names"></a>
+#### 可読変数名
+
+環境ファイルを暗号化する際、`--readable`オプションを使用すると、値を暗号化しつつ変数名は読めるままにできます。
+
+```shell
+php artisan env:encrypt --readable
+```
+
+これにより、以下の形式の暗号化ファイルを生成します。
+
+```ini
+APP_NAME=eyJpdiI6...
+APP_ENV=eyJpdiI6...
+APP_KEY=eyJpdiI6...
+APP_DEBUG=eyJpdiI6...
+APP_URL=eyJpdiI6...
+```
+
+可読性のある形式を使用すると、機密データをさらすことなく、どの環境変数が存在するかを確認できます。また、ファイルを復号しなくても、どの変数が追加、削除、または変更されたかを確認できるため、プルリクエストのレビューが非常に容易になります。
+
+環境ファイルを復号する際、Laravelは使用された形式を自動的に検出するため、`env:decrypt`コマンドに追加のオプションは必要ありません。
+
+> [!NOTE]
+> `--readable`オプションを使用する場合、元の環境ファイルのコメントや空行は暗号化された出力に含まれません。
+
 <a name="decryption"></a>
 #### 復号化
 

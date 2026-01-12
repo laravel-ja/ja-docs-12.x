@@ -6,6 +6,7 @@
     - [ミューテタの定義](#defining-a-mutator)
 - [属性のキャスト](#attribute-casting)
     - [配列とJSONのキャスト](#array-and-json-casting)
+    - [バイナリキャスト](#binary-casting)
     - [日付のキャスト](#date-casting)
     - [Enumキャスト](#enum-casting)
     - [暗号化キャスト](#encrypted-casting)
@@ -521,6 +522,40 @@ class Option implements Arrayable, JsonSerializable
         return $this->toArray();
     }
 }
+```
+
+<a name="binary-casting"></a>
+### バイナリキャスト
+
+Eloquentモデルが、自動増分IDカラムに加えて[バイナリタイプ](/docs/{{version}}/migrations#column-method-binary)の`uuid`または`ulid`カラムを持つ場合、`AsBinary`キャストを使用して、値をバイナリ表現へ自動的に相互変換できます。
+
+```php
+use Illuminate\Database\Eloquent\Casts\AsBinary;
+
+/**
+ * キャストする必要のある属性を取得
+ *
+ * @return array<string, string>
+ */
+protected function casts(): array
+{
+    return [
+        'uuid' => AsBinary::uuid(),
+        'ulid' => AsBinary::ulid(),
+    ];
+}
+```
+
+モデルでキャストを定義すると、UUID／ULID属性の値をオブジェクトインスタンスまたは文字列へセットできます。Eloquentは値を自動的にバイナリ表現にキャストします。属性の値を取得する際は、常にプレーンテキストの文字列値を受け取ります。
+
+```php
+use Illuminate\Support\Str;
+
+$user->uuid = Str::uuid();
+
+return $user->uuid;
+
+// "6e8cdeed-2f32-40bd-b109-1e4405be2140"
 ```
 
 <a name="date-casting"></a>

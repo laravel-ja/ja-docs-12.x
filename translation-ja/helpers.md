@@ -1291,7 +1291,7 @@ $classes = Arr::toCssClasses($array);
 <a name="method-array-to-css-styles"></a>
 #### `Arr::toCssStyles()` {.collection-method}
 
-`Arr::toCssStyles`は、CSSスタイルの文字列を条件付きでコンパイルします。このメソッドはクラスの配列を受け付けます。配列のキーには追加するクラスを含め、値には論理値を指定します。配列のキーが数値の場合は、レンダするクラスのリストへ常に含めます。
+`Arr::toCssStyles`メソッドは、条件に基づいてCSSスタイル文字列を生成します。このメソッドはCSS宣言の配列を受け取ります。配列のキーには追加したいCSS宣言を指定し、値には論理式を指定します。配列要素のキーが数値の場合は、生成するCSSスタイル文字列へ常にその要素を含めます。
 
 ```php
 use Illuminate\Support\Arr;
