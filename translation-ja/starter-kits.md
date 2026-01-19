@@ -228,37 +228,32 @@ import AuthLayout from '@/layouts/auth/AuthSplitLayout.vue'; // [tl! add]
 <a name="livewire-customization"></a>
 ### Livewire
 
-Livewireスターターキットは、Livewire3、Laravel Volt、Tailwind、[Flux UI](https://fluxui.dev/)で構築されています。他のスターターキットと同様に、バックエンドとフロントエンドのコードはすべてアプリケーション内に存在し、フルカスタマイズが可能です。
-
-#### LivewireとVolt
+Livewireスターターキットは、Livewire4、Laravel Volt、Tailwind、[Flux UI](https://fluxui.dev/)で構築されています。他のスターターキットと同様に、バックエンドとフロントエンドのコードはすべてアプリケーション内に存在し、フルカスタマイズが可能です。
 
 フロントエンドのコードの大部分は、`resources/js`ディレクトリにあります。アプリケーションの外観や動作をカスタマイズするために、自由にコードを変更できます。
 
 ```text
 resources/views
-├── components            # 再利用可能なLivewireコンポーネント
+├── components            # 再利用可能なコンポーネント
 ├── flux                  # カスタマイズ済みFluxコンポーネント
-├── livewire              # Livewireページ
+├── layouts               # アプリケーションレイアウト
+├── pages                 # Livewireページ
 ├── partials              # 再利用可能なBladeの部分ファイル
 ├── dashboard.blade.php   # 認証済みユーザーのダッシュボード
 ├── welcome.blade.php     # ゲストユーザーのウエルカムページ
 ```
 
-#### 旧来のLivewireコンポーネント
-
-フロントエンドのコードは`resources/views`ディレクトリにあり、`app/Livewire`ディレクトリにはLivewireコンポーネントと対応するバックエンドロジックを置きます。
-
 <a name="livewire-available-layouts"></a>
 #### 利用可能なレイアウト
 
-Livewireスターターキットには、「サイドバー」レイアウトと「ヘッダ」レイアウトの２つの異なる主要レイアウトを用意してあり、選択できます。デフォルトはサイドバーレイアウトですが、アプリケーションの`resources/js/layouts/app.blade.php`ファイルのレイアウトを変更すれば、ヘッダレイアウトへ切り替えられます。
+Livewireスターターキットには、「サイドバー」レイアウトと「ヘッダ」レイアウトの２つの異なる主要レイアウトを用意してあり、選択できます。デフォルトはサイドバーレイアウトですが、アプリケーションの`resources/views/layouts/app.blade.php`ファイルのレイアウトを変更すれば、ヘッダレイアウトへ切り替えられます。加えて、メインのFluxコンポーネントへ`container`属性を追加してください。
 
 ```blade
-<x-layouts.app.header>
+<x-layouts::app.header>
     <flux:main container>
         {{ $slot }}
     </flux:main>
-</x-layouts.app.header>
+</x-layouts::app.header>
 ```
 
 <a name="livewire-authentication-page-layout-variants"></a>
@@ -266,12 +261,12 @@ Livewireスターターキットには、「サイドバー」レイアウトと
 
 Livewireスターターキットに含まれている、ログインページや登録ページなどの認証ページには、３種類のレイアウトバリエーションがあります。「simple」、「card」、「split」です。
 
-認証レイアウトを変更するには、アプリケーションの`resources/js/layouts/auth.blade.php`ファイルで使用しているレイアウトを変更します。
+認証レイアウトを変更するには、アプリケーションの`resources/views/layouts/auth.blade.php` ファイルで使用しているレイアウトを修正してください。
 
 ```blade
-<x-layouts.auth.split>
+<x-layouts::auth.split>
     {{ $slot }}
-</x-layouts.auth.split>
+</x-layouts::auth.split>
 ```
 
 <a name="authentication"></a>

@@ -479,6 +479,43 @@ php artisan horizon:supervisor-status supervisor-1
 php artisan horizon:terminate
 ```
 
+<a name="automatically-restarting-horizon"></a>
+#### Horizonの自動再起動
+
+ローカルでの開発中は、`horizon:listen`コマンドを実行してください。`horizon:listen`コマンドを使用すれば、更新したコードを読み込むためにHorizonを手作業で再起動する必要はありません。この機能を使用する前に、ローカル開発環境へ[Node](https://nodejs.org)がインストールされていることを確認してください。さらに、ファイル監視ライブラリである[Chokidar](https://github.com/paulmillr/chokidar)をプロジェクトへインストールする必要があります。
+
+```shell
+npm install --save-dev chokidar
+```
+
+Chokidarをインストールしたら、`horizon:listen`コマンドを使ってHorizonを起動します。
+
+```shell
+php artisan horizon:listen
+```
+
+DockerやVagrant内で実行する場合は、`--poll`オプションを使用します。
+
+```shell
+php artisan horizon:listen --poll
+```
+
+アプリケーションの`config/horizon.php`設定ファイル内の、`watch`設定オプションを使用して、監視対象のディレクトリやファイルを設定します。
+
+```php
+'watch' => [
+    'app',
+    'bootstrap',
+    'config',
+    'database',
+    'public/**/*.php',
+    'resources/**/*.php',
+    'routes',
+    'composer.lock',
+    '.env',
+],
+```
+
 <a name="deploying-horizon"></a>
 ### Horizonのデプロイ
 

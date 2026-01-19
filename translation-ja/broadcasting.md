@@ -1283,6 +1283,45 @@ useEchoPresence("posts", "PostPublished", (e) => {
 </script>
 ```
 
+<a name="react-vue-connection-status"></a>
+#### 接続状況
+
+`useConnectionStatus`フックを使用すると、現在の WebSocket 接続状況を取得できます。このフックはリアクティブな状況を提供し、接続状態の変化に応じて自動的に値を更新します。
+
+```js tab=React
+import { useConnectionStatus } from "@laravel/echo-react";
+
+function ConnectionIndicator() {
+    const status = useConnectionStatus();
+
+    return <div>Connection: {status}</div>;
+}
+```
+
+```vue tab=Vue
+<script setup lang="ts">
+import { useConnectionStatus } from "@laravel/echo-vue";
+
+const status = useConnectionStatus();
+</script>
+
+<template>
+    <div>Connection: {{ status }}</div>
+</template>
+```
+
+ステータスは、以下のいずれかの値をとります。
+
+<div class="content-list" markdown="1">
+
+- `connected` - WebSocket サーバへ正常に接続した
+- `connecting` - 初回の接続を試み中
+- `reconnecting` - 切断後、再接続を試行中
+- `disconnected` - 接続しておらず、再接続の試行もしていない
+- `failed` - 接続に失敗した。再試行は行わない
+
+</div>
+
 <a name="presence-channels"></a>
 ## プレゼンスチャンネル
 

@@ -14,6 +14,7 @@
 - [アトミックロック](#atomic-locks)
     - [ロック管理](#managing-locks)
     - [プロセス間でのロック管理](#managing-locks-across-processes)
+    - [ロックと関数実行](#locks-and-function-invocations)
 - [キャッシュフェイルオーバ](#cache-failover)
 - [カスタムキャッシュドライバの追加](#adding-custom-cache-drivers)
     - [ドライバの作成](#writing-the-driver)
@@ -529,6 +530,27 @@ Cache::restoreLock('processing', $this->owner)->release();
 ```php
 Cache::lock('processing')->forceRelease();
 ```
+
+<a name="locks-and-function-invocations"></a>
+### ロックと関数実行
+
+`withoutOverlapping`メソッドは、アトミックロックを保持したまま、指定クロージャを実行するシンプルな構文を提供します。これにより、インフラストラクチャ全体を通じ、そのクロージャインスタンスが一度に１つだけ実行される状態を保証できます。
+
+```php
+Cache::withoutOverlapping('foo', function () {
+    // 最大10秒間待機した後、ロックを取得
+});
+```
+
+デフォルトでは、クロージャの実行を終了するまでロックを解放しません。また、このメソッドはロックを取得するために最大１０秒間待機します。メソッドに追加の引数を渡せば、これらの値をカスタマイズできます。
+
+```php
+Cache::withoutOverlapping('foo', function () {
+    // 最大5秒間待機した後、120秒間ロックを取得...
+}, lockSeconds: 120, waitSeconds: 5);
+```
+
+指定した待機時間内にロックを取得できない場合、`Illuminate\Contracts\Cache\LockTimeoutException`を投げます。
 
 <a name="cache-failover"></a>
 ## キャッシュフェイルオーバ

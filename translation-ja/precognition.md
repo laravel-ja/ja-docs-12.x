@@ -6,6 +6,7 @@
     - [Reactの使用](#using-react)
     - [AlpineとBladeの使用](#using-alpine)
     - [Axiosの設定](#configuring-axios)
+- [配列のバリデーション](#validating-arrays)
 - [バリデーションルールのカスタマイズ](#customizing-validation-rules)
 - [ファイルアップロードの処理](#handling-file-uploads)
 - [副作用の管理](#managing-side-effects)
@@ -549,6 +550,22 @@ window.axios = Axios.create()
 window.axios.defaults.headers.common['Authorization'] = authToken;
 
 client.use(window.axios)
+```
+
+<a name="validating-arrays"></a>
+## 配列のバリデーション
+
+配列やネストしたオブジェクト内のフィールドを検証するため、ワイルドカードを使用できます。各`*`は１つのパスセグメントにマッチします。
+
+```js
+// 配列内の全ユーザーのメールアドレスを検証
+form.validate('users.*.email');
+
+// プロファイルオブジェクト内の全フィールドを検証
+form.validate('profile.*');
+
+// 全ユーザーの全フィールドを検証
+form.validate('users.*.*');
 ```
 
 <a name="customizing-validation-rules"></a>

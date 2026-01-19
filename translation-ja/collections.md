@@ -120,6 +120,7 @@ $translated = $collection->toLocale('es');
 [concat](#method-concat)
 [contains](#method-contains)
 [containsOneItem](#method-containsoneitem)
+[containsManyItems](#method-containsmanyitems)
 [containsStrict](#method-containsstrict)
 [count](#method-count)
 [countBy](#method-countBy)
@@ -597,6 +598,29 @@ collect(['1', '2'])->containsOneItem();
 collect([1, 2, 3])->containsOneItem(fn (int $item) => $item === 2);
 
 // true
+```
+
+<a name="method-containsmanyitems"></a>
+#### `containsManyItems()` {.collection-method}
+
+`containsManyItems`メソッドは、コレクションが複数のアイテムを含んでいるかを判定します。
+
+```php
+collect([])->containsManyItems(); // false
+collect(['1'])->containsManyItems(); // false
+collect(['1', '2'])->containsManyItems(); // true
+```
+
+コレクション内の複数のアイテムが指定した条件に一致するか判定するために、コールバックを渡すこともできます。
+
+```php
+collect([1, 2, 3])->containsManyItems(fn (int $item) => $item > 1);
+
+// true
+
+collect([1, 2, 3])->containsManyItems(fn (int $item) => $item > 5);
+
+// false
 ```
 
 <a name="method-containsstrict"></a>
