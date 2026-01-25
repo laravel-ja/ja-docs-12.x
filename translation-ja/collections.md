@@ -119,7 +119,6 @@ $translated = $collection->toLocale('es');
 [combine](#method-combine)
 [concat](#method-concat)
 [contains](#method-contains)
-[containsOneItem](#method-containsoneitem)
 [containsManyItems](#method-containsmanyitems)
 [containsStrict](#method-containsstrict)
 [count](#method-count)
@@ -155,6 +154,7 @@ $translated = $collection->toLocale('es');
 [groupBy](#method-groupby)
 [has](#method-has)
 [hasAny](#method-hasany)
+[hasSole](#method-hassole)
 [implode](#method-implode)
 [intersect](#method-intersect)
 [intersectUsing](#method-intersectusing)
@@ -576,29 +576,6 @@ $collection->contains('product', 'Bookcase');
 `contains`メソッドは、アイテムを「緩く」比較します。つまり、ある整数の文字列とその整数値は等値として扱います。「厳密」な比較を行いたい場合は、[containsStrict](#method-containsstrict)メソッドを使ってください。
 
 `contains`の逆は、[doesntContain](#method-doesntcontain)メソッドをご覧ください。
-
-<a name="method-containsoneitem"></a>
-#### `containsOneItem()` {.collection-method}
-
-`containsOneItem`メソッドは、コレクションに項目が１つ含まれているかを判断します。
-
-```php
-collect([])->containsOneItem();
-
-// false
-
-collect(['1'])->containsOneItem();
-
-// true
-
-collect(['1', '2'])->containsOneItem();
-
-// false
-
-collect([1, 2, 3])->containsOneItem(fn (int $item) => $item === 2);
-
-// true
-```
 
 <a name="method-containsmanyitems"></a>
 #### `containsManyItems()` {.collection-method}
@@ -1459,6 +1436,25 @@ $collection->hasAny(['product', 'price']);
 $collection->hasAny(['name', 'price']);
 
 // false
+```
+
+<a name="method-hassole"></a>
+#### `hasSole()` {.collection-method}
+
+`hasSole`メソッドは、コレクションがアイテムを１つ含んでいるか判定します。オプションで、指定条件の一致も指定できます。
+
+```php
+collect([])->hasSole();
+
+// false
+
+collect(['1'])->hasSole();
+
+// true
+
+collect([1, 2, 3])->hasSole(fn (int $item) => $item === 2);
+
+// true
 ```
 
 <a name="method-implode"></a>

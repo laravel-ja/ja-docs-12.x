@@ -592,6 +592,12 @@ Bladeの`@include`ディレクティブを使用すると、別のビュー内�
 @includeFirst(['custom.admin', 'admin'], ['status' => 'complete'])
 ```
 
+親ビューから変数を一切継承せずにビューをインクルードしたい場合は、`@includeIsolated`ディレクティブを使用してください。インクルードするビューは、明示的に渡した変数のみにアクセスできます。
+
+```blade
+@includeIsolated('view.name', ['user' => $user])
+```
+
 > [!WARNING]
 > Bladeビューで`__DIR__`と`__FILE__`定数は使用しないでください。これらは、キャッシュされコンパイルされたビューの場所を参照するためです。
 

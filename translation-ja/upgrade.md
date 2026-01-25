@@ -182,12 +182,50 @@ $tables = Schema::getTableListing(schema: 'main', schemaQualified: false);
 
 `db:table`と`db:show`コマンドは、PostgreSQLやSQL Serverと同様に、MySQL、MariaDB、SQLiteのすべてのスキーマの結果を出力するようになりました。
 
-<a name="updated-blueprint-constructor-signature"></a>
-#### `Blueprint`コンストラクタ使用法の更新
+<a name="database-constructor-signature-changes"></a>
+#### データベースコンストラクタの引数変更
 
 **影響の可能性： とても低い**
 
-`Illuminate\Database\Schema\Blueprint`クラスのコンストラクタは最初の引数として、`Illuminate\Database\Connection`のインスタンスを期待するようにしました。
+Laravel12では、いくつかの低レベルなデータベースクラスにおいて、コンストラクタを介して`Illuminate\Database\Connection`インスタンスを提供することを必要としました。
+
+**これらの変更は主にデータベースパッケージのメンテナに適用されるものであり、通常のアプリケーション開発に影響を与える可能性は極めて低いです。**
+
+`Illuminate\Database\Schema\Blueprint`
+
+`Illuminate\Database\Schema\Blueprint`クラスのコンストラクタは、第１引数として`Connection`インスタンスを期待するようにしました。これは主に、手作業で`Blueprint`インスタンスをインスタンス化しているアプリケーションやパッケージに影響します。
+
+`Illuminate\Database\Grammar`
+
+`Illuminate\Database\Grammar`クラスのコンストラクタも、`Connection`インスタンスを必要とするようにしました。以前のバージョンでは、インスタンス化の後に`setConnection()`メソッドを使用して接続を割り当てていました。このメソッドはLaravel12で削除しました。
+
+```php
+// Laravel <= 11.x
+$grammar = new MySqlGrammar;
+$grammar->setConnection($connection);
+
+// Laravel >= 12.x
+$grammar = new MySqlGrammar($connection);
+````
+
+さらに、以下のAPIを削除、または非推奨にしました。
+
+<div class="content-list" markdown="1">
+
+- `Blueprint::getPrefix()`メソッドは非推奨です。
+- `Connection::withTablePrefix()`メソッドは削除しました。
+- `Grammar::getTablePrefix()`および`setTablePrefix()`メソッドは非推奨です。
+- `Grammar::setConnection()`メソッドは削除しました。
+
+</div>
+
+テーブルプレフィックスを操作する場合は、データベース接続から直接取得してください。
+
+```php
+$prefix = $connection->getTablePrefix();
+```
+
+カスタムデータベースドライバ、スキーマビルダ、またはグラマの実装をメンテナンスしている場合は、コンストラクタを確認し、`Connection`インスタンスを提供していることを確認してください。
 
 <a name="eloquent"></a>
 ### Eloquent

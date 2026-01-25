@@ -674,7 +674,7 @@ protected function casts(): array
 <a name="key-rotation"></a>
 #### キーの変更
 
-ご存知のように、Laravelはアプリケーションの`app`設定ファイルで指定した`key`設定値を使い、文字列を暗号化します。通常、この値は環境変数`APP_KEY`の値です。もし、アプリケーションの暗号化キーを変更する必要がある場合は、新しいキーを使い、暗号化した属性を手作業で再暗号化する必要があります。
+ご存知のように、Laravelはアプリケーションの`app`設定ファイルで指定した`key`設定値を使用して、文字列を暗号化します。通常、この値は`APP_KEY`環境変数の値です。アプリケーションの暗号化キーをローテートする必要がある場合は、[スムーズに行う](/docs/{{version}}/encryption#gracefully-rotating-encryption-keys)ことができます。
 
 <a name="query-time-casting"></a>
 ### クエリ時のキャスト
