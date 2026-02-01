@@ -325,7 +325,7 @@ $users = $users->unique();
 ```
 
 <a name="method-withoutAppends"></a>
-#### `withoutAppends($attributes)` {.collection-method}
+#### `withoutAppends()` {.collection-method}
 
 `withoutAppends`メソッドは、コレクション内の各モデルから一時的に、すべての[追加属性](/docs/{{version}}/eloquent-serialization#appending-values-to-json)を削除します。
 

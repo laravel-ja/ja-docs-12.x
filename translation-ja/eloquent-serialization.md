@@ -217,6 +217,12 @@ return $user->mergeAppends(['is_admin', 'status'])->toArray();
 return $user->setAppends(['is_admin'])->toArray();
 ```
 
+同様に、モデルからすべての追加したプロパティを削除したい場合は、`withoutAppends`メソッドを使用します。
+
+```php
+return $user->withoutAppends()->toArray();
+```
+
 <a name="date-serialization"></a>
 ## 日付のシリアル化
 

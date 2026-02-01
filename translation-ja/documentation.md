@@ -74,6 +74,9 @@
     - [APIリソース](/docs/{{version}}/eloquent-resources)
     - [シリアライズ](/docs/{{version}}/eloquent-serialization)
     - [ファクトリ](/docs/{{version}}/eloquent-factories)
+- ## AI
+    - [Boost](/docs/{{version}}/boost)
+    - [MCP](/docs/{{version}}/mcp)
 - ## テスト
     - [テストの準備](/docs/{{version}}/testing)
     - [HTTPテスト](/docs/{{version}}/http-tests)
@@ -90,7 +93,6 @@
     - [Folio](/docs/{{version}}/folio)
     - [Homestead](/docs/{{version}}/homestead)
     - [Horizon](/docs/{{version}}/horizon)
-    - [MCP](/docs/{{version}}/mcp)
     - [Mix](/docs/{{version}}/mix)
     - [Octane](/docs/{{version}}/octane)
     - [Passport](/docs/{{version}}/passport)

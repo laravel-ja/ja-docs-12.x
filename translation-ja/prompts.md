@@ -5,6 +5,7 @@
 - [利用可能なプロンプト](#available-prompts)
     - [テキスト](#text)
     - [テキストエリア](#textarea)
+    - [数字](#number)
     - [パスワード](#password)
     - [確認](#confirm)
     - [選択](#select)
@@ -186,6 +187,76 @@ $story = textarea(
 $story = textarea(
     label: 'Tell me a story.',
     validate: ['story' => 'required|max:10000']
+);
+```
+
+<a name="number"></a>
+### 数字
+
+`number`関数は、指定した質問をユーザーに表示し、数値入力を受け付け、それを返します。`number`関数は、ユーザーへ上下の矢印キーを使用して数値を操作を提供します。
+
+```php
+use function Laravel\Prompts\number;
+
+$number = number('How many copies would you like?');
+```
+
+プレースホルダテキスト、デフォルト値、および情報ヒントを含めることもできます。
+
+```php
+$name = number(
+    label: 'How many copies would you like?',
+    placeholder: '5',
+    default: 1,
+    hint: 'This will be determine how many copies to create.'
+);
+```
+
+<a name="number-required"></a>
+#### 必須値
+
+値の入力を必須にする場合は、`required`引数を渡します。
+
+```php
+$copies = number(
+    label: 'How many copies would you like?',
+    required: true
+);
+```
+
+バリデーションメッセージをカスタマイズしたい場合は、文字列も渡せます。
+
+```php
+$copies = number(
+    label: 'How many copies would you like?',
+    required: 'A number of copies is required.'
+);
+```
+
+<a name="number-validation"></a>
+#### #### 追加のバリデーション
+
+最後に、追加のバリデーションロジックを実行したい場合は、`validate`引数にクロージャを渡します。
+
+```php
+$copies = number(
+    label: 'How many copies would you like?',
+    validate: fn (?int $value) => match (true) {
+        $value < 1 => 'At least one copy is required.',
+        $value > 100 => 'You may not create more than 100 copies.',
+        default => null
+    }
+);
+```
+
+クロージャは入力値を受け取り、エラーメッセージを返すか、バリデーションをパスした場合は`null`を返します。
+
+あるいは、Laravelの[バリデータ](/docs/{{version}}/validation)の機能を活用することもできます。 そのためには、属性の名前と希望するバリデーションルールを含む配列を`validate`引数に渡します。
+
+```php
+$copies = number(
+    label: 'How many copies would you like?',
+    validate: ['copies' => 'required|integer|min:1|max:100']
 );
 ```
 

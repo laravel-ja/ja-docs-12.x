@@ -2766,11 +2766,14 @@ test('orders can be shipped', function () {
     // ジョブが投入されないことをアサート
     Queue::assertNothingPushed();
 
-    // 一つのジョブが指定キューへ投入されることをアサート
+    // 一つのジョブが指定キューへ投入されたことをアサート
     Queue::assertPushedOn('queue-name', ShipOrder::class);
 
+    // ジョブが投入されたことをアサート
+    Queue::assertPushed(ShipOrder::class);
+
     // 一つのジョブが２回投入されることをアサート
-    Queue::assertPushed(ShipOrder::class, 2);
+    Queue::assertPushedTimes(ShipOrder::class, 2);
 
     // 一つのジョブが投入されないことアサート
     Queue::assertNotPushed(AnotherJob::class);
@@ -2810,8 +2813,11 @@ class ExampleTest extends TestCase
         // 一つのジョブが指定キューへ投入されることをアサート
         Queue::assertPushedOn('queue-name', ShipOrder::class);
 
+        // ジョブが投入されたことをアサート
+        Queue::assertPushed(ShipOrder::class);
+
         // ジョブを２回投入することをアサート
-        Queue::assertPushed(ShipOrder::class, 2);
+        Queue::assertPushedTimes(ShipOrder::class, 2);
 
         // 一つのジョブが投入されないことアサート
         Queue::assertNotPushed(AnotherJob::class);
@@ -2856,7 +2862,7 @@ test('orders can be shipped', function () {
     // 注文発送処理…
 
     // 一つのジョブが２回投入されることをアサート
-    Queue::assertPushed(ShipOrder::class, 2);
+    Queue::assertPushedTimes(ShipOrder::class, 2);
 });
 ```
 
@@ -2870,7 +2876,7 @@ public function test_orders_can_be_shipped(): void
     // 注文発送処理…
 
     // 一つのジョブが２回投入されることをアサート
-    Queue::assertPushed(ShipOrder::class, 2);
+    Queue::assertPushedTimes(ShipOrder::class, 2);
 }
 ```
 
