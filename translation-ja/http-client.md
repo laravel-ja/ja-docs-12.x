@@ -588,7 +588,7 @@ $responses = Http::batch(fn (Batch $batch) => [
 })->then(function (Batch $batch, array $results) {
     // すべてのリクエストが成功裏に完了した
 })->catch(function (Batch $batch, int|string $key, Response|RequestException|ConnectionException $response) {
-    // 最初にバッチリクエストの失敗を認識した
+    // バッチリクエストの失敗を認識した
 })->finally(function (Batch $batch, array $results) {
     // バッチの実行を終了した
 })->send();

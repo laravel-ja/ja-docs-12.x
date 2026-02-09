@@ -54,49 +54,43 @@ Laravel Boostをインストールすれば、CursorやClaude Code、または�
 <a name="set-up-your-agents"></a>
 ### エージェントのセットアップ
 
-#### Cursor
-
+```text tab=Cursor
 1. コマンドパレット（`Cmd+Shift+P`または`Ctrl+Shift+P`）を開きます。
 2. 「/open MCP Settings」で`enter`を押します。
 3. `laravel-boost`のトグルをオンにします。
+```
 
-#### Claude Code
-
+```text tab=Claude Code
 Claude Codeのサポートは通常、自動的に有効になります。もし有効になっていない場合は、プロジェクトのディレクトリでシェルを開き、以下のコマンドを実行してください。
 
-```shell
 claude mcp add -s local -t stdio laravel-boost php artisan boost:mcp
 ```
 
-#### Codex
-
+```text tab=Codex
 Codexのサポートは通常、自動的に有効になります。もし有効になっていない場合は、プロジェクトのディレクトリでシェルを開き、以下のコマンドを実行してください。
 
-```shell
 codex mcp add laravel-boost -- php "artisan" "boost:mcp"
 ```
 
-#### Gemini CLI
-
+```text tab=Gemini CLI
 Gemini CLIのサポートは通常、自動的に有効になります。もし有効になっていない場合は、プロジェクトのディレクトリでシェルを開き、以下のコマンドを実行してください。
 
-```shell
 gemini mcp add -s project -t stdio laravel-boost php artisan boost:mcp
 ```
 
-#### GitHub Copilot (VS Code)
-
+```text tab=GitHub Copilot (VS Code)
 1. コマンドパレット（`Cmd+Shift+P`または`Ctrl+Shift+P`）を開きます。
 2. 「MCP: List Servers」で`enter`を押します。
 3. 矢印キーで`laravel-boost`に合わせ、`enter`を押します。
 4. 「Start server」を選択します。
+```
 
-#### Junie
-
+```text tab=Junie
 1. `shift`を2回押してコマンドパレットを開きます。
 2. 「MCP Settings」を検索して`enter`を押します。
 3. `laravel-boost`の隣にあるチェックボックスをオンにします。
 4. 右下の「Apply」をクリックします。
+```
 
 <a name="keeping-boost-resources-updated"></a>
 ### Boostリソースの最新保持
@@ -178,28 +172,28 @@ AIガイドラインは、AIエージェントにLaravelエコシステムパッ
 
 Laravel Boostには、以下のパッケージとフレームワーク用のAIガイドラインが含まれています。`core`ガイドラインは、すべてのバージョンに適用可能な、対象パッケージに対する一般的で汎用的なアドバイスをAIに提供します。
 
-| パッケージ | サポートするバージョン |
-|--------------------|------------------------|
-| Core & Boost | core |
+| パッケージ          | サポートバージョン          |
+| ----------------- | ---------------------- |
+| Core & Boost      | core                   |
 | Laravel Framework | core, 10.x, 11.x, 12.x |
-| Livewire | core, 2.x, 3.x, 4.x |
-| Flux UI | core, free, pro |
-| Folio | core |
-| Herd | core |
-| Inertia Laravel | core, 1.x, 2.x |
-| Inertia React | core, 1.x, 2.x |
-| Inertia Vue | core, 1.x, 2.x |
-| Inertia Svelte | core, 1.x, 2.x |
-| MCP | core |
-| Pennant | core |
-| Pest | core, 3.x, 4.x |
-| PHPUnit | core |
-| Pint | core |
-| Sail | core |
-| Tailwind CSS | core, 3.x, 4.x |
-| Livewire Volt | core |
-| Wayfinder | core |
-| Enforce Tests | conditional |
+| Livewire          | core, 2.x, 3.x, 4.x    |
+| Flux UI           | core, free, pro        |
+| Folio             | core                   |
+| Herd              | core                   |
+| Inertia Laravel   | core, 1.x, 2.x         |
+| Inertia React     | core, 1.x, 2.x         |
+| Inertia Vue       | core, 1.x, 2.x         |
+| Inertia Svelte    | core, 1.x, 2.x         |
+| MCP               | core                   |
+| Pennant           | core                   |
+| Pest              | core, 3.x, 4.x         |
+| PHPUnit           | core                   |
+| Pint              | core                   |
+| Sail              | core                   |
+| Tailwind CSS      | core, 3.x, 4.x         |
+| Livewire Volt     | core                   |
+| Wayfinder         | core                   |
+| Enforce Tests     | conditional            |
 
 > **注意：** AIガイドラインを最新の状態に保つには、[Boostリソースの最新保持](#keeping-boost-resources-updated)セクションを参照してください。
 
@@ -249,20 +243,20 @@ $result = PackageName::featureTwo($param1, $param2);
 <a name="available-skills"></a>
 ### 利用可能なスキル
 
-| スキル | パッケージ |
-|------------------------------|--------------|
-| fluxui-development | Flux UI |
-| folio-routing | Folio |
-| inertia-react-development | Inertia React |
+| スキル                      | パッケージ        |
+| -------------------------- | -------------- |
+| fluxui-development         | Flux UI        |
+| folio-routing              | Folio          |
+| inertia-react-development  | Inertia React  |
 | inertia-svelte-development | Inertia Svelte |
-| inertia-vue-development | Inertia Vue |
-| livewire-development | Livewire |
-| mcp-development | MCP |
-| pennant-development | Pennant |
-| pest-testing | Pest |
-| tailwindcss-development | Tailwind CSS |
-| volt-development | Volt |
-| wayfinder-development | Wayfinder |
+| inertia-vue-development    | Inertia Vue    |
+| livewire-development       | Livewire       |
+| mcp-development            | MCP            |
+| pennant-development        | Pennant        |
+| pest-testing               | Pest           |
+| tailwindcss-development    | Tailwind CSS   |
+| volt-development           | Volt           |
+| wayfinder-development      | Wayfinder      |
 
 > **注意：** スキルを最新の状態に保つには、[Boostリソースの最新保持](#keeping-boost-resources-updated)セクションを参照してください。
 
@@ -334,16 +328,16 @@ Laravel Boostは、17,000件を超えるLaravel固有の情報を含む広範な
 
 `Search Docs` MCPツールにより、エージェントはインストール済みパッケージに基づいてドキュメントを取得するために、LaravelがホストするドキュメントAPIサービスを照会できるようにしています。BoostのAIガイドラインとスキルは、このAPIを使用するようコーディングエージェントへ自動的に指示します。
 
-| パッケージ | サポートバージョン |
-|-----------------|--------------------|
+| パッケージ           | サポートバージョン     |
+| ----------------- | ------------------ |
 | Laravel Framework | 10.x, 11.x, 12.x |
-| Filament | 2.x, 3.x, 4.x, 5.x |
-| Flux UI | 2.x Free, 2.x Pro |
-| Inertia | 1.x, 2.x |
-| Livewire | 1.x, 2.x, 3.x, 4.x |
-| Nova | 4.x, 5.x |
-| Pest | 3.x, 4.x |
-| Tailwind CSS | 3.x, 4.x |
+| Filament          | 2.x, 3.x, 4.x, 5.x |
+| Flux UI           | 2.x Free, 2.x Pro  |
+| Inertia           | 1.x, 2.x           |
+| Livewire          | 1.x, 2.x, 3.x, 4.x |
+| Nova              | 4.x, 5.x           |
+| Pest              | 3.x, 4.x           |
+| Tailwind CSS      | 3.x, 4.x           |
 
 <a name="extending-boost"></a>
 ## Boostの拡張

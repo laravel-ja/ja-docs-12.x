@@ -3,7 +3,7 @@
 - [イントロダクション](#introduction)
     - [設定](#configuration)
     - [ドライバ事前設定](#driver-prerequisites)
-    - [フェイルオーバー設定](#failover-configuration)
+    - [フェイスセーフ設定](#failover-configuration)
     - [ラウンドロビン設定](#round-robin-configuration)
 - [Mailableの生成](#generating-mailables)
 - [Mailableの記述](#writing-mailables)
@@ -209,7 +209,7 @@ Laravelがメール送信時に、AWS SDKの`SendEmail`メソッドへ渡す、[
 ```
 
 <a name="failover-configuration"></a>
-### フェイルオーバー設定
+### フェイスセーフ設定
 
 アプリケーションのメールを送信するように設定した外部サービスがダウンすることがあります。このような場合には、プライマリ配信ドライバがダウンした場合に使用する、1つ以上のバックアップメール配信設定を定義できると便利です。
 
@@ -231,7 +231,7 @@ Laravelがメール送信時に、AWS SDKの`SendEmail`メソッドへ渡す、[
 ],
 ```
 
-`failover`トランスポートを使用するメーラーを設定したら、フェイルオーバー機能を利用するために、アプリケーションの`.env`ファイルでフェイルオーバーメーラーをデフォルトのメーラーとして設定する必要があります:
+`failover`トランスポートを使用するメーラーを設定したら、フェイスセーフ機能を利用するために、アプリケーションの`.env`ファイルでフェイスセーフメーラーをデフォルトのメーラーとして設定する必要があります:
 
 ```ini
 MAIL_MAILER=failover

@@ -13,6 +13,7 @@
     - [キュー投入するイベントリスナとデータベーストランザクション](#queued-event-listeners-and-database-transactions)
     - [キュー投入リスナミドルウェア](#queued-listener-middleware)
     - [暗号化キュー投入リスナ](#encrypted-queued-listeners)
+    - [ユニークイベントリスナ](#unique-event-listeners)
     - [失敗したジョブの処理](#handling-failed-jobs)
 - [イベント発行](#dispatching-events)
     - [データベーストランザクション後のイベント発行](#dispatching-events-after-database-transactions)
@@ -511,6 +512,99 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class SendShipmentNotification implements ShouldQueue, ShouldBeEncrypted
 {
     // ...
+}
+```
+
+<a name="unique-event-listeners"></a>
+### ユニークイベントリスナ
+
+> [!WARNING]
+> ユニークリスナには、[ロック](/docs/{{version}}/cache#atomic-locks)をサポートするキャッシュドライバが必要です。現在、`memcached`、`redis`、`dynamodb`、`database`、`file`、`array`のキャッシュドライバがアトミックロックをサポートしています。
+
+特定のリスナのインスタンスが、いかなる時点においてもキューに一つしか存在しないようにしたい場合があると思います。そのためには、リスナクラスに`ShouldBeUnique`インターフェイスを実装します。
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\LicenseSaved;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class AcquireProductKey implements ShouldQueue, ShouldBeUnique
+{
+    public function __invoke(LicenseSaved $event): void
+    {
+        // ...
+    }
+}
+```
+
+上記の例では、`AcquireProductKey`リスナはユニークです。したがって、リスナの別のインスタンスがすでにキューに存在し、処理を終えていない場合、そのリスナはキューに投入されません。これにより、たとえ短期間にライセンスが何度も保存されたとしても、各ライセンスに対してプロダクトキーが一つだけ取得されることを保証します。
+
+特定のケースでは、リスナをユニークにするための特定の「キー」を定義したい場合や、リスナがユニークであり続けるタイムアウト時間を指定したい場合があります。これを実現するには、リスナクラスに`uniqueId`および`uniqueFor`プロパティまたはメソッドを定義します。これらのメソッドはイベントインスタンスを受け取るため、イベントデータを使用して戻り値を構築できます。
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\LicenseSaved;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class AcquireProductKey implements ShouldQueue, ShouldBeUnique
+{
+    /**
+     * リスナのユニークロックが解除されるまでの秒数
+     *
+     * @var int
+     */
+    public $uniqueFor = 3600;
+
+    public function __invoke(LicenseSaved $event): void
+    {
+        // ...
+    }
+
+    /**
+     * リスナのユニークIDを取得
+     */
+    public function uniqueId(LicenseSaved $event): string
+    {
+        return 'listener:'.$event->license->id;
+    }
+}
+```
+
+上記の例では、`AcquireProductKey`リスナはライセンスIDごとにユニークです。そのため、同じライセンスに対してリスナを新しくディスパッチしても、既存のリスナが処理を完了するまでは無視されます。これにより、同じライセンスに対して重複したプロダクトキーが取得されるのを防ぎます。さらに、既存のリスナが1時間以内に処理されない場合、ユニークロックは解放され、同じユニークキーを持つ別のリスナをキューに入れられるようになります。
+
+> [!WARNING]
+> アプリケーションが複数のWebサーバやコンテナからイベントをディスパッチする場合、Laravelがリスナがユニークであるかどうかを正確に判断できるように、すべてのサーバが同じ中央キャッシュサーバと通信していることを確認してください。
+
+Laravelはデフォルトで、デフォルトのキャッシュドライバを使用してユニークロックを取得します。しかし、ロック取得のために別のドライバを使用したい場合は、使用するキャッシュドライバを返す`uniqueVia`メソッドを定義します。
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\LicenseSaved;
+use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Support\Facades\Cache;
+
+class AcquireProductKey implements ShouldQueue, ShouldBeUnique
+{
+    // ...
+
+    /**
+     * ユニークリスナロック用のキャッシュドライバを取得
+     */
+    public function uniqueVia(LicenseSaved $event): Repository
+    {
+        return Cache::driver('redis');
+    }
 }
 ```
 

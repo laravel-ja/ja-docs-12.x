@@ -6,11 +6,9 @@
     - [インストール](#installation)
     - [利用可能なツール](#available-tools)
     - [AIガイドライン](#ai-guidelines)
+    - [エージェントスキル](#agent-skills)
     - [ドキュメント検索](#documentation-search)
-    - [IDE統合](#ide-integration)
-- [カスタムBoostガイドライン](#custom-guidelines)
-    - [プロジェクトガイドラインの追加](#adding-project-guidelines)
-    - [パッケージガイドライン](#package-guidelines)
+    - [エージェント統合](#agents-integration)
 
 <a name="introduction"></a>
 ## イントロダクション
@@ -91,6 +89,13 @@ Boostは、Laravelエコシステムのために特別に作られた包括的�
 
 `boost:install`を実行すると、Boostはアプリケーションが使用しているパッケージを自動的に検出し、関連するガイドラインをプロジェクトのAIコンテキストファイルに組み込みます。
 
+<a name="agent-skills"></a>
+### エージェントスキル
+
+[Agent Skills](https://agentskills.io/home)は、エージェントが特定のドメインで作業する際にオンデマンドで有効化できる、軽量でターゲットを絞った知識モジュールです。事前ロードされるガイドラインとは異なり、スキルを使用すると詳細なパターンやベストプラクティスを関連性がある場合にのみロードできるため、コンテキストの肥大化を抑え、AIが生成するコードの関連性を向上させます。
+
+スキルは、Livewire、Inertia、Tailwind CSS、Pestなどの人気のあるLaravelパッケージで利用可能です。`boost:install`を実行して機能としてスキルを選択すると、`composer.json`で検出されたパッケージに基づいてスキルを自動的にインストールします。
+
 <a name="documentation-search"></a>
 ### ドキュメント検索
 
@@ -98,107 +103,7 @@ Boostは、AIエージェントが17,000件を超えるLaravelエコシステム
 
 機能の仕組みを理解する必要がある場合、エージェントはBoostのドキュメントAPIを検索し、正確でバージョン固有の情報を受け取れます。これにより、AIエージェントが古いフレームワークバージョンの非推奨メソッドや構文を提案してしまうという、よくある問題を排除します。
 
-<a name="ide-integration"></a>
-### IDEとの統合
+<a name="agent-integration"></a>
+### エージェント統合
 
-Boostは、Model Context Protocolをサポートする一般的なIDEやAIツールと統合しています。いくつかの一般的なエディタでBoostを有効にする方法は以下の通りです。
-
-```text tab="Claude Code"
-// torchlight! {"lineNumbers": false}
-Boostは通常、自動的に検出されます。手作業でのセットアップが必要な場合：
-
-1. プロジェクトディレクトリでターミナルを開きます。
-2. 次を実行します: claude mcp add laravel-boost -- php artisan boost:mcp
-```
-
-```text tab=Cursor
-// torchlight! {"lineNumbers": false}
-1. コマンドパレットを開きます (Cmd+Shift+P または Ctrl+Shift+P)。
-2. 「MCP: Open Settings」を選択します。
-3. 「laravel-boost」オプションをオンにします。
-```
-
-```text tab="VS Code"
-// torchlight! {"lineNumbers": false}
-1. コマンドパレットを開きます (Cmd+Shift+P または Ctrl+Shift+P)。
-2. 「MCP: List Servers」を選択します。
-3. 「laravel-boost」に移動し、Enterキーを押します。
-4. 「Start server」を選択します。
-```
-
-```text tab=PhpStorm
-// torchlight! {"lineNumbers": false}
-1. Shiftキーを2回押して「Search Everywhere」を開きます。
-2. 「MCP Settings」を検索し、Enterキーを押します。
-3. 「laravel-boost」の横にあるチェックボックスを有効にします。
-4. 「Apply」をクリックします。
-```
-
-```text tab=Codex
-// torchlight! {"lineNumbers": false}
-Boostは通常、自動的に検出されます。手作業でのセットアップが必要な場合：
-
-1. プロジェクトディレクトリでターミナルを開きます。
-2. 次を実行します: codex mcp add -- php artisan boost:mcp
-```
-
-```text tab=Gemini
-// torchlight! {"lineNumbers": false}
-Boostは通常、自動的に検出されます。手作業でのセットアップが必要な場合：
-
-1. プロジェクトディレクトリでターミナルを開きます。
-2. 次を実行します: gemini mcp add laravel-boost -- php artisan boost:mcp
-```
-
-<a name="custom-guidelines"></a>
-## カスタムBoostガイドライン
-
-Boostの組み込みガイドラインはLaravelエコシステムを包括的にカバーしていますが、AIエージェントに対してプロジェクト固有の指示を追加したい場合もあると思います。
-
-<a name="adding-project-guidelines"></a>
-### プロジェクトガイドラインの追加
-
-プロジェクトにカスタムガイドラインを追加するには、アプリケーションの`.ai/guidelines`ディレクトリに`.blade.php`または`.md`ファイルを作成してください。
-
-```text
-.ai/
-└── guidelines/
-    └── api-conventions.md
-    ├── architecture.md
-    ├── testing-standards.blade.php
-```
-
-`boost:install` を実行すると、これらのファイルが自動的に取り込まれます。これらのガイドラインを使用して、チームのコーディング規約、アーキテクチャ上の決定事項、ドメイン固有の用語、あるいはAIエージェントがプロジェクトのためにより良いコードを書くのに役立つその他のコンテキストを文書化してください。
-
-<a name="package-guidelines"></a>
-### パッケージガイドライン
-
-Laravelパッケージをメンテナンスしていて、ユーザーへAIガイドラインを提供したい場合は、パッケージの`resources/boost/guidelines`ディレクトリへガイドラインを含めてください。
-
-```text
-resources/
-└── boost/
-    └── guidelines/
-        └── core.blade.php
-```
-
-AIガイドラインには、パッケージの概要、必要なファイル構造や規約、および主要機能の使用方法（コマンド例やコードスニペットを含む）を記載してください。AIがユーザーのために正しいコードを生成できるよう、簡潔かつ実践的で、ベストプラクティスに焦点を当てた内容に保ってください。以下に例を示します。
-
-```md
-## パッケージ名
-
-このパッケージは[機能の簡単な説明]を提供します。
-
-### 機能
-
-- 機能1: [明確で短い説明]。
-- 機能2: [明確で短い説明]。使用例:
-
-@verbatim
-<code-snippet name="機能2の使い方" lang="php">
-$result = PackageName::featureTwo($param1, $param2);
-</code-snippet>
-@endverbatim
-```
-
-ユーザーがあなたのパッケージを含むアプリケーションにBoostをインストールすると、Boostはガイドラインを自動的に検出し、ユーザーのAIコンテキストに含めます。これにより、パッケージ作成者は、AIエージェントがパッケージを適切に使用する方法を理解できるよう支援できます。
+Boostは、Model Context Protocolをサポートする人気のIDEやAIツールと統合します。Cursor、Claude Code、Codex、Gemini CLI、GitHub Copilot、Junieの詳細なセットアップ手順については、Boostドキュメントの[エージェントのセットアップ](/docs/{{version}}/boost#set-up-your-agents)セクションを参照してください。

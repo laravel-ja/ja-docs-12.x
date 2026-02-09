@@ -75,8 +75,9 @@
     - [シリアライズ](/docs/{{version}}/eloquent-serialization)
     - [ファクトリ](/docs/{{version}}/eloquent-factories)
 - ## AI
-    - [Boost](/docs/{{version}}/boost)
+    - [AI SDK](/docs/{{version}}/ai-sdk)
     - [MCP](/docs/{{version}}/mcp)
+    - [Boost](/docs/{{version}}/boost)
 - ## テスト
     - [テストの準備](/docs/{{version}}/testing)
     - [HTTPテスト](/docs/{{version}}/http-tests)

@@ -157,22 +157,18 @@ $instance = Feature::instance(NewApi::class);
 
 #### 機能の保存名のカスタマイズ
 
-デフォルトで、Pennantは機能クラスの完全修飾クラス名を保存します。保存する機能名をアプリケーションの内部構造から切り離したい場合は、機能クラスで`$name`プロパティを指定してください。このプロパティの値をクラス名の代わりに格納します。
+Pennantはデフォルトで、フィーチャクラスの完全修飾クラス名を保存します。保存するフィーチャ名をアプリケーションの内部構造から切り離したい場合は、フィーチャクラスに`Name`属性を追加します。この属性の値が、クラス名の代わりに保存されます。
 
 ```php
 <?php
 
 namespace App\Features;
 
+use Laravel\Pennant\Attributes\Name;
+
+#[Name('new-api')]
 class NewApi
 {
-    /**
-     * 機能の保存名
-     *
-     * @var string
-     */
-    public $name = 'new-api';
-
     // ...
 }
 ```

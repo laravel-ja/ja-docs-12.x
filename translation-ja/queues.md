@@ -21,7 +21,7 @@
     - [キューと接続のカスタマイズ](#customizing-the-queue-and-connection)
     - [最大試行回数／タイムアウト値の指定](#max-job-attempts-and-timeout)
     - [SQS FIFOと公平キュー](#sqs-fifo-and-fair-queues)
-    - [キューのフェイルオーバー](#queue-failover)
+    - [キューのフェイスセーフ](#queue-failover)
     - [エラー処理](#error-handling)
 - [ジョブバッチ](#job-batching)
     - [Batchableジョブの定義](#defining-batchable-jobs)
@@ -978,7 +978,7 @@ class PodcastController extends Controller
 RecordDelivery::dispatch($order)->onConnection('deferred');
 ```
 
-`deferred`接続は、デフォルトの[フェイルオーバーキュー](#queue-failover)としても機能します。
+`deferred`接続は、デフォルトの[フェイスセーフキュー](#queue-failover)としても機能します。
 
 同様に、`background`接続は、HTTPレスポンスをユーザーへ送信した後にジョブを処理します。ただし、ジョブは別途起動されたPHPプロセス内で処理されるため、PHP-FPM／アプリケーションワーカは別の受信HTTPリクエストを処理するために利用可能です。
 
@@ -1527,11 +1527,11 @@ $user->notify($invoicePaid);
 ```
 
 <a name="queue-failover"></a>
-### キューのフェイルオーバー
+### キューのフェイスセーフ
 
-`failover`キュードライバは、キューへのジョブ投入時に自動フェイルオーバー機能を提供します。`failover`設定のプライマリキュー接続が何らかの理由で失敗した場合、Laravelは自動的にリスト内の次に設定してある接続へジョブの投入を試みます。これは、キューの信頼性が極めて重要な本番環境において高可用性を確保するために特に有用です。
+`failover`キュードライバは、キューへのジョブ投入時に自動フェイスセーフ機能を提供します。`failover`設定のプライマリキュー接続が何らかの理由で失敗した場合、Laravelは自動的にリスト内の次に設定してある接続へジョブの投入を試みます。これは、キューの信頼性が極めて重要な本番環境において高可用性を確保するために特に有用です。
 
-フェイルオーバーキュー接続を設定するには、`failover`ドライバを指定し、試行する接続名の配列を順番に指定します。Laravelはデフォルトで、アプリケーションの`config/queue.php`設定ファイルにフェイルオーバー設定の例を用意しています。
+フェイスセーフキュー接続を設定するには、`failover`ドライバを指定し、試行する接続名の配列を順番に指定します。Laravelはデフォルトで、アプリケーションの`config/queue.php`設定ファイルにフェイスセーフ設定の例を用意しています。
 
 ```php
 'failover' => [
@@ -1544,13 +1544,13 @@ $user->notify($invoicePaid);
 ],
 ```
 
-`failover` ドライバを使用する接続を設定したら、フェイルオーバー機能を利用するために、アプリケーションの `.env` ファイルでフェイルオーバー接続をデフォルトのキュー接続として設定する必要があります:
+`failover` ドライバを使用する接続を設定したら、フェイスセーフ機能を利用するために、アプリケーションの `.env` ファイルでフェイスセーフ接続をデフォルトのキュー接続として設定する必要があります:
 
 ```ini
 QUEUE_CONNECTION=failover
 ```
 
-次に、フェイルオーバー接続リスト内の各接続に対して、少なくとも1つのワーカを開始します。
+次に、フェイスセーフ接続リスト内の各接続に対して、少なくとも1つのワーカを開始します。
 
 ```bash
 php artisan queue:work redis
@@ -1560,10 +1560,10 @@ php artisan queue:work database
 > [!NOTE]
 > `sync`、`background`、`deferred`のキュードライバを使用する接続では、ワーカを実行する必要はありません。これらのドライバは現在のPHPプロセス内でジョブを処理するからです。
 
-キュー接続操作が失敗しフェイルオーバーが起動すると、Laravelは`Illuminate\Queue\Events\QueueFailedOver`イベントをディスパッチします。これにより、キュー接続の失敗を報告またはログに記録できます。
+キュー接続操作が失敗しフェイスセーフが起動すると、Laravelは`Illuminate\Queue\Events\QueueFailedOver`イベントをディスパッチします。これにより、キュー接続の失敗を報告またはログに記録できます。
 
 > [!NOTE]
-> Laravel Horizonを使用する場合、Horizonが管理するのはRedisキューのみであることに注意してください。フェイルオーバーリストに`database`が含まれている場合は、Horizonと並行して通常の`php artisan queue:work database`プロセスを実行する必要があります。
+> Laravel Horizonを使用する場合、Horizonが管理するのはRedisキューのみであることに注意してください。フェイスセーフリストに`database`が含まれている場合は、Horizonと並行して通常の`php artisan queue:work database`プロセスを実行する必要があります。
 
 <a name="error-handling"></a>
 ### エラー処理
@@ -1752,7 +1752,7 @@ $batch = Bus::batch([
 })->then(function (Batch $batch) {
     // すべてのジョブが正常に完了
 })->catch(function (Batch $batch, Throwable $e) {
-    // バッチジョブの失敗をはじめて検出
+    // バッチジョブの失敗を検出
 })->finally(function (Batch $batch) {
     // バッチの実行が終了
 })->dispatch();

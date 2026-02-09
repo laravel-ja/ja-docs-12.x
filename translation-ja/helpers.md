@@ -3721,6 +3721,7 @@ $uri = Uri::of('https://example.com')
 
 ```php
 $scheme = $uri->scheme();
+$authority = $uri->authority();
 $host = $uri->host();
 $port = $uri->port();
 $path = $uri->path();

@@ -119,7 +119,6 @@ $translated = $collection->toLocale('es');
 [combine](#method-combine)
 [concat](#method-concat)
 [contains](#method-contains)
-[containsManyItems](#method-containsmanyitems)
 [containsStrict](#method-containsstrict)
 [count](#method-count)
 [countBy](#method-countBy)
@@ -154,6 +153,7 @@ $translated = $collection->toLocale('es');
 [groupBy](#method-groupby)
 [has](#method-has)
 [hasAny](#method-hasany)
+[hasMany](#method-hasmany)
 [hasSole](#method-hassole)
 [implode](#method-implode)
 [intersect](#method-intersect)
@@ -576,29 +576,6 @@ $collection->contains('product', 'Bookcase');
 `contains`メソッドは、アイテムを「緩く」比較します。つまり、ある整数の文字列とその整数値は等値として扱います。「厳密」な比較を行いたい場合は、[containsStrict](#method-containsstrict)メソッドを使ってください。
 
 `contains`の逆は、[doesntContain](#method-doesntcontain)メソッドをご覧ください。
-
-<a name="method-containsmanyitems"></a>
-#### `containsManyItems()` {.collection-method}
-
-`containsManyItems`メソッドは、コレクションが複数のアイテムを含んでいるかを判定します。
-
-```php
-collect([])->containsManyItems(); // false
-collect(['1'])->containsManyItems(); // false
-collect(['1', '2'])->containsManyItems(); // true
-```
-
-コレクション内の複数のアイテムが指定した条件に一致するか判定するために、コールバックを渡すこともできます。
-
-```php
-collect([1, 2, 3])->containsManyItems(fn (int $item) => $item > 1);
-
-// true
-
-collect([1, 2, 3])->containsManyItems(fn (int $item) => $item > 5);
-
-// false
-```
 
 <a name="method-containsstrict"></a>
 #### `containsStrict()` {.collection-method}
@@ -1434,6 +1411,32 @@ $collection->hasAny(['product', 'price']);
 // true
 
 $collection->hasAny(['name', 'price']);
+
+// false
+```
+
+<a name="method-hasmany"></a>
+#### `hasMany()` {.collection-method}
+
+`hasMany`メソッドは、コレクションに複数のアイテムが含まれているかを判定します。
+
+```php
+collect([])->hasMany();
+
+// false
+
+collect(['1'])->hasMany();
+
+// false
+
+collect([1, 2, 3])->hasMany();
+
+// true
+
+collect([
+    ['age' => 2],
+    ['age' => 3],
+])->hasMany(fn ($item) => $item['age'] === 2)
 
 // false
 ```
@@ -3598,7 +3601,7 @@ $value = $collection->value('price');
 ```php
 $collection = collect([
     10 => ['product' => 'Desk', 'price' => 200],
-    11 => ['product' => 'Desk', 'price' => 200],
+    11 => ['product' => 'Speaker', 'price' => 400],
 ]);
 
 $values = $collection->values();
@@ -3608,7 +3611,7 @@ $values->all();
 /*
     [
         0 => ['product' => 'Desk', 'price' => 200],
-        1 => ['product' => 'Desk', 'price' => 200],
+        1 => ['product' => 'Speaker', 'price' => 400],
     ]
 */
 ```

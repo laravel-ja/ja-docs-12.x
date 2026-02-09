@@ -547,7 +547,7 @@ Cache::withoutOverlapping('foo', function () {
 ```php
 Cache::withoutOverlapping('foo', function () {
     // 最大5秒間待機した後、120秒間ロックを取得...
-}, lockSeconds: 120, waitSeconds: 5);
+}, lockFor: 120, waitFor: 5);
 ```
 
 指定した待機時間内にロックを取得できない場合、`Illuminate\Contracts\Cache\LockTimeoutException`を投げます。
@@ -555,9 +555,9 @@ Cache::withoutOverlapping('foo', function () {
 <a name="cache-failover"></a>
 ## キャッシュフェイルオーバ
 
-`failover`キャッシュドライバは、キャッシュとのやり取り時に自動フェイルオーバー機能を提供します。`failover`のプライマリキャッシュストアが何らかの理由で障害を起こした場合、Laravelは自動的にリスト内で次に設定してあるストアの使用を試みます。これは、キャッシュの信頼性が極めて重要な本番環境において高可用性を確保するために特に有用です。
+`failover`キャッシュドライバは、キャッシュとのやり取り時に自動フェイスセーフ機能を提供します。`failover`のプライマリキャッシュストアが何らかの理由で障害を起こした場合、Laravelは自動的にリスト内で次に設定してあるストアの使用を試みます。これは、キャッシュの信頼性が極めて重要な本番環境において高可用性を確保するために特に有用です。
 
-フェイルオーバーキャッシュストアを設定するには、`failover`ドライバを指定し、順に試行するストア名の配列を指定します。Laravelはデフォルトでアプリケーションの`config/cache.php`設定ファイルに、フェイルオーバー設定の例を含んでいます。
+フェイスセーフキャッシュストアを設定するには、`failover`ドライバを指定し、順に試行するストア名の配列を指定します。Laravelはデフォルトでアプリケーションの`config/cache.php`設定ファイルに、フェイスセーフ設定の例を含んでいます。
 
 ```php
 'failover' => [
@@ -569,13 +569,13 @@ Cache::withoutOverlapping('foo', function () {
 ],
 ```
 
-`failover`ドライバを使用するストアを一度設定し終えたら、フェイルオーバー機能を利用するために、アプリケーションの`.env`ファイルでフェイルオーバースストアをデフォルトのキャッシュストアとして設定する必要があります。
+`failover`ドライバを使用するストアを一度設定し終えたら、フェイスセーフ機能を利用するために、アプリケーションの`.env`ファイルでフェイスセーフスストアをデフォルトのキャッシュストアとして設定する必要があります。
 
 ```ini
 CACHE_STORE=failover
 ```
 
-キャッシュストア操作が失敗しフェイルオーバーがアクティブになると、Laravelは`Illuminate\Cache\Events\CacheFailedOver`イベントを発行します。これにより、キャッシュストアの失敗を報告またはログに記録できます。
+キャッシュストア操作が失敗しフェイスセーフがアクティブになると、Laravelは`Illuminate\Cache\Events\CacheFailedOver`イベントを発行します。これにより、キャッシュストアの失敗を報告またはログに記録できます。
 
 <a name="adding-custom-cache-drivers"></a>
 ## カスタムキャッシュドライバの追加

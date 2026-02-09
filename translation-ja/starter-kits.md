@@ -183,7 +183,7 @@ npx shadcn-vue@latest add switch
 
 ```vue
 <script setup lang="ts">
-import { Switch } from '@/Components/ui/switch'
+import { Switch } from '@/components/ui/switch'
 </script>
 
 <template>

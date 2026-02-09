@@ -444,6 +444,21 @@ public function shouldSend(object $notifiable, string $channel): bool
 }
 ```
 
+<a name="after-sending-notifications"></a>
+#### 送信後通知
+
+通知を送信した後にコードを実行したい場合は、通知クラスで`afterSending`メソッドを定義します。このメソッドは、通知対象のエントリ、チャンネル名、およびチャンネルからのレスポンスを受け取ります。
+
+```php
+/**
+ * 送信後の通知を処理
+ */
+public function afterSending(object $notifiable, string $channel, mixed $response): void
+{
+    // ...
+}
+```
+
 <a name="on-demand-notifications"></a>
 ### オンデマンド通知
 
