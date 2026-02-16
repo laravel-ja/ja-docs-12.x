@@ -49,6 +49,7 @@
     - [プロセス](/docs/{{version}}/processes)
     - [キュー](/docs/{{version}}/queues)
     - [レート制限](/docs/{{version}}/rate-limiting)
+    - [検索](/docs/{{version}}/search)
     - [文字列](/docs/{{version}}/strings)
     - [タスクスケジュール](/docs/{{version}}/scheduling)
 - ## 安全

@@ -120,13 +120,24 @@ AI SDKは、その機能全体でさまざまなプロバイダをサポート�
 
 | 機能 | プロバイダ |
 |---|---|
-| テキスト | OpenAI, Anthropic, Gemini, Groq, xAI, DeepSeek, Mistral, Ollama |
+| テキスト | OpenAI, Anthropic, Gemini, Azure, Groq, xAI, DeepSeek, Mistral, Ollama |
 | 画像 | OpenAI, Gemini, xAI |
 | TTS | OpenAI, ElevenLabs |
 | STT | OpenAI, ElevenLabs, Mistral |
-| 埋め込み | OpenAI, Gemini, Cohere, Mistral, Jina, VoyageAI |
+| 埋め込み | OpenAI, Gemini, Azure, Cohere, Mistral, Jina, VoyageAI |
 | リランク | Cohere, Jina |
 | ファイル | OpenAI, Anthropic, Gemini |
+
+`Laravel\Ai\Enums\Lab`列挙型（enum）は、プレーンな文字列を使用する代わりに、コード全体でプロバイダを参照するために使用できます。
+
+```php
+use Laravel\Ai\Enums\Lab;
+
+Lab::Anthropic;
+Lab::OpenAI;
+Lab::Gemini;
+// ...
+```
 
 <a name="agents"></a>
 ## エージェント
@@ -156,6 +167,7 @@ use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
 use Laravel\Ai\Contracts\HasStructuredOutput;
 use Laravel\Ai\Contracts\HasTools;
+use Laravel\Ai\Messages\Message;
 use Laravel\Ai\Promptable;
 use Stringable;
 
@@ -239,7 +251,7 @@ $agent = SalesCoach::make(user: $user);
 ```php
 $response = (new SalesCoach)->prompt(
     'このセールスの文字起こしを分析して...',
-    provider: 'anthropic',
+    provider: Lab::Anthropic,
     model: 'claude-haiku-4-5-20251001',
     timeout: 120,
 );
@@ -861,9 +873,10 @@ use Laravel\Ai\Attributes\Provider;
 use Laravel\Ai\Attributes\Temperature;
 use Laravel\Ai\Attributes\Timeout;
 use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Enums\Lab;
 use Laravel\Ai\Promptable;
 
-#[Provider('anthropic')]
+#[Provider(Lab::Anthropic)]
 #[Model('claude-haiku-4-5-20251001')]
 #[MaxSteps(10)]
 #[MaxTokens(4096)]
@@ -1096,7 +1109,7 @@ $response->embeddings; // [[0.123, 0.456, ...], [0.789, 0.012, ...]]
 ```php
 $response = Embeddings::for(['ナパバレーには素晴らしいワインがあります。'])
     ->dimensions(1536)
-    ->generate('openai', 'text-embedding-3-small');
+    ->generate(Lab::OpenAI, 'text-embedding-3-small');
 ```
 
 <a name="querying-embeddings"></a>
@@ -1270,7 +1283,7 @@ $reranked = $posts->rerank(
     by: 'content',
     query: 'Laravelのチュートリアル',
     limit: 10,
-    provider: 'cohere'
+    provider: Lab::Cohere
 );
 ```
 
@@ -1347,7 +1360,7 @@ Document::fromId('file-id')->delete();
 ```php
 $response = Document::fromPath(
     '/home/laravel/document.pdf'
-)->put(provider: 'anthropic');
+)->put(provider: Lab::Anthropic);
 ```
 
 <a name="using-stored-files-in-conversations"></a>
@@ -1493,11 +1506,11 @@ use Laravel\Ai\Image;
 
 $response = (new SalesCoach)->prompt(
     'このセールスの文字起こしを分析して...',
-    provider: ['openai', 'anthropic'],
+    provider: [Lab::OpenAI, Lab::Anthropic],
 );
 
 $image = Image::of('キッチンカウンターに置いてあるドーナツ')
-    ->generate(provider: ['gemini', 'xai']);
+    ->generate(provider: [Lab::Gemini, Lab::xAI]);
 ```
 
 <a name="testing"></a>

@@ -945,12 +945,12 @@ return $this->belongsToMany(Role::class)
 <a name="ordering-queries-via-intermediate-table-columns"></a>
 ### 中間テーブルカラムによるクエリの並び替え
 
- `belongsToMany` リレーションクエリが返す結果は、`orderByPivot`メソッドを使用して並び替えできます。以下の例では、そのユーザーの最新バッジをすべて取得します。
+ `belongsToMany` リレーションクエリが返す結果は、`orderByPivot`と`orderByPivotDesc`メソッドを使用して並び替えできます。以下の例では、そのユーザーの最新バッジをすべて取得します。
 
 ```php
 return $this->belongsToMany(Badge::class)
     ->where('rank', 'gold')
-    ->orderByPivot('created_at', 'desc');
+    ->orderByPivotDesc('created_at');
 ```
 
 <a name="defining-custom-intermediate-table-models"></a>

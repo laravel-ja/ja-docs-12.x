@@ -96,6 +96,14 @@ return response($content)
     ]);
 ```
 
+`withoutHeader`メソッドを使用して、送信するレスポンスから特定のヘッダを削除できます。
+
+```php
+return response($content)->withoutHeader('X-Debug');
+
+return response($content)->withoutHeader(['X-Debug', 'X-Powered-By']);
+```
+
 <a name="cache-control-middleware"></a>
 #### キャッシュコントロール・ミドルウェア
 

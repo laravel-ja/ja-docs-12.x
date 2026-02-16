@@ -205,7 +205,7 @@ class CurrentWeatherTool extends Tool
     /**
      * ツールの入力スキーマの取得
      *
-     * @return array<string, \Illuminate\JsonSchema\Type\Type>
+     * @return array<string, \Illuminate\JsonSchema\Types\Type>
      */
     public function schema(JsonSchema $schema): array
     {

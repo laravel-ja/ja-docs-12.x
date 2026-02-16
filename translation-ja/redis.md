@@ -230,6 +230,26 @@ Predisを使用する場合、Laravelはクライアントサイドシャーデ�
 ],
 ```
 
+Predis3.4.0以降では、`Retry`クラスによる組み込みの再試行とバックオフ設定をサポートしています。`NoBackoff`、`EqualBackoff`、`ExponentialBackoff`戦略のいずれかを`retry`オプションで設定してください：
+
+```php
+use Predis\Retry;
+use Predis\Retry\Strategy\ExponentialBackoff;
+
+'default' => [
+    'url' => env('REDIS_URL'),
+    // ...
+    'retry' => new Retry(
+        new ExponentialBackoff(
+            env('REDIS_BACKOFF_BASE', 100),
+            env('REDIS_BACKOFF_CAP', 1000),
+            true, // Enables jitter
+        ),
+        env('REDIS_MAX_RETRIES', 3)
+    )
+],
+```
+
 <a name="unix-socket-connections"></a>
 #### Unixソケット接続
 

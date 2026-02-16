@@ -587,8 +587,25 @@ public function middleware(): array
 }
 ```
 
-> [!NOTE]
-> Redisを使用している場合は、`Illuminate\Queue\Middleware\RateLimitedWithRedis`ミドルウェアを使用できます。これは、Redis用に微調整されており、基本的なレート制限ミドルウェアよりも効率的です。
+<a name="rate-limiting-with-redis"></a>
+#### Redisを使用するレート制限
+
+Redisを使用している場合は、Redis用に調整済みで、基本的なレート制限ミドルウェアよりも効率的な`Illuminate\Queue\Middleware\RateLimitedWithRedis`ミドルウェアを使用できます。
+
+```php
+use Illuminate\Queue\Middleware\RateLimitedWithRedis;
+
+public function middleware(): array
+{
+    return [new RateLimitedWithRedis('backups')];
+}
+```
+
+`connection`メソッドを使用して、ミドルウェアが使用するRedis接続を指定します。
+
+```php
+return [(new RateLimitedWithRedis('backups'))->connection('limiter')];
+```
 
 <a name="preventing-job-overlaps"></a>
 ### ジョブのオーバーラップの防止
@@ -810,8 +827,25 @@ public function middleware(): array
 }
 ```
 
-> [!NOTE]
-> Redisを使用している場合は、Redis用に細かく調整され、基本的な例外スロットリングミドルウェアよりも効率的な、`Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis`ミドルウェアを使用できます。
+<a name="throttling-exceptions-with-redis"></a>
+#### Redisを使用した例外の制限
+
+Redisを使用している場合は、Redis用へ調整しており、基本的な例外スロットリングミドルウェアよりも効率的な`Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis`ミドルウェアを使用できます。
+
+```php
+use Illuminate\Queue\Middleware\ThrottlesExceptionsWithRedis;
+
+public function middleware(): array
+{
+    return [new ThrottlesExceptionsWithRedis(10, 10 * 60)];
+}
+```
+
+`connection`メソッドを使用して、ミドルウェアが使用するRedis接続を指定します。
+
+```php
+return [(new ThrottlesExceptionsWithRedis(10, 10 * 60))->connection('limiter')];
+```
 
 <a name="skipping-jobs"></a>
 ### ジョブのスキップ
@@ -2985,6 +3019,30 @@ Bus::fake();
 Bus::assertBatched(function (PendingBatch $batch) {
     return $batch->name == 'Import CSV' &&
            $batch->jobs->count() === 10;
+});
+```
+
+`hasJobs`メソッドを実行待ちバッチに対して使用すると、バッチに期待するジョブが含まれているかを検証できます。このメソッドは、ジョブインスタンス、クラス名、またはクロージャの配列を受け取ります。
+
+```php
+Bus::assertBatched(function (PendingBatch $batch) {
+    return $batch->hasJobs([
+        new ProcessCsvRow(row: 1),
+        new ProcessCsvRow(row: 2),
+        new ProcessCsvRow(row: 3),
+    ]);
+});
+```
+
+クロージャを使用する場合、クロージャはジョブインスタンスを受け取ります。期待するジョブのタイプは、クロージャのタイプヒントから推測します。
+
+```php
+Bus::assertBatched(function (PendingBatch $batch) {
+    return $batch->hasJobs([
+        fn (ProcessCsvRow $job) => $job->row === 1,
+        fn (ProcessCsvRow $job) => $job->row === 2,
+        fn (ProcessCsvRow $job) => $job->row === 3,
+    ]);
 });
 ```
 

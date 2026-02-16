@@ -21,6 +21,7 @@
     - [WHERE EXISTS句](#where-exists-clauses)
     - [サブクエリWHERE句](#subquery-where-clauses)
     - [フルテキストのWhere句](#full-text-where-clauses)
+    - [ベクトル類似性句](#vector-similarity-clauses)
 - [順序、グループ化、件数制限、オフセット](#ordering-grouping-limit-and-offset)
     - [順序](#ordering)
     - [グループ化](#grouping)
@@ -488,12 +489,12 @@ $users = DB::table('users')
 ```php
 use Illuminate\Support\Facades\DB;
 
-$first = DB::table('users')
+$usersWithoutFirstName = DB::table('users')
     ->whereNull('first_name');
 
 $users = DB::table('users')
     ->whereNull('last_name')
-    ->union($first)
+    ->union($usersWithoutFirstName)
     ->get();
 ```
 
@@ -884,7 +885,7 @@ $patients = DB::table('patients')
 `whereValueBetween`メソッドは、指定値が同じテーブル行の同じ型の、２つの列の値の間にあるかどうかを検証します。
 
 ```php
-$patients = DB::table('products')
+$products = DB::table('products')
     ->whereValueBetween(100, ['min_price', 'max_price'])
     ->get();
 ```
@@ -892,7 +893,7 @@ $patients = DB::table('products')
 `whereValueNotBetween`メソッドは、値が同じテーブル行の２つの列の値外にあるかを検証します。
 
 ```php
-$patients = DB::table('products')
+$products = DB::table('products')
     ->whereValueNotBetween(100, ['min_price', 'max_price'])
     ->get();
 ```
@@ -1144,6 +1145,52 @@ $incomes = Income::where('amount', '<', function (Builder $query) {
 ```php
 $users = DB::table('users')
     ->whereFullText('bio', 'web developer')
+    ->get();
+```
+
+<a name="vector-similarity-clauses"></a>
+### ベクトル類似性句
+
+> [!NOTE]
+> ベクトル類似性句は、現在`pgvector`拡張機能を使用しているPostgreSQL接続でのみサポートしています。ベクトルカラムとインデックスの定義に関する情報は、[マイグレーションドキュメント](/docs/{{version}}/migrations#available-column-types)を参照してください。
+
+`whereVectorSimilarTo`メソッドは、指定したベクトルとのコサイン類似度で結果をフィルタリングし、関連性の高い順に結果を並べ替えます。`minSimilarity`（最小類似度）のしきい値には、`0.0`から`1.0`の値を指定してください。`1.0`が同一であることを表します。
+
+```php
+$documents = DB::table('documents')
+    ->whereVectorSimilarTo('embedding', $queryEmbedding, minSimilarity: 0.4)
+    ->limit(10)
+    ->get();
+```
+
+ベクトル引数としてプレーンな文字列を渡すと、Laravelは[Laravel AI SDK](/docs/{{version}}/ai-sdk#embeddings)を使用して、その文字列の埋め込みを自動的に生成します。
+
+```php
+$documents = DB::table('documents')
+    ->whereVectorSimilarTo('embedding', 'Best wineries in Napa Valley')
+    ->limit(10)
+    ->get();
+```
+
+`whereVectorSimilarTo`はデフォルトで、結果を距離順（最も類似している順）に並べ替えます。この順序付けを無効にするには、`order`引数に`false`を渡してください。
+
+```php
+$documents = DB::table('documents')
+    ->whereVectorSimilarTo('embedding', $queryEmbedding, minSimilarity: 0.4, order: false)
+    ->orderBy('created_at', 'desc')
+    ->limit(10)
+    ->get();
+```
+
+より詳細な制御が必要な場合は、`selectVectorDistance`、`whereVectorDistanceLessThan`、`orderByVectorDistance`メソッドを個々に使用してください。
+
+```php
+$documents = DB::table('documents')
+    ->select('*')
+    ->selectVectorDistance('embedding', $queryEmbedding, as: 'distance')
+    ->whereVectorDistanceLessThan('embedding', $queryEmbedding, maxDistance: 0.3)
+    ->orderByVectorDistance('embedding', $queryEmbedding)
+    ->limit(10)
     ->get();
 ```
 

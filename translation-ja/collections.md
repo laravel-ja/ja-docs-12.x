@@ -1981,7 +1981,10 @@ $merged->all();
 `min`メソッドは、指定したキーの最小値を返します。
 
 ```php
-$min = collect([['foo' => 10], ['foo' => 20]])->min('foo');
+$min = collect([
+    ['foo' => 10],
+    ['foo' => 20]
+])->min('foo');
 
 // 10
 
