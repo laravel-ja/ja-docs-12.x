@@ -754,13 +754,20 @@ new FileSearch(stores: ['store_id'], where: fn (FileSearchQuery $query) =>
 <a name="middleware"></a>
 ### ミドルウェア
 
-エージェントはミドルウェアをサポートしており、プロンプトがプロバイダへ送信する前に傍受して変更できます。エージェントにミドルウェアを追加するには、`HasMiddleware`インターフェイスを実装し、ミドルウェアクラスの配列を返す`middleware`メソッドを定義してください。
+エージェントはミドルウェアをサポートしており、プロバイダへ送信する前にプロンプトを傍受して変更できます。ミドルウェアは、`make:agent-middleware` Artisanコマンドを使用して作成できます。
+
+```shell
+php artisan make:agent-middleware LogPrompts
+```
+
+生成したミドルウェアは、アプリケーションの`app/Ai/Middleware`ディレクトリに配置されます。エージェントにミドルウェアを追加するには、`HasMiddleware`インターフェイスを実装し、ミドルウェアクラスの配列を返す`middleware`メソッドを定義します。
 
 ```php
 <?php
 
 namespace App\Ai\Agents;
 
+use App\Ai\Middleware\LogPrompts;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\HasMiddleware;
 use Laravel\Ai\Promptable;
@@ -1865,7 +1872,7 @@ use Laravel\Ai\Contracts\Files\StorableFile;
 use Laravel\Ai\Files\Document;
 
 // ファイルを保存
-Document::fromString('Hello, Laravel!', mime: 'text/plain')
+Document::fromString('Hello, Laravel!', mimeType: 'text/plain')
     ->as('hello.txt')
     ->put();
 

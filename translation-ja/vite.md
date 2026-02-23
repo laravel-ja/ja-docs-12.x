@@ -11,6 +11,7 @@
   - [エイリアス](#aliases)
   - [Vue](#vue)
   - [React](#react)
+  - [Svelte](#svelte)
   - [Inertia](#inertia)
   - [URL処理](#url-processing)
 - [スタイルシートの操作](#working-with-stylesheets)
@@ -73,7 +74,7 @@ npm install
 <a name="configuring-vite"></a>
 ### Viteの設定
 
-Viteは、プロジェクトルートの`vite.config.js`ファイルで設定します。また、アプリケーションが必要とする他のプラグイン、例えば、`@vitejs/plugin-vue`や`@vitejs/plugin-react`をインストールすることもできます。
+Viteは、プロジェクトルートにある`vite.config.js`ファイルで設定します。ニーズに合わせてこのファイルを自由にカスタマイズできます。また、`@vitejs/plugin-react`、`@sveltejs/vite-plugin-svelte`、`@vitejs/plugin-vue`など、アプリケーションが必要とする他のプラグインもインストールできます。
 
 Laravel Viteプラグインでは、アプリケーションのエントリーポイントを指定する必要があります。これらは、JavaScriptまたはCSSファイルであり、TypeScript、JSX、TSX、Sassなどのプリプロセス言語が含まれます。
 
@@ -372,10 +373,41 @@ JSXを含むすべてのファイルの拡張子を確実に、`.jsx`または`.
 > [!NOTE]
 > Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、あらかじめ適切なLaravel、Vue、Viteの設定を用意しています。これらのスターターキットは、Laravel、Vue、Viteを始める最速の方法を提供します。
 
+<a name="svelte"></a>
+### Svelte
+
+[Svelte](https://svelte.dev/)フレームワークを使用してフロントエンドを構築したい場合は、`@sveltejs/vite-plugin-svelte`プラグインもインストールする必要があります。
+
+```shell
+npm install --save-dev @sveltejs/vite-plugin-svelte
+```
+
+次に、`vite.config.js`設定ファイルへプラグインをインクルードします。
+
+```js
+import { svelte } from '@sveltejs/vite-plugin-svelte';
+import laravel from 'laravel-vite-plugin';
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  plugins: [
+    laravel({
+      input: ['resources/js/app.ts'],
+      ssr: 'resources/js/ssr.ts',
+      refresh: true,
+    }),
+    svelte(),
+  ],
+});
+```
+
+> [!NOTE]
+> Laravelの[スターターキット](/docs/{{version}}/starter-kits)には、適切なLaravel、Svelte、Viteの設定をあらかじめ用意しています。これらのスターターキットは、Laravel、Svelte、Viteを使い始めるため、一番手っ取り早い方法を提供しています。
+
 <a name="inertia"></a>
 ### Inertia
 
-Laravel Viteプラグインは、Inertiaページコンポーネントを解決するのに便利な `resolvePageComponent` 関数を提供しています。以下はVue 3で使用するヘルパの例ですが、Reactなど他のフレームワークでもこの関数を利用することができます。
+Laravel Viteプラグインは、Inertiaページコンポーネントを解決するのに便利な `resolvePageComponent` 関数を提供しています。以下はVue 3で使用するヘルパの例ですが、ReactやSvelteなど他のフレームワークでもこの関数を利用することができます。
 
 ```js
 import { createApp, h } from 'vue';

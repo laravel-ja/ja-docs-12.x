@@ -4,10 +4,12 @@
 - [スターターキットを使ったアプリケーションの作成](#creating-an-application)
 - [利用可能なスターターキット](#available-starter-kits)
     - [React](#react)
+    - [Svelte](#svelte)
     - [Vue](#vue)
     - [Livewire](#livewire)
 - [スターターキットのカスタマイズ](#starter-kit-customization)
     - [React](#react-customization)
+    - [Svelte](#svelte-customization)
     - [Vue](#vue-customization)
     - [Livewire](#livewire-customization)
 - [認証](#authentication)
@@ -64,6 +66,15 @@ Inertiaを使用すると、古典的なサーバサイドのルーティング�
 
 Reactスターターキットは、React19、TypeScript、Tailwind、[shadcn/ui](https://ui.shadcn.com)コンポーネントライブラリを使用しています。
 
+<a name="svelte"></a>
+### Svelte
+
+Svelteスターターキットは、[Inertia](https://inertiajs.com)を使用して、Svelteフロントエンドを備えたLaravelアプリケーションを構築するための、堅牢でモダンな出発点を提供します。
+
+Inertiaを使用すると、従来のサーバサイドのルーティングとコントローラを使用して、モダンなシングルページSvelteアプリケーションを構築できます。これにより、Svelteのフロントエンドのパワーと、Laravelの驚異的なバックエンドの生産性、そして非常に高速なViteのコンパイルを組み合わせて享受できます。
+
+Svelteスターターキットは、Svelte5、TypeScript、Tailwind、および[shadcn-svelte](https://www.shadcn-svelte.com/)コンポーネントライブラリを利用しています。
+
 <a name="vue"></a>
 ### Vue
 
@@ -78,7 +89,7 @@ Vueスターターキットは、Vue Composition API、TypeScript、Tailwind、[
 
 私たちのLivewireスターターキットは、[Laravel Livewire](https://livewire.laravel.com)フロントエンドでLaravelアプリケーションを構築するための完璧な出発点を提供します。
 
-Livewireは、PHPだけでダイナミックでリアクティブなフロントエンドUIを構築するパワフルな手法です。主にBladeテンプレートを使用し、ReactやVueのようなJavaScript駆動のSPAフレームワークのシンプルな代替を探しているチームに最適です。
+Livewireは、PHPだけでダイナミックでリアクティブなフロントエンドUIを構築するパワフルな手法です。主にBladeテンプレートを使用し、React、Svelte、VueのようなJavaScript駆動のSPAフレームワークのシンプルな代替を探しているチームに最適です。
 
 Livewireスターターキットは、Livewire、Tailwind、[Flux UI](https://fluxui.dev)コンポーネントライブラリを利用しています。
 
@@ -154,6 +165,72 @@ Reactスターターキットに含まれている、ログインページや登
 ```js
 import AuthLayoutTemplate from '@/layouts/auth/auth-simple-layout'; // [tl! remove]
 import AuthLayoutTemplate from '@/layouts/auth/auth-split-layout'; // [tl! add]
+```
+
+<a name="svelte-customization"></a>
+### Svelte
+
+Svelteのスターターキットは、Inertia2、Svelte5、Tailwind、および[shadcn-svelte](https://www.shadcn-svelte.com/)で構築しています。すべてのスターターキットと同様に、バックエンドとフロントエンドのすべてのコードがアプリケーション内に存在し、自由にカスタマイズできます。
+
+フロントエンドのコードの大部分は`resources/js`ディレクトリにあります。アプリケーションの外観や動作をカスタマイズするために、どのコードも気兼ねなく修正してください。
+
+```text
+resources/js/
+├── components/    # 再利用可能なSvelteコンポーネント
+├── layouts/       # アプリケーションレイアウト
+├── lib/           # ユーティリティ関数、設定、およびSvelte runeモジュール
+├── pages/         # ページコンポーネント
+└── types/         # TypeScript定義
+```
+
+追加のshadcn-svelteコンポーネントをリソース公開するには、まず[公開したいコンポーネントを見つけてください](https://www.shadcn-svelte.com)。次に、`npx`を使用してコンポーネントをリソース公開します。
+
+```shell
+npx shadcn-svelte@latest add switch
+```
+
+この例では、コマンドはSwitchコンポーネントを`resources/js/components/ui/switch/switch.svelte`へリソース公開します。コンポーネントを公開したら、どのページからでも使用できます。
+
+```svelte
+<script lang="ts">
+    import { Switch } from '@/components/ui/switch'
+</script>
+
+<div>
+    <Switch />
+</div>
+```
+
+<a name="svelte-available-layouts"></a>
+#### 利用可能レイアウト
+
+Svelteスターターキットには、選択可能な2つの主要なレイアウト（「サイドバー」レイアウトと「ヘッダ」レイアウト）が含まれています。サイドバーレイアウトがデフォルトですが、アプリケーションの`resources/js/layouts/AppLayout.svelte`ファイルの先頭でインポートしているレイアウトを変更すれば、ヘッダレイアウトへ切り替えられます。
+
+```js
+import AppLayout from '@/layouts/app/AppSidebarLayout.svelte'; // [tl! remove]
+import AppLayout from '@/layouts/app/AppHeaderLayout.svelte'; // [tl! add]
+```
+
+<a name="svelte-sidebar-variants"></a>
+#### サイドバーのバリエーション
+
+サイドバーレイアウトには、デフォルトのサイドバーバリエーション、「inset」バリエーション、「floating」バリエーションの3つの異なるバリエーションがあります。`resources/js/components/AppSidebar.svelte`コンポーネントを修正して、最も好みのバリエーションを選択できます。
+
+```text
+<Sidebar collapsible="icon" variant="sidebar"> [tl! remove]
+<Sidebar collapsible="icon" variant="inset"> [tl! add]
+```
+
+<a name="svelte-authentication-page-layout-variants"></a>
+#### 認証ページレイアウトのバリエーション
+
+ログインページや登録ページなど、Svelteスターターキットが用意している認証ページでも、「simple」、「card」、「split」の3つの異なるレイアウトバリエーションを提供しています。
+
+認証レイアウトを変更するには、アプリケーションの`resources/js/layouts/AuthLayout.svelte`ファイルの先頭でインポートしているレイアウトを修正してください。
+
+```js
+import AuthLayout from '@/layouts/auth/AuthSimpleLayout.svelte'; // [tl! remove]
+import AuthLayout from '@/layouts/auth/AuthSplitLayout.svelte'; // [tl! add]
 ```
 
 <a name="vue-customization"></a>
@@ -318,7 +395,7 @@ use Laravel\Fortify\Features;
 
 機能を無効化するには、`features`配列から該当する機能エントリをコメントアウトするか削除してください。例えば、リソース公開の登録を無効化するには`Features::registration()`を削除します。
 
-[React](#react)か[Vue](#vue)スターターキットを使用する場合、フロントエンドコード内で無効化した機能のルートへの参照をすべて削除する必要があります。例えば、メール認証を無効化した場合、VueまたはReactコンポーネント内の`verification`ルートへのインポートや参照を削除する必要があります。これは、これらのスターターキットが型安全なルーティングのためにWayfinderを使用しており、ビルド時にルート定義を生成するためです。存在しないルートを参照すると、アプリケーションのビルドが失敗します。
+[React](#react)、[Svelte](#svelte)、[Vue](#vue)スターターキットを使用する場合、フロントエンドコード内で無効化した機能のルートへの参照をすべて削除する必要があります。例えば、メール認証を無効化した場合、React、Svelte、Vueコンポーネント内の`verification`ルートへのインポートや参照を削除する必要があります。これは、これらのスターターキットが型安全なルーティングのためにWayfinderを使用しており、ビルド時にルート定義を生成するためです。存在しないルートを参照すると、アプリケーションのビルドが失敗します。
 
 <a name="customizing-actions"></a>
 ### ユーザー生成とパスワードリセットのカスタマイズ
@@ -376,7 +453,7 @@ RateLimiter::for('login', function ($request) {
 <a name="workos"></a>
 ## WorkOS AuthKit認証
 
-デフォルトでは、React、Vue、Livewireのスターターキットはすべて、Laravelの組み込み認証システムを利用し、ログイン、登録、パスワードリセット、メール認証などを提供します。それに加え、各スターターキット向きに、[WorkOS AuthKit](https://authkit.com)搭載バージョンも提供しています。
+デフォルトでは、React、Svelte、Vue、Livewireのスターターキットはすべて、Laravelの組み込み認証システムを利用し、ログイン、登録、パスワードリセット、メール認証などを提供します。それに加え、各スターターキット向きに、[WorkOS AuthKit](https://authkit.com)搭載バージョンも提供しています。
 
 <div class="content-list" markdown="1">
 
@@ -416,7 +493,7 @@ WorkOS利用のスターターキットを使用する場合、アプリケー�
 <a name="inertia-ssr"></a>
 ### Inertia SSR
 
-ReactとVueのスタータキットはInertiaの[サーバサイドレンダリング](https://inertiajs.com/server-side-rendering)機能と互換性があります。あなたのアプリケーション用にInertia SSR互換バンドルをビルドするには、`build:ssr`コマンドを実行します。
+React、Svelte、VueのスタータキットはInertiaの[サーバサイドレンダリング](https://inertiajs.com/server-side-rendering)機能と互換性があります。あなたのアプリケーション用にInertia SSR互換バンドルをビルドするには、`build:ssr`コマンドを実行します。
 
 ```shell
 npm run build:ssr

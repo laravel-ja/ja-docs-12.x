@@ -1,7 +1,7 @@
 # ビュー
 
 - [イントロダクション](#introduction)
-    - [React/Vueでのビュー記述](#writing-views-in-react-or-vue)
+    - [React/Svelte/Vueでのビュー記述](#writing-views-in-react-or-vue)
 - [ビューの作成とレンダ](#creating-and-rendering-views)
     - [ネストしたビューディレクトリ](#nested-view-directories)
     - [最初に利用可能なビュー](#creating-the-first-available-view)
@@ -41,11 +41,11 @@ Route::get('/', function () {
 > Bladeテンプレートの作成方法の詳細をお探しですか？最初に完全な[Bladeドキュメント](/docs/{{version}}/blade)を確認してください。
 
 <a name="writing-views-in-react-or-vue"></a>
-### React/Vueでのビュー記述
+### React/Svelte/Vueでのビュー記述
 
-フロントエンドのテンプレートをBladeを使ってPHPで書く代わりに、多くの開発者はReactやVueを使ってテンプレートを書くことを好むようになりました。Laravelでは、[Inertia](https://inertiajs.com/)というライブラリのおかげで、React / VueのフロントエンドをLaravelのバックエンドに簡単に結びつけることができ、典型的なSPAの構築のように複雑なことは必要ありません。
+フロントエンドのテンプレートをBladeを介してPHPで記述する代わりに、多くの開発者がReact、Svelte、Vueを使用してテンプレートを記述することを好むようになってきています。[Inertia](https://inertiajs.com/)のおかげで、Laravelでは苦労せずにこれが行えます。Inertiaは、SPA構築にありがちな複雑さを伴わずに、React／Svelte／VueのフロントエンドとLaravelのバックエンドを簡単に結びつけるライブラリです。
 
-私たちの[ReactとVueのアプリケーションスターターキット](/docs/{{version}}/starter-kits)は、Inertiaで動作する、次のLaravelアプリケーションのための素晴らしい出発点を提供します。
+[React、Svelte、Vueのアプリケーションスターターキット](/docs/{{version}}/starter-kits)は、Inertiaを搭載した次のLaravelアプリケーションのための素晴らしい出発点となります。
 
 <a name="creating-and-rendering-views"></a>
 ## ビューの作成とレンダ

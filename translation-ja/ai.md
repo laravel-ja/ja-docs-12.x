@@ -77,7 +77,7 @@ Boostは、Laravelエコシステムのために特別に作られた包括的�
 <div class="content-list" markdown="1">
 
 - Livewire (2.x, 3.x, 4.x)
-- Inertia.js (ReactおよびVueバリアント)
+- Inertia.js (React、Svelte、Vueバリアント)
 - Tailwind CSS (3.xおよび4.x)
 - Filament (3.xおよび4.x)
 - PHPUnit

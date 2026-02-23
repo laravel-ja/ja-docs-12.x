@@ -75,32 +75,23 @@ php artisan vendor:publish --tag=ai-routes
 php artisan make:mcp-server WeatherServer
 ```
 
-このコマンドは`app/Mcp/Servers`ディレクトリに新しいサーバクラスを作成します。生成したサービスクラスは、Laravel MCPのベースである`Laravel\Mcp\Server`クラスを拡張し、ツール、リソース、プロンプトを登録するためのプロパティを提供しています。
+このコマンドは、`app/Mcp/Servers`ディレクトリに新しいサーバクラスを作成します。生成するサーバクラスは、Laravel MCPのベースである`Laravel\Mcp\Server`クラスを継承しており、サーバの設定やツール、リソース、プロンプトを登録するための属性とプロパティを提供します。
 
 ```php
 <?php
 
 namespace App\Mcp\Servers;
 
+use Laravel\Mcp\Server\Attributes\Instructions;
+use Laravel\Mcp\Server\Attributes\Name;
+use Laravel\Mcp\Server\Attributes\Version;
 use Laravel\Mcp\Server;
 
+#[Name('Weather Server')]
+#[Version('1.0.0')]
+#[Instructions('This server provides weather information and forecasts.')]
 class WeatherServer extends Server
 {
-    /**
-     * MCPサーバ名
-     */
-    protected string $name = 'Weather Server';
-
-    /**
-     * MCPサーバのバージョン
-     */
-    protected string $version = '1.0.0';
-
-    /**
-     * LLMへのMCPサーバの指示
-     */
-    protected string $instructions = 'This server provides weather information and forecasts.';
-
     /**
      * このMCPサーバで登録するツール
      *
@@ -181,15 +172,12 @@ namespace App\Mcp\Tools;
 use Illuminate\Contracts\JsonSchema\JsonSchema;
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 
+#[Description('Fetches the current weather forecast for a specified location.')]
 class CurrentWeatherTool extends Tool
 {
-    /**
-     * ツールの説明
-     */
-    protected string $description = 'Fetches the current weather forecast for a specified location.';
-
     /**
      * ツールリクエストの処理
      */
@@ -253,35 +241,28 @@ class WeatherServer extends Server
 <a name="tool-name-title-description"></a>
 #### ツール名、タイトル、説明
 
-デフォルトでは、ツール名とタイトルはクラス名から派生します。たとえば、`CurrentWeatherTool`の名前は`current-weather`、タイトルは`Current Weather Tool`になります。ツールの`$name`および`$title`プロパティを定義することで、これらの値をカスタマイズできます:
+デフォルトで、ツールの名前とタイトルはクラス名から派生します。例えば、`CurrentWeatherTool`の名前は`current-weather`になり、タイトルは`Current Weather Tool`になります。これらの値は、`Name`属性と`Title`属性を使用してカスタマイズできます。
 
 ```php
+use Laravel\Mcp\Server\Attributes\Name;
+use Laravel\Mcp\Server\Attributes\Title;
+
+#[Name('get-optimistic-weather')]
+#[Title('Get Optimistic Weather Forecast')]
 class CurrentWeatherTool extends Tool
 {
-    /**
-     * ツール名
-     */
-    protected string $name = 'get-optimistic-weather';
-
-    /**
-     * ツールのタイトル
-     */
-    protected string $title = 'Get Optimistic Weather Forecast';
-
     // ...
 }
 ```
 
-ツールの説明は自動的に生成されません。ツールに`$description`プロパティを定義して、常に意味のある説明を提供すべきです:
+ツールの説明は自動的に生成しません。`Description`属性を使用し、意味のある説明を常に提供してください。
 
 ```php
+use Laravel\Mcp\Server\Attributes\Description;
+
+#[Description('Fetches the current weather forecast for a specified location.')]
 class CurrentWeatherTool extends Tool
 {
-    /**
-     * ツールの説明
-     */
-    protected string $description = 'Fetches the current weather forecast for a specified location.';
-
     //
 }
 ```
@@ -698,35 +679,28 @@ class WeatherServer extends Server
 <a name="prompt-name-title-and-description"></a>
 #### プロンプトの名前、タイトル、説明
 
-デフォルトでは、プロンプトの名前とタイトルはクラス名から派生します。例えば、`DescribeWeatherPrompt`の名前は`describe-weather`、タイトルは`Describe Weather Prompt`になります。プロンプトに`$name`と`$title`プロパティを定義することで、これらの値をカスタマイズできます。
+デフォルトで、プロンプトの名前とタイトルはクラス名から派生します。例えば、`DescribeWeatherPrompt`の名前は`describe-weather`になり、タイトルは`Describe Weather Prompt`になります。これらの値は、`Name`属性と`Title`属性を使用してカスタマイズできます。
 
 ```php
+use Laravel\Mcp\Server\Attributes\Name;
+use Laravel\Mcp\Server\Attributes\Title;
+
+#[Name('weather-assistant')]
+#[Title('Weather Assistant Prompt')]
 class DescribeWeatherPrompt extends Prompt
 {
-    /**
-     * プロンプトの名前
-     */
-    protected string $name = 'weather-assistant';
-
-    /**
-     * プロンプトのタイトル
-     */
-    protected string $title = 'Weather Assistant Prompt';
-
     // ...
 }
 ```
 
-プロンプトの説明は自動生成されません。プロンプトに`$description`プロパティを定義して、必ず意味のある説明を提供してください。
+プロンプトの説明は自動的に生成しません。`Description`属性を使用して、意味のある説明を常に提供してください。
 
 ```php
+use Laravel\Mcp\Server\Attributes\Description;
+
+#[Description('Generates a natural-language explanation of the weather for a given location.')]
 class DescribeWeatherPrompt extends Prompt
 {
-    /**
-     * プロンプトの説明。
-     */
-    protected string $description = 'Generates a natural-language explanation of the weather for a given location.';
-
     //
 }
 ```
@@ -969,35 +943,28 @@ class WeatherServer extends Server
 <a name="resource-name-title-and-description"></a>
 #### リソース名、タイトル、説明
 
-デフォルトでは、リソースの名前とタイトルはクラス名から派生します。例えば、`WeatherGuidelinesResource`は`weather-guidelines`という名前と`Weather Guidelines Resource`というタイトルになります。これらの値は、リソースに`$name`プロパティと`$title`プロパティを定義することでカスタマイズできます。
+リソースの名前とタイトルはデフォルトで、クラス名から派生します。例えば、`WeatherGuidelinesResource`の名前は`weather-guidelines`になり、タイトルは`Weather Guidelines Resource`になります。これらの値は、`Name`属性と`Title`属性を使用してカスタマイズできます。
 
 ```php
+use Laravel\Mcp\Server\Attributes\Name;
+use Laravel\Mcp\Server\Attributes\Title;
+
+#[Name('weather-api-docs')]
+#[Title('Weather API Documentation')]
 class WeatherGuidelinesResource extends Resource
 {
-    /**
-     * リソースの名前。
-     */
-    protected string $name = 'weather-api-docs';
-
-    /**
-     * リソースのタイトル。
-     */
-    protected string $title = 'Weather API Documentation';
-
     // ...
 }
 ```
 
-リソースの説明は自動生成されません。リソースに`$description`プロパティを定義して、必ず意味のある説明を提供してください。
+リソースの説明は自動的に生成しません。`Description`属性を使用して、意味のある説明を常に提供してください。
 
 ```php
+use Laravel\Mcp\Server\Attributes\Description;
+
+#[Description('Comprehensive guidelines for using the Weather API.')]
 class WeatherGuidelinesResource extends Resource
 {
-    /**
-     * リソースの説明。
-     */
-    protected string $description = 'Comprehensive guidelines for using the Weather API.';
-
     //
 }
 ```
@@ -1022,22 +989,16 @@ namespace App\Mcp\Resources;
 
 use Laravel\Mcp\Request;
 use Laravel\Mcp\Response;
+use Laravel\Mcp\Server\Attributes\Description;
+use Laravel\Mcp\Server\Attributes\MimeType;
 use Laravel\Mcp\Server\Contracts\HasUriTemplate;
 use Laravel\Mcp\Server\Resource;
 use Laravel\Mcp\Support\UriTemplate;
 
+#[Description('Access user files by ID')]
+#[MimeType('text/plain')]
 class UserFileResource extends Resource implements HasUriTemplate
 {
-    /**
-     * リソースの説明
-     */
-    protected string $description = 'Access user files by ID';
-
-    /**
-     * リソースのMIMEタイプ
-     */
-    protected string $mimeType = 'text/plain';
-
     /**
      * このリソースのためにURIテンプレートを取得
      */
@@ -1121,26 +1082,21 @@ class UserProfileResource extends Resource implements HasUriTemplate
 
 デフォルトでは、リソースのURIはリソース名に基づいて生成されるため、`WeatherGuidelinesResource`のURIは`weather://resources/weather-guidelines`になります。デフォルトのMIMEタイプは`text/plain`です。
 
-これらの値は、リソースに`$uri`プロパティと`$mimeType`プロパティを定義することでカスタマイズできます。
+これらの値は、`Uri`属性と`MimeType`属性を使用してカスタマイズできます。
 
 ```php
 <?php
 
 namespace App\Mcp\Resources;
 
+use Laravel\Mcp\Server\Attributes\MimeType;
+use Laravel\Mcp\Server\Attributes\Uri;
 use Laravel\Mcp\Server\Resource;
 
+#[Uri('weather://resources/guidelines')]
+#[MimeType('application/pdf')]
 class WeatherGuidelinesResource extends Resource
 {
-    /**
-     * リソースのURI。
-     */
-    protected string $uri = 'weather://resources/guidelines';
-
-    /**
-     * リソースのMIMEタイプ。
-     */
-    protected string $mimeType = 'application/pdf';
 }
 ```
 
@@ -1315,22 +1271,19 @@ blobコンテンツを返すには、blobコンテンツを指定して`blob`メ
 return Response::blob(file_get_contents(storage_path('weather/radar.png')));
 ```
 
-blobコンテンツを返す場合、MIMEタイプはリソースクラスの`$mimeType`プロパティの値によって決定されます：
+blobコンテンツを返す場合、MIMEタイプはリソースへ設定したMIMEタイプにより決定します。
 
 ```php
 <?php
 
 namespace App\Mcp\Resources;
 
+use Laravel\Mcp\Server\Attributes\MimeType;
 use Laravel\Mcp\Server\Resource;
 
+#[MimeType('image/png')]
 class WeatherGuidelinesResource extends Resource
 {
-    /**
-     * リソースのMIMEタイプ
-     */
-    protected string $mimeType = 'image/png';
-
     //
 }
 ```
@@ -1386,12 +1339,12 @@ public function handle(Request $request): ResponseFactory
 ツール、リソース、またはプロンプト自体にメタデータを添付するには、クラスへ`$meta`プロパティを定義します。
 
 ```php
+use Laravel\Mcp\Server\Attributes\Description;
 use Laravel\Mcp\Server\Tool;
 
+#[Description('Fetches the current weather forecast.')]
 class CurrentWeatherTool extends Tool
 {
-    protected string $description = 'Fetches the current weather forecast.';
-
     protected ?array $meta = [
         'version' => '2.0',
         'author' => 'Weather Team',

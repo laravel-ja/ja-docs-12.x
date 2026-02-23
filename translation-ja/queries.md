@@ -1194,6 +1194,12 @@ $documents = DB::table('documents')
     ->get();
 ```
 
+PostgreSQLを使用する場合、`vector`カラムを作成する前に、`pgvector`拡張をロードする必要があります。
+
+```php
+Schema::ensureVectorExtensionExists();
+```
+
 <a name="ordering-grouping-limit-and-offset"></a>
 ## 順序、グループ化、件数制限、オフセット
 

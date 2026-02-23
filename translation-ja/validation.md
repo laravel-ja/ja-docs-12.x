@@ -1913,7 +1913,9 @@ Validator::make($input, [
 フィールドが指定するMIMEタイプのどれかであることをバリデートします。
 
 ```php
-'video' => 'mimetypes:video/avi,video/mpeg,video/quicktime'
+'video' => 'mimetypes:video/avi,video/mpeg,video/quicktime',
+
+'media' => 'mimetypes:image/*,video/*',
 ```
 
 アップロードしたファイルのMIMEタイプを判別するために、ファイルの内容が読み取られ、フレームワークはMIMEタイプを推測します。これは、クライアントが提供するMIMEタイプとは異なる場合があります。

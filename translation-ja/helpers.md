@@ -3252,7 +3252,7 @@ Benchmark::dd(fn () => User::count(), iterations: 10); // 0.5 ms
 <a name="dates"></a>
 ### 日付と時間
 
-Laravelは、強力な日付と時間の操作ライブラリである[Carbon](https://carbon.nesbot.com/docs/)を含んでいます。新しい`Carbon`インスタンスを作成するには、`now`関数を呼び出してください。この関数はLaravelアプリケーション内でグローバルに利用可能です。
+Laravelは、強力な日付と時間の操作ライブラリである[Carbon](https://carbon.nesbot.com/guide/getting-started/introduction.html)を含んでいます。新しい`Carbon`インスタンスを作成するには、`now`関数を呼び出してください。この関数はLaravelアプリケーション内でグローバルに利用可能です。
 
 ```php
 $now = now();
@@ -3278,7 +3278,7 @@ return now()->minus(hours: 8);
 return now()->minus(weeks: 4);
 ```
 
-Carbonの概要や特徴については、[Carbon公式ドキュメント](https://carbon.nesbot.com/docs/)を参照してください。
+Carbonの概要や特徴については、[Carbon公式ドキュメント](https://carbon.nesbot.com/guide/getting-started/introduction.html)を参照してください。
 
 <a name="interval-functions"></a>
 #### インターバル関数

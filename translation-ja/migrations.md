@@ -1179,6 +1179,12 @@ $table->uuid('id');
 $table->vector('embedding', dimensions: 100);
 ```
 
+PostgreSQLを使用する場合、`vector`カラムを作成する前に、`pgvector`拡張をロードする必要があります。
+
+```php
+Schema::ensureVectorExtensionExists();
+```
+
 <a name="column-method-year"></a>
 #### `year()` {.collection-method}
 

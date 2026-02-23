@@ -14,6 +14,8 @@
     - [キュー投入リスナミドルウェア](#queued-listener-middleware)
     - [暗号化キュー投入リスナ](#encrypted-queued-listeners)
     - [ユニークイベントリスナ](#unique-event-listeners)
+        - [処理を開始するまでリスナをユニークに保つ](#keeping-listeners-unique-until-processing-begins)
+        - [一意のリスナロック](#unique-listener-locks)
     - [失敗したジョブの処理](#handling-failed-jobs)
 - [イベント発行](#dispatching-events)
     - [データベーストランザクション後のイベント発行](#dispatching-events-after-database-transactions)
@@ -583,7 +585,30 @@ class AcquireProductKey implements ShouldQueue, ShouldBeUnique
 > [!WARNING]
 > アプリケーションが複数のWebサーバやコンテナからイベントをディスパッチする場合、Laravelがリスナがユニークであるかどうかを正確に判断できるように、すべてのサーバが同じ中央キャッシュサーバと通信していることを確認してください。
 
-Laravelはデフォルトで、デフォルトのキャッシュドライバを使用してユニークロックを取得します。しかし、ロック取得のために別のドライバを使用したい場合は、使用するキャッシュドライバを返す`uniqueVia`メソッドを定義します。
+<a name="keeping-listeners-unique-until-processing-begins"></a>
+#### 処理を開始するまでリスナをユニークに保つ
+
+ ユニークリスナはデフォルトで、そのリスナが処理を完了するか、すべてのリトライ試行に失敗した後に「アンロック」されます。しかし、リスナを処理する直前にアンロックしたい状況もあるでしょう。これを行うには、リスナへ`ShouldBeUnique`契約の代わりに、`ShouldBeUniqueUntilProcessing`契約を実装します。
+
+```php
+<?php
+
+namespace App\Listeners;
+
+use App\Events\LicenseSaved;
+use Illuminate\Contracts\Queue\ShouldBeUniqueUntilProcessing;
+use Illuminate\Contracts\Queue\ShouldQueue;
+
+class AcquireProductKey implements ShouldQueue, ShouldBeUniqueUntilProcessing
+{
+    // ...
+}
+```
+
+<a name="unique-listener-locks"></a>
+#### 一意のリスナロック
+
+`ShouldBeUnique`リスナをディスパッチすると、Laravelは内部的に、`uniqueId`キーを使用して[ロック](/docs/{{version}}/cache#atomic-locks)の取得を試みます。すでにロックが保持されている場合、そのリスナはディスパッチしません。このロックは、リスナが処理を完了するか、すべてのリトライ試行に失敗したとき、解放します。Laravelはデフォルトで、このロックを取得するためにデフォルトキャッシュドライバを使用します。しかし、ロックの取得に別のドライバを使用したい場合は、使用するキャッシュドライバを返す`uniqueVia`メソッドを定義してください。
 
 ```php
 <?php
@@ -607,6 +632,9 @@ class AcquireProductKey implements ShouldQueue, ShouldBeUnique
     }
 }
 ```
+
+> [!NOTE]
+> リスナの並行処理のみを制限する必要がある場合は、代わりに[WithoutOverlapping](/docs/{{version}}/queues#preventing-job-overlaps)ジョブミドルウェアを使用してください。
 
 <a name="handling-failed-jobs"></a>
 ### 失敗したジョブの処理
