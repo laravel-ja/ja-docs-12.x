@@ -2411,7 +2411,7 @@ Supervisor設定ファイルは通常、`/etc/supervisor/conf.d`ディレクト�
 ```ini
 [program:laravel-worker]
 process_name=%(program_name)s_%(process_num)02d
-command=php /home/forge/app.com/artisan queue:work sqs --sleep=3 --tries=3 --max-time=3600
+command=php /home/forge/app.com/artisan queue:work --sleep=3 --tries=3 --max-time=3600
 autostart=true
 autorestart=true
 stopasgroup=true

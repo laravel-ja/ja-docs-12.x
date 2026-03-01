@@ -167,6 +167,12 @@ php artisan migrate
 php artisan migrate:status
 ```
 
+`migrate`コマンドに`--step`オプションを指定すると、コマンドは各マイグレーションを個別のバッチとして実行します。これにより、後で`migrate:rollback`コマンドを使用して個々のマイグレーションをロールバックできます。
+
+```shell
+php artisan migrate --step
+```
+
 マイグレーションが実行するSQL文を実際に実行せずに確認したい場合は、`migrate`コマンドに`--pretend`フラグを指定してください。
 
 ```shell移行

@@ -14,7 +14,7 @@
 - [アトミックロック](#atomic-locks)
     - [ロック管理](#managing-locks)
     - [プロセス間でのロック管理](#managing-locks-across-processes)
-    - [ロックと関数実行](#locks-and-function-invocations)
+    - [同時実行制限](#concurrency-limiting)
 - [キャッシュフェイルオーバ](#cache-failover)
 - [カスタムキャッシュドライバの追加](#adding-custom-cache-drivers)
     - [ドライバの作成](#writing-the-driver)
@@ -531,10 +531,10 @@ Cache::restoreLock('processing', $this->owner)->release();
 Cache::lock('processing')->forceRelease();
 ```
 
-<a name="locks-and-function-invocations"></a>
-### ロックと関数実行
+<a name="concurrency-limiting"></a>
+### 同時実行制限
 
-`withoutOverlapping`メソッドは、アトミックロックを保持したまま、指定クロージャを実行するシンプルな構文を提供します。これにより、インフラストラクチャ全体を通じ、そのクロージャインスタンスが一度に１つだけ実行される状態を保証できます。
+Laravelのアトミックロック機能は、クロージャの同時実行を制限する方法もいくつか提供しています。インフラ全体で実行インスタンスを１つのみ許可したい場合は、`withoutOverlapping`を使用してください。
 
 ```php
 Cache::withoutOverlapping('foo', function () {
@@ -542,7 +542,7 @@ Cache::withoutOverlapping('foo', function () {
 });
 ```
 
-デフォルトでは、クロージャの実行を終了するまでロックを解放しません。また、このメソッドはロックを取得するために最大１０秒間待機します。メソッドに追加の引数を渡せば、これらの値をカスタマイズできます。
+ロックはデフォルトで、クロージャ実行が終了するまで維持され、メソッドはロックを取得するために最大１０秒間待ちます。追加の引数を使用して、これらの値をカスタマイズできます。
 
 ```php
 Cache::withoutOverlapping('foo', function () {
@@ -551,6 +551,54 @@ Cache::withoutOverlapping('foo', function () {
 ```
 
 指定した待機時間内にロックを取得できない場合、`Illuminate\Contracts\Cache\LockTimeoutException`を投げます。
+
+並列処理を制御する必要がある場合は、`funnel`メソッドを使用して、同時実行の最大数を設定してください。`funnel`メソッドは、ロックをサポートするすべてのキャッシュドライバで動作します。
+
+```php
+Cache::funnel('foo')
+    ->limit(3)
+    ->releaseAfter(60)
+    ->block(10)
+    ->then(function () {
+        // 同時実行ロックを取得できた
+    }, function () {
+        // 同時実行ロックを取得できなかった
+    });
+```
+
+`funnel`キーは、制限するリソースを識別します。`limit`メソッドは、最大同時実行数を定義します。`releaseAfter`メソッドは、取得したスロットが自動的に解放されるまでのセーフティタイムアウトを秒単位で設定します。`block`メソッドは、利用可能なスロットを待機する秒数を設定します。
+
+失敗時のクロージャを指定する代わりに、例外でタイムアウトを処理したい場合は、２番目のクロージャを省略してください。指定した待ち時間内にロックを取得できない場合、`Illuminate\Cache\Limiters\LimiterTimeoutException`を投げます。
+
+```php
+use Illuminate\Cache\Limiters\LimiterTimeoutException;
+
+try {
+    Cache::funnel('foo')
+        ->limit(3)
+        ->releaseAfter(60)
+        ->block(10)
+        ->then(function () {
+            // 同時実行ロックを取得できた
+        });
+} catch (LimiterTimeoutException $e) {
+    // 同時実行ロックを取得できなかった
+}
+```
+
+同時実行制限で特定のキャッシュストアを使用したい場合は、対象のストアで`funnel`メソッドを呼び出します。
+
+```php
+Cache::store('redis')->funnel('foo')
+    ->limit(3)
+    ->block(10)
+    ->then(function () {
+        // "redis"ストアを使用して同時実行ロックを取得できた
+    });
+```
+
+> [!NOTE]
+> `funnel`メソッドは、キャッシュストアが`Illuminate\Contracts\Cache\LockProvider`インターフェイスを実装している必要があります。ロックをサポートしていないキャッシュストアで`funnel`を使用しようとすると、`BadMethodCallException`を投げます。
 
 <a name="cache-failover"></a>
 ## キャッシュフェイルオーバ

@@ -549,6 +549,28 @@ public function handle(Request $request): Response
 return Response::error('Unable to fetch weather data. Please try again.');
 ```
 
+画像や音声のコンテンツを返すには、`image`および`audio`メソッドを使用してください。
+
+```php
+return Response::image(file_get_contents(storage_path('weather/radar.png')), 'image/png');
+
+return Response::audio(file_get_contents(storage_path('weather/alert.mp3')), 'audio/mp3');
+```
+
+また、`fromStorage`メソッドを使用して、Laravelのファイルシステムディスクから画像や音声のコンテンツを直接読み込むこともできます。MIMEタイプはファイルから自動的に判別します。
+
+```php
+return Response::fromStorage('weather/radar.png');
+```
+
+必要であれば、特定のディスクを指定したり、MIMEタイプを上書きしたりできます。
+
+```php
+return Response::fromStorage('weather/radar.png', disk: 's3');
+
+return Response::fromStorage('weather/radar.png', mimeType: 'image/webp');
+```
+
 <a name="multiple-content-responses"></a>
 #### 複数コンテンツのレスポンス
 
