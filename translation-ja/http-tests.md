@@ -707,6 +707,22 @@ $response
     );
 ```
 
+JSONコレクションのすべてのアイテムに対して同じアサートを行いたい場合は、`each`メソッドを使用できます。
+
+```php
+$response
+  ->assertJson(fn (AssertableJson $json) =>
+      $json->has(3)
+          ->each(fn (AssertableJson $json) =>
+              $json->whereType('id', 'integer')
+                  ->whereType('name', 'string')
+                  ->whereType('email', 'string')
+                  ->missing('password')
+                  ->etc()
+          )
+  );
+```
+
 <a name="scoping-json-collection-assertions"></a>
 #### JSONコレクションをスコープするアサーション
 

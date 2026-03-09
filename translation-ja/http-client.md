@@ -287,10 +287,10 @@ $response = Http::retry([100, 200])->post(/* ... */);
 必要であれば、`retry`メソッドに第３引数を渡せます。第３引数には、実際に再試行を行うかどうかを決定するCallableを指定します。例えば、最初のリクエストで`ConnectionException`が発生した場合にのみ、リクエストを再試行したいとしましょう。
 
 ```php
-use Exception;
 use Illuminate\Http\Client\PendingRequest;
+use Throwable;
 
-$response = Http::retry(3, 100, function (Exception $exception, PendingRequest $request) {
+$response = Http::retry(3, 100, function (Throwable $exception, PendingRequest $request) {
     return $exception instanceof ConnectionException;
 })->post(/* ... */);
 ```
@@ -298,11 +298,11 @@ $response = Http::retry(3, 100, function (Exception $exception, PendingRequest $
 リクエストの試行に失敗した場合、新しく試みる前にリクエストへ変更を加えたい場合があります。これを実現するには、`retry`メソッドに渡すコールバックのrequest引数を変更します。例えば、最初の試行が認証エラーを返した場合、新しい認証トークンを使ってリクエストを再試行したいと思います。
 
 ```php
-use Exception;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Http\Client\RequestException;
+use Throwable;
 
-$response = Http::withToken($this->getToken())->retry(2, 0, function (Exception $exception, PendingRequest $request) {
+$response = Http::withToken($this->getToken())->retry(2, 0, function (Throwable $exception, PendingRequest $request) {
     if (! $exception instanceof RequestException || $exception->response->status() !== 401) {
         return false;
     }
