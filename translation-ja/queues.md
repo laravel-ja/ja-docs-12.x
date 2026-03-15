@@ -2056,7 +2056,7 @@ use Illuminate\Support\Facades\Schedule;
 Schedule::command('queue:prune-batches --hours=48')->daily();
 ```
 
-時々、`jobs_batches` テーブルに、ジョブが失敗して再試行も成功しなかったバッチなど、正常に完了しなかったバッチのバッチレコードが蓄積されることがあります。`queue:prune-batches`コマンドで`unfinished`オプションを使って、こうした未完了のバッチレコードを削除するように指示できます。
+時々、`job_batches`テーブルに、ジョブが失敗して再試行も成功しなかったバッチなど、正常に完了しなかったバッチのバッチレコードが蓄積されることがあります。`queue:prune-batches`コマンドで`unfinished`オプションを使って、こうした未完了のバッチレコードを削除するように指示できます。
 
 ```php
 use Illuminate\Support\Facades\Schedule;
@@ -2064,7 +2064,7 @@ use Illuminate\Support\Facades\Schedule;
 Schedule::command('queue:prune-batches --hours=48 --unfinished=72')->daily();
 ```
 
-`jobs_batches`テーブルと同様に、キャンセルされたバッチレコードが蓄積されるかもしれません。`queue:prune-batches`コマンドの`cancelled`オプションを使って、これらのキャンセルされたバッチレコードを整理ように指示してください。
+`job_batches`テーブルと同様に、キャンセルされたバッチレコードが蓄積されるかもしれません。`queue:prune-batches`コマンドの`cancelled`オプションを使って、これらのキャンセルされたバッチレコードを整理ように指示してください。
 
 ```php
 use Illuminate\Support\Facades\Schedule;

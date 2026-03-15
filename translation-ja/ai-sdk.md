@@ -18,6 +18,7 @@
     - [ミドルウェア](#middleware)
     - [匿名エージェント](#anonymous-agents)
     - [エージェント設定](#agent-configuration)
+    - [プロバイダオプション](#provider-options)
 - [画像](#images)
 - [音声 (TTS)](#audio)
 - [文字起こし (STT)](#transcription)
@@ -232,9 +233,6 @@ class SalesCoach implements Agent, Conversational, HasTools, HasStructuredOutput
 
 ```php
 $response = (new SalesCoach)
-    ->prompt('このセールスの文字起こしを分析して...');
-
-$response = SalesCoach::make()
     ->prompt('このセールスの文字起こしを分析して...');
 
 return (string) $response;
@@ -921,6 +919,49 @@ class ComplexReasoner implements Agent
     // 最も有能なモデル（例：Opus）を使用
 }
 ```
+
+<a name="provider-options"></a>
+### プロバイダオプション
+
+エージェントへプロバイダ固有のオプション（OpenAIのreasoning effortやpenalty設定など）を渡す必要がある場合は、`HasProviderOptions`インターフェイスを実装し、`providerOptions`メソッドを定義します。
+
+```php
+<?php
+
+namespace App\Ai\Agents;
+
+use Laravel\Ai\Contracts\Agent;
+use Laravel\Ai\Contracts\HasProviderOptions;
+use Laravel\Ai\Enums\Lab;
+use Laravel\Ai\Promptable;
+
+class SalesCoach implements Agent, HasProviderOptions
+{
+    use Promptable;
+
+    // ...
+
+    /**
+     * プロバイダ固有の生成オプションを取得
+     */
+    public function providerOptions(Lab|string $provider): array
+    {
+        return match ($provider) {
+            Lab::OpenAI => [
+                'reasoning' => ['effort' => 'low'],
+                'frequency_penalty' => 0.5,
+                'presence_penalty' => 0.3,
+            ],
+            Lab::Anthropic => [
+                'thinking' => ['budget_tokens' => 1024],
+            ],
+            default => [],
+        };
+    }
+}
+```
+
+`providerOptions`メソッドは、現在使用しているプロバイダ（`Lab`列挙型または文字列）を受け取るため、プロバイダごとに異なるオプションを返せます。これは[フェイルオーバ](#failover)を使用する場合、各フォールバックプロバイダが独自の構成を受け取れるため、特に便利です。
 
 <a name="images"></a>
 ## 画像

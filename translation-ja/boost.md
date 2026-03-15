@@ -121,23 +121,17 @@ Laravel Boostは、AIエージェントがLaravelアプリケーションとや�
 <a name="available-mcp-tools"></a>
 ### 利用可能なMCPツール
 
-| 名前 | 備考 |
+| 名前                          | 備考                                     |
 |----------------------------|----------------------------------------------------------------------------------------------------------------|
-| Application Info | PHPとLaravelのバージョン、データベースエンジン、バージョン付きのエコシステムパッケージ一覧、Eloquentモデルを読み取る |
-| Browser Logs | ブラウザからのログとエラーを読み取る |
-| Database Connections | デフォルトの接続を含む、利用可能なデータベース接続を検査する |
-| Database Query | データベースに対してクエリを実行する |
-| Database Schema | データベーススキーマを読み取る |
-| Get Absolute URL | 相対パスのURIを絶対パスに変換し、エージェントが有効なURLを生成できるようにする |
-| Get Config | 「ドット」記法を使用して設定ファイルから値を取得する |
-| Last Error | アプリケーションのログファイルから最後のエラーを読み取る |
-| List Artisan Commands | 利用可能なArtisanコマンドを検査する |
-| List Available Config Keys | 利用可能な設定キーを検査する |
-| List Available Env Vars | 利用可能な環境変数のキーを検査する |
-| List Routes | アプリケーションのルートを検査する |
-| Read Log Entries | 直近N個のログエントリを読み取る |
-| Search Docs | インストール済みパッケージに基づいてドキュメントを取得するために、LaravelがホストするドキュメントAPIサービスを照会する |
-| Tinker | アプリケーションのコンテキスト内で任意のコードを実行する |
+| Application Info           | PHPとLaravelのバージョン、データベースエンジン、バージョン付きのエコシステムパッケージ一覧、Eloquentモデルを読み取る |
+| Browser Logs               | ブラウザからのログとエラーを読み取る |
+| Database Connections       | デフォルトの接続を含む、利用可能なデータベース接続を検査する |
+| Database Query             | データベースに対してクエリを実行する |
+| Database Schema            | データベーススキーマを読み取る |
+| Get Absolute URL           | 相対パスのURIを絶対パスに変換し、エージェントが有効なURLを生成できるようにする              |
+| Last Error                 | アプリケーションのログファイルから最後のエラーを読み取る |
+| Read Log Entries           | 直近N個のログエントリを読み取る |
+| Search Docs                | インストール済みパッケージに基づいてドキュメントを取得するために、LaravelがホストするドキュメントAPIサービスを照会する |
 
 <a name="manually-registering-the-mcp-server"></a>
 ### MCPサーバの手作業での登録
@@ -180,10 +174,10 @@ Laravel Boostには、以下のパッケージとフレームワーク用のAI�
 | Flux UI           | core, free, pro        |
 | Folio             | core                   |
 | Herd              | core                   |
-| Inertia Laravel   | core, 1.x, 2.x         |
-| Inertia React     | core, 1.x, 2.x         |
-| Inertia Vue       | core, 1.x, 2.x         |
-| Inertia Svelte    | core, 1.x, 2.x         |
+| Inertia Laravel   | core, 1.x, 2.x, 3.x    |
+| Inertia React     | core, 1.x, 2.x, 3.x    |
+| Inertia Vue       | core, 1.x, 2.x, 3.x    |
+| Inertia Svelte    | core, 1.x, 2.x, 3.x    |
 | MCP               | core                   |
 | Pennant           | core                   |
 | Pest              | core, 3.x, 4.x         |

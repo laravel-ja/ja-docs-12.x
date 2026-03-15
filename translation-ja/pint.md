@@ -144,6 +144,45 @@ Pintが現在サポートしているプリセットは、`laravel`、`per`、`p
 
 Pintは[PHP CS Fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer)上に構築しています。そのため、PHP CS Fixerのルールのいずれかを使用して、プロジェクトのコードスタイルの問題を修正することができます。[PHP CS Fixer設定](https://mlocati.github.io/php-cs-fixer-configurator)を参照してください。
 
+<a name="custom-rules"></a>
+#### カスタムルール
+
+PHP CS Fixerのルールに加えて、Pintは`Pint/`というプレフィックスが付いたカスタムルールを提供しています。これらのルールはデフォルトでは有効になっていませんが、`pint.json`ファイルで有効にできます。
+
+<a name="phpdoc-type-annotations-only"></a>
+##### `Pint/phpdoc_type_annotations_only`
+
+このルールは、コードからすべてのコメントとドックブロックの解説文を削除し、`@param`、`@return`、`@var`、`@phpstan-type`などの`@`アノテーションを含む行のみを保持します。
+
+```php
+/**
+ * ユーザーの投稿を取得 [tl! remove]
+ * [tl! remove]
+ * @return HasMany<Post, $this>
+ */
+public function posts(): HasMany
+```
+
+単一行コメントや、`@`アノテーションのないブロックコメントは完全に削除されます。特定のコメントを保持したい場合は、プレフィックスに`@note`、`@warning`、または`@todo`を付けます。
+
+```php
+// @note このコメントは保持されます
+```
+
+このルールを有効にするには、`pint.json`ファイルに追加してください。
+
+```json
+{
+    "preset": "laravel",
+    "rules": {
+        "Pint/phpdoc_type_annotations_only": true
+    }
+}
+```
+
+> [!NOTE]
+> 設定ファイルは通常ドキュメントとしてコメントに依存しているため、このルールは`config`ディレクトリ内のファイルを自動的にスキップします。
+
 <a name="excluding-files-or-folders"></a>
 ### ファイル／フォルダの除外
 
