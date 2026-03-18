@@ -56,6 +56,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [Str::finish](#method-str-finish)
 [Str::fromBase64](#method-str-from-base64)
 [Str::headline](#method-str-headline)
+[Str::initials](#method-str-initials)
 [Str::inlineMarkdown](#method-str-inline-markdown)
 [Str::is](#method-str-is)
 [Str::isAscii](#method-str-is-ascii)
@@ -165,6 +166,7 @@ Laravelには、文字列値を操作する様々な関数があります。こ�
 [fromBase64](#method-fluent-str-from-base64)
 [hash](#method-fluent-str-hash)
 [headline](#method-fluent-str-headline)
+[initials](#method-fluent-str-initials)
 [inlineMarkdown](#method-fluent-str-inline-markdown)
 [is](#method-fluent-str-is)
 [isAscii](#method-fluent-str-is-ascii)
@@ -741,6 +743,23 @@ $headline = Str::headline('steve_jobs');
 $headline = Str::headline('EmailNotificationSent');
 
 // Email Notification Sent
+```
+
+<a name="method-str-initials"></a>
+#### `Str::initials()` {.collection-method}
+
+`Str::initials`メソッドは、指定文字列のイニシャルを返します。オプションで大文字に変換することもできます。
+
+```php
+use Illuminate\Support\Str;
+
+$initials = Str::initials('taylor otwell');
+
+// to
+
+$initials = Str::initials('taylor otwell', capitalize: true);
+
+// TO
 ```
 
 <a name="method-str-inline-markdown"></a>
@@ -2567,6 +2586,19 @@ $headline = Str::of('taylor_otwell')->headline();
 $headline = Str::of('EmailNotificationSent')->headline();
 
 // Email Notification Sent
+```
+
+<a name="method-fluent-str-initials"></a>
+#### `initials` {.collection-method}
+
+`initials`メソッドは、文字列をそのイニシャルに変換します。
+
+```php
+use Illuminate\Support\Str;
+
+$initials = Str::of('Taylor Otwell')->initials()->upper();
+
+// TO
 ```
 
 <a name="method-fluent-str-inline-markdown"></a>

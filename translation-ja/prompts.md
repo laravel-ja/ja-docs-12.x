@@ -14,12 +14,17 @@
     - [検索](#search)
     - [マルチ検索](#multisearch)
     - [一時停止](#pause)
+    - [自動補完](#autocomplete)
 - [バリデーション前の入力変換](#transforming-input-before-validation)
 - [フォーム](#forms)
 - [情報メッセージ](#informational-messages)
 - [テーブル](#tables)
 - [スピン](#spin)
 - [プログレスバー](#progress)
+- [タスク](#task)
+- [ストリーム](#stream)
+- [ターミナルタイトル](#terminal-title)
+- [通知](#notifications)
 - [ターミナルのクリア](#clear)
 - [ターミナルの考察](#terminal-considerations)
 - [未サポートの環境とフォールバック](#fallbacks)
@@ -421,6 +426,38 @@ $role = select(
 );
 ```
 
+<a name="select-info"></a>
+#### 補足情報
+
+`info`引数は、現在ハイライト中のオプションに関する追加情報を表示するために使用します。クロージャを渡す場合、現在ハイライト中のオプションの値を受け取り、文字列または`null`を返す必要があります。
+
+```php
+$role = select(
+    label: 'What role should the user have?',
+    options: [
+        'member' => 'Member',
+        'contributor' => 'Contributor',
+        'owner' => 'Owner',
+    ],
+    info: fn (string $value) => match ($value) {
+        'member' => 'Can view and comment.',
+        'contributor' => 'Can view, comment, and edit.',
+        'owner' => 'Full access to all resources.',
+        default => null,
+    }
+);
+```
+
+ハイライト中のオプションに依存しない情報は、`info`引数に静的な文字列を渡すこともできます。
+
+```php
+$role = select(
+    label: 'What role should the user have?',
+    options: ['Member', 'Contributor', 'Owner'],
+    info: 'The role may be changed at any time.'
+);
+```
+
 <a name="select-validation"></a>
 #### 追加のバリデーション
 
@@ -492,6 +529,30 @@ $categories = multiselect(
     label: 'What categories should be assigned?',
     options: Category::pluck('name', 'id'),
     scroll: 10
+);
+```
+
+<a name="multiselect-info"></a>
+#### 補足情報
+
+`info`引数は、現在ハイライト中のオプションに関する追加情報を表示するために使用します。クロージャを渡す場合、現在ハイライト中のオプションの値を引数に受け、文字列または`null`を返す必要があります。
+
+```php
+$permissions = multiselect(
+    label: 'What permissions should be assigned?',
+    options: [
+        'read' => 'Read',
+        'create' => 'Create',
+        'update' => 'Update',
+        'delete' => 'Delete',
+    ],
+    info: fn (string $value) => match ($value) {
+        'read' => 'View resources and their properties.',
+        'create' => 'Create new resources.',
+        'update' => 'Modify existing resources.',
+        'delete' => 'Permanently remove resources.',
+        default => null,
+    }
 );
 ```
 
@@ -570,6 +631,23 @@ $name = suggest(
     placeholder: 'E.g. Taylor',
     default: $user?->name,
     hint: 'This will be displayed on your profile.'
+);
+```
+
+<a name="suggest-info"></a>
+#### 補足情報
+
+`info`引数は、現在ハイライト中のオプションに関する追加情報を表示するために使用します。クロージャを渡す場合、現在ハイライト中のオプションの値を引数に受け、文字列または`null`を返す必要があります。
+
+```php
+$name = suggest(
+    label: 'What is your name?',
+    options: ['Taylor', 'Dayle'],
+    info: fn (string $value) => match ($value) {
+        'Taylor' => 'Administrator',
+        'Dayle' => 'Contributor',
+        default => null,
+    }
 );
 ```
 
@@ -682,6 +760,21 @@ $id = search(
 );
 ```
 
+<a name="search-info"></a>
+#### 補足情報
+
+`info`引数は、現在ハイライト中のオプションに関する追加情報を表示するために使用します。クロージャを渡す場合、現在ハイライト中のオプションの値を受け取り、文字列または`null`を返す必要があります。
+
+```php
+$id = search(
+    label: 'Search for the user that should receive the mail',
+    options: fn (string $value) => strlen($value) > 0
+        ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
+        : [],
+    info: fn (int $userId) => User::find($userId)?->email
+);
+```
+
 <a name="search-validation"></a>
 #### 追加のバリデーション
 
@@ -762,6 +855,21 @@ $ids = multisearch(
 );
 ```
 
+<a name="multisearch-info"></a>
+#### 補足情報
+
+`info`引数は、現在ハイライト中のオプションに関する追加情報を表示するために使用します。クロージャを渡す場合、現在ハイライト中のオプションの値を受け取り、文字列または`null`を返す必要があります。
+
+```php
+$ids = multisearch(
+    label: 'Search for the users that should receive the mail',
+    options: fn (string $value) => strlen($value) > 0
+        ? User::whereLike('name', "%{$value}%")->pluck('name', 'id')->all()
+        : [],
+    info: fn (int $userId) => User::find($userId)?->email
+);
+```
+
 <a name="multisearch-required"></a>
 #### 必須値
 
@@ -822,6 +930,89 @@ use function Laravel\Prompts\pause;
 
 pause('Press ENTER to continue.');
 ```
+
+<a name="autocomplete"></a>
+### 自動補完
+
+`autocomplete`関数を使うと、選択肢候補をインラインで自動補完できます。ユーザーが入力するにつれて、入力に一致する提案がゴーストテキストとして表示され、`Tab`キーまたは右矢印キーを押すことで確定します。
+
+```php
+use function Laravel\Prompts\autocomplete;
+
+$name = autocomplete(
+    label: 'What is your name?',
+    options: ['Taylor', 'Dayle', 'Jess', 'Nuno', 'Tim']
+);
+```
+
+プレースホルダテキスト、デフォルト値、および情報ヒントを含めることもできます。
+
+```php
+$name = autocomplete(
+    label: 'What is your name?',
+    options: ['Taylor', 'Dayle', 'Jess', 'Nuno', 'Tim'],
+    placeholder: 'E.g. Taylor',
+    default: $user?->name,
+    hint: 'Use tab to accept, up/down to cycle.'
+);
+```
+
+<a name="autocomplete-closure"></a>
+#### 動的オプション
+
+クロージャを渡して、ユーザーの入力に基づいて動的にオプションを生成することもできます。クロージャはユーザーが文字を入力するたびに呼び出され、自動補完のためのオプションの配列を返す必要があります。
+
+```php
+$file = autocomplete(
+    label: 'Which file?',
+    options: fn (string $value) => collect($files)
+        ->filter(fn ($file) => str_starts_with(strtolower($file), strtolower($value)))
+        ->values()
+        ->all(),
+);
+```
+
+<a name="autocomplete-required"></a>
+#### 必須値
+
+値の入力を必須にする場合は、`required`引数を渡します。
+
+```php
+$name = autocomplete(
+    label: 'What is your name?',
+    options: ['Taylor', 'Dayle', 'Jess', 'Nuno', 'Tim'],
+    required: true
+);
+```
+
+バリデーションメッセージをカスタマイズしたい場合は、文字列を渡すこともできます。
+
+```php
+$name = autocomplete(
+    label: 'What is your name?',
+    options: ['Taylor', 'Dayle', 'Jess', 'Nuno', 'Tim'],
+    required: 'Your name is required.'
+);
+```
+
+<a name="autocomplete-validation"></a>
+#### 追加のバリデーション
+
+最後に、追加のバリデーションロジックを実行したい場合は、`validate`引数へクロージャを渡します。
+
+```php
+$name = autocomplete(
+    label: 'What is your name?',
+    options: ['Taylor', 'Dayle', 'Jess', 'Nuno', 'Tim'],
+    validate: fn (string $value) => match (true) {
+        strlen($value) < 3 => 'The name must be at least 3 characters.',
+        strlen($value) > 255 => 'The name must not exceed 255 characters.',
+        default => null
+    }
+);
+```
+
+クロージャは入力された値を受け取り、エラーメッセージを返すか、バリデーションにパスした場合は`null`を返します。
 
 <a name="transforming-input-before-validation"></a>
 ## バリデーション前の入力変換
@@ -988,6 +1179,191 @@ foreach ($users as $user) {
 }
 
 $progress->finish();
+```
+
+<a name="task"></a>
+## タスク
+
+`task`関数は、指定したコールバックの実行中に、スピナーとスクロールするライブ出力エリアを備えたラベル付きのタスクを表示します。これは、依存関係パッケージのインストールやデプロイスクリプトなど、実行時間の長いプロセスをラップするのに最適で、何が起きているかをリアルタイムで可視化できます。
+
+```php
+use function Laravel\Prompts\task;
+
+task(
+    label: 'Installing dependencies',
+    callback: function ($logger) {
+        // 長時間実行のプロセス…
+    }
+);
+```
+
+コールバックは`Logger`インスタンスを受け取り、これを使用してログ行、ステータスメッセージ、およびストリームテキストをタスクの出力エリアに表示できます。
+
+> [!WARNING]
+> `task`関数でスピナーをアニメーションするには、[PCNTL](https://www.php.net/manual/ja/book.pcntl.php) PHP拡張が必要です。この拡張が利用できない場合は、代わりに静的なバージョンのタスクを表示します。
+
+<a name="task-logging"></a>
+#### ログ行の出力
+
+`line`メソッドは、タスクのスクロール出力エリアに単一のログ行を書き込みます。
+
+```php
+task(
+    label: 'Installing dependencies',
+    callback: function ($logger) {
+        $logger->line('Resolving packages...');
+        // ...
+        $logger->line('Downloading laravel/framework');
+        // ...
+    }
+);
+```
+
+<a name="task-status-messages"></a>
+#### ステータスメッセージ
+
+`success`、`warning`、`error`メソッドを使用して、ステータスメッセージを表示できます。これらはスクロールするログエリアの上に、固定ハイライトメッセージとして表示します。
+
+```php
+task(
+    label: 'Deploying application',
+    callback: function ($logger) {
+        $logger->line('Pulling latest changes...');
+        // ...
+        $logger->success('Changes pulled!');
+
+        $logger->line('Running migrations...');
+        // ...
+        $logger->warning('No new migrations to run.');
+
+        $logger->line('Clearing cache...');
+        // ...
+        $logger->success('Cache cleared!');
+    }
+);
+```
+
+<a name="task-label"></a>
+#### ラベルの更新
+
+`label`メソッドを使用すると、タスクの実行中にタスクのラベルを更新できます。
+
+```php
+task(
+    label: 'Starting deployment...',
+    callback: function ($logger) {
+        $logger->label('Pulling latest changes...');
+        // ...
+        $logger->label('Running migrations...');
+        // ...
+        $logger->label('Clearing cache...');
+        // ...
+    }
+);
+```
+
+<a name="task-streaming"></a>
+#### テキストのストリーミング
+
+AIが生成したレスポンスなど、出力を段階的に生成するプロセスでは、`partial`メソッドでテキストを単語ごと、またはチャンクごとにストリーミングできます。ストリームが完了したら、`commitPartial`を呼び出して出力を確定します。
+
+```php
+task(
+    label: 'Generating response...',
+    callback: function ($logger) {
+        foreach ($words as $word) {
+            $logger->partial($word . ' ');
+        }
+
+        $logger->commitPartial();
+    }
+);
+```
+
+<a name="task-limit"></a>
+#### 出力制限のカスタマイズ
+
+デフォルトでは、タスクは最大１０行のスクロール出力を表示します。これは`limit`引数でカスタマイズ可能です。
+
+```php
+task(
+    label: 'Installing dependencies',
+    callback: function ($logger) {
+        // ...
+    },
+    limit: 20
+);
+```
+
+<a name="stream"></a>
+## ストリーム
+
+`stream`関数は、ターミナルにストリーミングされるテキストを表示します。これはAI生成コンテンツや、段階的に届くあらゆるテキストの表示に最適です。
+
+```php
+use function Laravel\Prompts\stream;
+
+$stream = stream();
+
+foreach ($words as $word) {
+    $stream->append($word . ' ');
+    usleep(25_000); // Simulate delay between chunks...
+}
+
+$stream->close();
+```
+
+`append`メソッドはストリームにテキストを追加し、徐々にフェードインする効果を伴ってレンダします。すべてのコンテンツのストリーミングが終わったら、`close`メソッドを呼び出して出力を確定し、カーソルを復元してください。
+
+<a name="terminal-title"></a>
+## ターミナルのタイトル
+
+`title`関数は、ユーザーのターミナルウィンドウまたはタブのタイトルを更新します。
+
+```php
+use function Laravel\Prompts\title;
+
+title('Installing Dependencies');
+```
+
+ターミナルのタイトルをデフォルトに戻すには、空の文字列を渡します。
+
+```php
+title('');
+```
+
+<a name="notifications"></a>
+## 通知
+
+`notify`関数は、ターミナルからデスクトップ通知をネイティブに送信します。
+
+```php
+use function Laravel\Prompts\notify;
+
+notify('Build Complete', 'Deployed to production');
+```
+
+通知は、macOS（`osascript`経由）およびLinux（`notify-send`、フォールバックとして`kdialog`経由）でサポートしています。
+
+macOSでは、`subtitle`と`sound`を含めることもできます。
+
+```php
+notify(
+    title: 'Build Complete',
+    body: 'Deployed to production',
+    subtitle: 'staging-server',
+    sound: 'Glass',
+);
+```
+
+Linuxでは、カスタム`icon`（アイコン）を指定できます。
+
+```php
+notify(
+    title: 'Build Complete',
+    body: 'Deployed to production',
+    icon: '/path/to/icon.png',
+);
 ```
 
 <a name="clear"></a>

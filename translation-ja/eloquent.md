@@ -228,10 +228,10 @@ class Article extends Model
 
 $article = Article::create(['title' => 'Traveling to Europe']);
 
-$article->id; // "8f8e8478-9035-4d23-b9a7-62f4d2612ce5"
+$article->id; // "018f2b5c-6a7f-7b12-9d6f-2f8a4e0c9c11"
 ```
 
-`HasUuids`トレイトはデフォルトで、モデルに対し[順序付き(ordered)UUID](/docs/{{version}}/strings#method-str-ordered-uuid)を生成します。これらのUUIDは辞書式にソートすることができるため、インデックス付きデータベースの保存が効率的です。
+`HasUuids`トレイトはデフォルトで、モデルに対し[順序付き(ordered)UUID](/docs/{{version}}/strings#method-str-uuid7)識別子を生成します。これらのUUIDは辞書式にソートすることができるため、インデックス付きデータベースの保存が効率的です。
 
 モデルへ`newUniqueId`メソッドを定義すれば、指定モデルのUUID生成処理をオーバーライドできます。さらに、モデルに`uniqueIds`メソッドを定義すれば、UUIDをどのカラムで受け取るのかを指定できます。
 
@@ -1008,7 +1008,7 @@ protected $fillable = [
 /**
  * 複数代入不可能な属性
  *
- * @var array<string>|bool
+ * @var array<string>
  */
 protected $guarded = [];
 ```

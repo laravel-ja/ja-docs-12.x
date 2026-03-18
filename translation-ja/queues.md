@@ -1716,7 +1716,9 @@ class SyncChatHistory implements ShouldQueue
 <a name="job-batching"></a>
 ## ジョブバッチ
 
-Laravelのジョブバッチ機能は、ジョブのバッチ処理を簡単に実行し、ジョブのバッチが実行完了したときに何らかのアクションを実行できます。使い始める前に、ジョブバッチの完了率などのメタ情報を含むテーブルを構築するために、データベースマイグレーションを作成する必要があります。このマイグレーションは`make:queue-batches-table` Artisanコマンドを使用して生成できます。
+Laravelのジョブバッチ機能を使用すると、ジョブのグループを並列に簡単に実行し、ジョブのバッチ実行が完了したときに何らかのアクションを実行できます。
+
+利用開始する前に、完了率などのジョブバッチに関するメタ情報を含むテーブルを構築するためのデータベースマイグレーションを作成する必要があります。このマイグレーションは、`make:queue-batches-table` Artisanコマンドを使用して生成できます。
 
 ```shell
 php artisan make:queue-batches-table

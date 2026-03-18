@@ -409,7 +409,7 @@ Route::post('/chat', function () {
 <a name="consuming-streamed-responses"></a>
 ### ストリームレスポンスの利用
 
-ストリームレスポンスは、Laravelの`stream` npmパッケージを使用して利用できます。このパッケージはLaravelのレスポンスやイベントストリームとやり取りするための便利なAPIを提供します。利用開始するには、`@laravel/stream-react`または`@laravel/stream-vue`パッケージをインストールしてください。
+ストリームレスポンスは、Laravelのレスポンスやイベントストリームとやり取りするための便利なAPIを提供する、Laravelの`stream` npmパッケージを使用して利用できます。開始するには、`@laravel/stream-react`、`@laravel/stream-vue`、`@laravel/stream-svelte`パッケージをインストールしてください。
 
 ```shell tab=React
 npm install @laravel/stream-react
@@ -417,6 +417,10 @@ npm install @laravel/stream-react
 
 ```shell tab=Vue
 npm install @laravel/stream-vue
+```
+
+```shell tab=Svelte
+npm install @laravel/stream-svelte
 ```
 
 次に、イベントストリームを利用するために、`useStream`を使用します。ストリームのURLを指定後、Laravelアプリケーションからコンテンツが返されると、フックは自動的に`data`を連結したレスポンスで更新します。
@@ -465,6 +469,31 @@ const sendMessage = () => {
         <button @click="sendMessage">メッセージ送信</button>
     </div>
 </template>
+```
+
+```svelte tab=Svelte
+<script>
+import { useStream } from "@laravel/stream-svelte";
+
+const stream = useStream("chat");
+
+const sendMessage = () => {
+    stream.send({
+        message: `Current timestamp: ${Date.now()}`,
+    });
+};
+</script>
+
+<div>
+    <div>{$stream.data}</div>
+    {#if $stream.isFetching}
+        <div>Connecting...</div>
+    {/if}
+    {#if $stream.isStreaming}
+        <div>Generating...</div>
+    {/if}
+    <button onclick={sendMessage}>Send Message</button>
+</div>
 ```
 
 データを`send`を使いストリームに送り返す場合、ストリームへのアクティブな接続は新しいデータを送信する前にキャンセルします。すべてのリクエストは、JSON `POST`リクエストとして送信します。
@@ -516,6 +545,26 @@ const { data } = useStream("chat", {
 </template>
 ```
 
+```svelte tab=Svelte
+<script>
+import { useStream } from "@laravel/stream-svelte";
+
+const stream = useStream("chat", {
+    id: undefined,
+    initialInput: undefined,
+    headers: undefined,
+    csrfToken: undefined,
+    onResponse: (response) => {},
+    onData: (data) => {},
+    onCancel: () => {},
+    onFinish: () => {},
+    onError: (error) => {},
+});
+</script>
+
+<div>{$stream.data}</div>
+```
+
 ストリームからの最初のレスポンスが成功した後に、`onResponse`をトリガーし、素の[レスポンス](https://developer.mozilla.org/ja/docs/Web/API/Response)をコールバックへ渡します。各チャンクが受信されるたびに`onData`を呼び出し、現在のチャンクをコールバックへ渡します。`onFinish`は、ストリームが終了したときと、フェッチ/読み込みのサイクルでエラーが発生したときに呼び出します。
 
 デフォルトでは、初期化時にストリームへのリクエストを行いません。ストリームに初期ペイロードを渡す場合は、`initialInput`オプションを使用してください。
@@ -550,6 +599,20 @@ const { data } = useStream("chat", {
 </template>
 ```
 
+```svelte tab=Svelte
+<script>
+import { useStream } from "@laravel/stream-svelte";
+
+const stream = useStream("chat", {
+    initialInput: {
+        message: "Introduce yourself.",
+    },
+});
+</script>
+
+<div>{$stream.data}</div>
+```
+
 ストリームを手作業でキャンセルするには、フックが返す、`cancel`メソッドを使用します。
 
 ```tsx tab=React
@@ -580,6 +643,19 @@ const { data, cancel } = useStream("chat");
         <button @click="cancel">Cancel</button>
     </div>
 </template>
+```
+
+```svelte tab=Svelte
+<script>
+import { useStream } from "@laravel/stream-svelte";
+
+const stream = useStream("chat");
+</script>
+
+<div>
+    <div>{$stream.data}</div>
+    <button onclick={() => stream.cancel()}>Cancel</button>
+</div>
 ```
 
 `useStream`フックを使用するたびに、そのストリームを識別するためのランダムな`id`を生成します。これはリクエストごとに`X-STREAM-ID`ヘッダとしてサーバへ返します。複数のコンポーネントで同じストリームを使用する場合、独自の`id`を指定することにより、ストリームの読み書きが行えます。
@@ -647,6 +723,39 @@ const { isFetching, isStreaming } = useStream("chat", { id: props.id });
         <div v-if="isStreaming">生成中…</div>
     </div>
 </template>
+```
+
+```svelte tab=Svelte
+<!-- App.svelte -->
+<script>
+import { useStream } from "@laravel/stream-svelte";
+import StreamStatus from "./StreamStatus.svelte";
+
+const stream = useStream("chat");
+</script>
+
+<div>
+    <div>{$stream.data}</div>
+    <StreamStatus id={stream.id} />
+</div>
+
+<!-- StreamStatus.svelte -->
+<script>
+import { useStream } from "@laravel/stream-svelte";
+
+let { id } = $props();
+
+const stream = useStream("chat", { id });
+</script>
+
+<div>
+    {#if $stream.isFetching}
+        <div>Connecting...</div>
+    {/if}
+    {#if $stream.isStreaming}
+        <div>Generating...</div>
+    {/if}
+</div>
 ```
 
 <a name="streamed-json-responses"></a>
@@ -730,6 +839,31 @@ const loadUsers = () => {
 </template>
 ```
 
+```svelte tab=Svelte
+<script>
+import { useJsonStream } from "@laravel/stream-svelte";
+
+const stream = useJsonStream("users");
+
+const loadUsers = () => {
+    stream.send({
+        query: "taylor",
+    });
+};
+</script>
+
+<div>
+    <ul>
+        {#if $stream.data?.users}
+            {#each $stream.data.users as user (user.id)}
+                <li>{user.id}: {user.name}</li>
+            {/each}
+        {/if}
+    </ul>
+    <button onclick={loadUsers}>Load Users</button>
+</div>
+```
+
 <a name="event-streams"></a>
 ### イベントストリーム（SES）
 
@@ -761,7 +895,7 @@ yield new StreamedEvent(
 <a name="consuming-event-streams"></a>
 #### イベントストリームの利用
 
-イベントストリームは、Laravelのイベントストリームを操作するための便利なAPIを提供する、Laravelの`stream` npmパッケージを使用して利用できます。使い始めるには、`@laravel/stream-react`または`@laravel/stream-vue`パッケージをインストールしてください。
+イベントストリームは、Laravelのイベントストリームを操作するための便利なAPIを提供する、Laravelの`stream` npmパッケージを使用して利用できます。使い始めるには、`@laravel/stream-react`、`@laravel/stream-vue`、`@laravel/stream-svelte`パッケージをインストールしてください。
 
 ```shell tab=React
 npm install @laravel/stream-react
@@ -769,6 +903,10 @@ npm install @laravel/stream-react
 
 ```shell tab=Vue
 npm install @laravel/stream-vue
+```
+
+```shell tab=Svelte
+npm install @laravel/stream-svelte
 ```
 
 次に、`useEventStream`を使用してイベントストリームを使用します。ストリームのURLを指定すると、フックは自動的に`message`を連結したレスポンスで更新します。このメッセージは、Laravelアプリケーションから返したものです。
@@ -793,6 +931,16 @@ const { message } = useEventStream("/chat");
 <template>
   <div>{{ message }}</div>
 </template>
+```
+
+```svelte tab=Svelte
+<script>
+import { useEventStream } from "@laravel/stream-svelte";
+
+const eventStream = useEventStream("/chat");
+</script>
+
+<div>{$eventStream.message}</div>
 ```
 
 `useEventStream`に指定する、２番目の引数はオプションオブジェクトで、ストリームの利用動作をカスタマイズするために使用します。このオブジェクトのデフォルト値を以下に示します。
@@ -837,6 +985,28 @@ const { message } = useEventStream("/chat", {
   },
   endSignal: "</stream>",
   glue: " ",
+});
+</script>
+```
+
+```svelte tab=Svelte
+<script>
+import { useEventStream } from "@laravel/stream-svelte";
+
+const eventStream = useEventStream("/chat", {
+    eventName: "update",
+    onMessage: (event) => {
+        //
+    },
+    onError: (error) => {
+        //
+    },
+    onComplete: () => {
+        //
+    },
+    endSignal: "</stream>",
+    glue: " ",
+    replace: false,
 });
 </script>
 ```
